@@ -21,7 +21,7 @@ public class CreditsMenu implements Screen {
 		//Misc
 		running = true;		
 		//Textures
-		backgroundImg = new Texture("mainMenu/Background.png");
+		backgroundImg = new Texture("textures/menus/Background.png");
 	}
 
 	@Override
