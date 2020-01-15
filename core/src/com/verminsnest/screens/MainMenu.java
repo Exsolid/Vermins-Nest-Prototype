@@ -63,30 +63,31 @@ public class MainMenu implements Screen {
 		bManager = new ButtonManager(buttonList,"MainMenu");
 		bManager.setSize(150);
 		try {
-			bManager.calcMidofBounds(backgroundScrollImg.getWidth(), backgroundScrollImg.getHeight(), new Point(Gdx.graphics.getWidth() / 2 - backgroundScrollImg.getWidth() / 2,
-					Gdx.graphics.getHeight() / 2 - backgroundScrollImg.getHeight() / 2));
+			bManager.calcMidofBounds(backgroundScrollImg.getWidth(), backgroundScrollImg.getHeight(), new Point(game.getConfig().getResolution()[0] / 2 - backgroundScrollImg.getWidth() / 2,
+					game.getConfig().getResolution()[1] / 2 - backgroundScrollImg.getHeight() / 2));
 		} catch (OutOfBounds e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	@Override
 	public void render(float delta) {
 		if (running) {
+			game.setPro();
 			game.getBatch().begin();
-			game.getBatch().draw(backgroundImg, 0, 0);
-			game.getBatch().draw(backgroundScrollImg, Gdx.graphics.getWidth() / 2 - backgroundScrollImg.getWidth() / 2,
-					Gdx.graphics.getHeight() / 2 - backgroundScrollImg.getHeight() / 2);
+			game.getBatch().draw(backgroundImg,game.getConfig().getResolution()[0] / 2 - backgroundImg.getWidth() / 2,
+					game.getConfig().getResolution()[1] / 2 - backgroundImg.getHeight() / 2);
+			game.getBatch().draw(backgroundScrollImg, game.getConfig().getResolution()[0] / 2 - backgroundScrollImg.getWidth() / 2,
+					game.getConfig().getResolution()[1] / 2 - backgroundScrollImg.getHeight() / 2);
 			bManager.draw(game.getBatch());
 			game.getBatch().end();
-
 			this.mangageControls();
 		}
 	}
 
 	@Override
 	public void resize(int width, int height) {
+		
 	}
 
 	@Override

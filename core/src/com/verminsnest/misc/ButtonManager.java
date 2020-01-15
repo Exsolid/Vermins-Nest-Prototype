@@ -181,6 +181,6 @@ public class ButtonManager {
 		layout.setText(opFont, button.getOption());
 		
 		button.setOptionsPos(new Point((int) ((oldSpecs[2]-layout.width)/2)+oldSpecs[0],oldSpecs[1]));
-		button.setOptionsSize(new Point((int) layout.width,(int) layout.height));
+		//button.setOptionsSize(new Point((int) layout.width,(int) layout.height));
 	}
 }

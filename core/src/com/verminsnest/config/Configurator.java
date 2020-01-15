@@ -20,7 +20,7 @@ public class Configurator {
 			prefs.putString("language", "en");
 			language = new Locale("en");
 		}
-		else language = new Locale(prefs.getString("com.verminsnest.prefs.language"));
+		else language = new Locale(this.getLanguage());
 		
 		try {
 			this.setBundle(language);
@@ -44,17 +44,28 @@ public class Configurator {
 	
 	public void setLanguage(String langShort) throws MalformedURLException{
 		this.setBundle(new Locale(langShort));
+		prefs.putString("language", langShort);
+		prefs.flush();
 	}
 	
 	public int[] getResolution(){
 		int[] reso = new int[2];
 		reso[0] = prefs.getInteger("resolutionX", 1920);
-		reso[0] = prefs.getInteger("resolutionY", 1080);
-		return null;
+		reso[1] = prefs.getInteger("resolutionY", 1080);
+		return reso;
 	}
 	
 	public void setResolution(int[] reso){
 		prefs.putInteger("resolutionX", reso[0]);
 		prefs.putInteger("resolutionY", reso[1]);
+		prefs.flush();
+	}
+	
+	public boolean isFullscreen(){
+		return prefs.getBoolean("isFullscreen", true);
+	}
+	
+	public void setFullscreen(boolean mode){
+		prefs.putBoolean("isFullscreen", mode);
 	}
 }

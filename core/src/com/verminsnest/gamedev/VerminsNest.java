@@ -2,7 +2,9 @@ package com.verminsnest.gamedev;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.verminsnest.config.Configurator;
 import com.verminsnest.screens.MainMenu;
 import com.verminsnest.screens.SettingsMenu;
@@ -14,26 +16,50 @@ public class VerminsNest extends Game {
 	private SettingsMenu settingsMenu;
 	private Runtime r;
 	private Configurator config;
+	private OrthographicCamera camera;
+	private FillViewport vport;
+	
 	@Override
 	public void create () {
 		setConfig(new Configurator());
-		this.setBatch(new SpriteBatch());
+		this.setBatch(new SpriteBatch());		
 		mainMenu = new MainMenu(this);
+		camera = new OrthographicCamera();
+		camera.position.set(1920/2, 1080/2, 0);
+		camera.update();
+		vport = new FillViewport(1920, 1080, camera);
+		vport.apply();
+		batch.setProjectionMatrix(camera.combined);
 		this.setScreen(mainMenu);
 		r = Runtime.getRuntime();
 	}
-
+	
+	public void resize(int width, int height){
+		if(config.isFullscreen()){
+//			DisplayMode mode = Gdx.graphics.getDisplayMode();
+			Gdx.graphics.setWindowedMode(config.getResolution()[0], config.getResolution()[1]);
+//			Gdx.graphics.setFullscreenMode(mode);
+			//TODO Fullscreen
+		}else{
+			Gdx.graphics.setWindowedMode(config.getResolution()[0], config.getResolution()[1]);
+		}
+		vport.update(config.getResolution()[0], config.getResolution()[1]);
+		camera.position.set(config.getResolution()[0]/2, config.getResolution()[1]/2, 0);
+	}
 	@Override
 	public void render () {
 		super.render();
 	}
 	
+	public void setPro(){
+		batch.setProjectionMatrix(camera.combined);
+	}
 	@Override
 	public void dispose () {
 		super.dispose();
 		Gdx.app.exit();
 	}
-
+	
 	public SpriteBatch getBatch() {
 		return batch;
 	}
@@ -43,13 +69,13 @@ public class VerminsNest extends Game {
 	}
 	
 	public void screenSettings(){
-		settingsMenu = new SettingsMenu(this);
+		if(settingsMenu == null) settingsMenu = new SettingsMenu(this);
 		this.setScreen(settingsMenu);
 		r.gc();
 	}
 	
 	public void screenMainMenu(){
-		mainMenu = new MainMenu(this);
+		if(mainMenu == null)mainMenu = new MainMenu(this);
 		this.setScreen(mainMenu);
 		r.gc();
 	}
