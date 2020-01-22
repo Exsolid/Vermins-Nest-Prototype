@@ -30,7 +30,7 @@ public class Configurator {
 		}
 	}
 	
-	public void setBundle(Locale language) throws MalformedURLException{
+	private void setBundle(Locale language) throws MalformedURLException{
 		bundle = ResourceBundle.getBundle("com.verminsnest.config.messages", language);
 	}
 	
@@ -67,5 +67,6 @@ public class Configurator {
 	
 	public void setFullscreen(boolean mode){
 		prefs.putBoolean("isFullscreen", mode);
+		prefs.flush();
 	}
 }

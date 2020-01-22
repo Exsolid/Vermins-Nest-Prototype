@@ -1,6 +1,7 @@
 package com.verminsnest.screens;
 
 import java.awt.Point;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
@@ -79,7 +80,7 @@ public class SettingsMenu implements Screen {
 		buttonList.add(new Button(game.getConfig().getMessage("SettingsMenu_Controls")));
 		buttonList.add(new Button(game.getConfig().getMessage("SettingsMenu_Back")));
 		settingsMenuManager = new ButtonManager(buttonList, "Settings Menu");
-		settingsMenuManager.setSize(150);
+		settingsMenuManager.setSize(100);
 		try {
 			settingsMenuManager.calcMidofBounds(menuScrollImg.getWidth(), menuScrollImg.getHeight(), menuScrollPos);
 		} catch (OutOfBounds e) {
@@ -206,11 +207,20 @@ public class SettingsMenu implements Screen {
 				if (!movementBlocked) {
 					switch (settingsMenuManager.getIndex()) {
 					case GRAPHICS:
-						currentMenuManager.getCurrent().nextOption();
-						currentMenuManager.reCalcOptions(currentMenuManager.getCurrent().getOptionSpecs(),
-								currentMenuManager.getCurrent());
-						movementBlocked = true;
-						blockStartTime = System.currentTimeMillis();
+						if(currentMenuManager.getCurrent() != currentMenuManager.getButtons().get(currentMenuManager.getButtons().size()-1)){
+							String oldOption = currentMenuManager.getCurrent().getOption();
+							currentMenuManager.getCurrent().nextOption();
+							currentMenuManager.reCalcOptions(currentMenuManager.getCurrent(), oldOption,
+									currentMenuManager.getCurrent().getOption());
+							if(currentMenuManager.getCurrent().getText().equals(game.getConfig().getMessage("GraphicsMenu_Resolution"))&&currentMenuManager.getButtons().get(1).getOption().equals("Fullscreen")){
+								oldOption = currentMenuManager.getButtons().get(1).getOption();
+								currentMenuManager.getButtons().get(1).nextOption();
+								currentMenuManager.reCalcOptions(currentMenuManager.getButtons().get(1), oldOption,
+										currentMenuManager.getButtons().get(1).getOption());
+							}
+							movementBlocked = true;
+							blockStartTime = System.currentTimeMillis();
+						}
 						break;
 					case SOUND:
 						break;
@@ -222,7 +232,7 @@ public class SettingsMenu implements Screen {
 			}
 		}
 
-		// D Pressed
+		// A Pressed
 		if (Gdx.input.isKeyPressed(Input.Keys.A)) {
 			switch (menuIndex) {
 			case -1:
@@ -231,11 +241,17 @@ public class SettingsMenu implements Screen {
 				if (!movementBlocked) {
 					switch (settingsMenuManager.getIndex()) {
 					case GRAPHICS:
-						currentMenuManager.getCurrent().prevOption();
-						currentMenuManager.reCalcOptions(currentMenuManager.getCurrent().getOptionSpecs(),
-								currentMenuManager.getCurrent());
-						movementBlocked = true;
-						blockStartTime = System.currentTimeMillis();
+						if(currentMenuManager.getCurrent() != currentMenuManager.getButtons().get(currentMenuManager.getButtons().size()-1)){
+							String oldOption = currentMenuManager.getCurrent().getOption();
+							currentMenuManager.getCurrent().prevOption();
+							currentMenuManager.reCalcOptions(currentMenuManager.getCurrent(), oldOption,
+									currentMenuManager.getCurrent().getOption());
+							if(currentMenuManager.getCurrent().getText().equals(game.getConfig().getMessage("GraphicsMenu_Resolution"))&&currentMenuManager.getButtons().get(1).getOption().equals("Fullscreen")){
+								currentMenuManager.getButtons().get(1).nextOption();
+							}
+							movementBlocked = true;
+							blockStartTime = System.currentTimeMillis();
+						}
 						break;
 					case SOUND:
 						break;
@@ -266,19 +282,19 @@ public class SettingsMenu implements Screen {
 						}
 						buttonList.add(tempButton);
 						tempButton = new Button(game.getConfig().getMessage("GraphicsMenu_Mode"));
-						tempButton.addOption("Borderless Window");
-						tempButton.addOption("Fullscreen");
-						tempButton.addOption("Window");
+						tempButton.addOption(game.getConfig().getMessage("GraphicsMenu_Mode_Fullscreen"));
+						tempButton.addOption(game.getConfig().getMessage("GraphicsMenu_Mode_Window"));
+						if(!game.getConfig().isFullscreen()) tempButton.nextOption();
 						buttonList.add(tempButton);
 						tempButton = new Button(game.getConfig().getMessage("GraphicsMenu_Language"));
-						tempButton.addOption("English");
-						tempButton.addOption("German");
+						tempButton.addOption(game.getConfig().getMessage("GraphicsMenu_Language_English"));
+						tempButton.addOption(game.getConfig().getMessage("GraphicsMenu_Language_German"));
 						buttonList.add(tempButton);
 						tempButton = new Button(game.getConfig().getMessage("SettingsMenu_Back"));
 						buttonList.add(tempButton);
 
 						currentMenuManager = new ButtonManager(buttonList, "Graphics Menu");
-						currentMenuManager.setSize(150);
+						currentMenuManager.setSize(100);
 						currentMenuManager.calcMidofBounds(settingsScrollImg.getWidth(), settingsScrollImg.getHeight(),
 								settingsScrollPos);
 						menuIndex = 0;
@@ -290,7 +306,7 @@ public class SettingsMenu implements Screen {
 						buttonList.add(new Button(game.getConfig().getMessage("SoundMenu_Effects")));
 						buttonList.add(new Button(game.getConfig().getMessage("SettingsMenu_Back")));
 						currentMenuManager = new ButtonManager(buttonList, "Sound Menu");
-						currentMenuManager.setSize(150);
+						currentMenuManager.setSize(100);
 						currentMenuManager.calcMidofBounds(settingsScrollImg.getWidth(), settingsScrollImg.getHeight(),
 								settingsScrollPos);
 						menuIndex = 1;
@@ -313,13 +329,15 @@ public class SettingsMenu implements Screen {
 					case LANGUAGE:
 						break;
 					case BACK:
+						Boolean resize = false;
+						int[] newRes = new int[2];
+						String currentLang = "";
 						Boolean reload = false;
+						
 						String resolution = game.getConfig().getResolution()[0] + "x"
 								+ game.getConfig().getResolution()[1];
 						if (!resolution.equals(currentMenuManager.getButtons().get(0).getOption())) {
-							reload = true;
-							int[] newRes = new int[2];
-							;
+							resize = true;
 							if (currentMenuManager.getButtons().get(0).getOption().equals("1920x1080")) {
 								newRes[0] = 1920;
 								newRes[1] = 1080;
@@ -334,11 +352,36 @@ public class SettingsMenu implements Screen {
 								newRes[0] = 720;
 								newRes[1] = 480;
 								game.getConfig().setResolution(newRes);
-
 							}
 						}
-						if (reload) {
+						if(currentMenuManager.getButtons().get(1).getOption().equals(game.getConfig().getMessage("GraphicsMenu_Mode_Fullscreen"))&& !Gdx.graphics.isFullscreen()){
+							resize = false;
+							newRes[0] = 1920;
+							newRes[1] = 1080;
+							game.getConfig().setResolution(newRes);
+							game.getConfig().setFullscreen(true);
 							this.resize(0, 0);
+						}else if(currentMenuManager.getButtons().get(1).getOption().equals(game.getConfig().getMessage("GraphicsMenu_Mode_Window"))&& Gdx.graphics.isFullscreen()){
+							resize = true;
+						}
+						
+						if (resize) {
+							game.getConfig().setFullscreen(false);
+							this.resize(0, 0);
+						}
+						if(currentMenuManager.getButtons().get(2).getOption().equals(game.getConfig().getMessage("GraphicsMenu_Language_German"))) currentLang = "de";
+						else if(currentMenuManager.getButtons().get(2).getOption().equals(game.getConfig().getMessage("GraphicsMenu_Language_English"))) currentLang = "en";
+						if(!currentLang.equals(currentMenuManager.getButtons().get(2).getOption())){
+							try {
+								game.getConfig().setLanguage(currentLang);
+								reload = true;
+							} catch (MalformedURLException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+						if(reload){
+							game.screenSettings();
 						}
 						menuIndex = -1;
 						currentMenuManager.dispose();

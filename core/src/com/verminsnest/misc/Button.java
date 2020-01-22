@@ -16,8 +16,8 @@ public class Button {
 	public Button(String text){
 		this.text = text;
 		options = new ArrayList<String>();
-		setTitleSpecs(new int[4]);
-		setOptionSpecs(new int[4]);
+		setTitleSpecs(new int[2]);
+		setOptionSpecs(new int[2]);
 	}
 	
 	//To use in ButtonManager
@@ -66,20 +66,10 @@ public class Button {
 		titleSpecs[0] = pos.x;
 		titleSpecs[1] = pos.y;
 	}
-	
-	public void setTitleSize(Point titleSize){
-		titleSpecs[2] = titleSize.x;
-		titleSpecs[3] = titleSize.y;
-	}
 
 	public void setOptionsPos(Point optionsPos) {
 		optionSpecs[0] = optionsPos.x;
 		optionSpecs[1] = optionsPos.y;
-	}
-	
-	public void setOptionsSize(Point optionsSize){
-		optionSpecs[2] = optionsSize.x;
-		optionSpecs[3] = optionsSize.y;
 	}
 	
 	public int[] getTitleSpecs() {

@@ -13,8 +13,7 @@ public class DesktopLauncher {
 		config.addIcon("textures/general/VerminsIcon16x16.png", Files.FileType.Internal);
 		config.width = 1920;
 		config.height = 1080;
-		config.resizable = true;
-	//	System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
+		config.resizable = false;
 		new LwjglApplication(new VerminsNest(), config);
 	}
 }

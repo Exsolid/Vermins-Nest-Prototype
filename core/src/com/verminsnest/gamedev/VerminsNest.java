@@ -35,17 +35,15 @@ public class VerminsNest extends Game {
 	}
 	
 	public void resize(int width, int height){
-		if(config.isFullscreen()){
-//			DisplayMode mode = Gdx.graphics.getDisplayMode();
+		if(!config.isFullscreen()){
 			Gdx.graphics.setWindowedMode(config.getResolution()[0], config.getResolution()[1]);
-//			Gdx.graphics.setFullscreenMode(mode);
-			//TODO Fullscreen
 		}else{
-			Gdx.graphics.setWindowedMode(config.getResolution()[0], config.getResolution()[1]);
+			Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 		}
 		vport.update(config.getResolution()[0], config.getResolution()[1]);
 		camera.position.set(config.getResolution()[0]/2, config.getResolution()[1]/2, 0);
 	}
+	
 	@Override
 	public void render () {
 		super.render();

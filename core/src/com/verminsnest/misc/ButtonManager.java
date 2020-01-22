@@ -39,8 +39,8 @@ public class ButtonManager {
 		rightOption = ">";
 		
 		fontPara = new FreeTypeFontParameter();
-		fontGen = new FreeTypeFontGenerator(Gdx.files.internal("fonts/saratogajean.ttf"));
-		size = 50;
+		fontGen = new FreeTypeFontGenerator(Gdx.files.internal("fonts/saratogajean+.ttf"));
+		size = 15;
 		fontPara.size = size;
 		activColor = "838383";
 		passivColor = "424242";
@@ -125,10 +125,12 @@ public class ButtonManager {
 					if (buttonList.get(i).isActiv())
 						opFont.setColor(Color.valueOf(activColor));
 					else
-						opFont.setColor(Color.valueOf(passivColor));					
+						opFont.setColor(Color.valueOf(passivColor));
+					GlyphLayout layout = new GlyphLayout();		
+					layout.setText(opFont, buttonList.get(i).getOption());					
 					opFont.draw(batch, leftOption, buttonList.get(i).getOptionSpecs()[0] - 50,
 							buttonList.get(i).getOptionSpecs()[1]);
-					opFont.draw(batch, rightOption, buttonList.get(i).getOptionSpecs()[0] + buttonList.get(i).getOptionSpecs()[2] + 40,
+					opFont.draw(batch, rightOption, buttonList.get(i).getOptionSpecs()[0] + layout.width + 50,
 							buttonList.get(i).getOptionSpecs()[1]);
 					opFont.setColor(Color.valueOf(passivColor));
 				}
@@ -159,7 +161,6 @@ public class ButtonManager {
 			tempPos.x = (int) (pos.x + width/2 - layout.width/2);
 			tempPos.y = (int) (pos.y + height/2 + totalHeight - heightToBegin);
 			buttonList.get(i).setTitlePos(tempPos);
-			buttonList.get(i).setTitleSize(new Point((int) layout.width,(int) layout.height));
 			
 			if(buttonList.get(i).hasOptions()){
 				totalHeight -= layout.height + layout.height/3;
@@ -168,7 +169,6 @@ public class ButtonManager {
 				tempPos.x = (int) (pos.x + width/2 - layout.width/2);
 				tempPos.y = (int) (pos.y + height/2 + totalHeight - heightToBegin - layout.height/2);
 				buttonList.get(i).setOptionsPos(tempPos);
-				buttonList.get(i).setOptionsSize(new Point((int) layout.width,(int) layout.height));
 				
 				layout.setText(font, buttonList.get(i).getText());
 				totalHeight -= layout.height + layout.height/1.5;
@@ -176,11 +176,12 @@ public class ButtonManager {
 		}
 	}
 	
-	public void reCalcOptions(int[] oldSpecs, Button button){
+	public void reCalcOptions(Button button, String oldOption, String newOption){
 		GlyphLayout layout = new GlyphLayout();		
-		layout.setText(opFont, button.getOption());
+		layout.setText(opFont, newOption);
+		GlyphLayout oldLayout = new GlyphLayout();		
+		oldLayout.setText(opFont, oldOption);
 		
-		button.setOptionsPos(new Point((int) ((oldSpecs[2]-layout.width)/2)+oldSpecs[0],oldSpecs[1]));
-		//button.setOptionsSize(new Point((int) layout.width,(int) layout.height));
+		button.setOptionsPos(new Point((int) (button.getOptionSpecs()[0]+oldLayout.width/2-layout.width/2),button.getOptionSpecs()[1]));
 	}
 }
