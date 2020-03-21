@@ -3,9 +3,11 @@ package com.verminsnest.gamedev;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.verminsnest.config.Configurator;
+import com.verminsnest.screens.GameManager;
 import com.verminsnest.screens.MainMenu;
 import com.verminsnest.screens.SettingsMenu;
 
@@ -13,6 +15,7 @@ public class VerminsNest extends Game {
 	
 	private SpriteBatch batch;
 	private MainMenu mainMenu;
+	private GameManager gameMan;
 	private SettingsMenu settingsMenu;
 	private Runtime r;
 	private Configurator config;
@@ -40,7 +43,7 @@ public class VerminsNest extends Game {
 		}else{
 			Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 		}
-		vport.update(config.getResolution()[0], config.getResolution()[1]);
+		vport.update(config.getResolution()[0], config.getResolution()[1], false);
 		camera.position.set(config.getResolution()[0]/2, config.getResolution()[1]/2, 0);
 	}
 	
@@ -50,6 +53,7 @@ public class VerminsNest extends Game {
 	}
 	
 	public void setPro(){
+		vport.apply();
 		batch.setProjectionMatrix(camera.combined);
 	}
 	@Override
@@ -58,6 +62,9 @@ public class VerminsNest extends Game {
 		Gdx.app.exit();
 	}
 	
+	public OrthographicCamera getCamera(){
+		return camera;
+	}
 	public SpriteBatch getBatch() {
 		return batch;
 	}
@@ -77,7 +84,12 @@ public class VerminsNest extends Game {
 		this.setScreen(mainMenu);
 		r.gc();
 	}
-
+	public void screenGameManager(Texture sheet){
+		if(gameMan == null)gameMan = new GameManager(sheet,this);
+		this.setScreen(gameMan);
+		r.gc();
+	}
+	
 	public Configurator getConfig() {
 		return config;
 	}

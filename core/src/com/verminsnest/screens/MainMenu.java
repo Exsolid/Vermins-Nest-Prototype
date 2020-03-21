@@ -47,8 +47,8 @@ public class MainMenu implements Screen {
 
 		// Buttons
 		blockTime = 0;
-		blockStartTime = 0;
-		movementBlocked = false;
+		blockStartTime = System.currentTimeMillis();
+		movementBlocked = true;
 
 		Button playButton = new Button(game.getConfig().getMessage("MainMenu_Play"));
 		Button settingsButton = new Button(game.getConfig().getMessage("MainMenu_Settings"));
@@ -114,7 +114,7 @@ public class MainMenu implements Screen {
 		game.dispose();
 	}
 
-	// Change to preferences later
+	//TODO Change to preferences later
 	private void mangageControls() {
 
 		blockTime = System.currentTimeMillis() - blockStartTime;
@@ -140,9 +140,11 @@ public class MainMenu implements Screen {
 			if (!movementBlocked) {
 				switch (bManager.getIndex()) {
 				case START:
+					game.screenGameManager(new Texture("textures/level-sheets/cave/Mountain-Sheet.png"));
+					this.dispose();
 					break;
 				case SETTINGS:
-					game.setScreen(new SettingsMenu(game));
+					game.screenSettings();;
 					this.dispose();
 					break;
 				case CREDITS:

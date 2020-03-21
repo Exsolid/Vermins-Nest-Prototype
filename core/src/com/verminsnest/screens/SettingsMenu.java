@@ -275,9 +275,9 @@ public class SettingsMenu implements Screen {
 						Button tempButton = new Button(game.getConfig().getMessage("GraphicsMenu_Resolution"));
 						tempButton.addOption("1920x1080");
 						tempButton.addOption("1280x720");
-						tempButton.addOption("720x480");
+						tempButton.addOption("852x480");
 						while (!tempButton.getOption().equals(
-								game.getConfig().getResolution()[0] + "x" + game.getConfig().getResolution()[1])) {
+								game.getConfig().getResolution()[0] + "x" + (game.getConfig().getResolution()[1]+25))) {
 							tempButton.nextOption();
 						}
 						buttonList.add(tempButton);
@@ -289,6 +289,7 @@ public class SettingsMenu implements Screen {
 						tempButton = new Button(game.getConfig().getMessage("GraphicsMenu_Language"));
 						tempButton.addOption(game.getConfig().getMessage("GraphicsMenu_Language_English"));
 						tempButton.addOption(game.getConfig().getMessage("GraphicsMenu_Language_German"));
+						if(!game.getConfig().getLanguage().equals("en"))tempButton.nextOption();
 						buttonList.add(tempButton);
 						tempButton = new Button(game.getConfig().getMessage("SettingsMenu_Back"));
 						buttonList.add(tempButton);
@@ -336,33 +337,49 @@ public class SettingsMenu implements Screen {
 						
 						String resolution = game.getConfig().getResolution()[0] + "x"
 								+ game.getConfig().getResolution()[1];
-						if (!resolution.equals(currentMenuManager.getButtons().get(0).getOption())) {
+						if (!resolution.equals(currentMenuManager.getButtons().get(0).getOption()) && !game.getConfig().isFullscreen()) {
 							resize = true;
 							if (currentMenuManager.getButtons().get(0).getOption().equals("1920x1080")) {
 								newRes[0] = 1920;
-								newRes[1] = 1080;
+								newRes[1] = 1055;
 								game.getConfig().setResolution(newRes);
 							}
 							if (currentMenuManager.getButtons().get(0).getOption().equals("1280x720")) {
 								newRes[0] = 1280;
-								newRes[1] = 720;
+								newRes[1] = 695;
 								game.getConfig().setResolution(newRes);
 							}
-							if (currentMenuManager.getButtons().get(0).getOption().equals("720x480")) {
-								newRes[0] = 720;
-								newRes[1] = 480;
+							if (currentMenuManager.getButtons().get(0).getOption().equals("852x480")) {
+								newRes[0] = 852;
+								newRes[1] = 455;
 								game.getConfig().setResolution(newRes);
 							}
 						}
 						if(currentMenuManager.getButtons().get(1).getOption().equals(game.getConfig().getMessage("GraphicsMenu_Mode_Fullscreen"))&& !Gdx.graphics.isFullscreen()){
 							resize = false;
 							newRes[0] = 1920;
-							newRes[1] = 1080;
+							newRes[1] = 1055;
 							game.getConfig().setResolution(newRes);
 							game.getConfig().setFullscreen(true);
 							this.resize(0, 0);
 						}else if(currentMenuManager.getButtons().get(1).getOption().equals(game.getConfig().getMessage("GraphicsMenu_Mode_Window"))&& Gdx.graphics.isFullscreen()){
 							resize = true;
+							if (currentMenuManager.getButtons().get(0).getOption().equals("1920x1080")) {
+								newRes[0] = 1920;
+								newRes[1] = 1055;
+								game.getConfig().setResolution(newRes);
+							}
+							if (currentMenuManager.getButtons().get(0).getOption().equals("1280x720")) {
+								newRes[0] = 1280;
+								newRes[1] = 695;
+								game.getConfig().setResolution(newRes);
+							}
+							if (currentMenuManager.getButtons().get(0).getOption().equals("852x480")) {
+								newRes[0] = 852;
+								newRes[1] = 455;
+								game.getConfig().setResolution(newRes);
+							}
+							
 						}
 						
 						if (resize) {

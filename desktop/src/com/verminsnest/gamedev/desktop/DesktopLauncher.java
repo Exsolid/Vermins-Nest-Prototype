@@ -8,12 +8,13 @@ import com.verminsnest.gamedev.VerminsNest;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.title = "Vermins Next";
+		config.title = "Vermins Nest";
 		config.addIcon("textures/general/VerminsIcon32x32.png", Files.FileType.Internal);
 		config.addIcon("textures/general/VerminsIcon16x16.png", Files.FileType.Internal);
 		config.width = 1920;
 		config.height = 1080;
 		config.resizable = false;
+		config.vSyncEnabled = false;
 		new LwjglApplication(new VerminsNest(), config);
 	}
 }
