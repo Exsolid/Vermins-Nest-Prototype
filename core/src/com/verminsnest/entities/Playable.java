@@ -19,11 +19,14 @@ public abstract class Playable {
 	public final static int W_LEFT = 2;
 	public final static int W_RIGHT = 3;
 	public final static int IDLE = 4;
+	protected int currentDir;
 	
 	protected int[] pos;	
 	protected int speed;
 	protected int agility;
 	protected int strength;
+	
+	protected float lastAttack;
 	
 	
 	public Playable(int[] position,int speed, int dmg, int agi){
@@ -36,9 +39,12 @@ public abstract class Playable {
 		shadowTexture = new Texture("textures/characters/Shadow.png");
 		
 		init();
+		currentDir = IDLE;
 	}
 	
 	public abstract void init();
+	
+	public abstract void attack(float stateTime);
 
 	public int[] getPos() {
 		return pos;
@@ -84,18 +90,23 @@ public abstract class Playable {
 		switch (animationKey){
 		case W_FRONT:
 			currentAni = frontWalkAni;
+			currentDir = W_FRONT;
 			break;
 		case W_BACK:
 			currentAni = backWalkAni;
+			currentDir = W_BACK;
 			break;
 		case W_LEFT:
 			currentAni = leftWalkAni;
+			currentDir = W_LEFT;
 			break;
 		case W_RIGHT:
 			currentAni = rightWalkAni;
+			currentDir = W_RIGHT;
 			break;
 		case IDLE:
 			currentAni = idleAni;
+			currentDir = IDLE;
 			break;
 		}
 	}
