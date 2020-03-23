@@ -9,14 +9,18 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.verminsnest.config.Configurator;
 import com.verminsnest.screens.GameManager;
 import com.verminsnest.screens.MainMenu;
+import com.verminsnest.screens.PauseMenu;
 import com.verminsnest.screens.SettingsMenu;
 
 public class VerminsNest extends Game {
 	
-	private SpriteBatch batch;
+
 	private MainMenu mainMenu;
 	private GameManager gameMan;
 	private SettingsMenu settingsMenu;
+	private PauseMenu pauseMenu;
+	
+	private SpriteBatch batch;
 	private Runtime r;
 	private Configurator config;
 	private OrthographicCamera camera;
@@ -28,9 +32,9 @@ public class VerminsNest extends Game {
 		this.setBatch(new SpriteBatch());		
 		mainMenu = new MainMenu(this);
 		camera = new OrthographicCamera();
-		camera.position.set(1920/2, 1080/2, 0);
+		camera.position.set(1920/2, 1055/2, 0);
 		camera.update();
-		vport = new FillViewport(1920, 1080, camera);
+		vport = new FillViewport(1920, 1055, camera);
 		vport.apply();
 		batch.setProjectionMatrix(camera.combined);
 		this.setScreen(mainMenu);
@@ -84,9 +88,26 @@ public class VerminsNest extends Game {
 		this.setScreen(mainMenu);
 		r.gc();
 	}
+	
 	public void screenGameManager(Texture sheet){
 		if(gameMan == null)gameMan = new GameManager(sheet,this);
+		if(pauseMenu == null) pauseMenu = new PauseMenu(this);
+		pauseMenu.init();
+		gameMan.init();
 		this.setScreen(gameMan);
+		r.gc();
+	}
+	
+	public void togglePause(){
+		if(gameMan.isRunning()){
+			gameMan.pause();
+			this.setScreen(pauseMenu);
+			pauseMenu.resume();
+		}else{
+			pauseMenu.pause();
+			this.setScreen(gameMan);
+			gameMan.resume();
+		}
 		r.gc();
 	}
 	

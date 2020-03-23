@@ -31,6 +31,7 @@ public class GameManager implements Screen {
 	private float timeSinceRender = 0;
 	private float updateStep = 1/120f;
 	private float stateTime;
+	private boolean running;
 
 	public GameManager(Texture sheet, VerminsNest game) {
 		this.game = game;
@@ -40,10 +41,16 @@ public class GameManager implements Screen {
 
 	@Override
 	public void show() {
+		
+	}
+
+	public void init(){
 		blockTime = 0;
 		blockStartTime = System.currentTimeMillis();
 		movementBlocked = true;
+		
 		prevKey = '-';
+		running = true;
 		
 		stateTime = 0f;
 		WorldGen gen = new WorldGen();
@@ -63,34 +70,36 @@ public class GameManager implements Screen {
 		toDraw = new ArrayList<>();
 		calcToDraw();
 	}
-
+	
 	@Override
 	public void render(float delta) {
-		if(stateTime>60)stateTime =0;
-		timeSinceRender += Gdx.graphics.getDeltaTime();
-		if(timeSinceRender >= updateStep){
-			stateTime += delta;
-			timeSinceRender -= updateStep;
-			manageControls();
-			game.getBatch().begin();
-			for (MapCell cell: toDraw) {
-				game.getBatch().draw(cell.getLayers().get(0), cell.getxPos(), cell.getyPos());
-				if(cell.getLayers().size()>1 && cell.isWalkable()){
-					game.getBatch().draw(cell.getLayers().get(1), cell.getxPos(), cell.getyPos());
+		if(running){
+			if(stateTime>60)stateTime =0;
+			timeSinceRender += Gdx.graphics.getDeltaTime();
+			if(timeSinceRender >= updateStep){
+				stateTime += delta;
+				timeSinceRender -= updateStep;
+				manageControls();
+				game.getBatch().begin();
+				for (MapCell cell: toDraw) {
+					game.getBatch().draw(cell.getLayers().get(0), cell.getxPos(), cell.getyPos());
+					if(cell.getLayers().size()>1 && cell.isWalkable()){
+						game.getBatch().draw(cell.getLayers().get(1), cell.getxPos(), cell.getyPos());
+					}
 				}
-			}
-			game.getBatch().draw(character.getShadow(),character.getPos()[0]+8, character.getPos()[1]-18);
-			game.getBatch().draw(character.getCurrentFrame(stateTime), character.getPos()[0], character.getPos()[1]);
-			character.setCurrentAni(Playable.IDLE);
-			
-			for (MapCell cell: toDraw) {
-				if(cell.getLayers().size()>1 && !cell.isWalkable()){
-					game.getBatch().draw(cell.getLayers().get(1), cell.getxPos(), cell.getyPos());
+				game.getBatch().draw(character.getShadow(),character.getPos()[0]+8, character.getPos()[1]-18);
+				game.getBatch().draw(character.getCurrentFrame(stateTime), character.getPos()[0], character.getPos()[1]);
+				character.setCurrentAni(Playable.IDLE);
+				
+				for (MapCell cell: toDraw) {
+					if(cell.getLayers().size()>1 && !cell.isWalkable()){
+						game.getBatch().draw(cell.getLayers().get(1), cell.getxPos(), cell.getyPos());
+					}
 				}
+				game.getBatch().end();
 			}
-			game.getBatch().end();
+			game.getCamera().update();
 		}
-		game.getCamera().update();
 	}
 	private void calcToDraw(){
 		int[] width = new int[2];
@@ -244,7 +253,7 @@ public class GameManager implements Screen {
 			calcToDraw();
 		
 		// Enter Pressed
-		if (Gdx.input.isKeyPressed(Input.Keys.ENTER) && !movementBlocked) {
+		if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
 			WorldGen gen = new WorldGen();
 			int[][] map = gen.caveGen(4,15,20,10);
 			this.map = gen.fillGraphics(sheet, map);
@@ -263,24 +272,32 @@ public class GameManager implements Screen {
 			movementBlocked = true;
 			blockStartTime = System.currentTimeMillis();
 		}
+		
+		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE) && !movementBlocked) {
+			game.togglePause();
+			movementBlocked = true;
+			blockStartTime = System.currentTimeMillis();
+		}
 	}
-
+	
+	public boolean isRunning(){
+		return running;
+	}
 	@Override
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-
+	public void pause(){
+		running = false;
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
-
+		game.getCamera().update();
+		game.setPro();
+		running = true;
 	}
 
 	@Override

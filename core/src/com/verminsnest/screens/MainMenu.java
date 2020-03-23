@@ -38,6 +38,8 @@ public class MainMenu implements Screen {
 
 	@Override
 	public void show() {
+		game.getCamera().position.set(game.getConfig().getResolution()[0]/2,game.getConfig().getResolution()[1]/2,0);
+		
 		// Misc
 		running = true;
 
