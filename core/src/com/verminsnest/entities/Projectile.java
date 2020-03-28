@@ -1,10 +1,12 @@
-package com.verminsnest.projectiles;
+package com.verminsnest.entities;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.verminsnest.core.EntityMovementSystem;
+import com.verminsnest.singletons.Projectiles;
 
-public class Projectile {
+public class Projectile extends Entity{
 	
 	private int[] direction;
 	protected Animation<TextureRegion> flyingAni;
@@ -18,11 +20,11 @@ public class Projectile {
 	public final static int CAST = 2;
 	
 	private int damage;
-	private int[] position;
 	
 	public Projectile(int damage,Texture shadow, Texture flyingSheet, Texture hitSheet, Texture castSheet, int width, int height, int[] position){
+		super(position, new int[]{TextureRegion.split(flyingSheet, width, height)[0][0].getRegionWidth(),TextureRegion.split(flyingSheet, width, height)[0][0].getRegionHeight()});
+		
 		this.setDamage(damage);
-		this.position = position;
 		this.shadow = shadow;
 		
 		TextureRegion[][] temp = TextureRegion.split(flyingSheet, width, height);
@@ -31,7 +33,7 @@ public class Projectile {
 		for(int i = 0; i< temp[0].length; i++){
 			frames[i] = temp[0][i];
 		}
-		flyingAni = new Animation<TextureRegion>(0.015f,frames);
+		flyingAni = new Animation<TextureRegion>(0.02f,frames);
 	}
 	
 	public TextureRegion getCurrentFrame(float stateTime) {
@@ -56,13 +58,27 @@ public class Projectile {
 		}
 	}
 
-	public void updatePosition(){
-		position[0] += direction[0];
-		position[1] += direction[1];
-	}
-	
-	public int[] getPosition() {
-		return position;
+	public void updatePosition(EntityMovementSystem sys){
+		if(direction[0] > 0){
+			if(!sys.moveRight(this,direction[0])){
+				Projectiles.getInstance().remove(this);
+			}
+		}
+		else if(direction[0] < 0){
+			if(!sys.moveLeft(this,direction[0]*-1)){
+				Projectiles.getInstance().remove(this);
+			}
+		}
+		else if(direction[1] > 0){
+			if(!sys.moveTop(this,direction[1])){
+				Projectiles.getInstance().remove(this);
+			}
+		}
+		else if(direction[1] < 0){
+			if(!sys.moveDown(this,direction[1]*-1)){
+				Projectiles.getInstance().remove(this);
+			}
+		}
 	}
 
 	public int getDamage() {

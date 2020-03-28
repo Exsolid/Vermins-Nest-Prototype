@@ -7,13 +7,14 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.verminsnest.core.EntityMovementSystem;
 import com.verminsnest.entities.Mage;
 import com.verminsnest.entities.Playable;
+import com.verminsnest.entities.Projectile;
 import com.verminsnest.gamedev.VerminsNest;
 import com.verminsnest.mapgen.MapCell;
 import com.verminsnest.mapgen.WorldGen;
-import com.verminsnest.projectiles.Projectile;
-import com.verminsnest.projectiles.Projectiles;
+import com.verminsnest.singletons.Projectiles;
 
 public class GameManager implements Screen {
 
@@ -32,7 +33,8 @@ public class GameManager implements Screen {
 
 	// Game
 	private VerminsNest game;
-
+	private EntityMovementSystem enMoSys;
+	
 	// Rendering
 	private float timeSinceRender = 0;
 	private float updateStep = 1 / 120f;
@@ -78,6 +80,8 @@ public class GameManager implements Screen {
 				}
 			}
 		}
+		enMoSys = new EntityMovementSystem(this.map);
+		enMoSys.setPos(character);
 		// Textures
 		toDraw = new ArrayList<>();
 	}
@@ -85,9 +89,6 @@ public class GameManager implements Screen {
 	@Override
 	public void render(float delta) {
 		if (running) {
-//			//Resets animation timer
-//			if (stateTime > 60)
-//				stateTime = 0;
 			timeSinceRender += Gdx.graphics.getDeltaTime();
 			//Cap out rendering cycle to 120 frames/second
 			if (timeSinceRender >= updateStep) {
@@ -112,7 +113,7 @@ public class GameManager implements Screen {
 						character.getPos()[1]);
 				character.setCurrentAni(Playable.IDLE);
 				//Draw projectiles
-				darwProjectiles();
+				drawProjectiles();
 				//Draw walls
 				for (MapCell cell : toDraw) {
 					if (cell.getLayers().size() > 1 && !cell.isWalkable()) {
@@ -123,17 +124,18 @@ public class GameManager implements Screen {
 			}
 		}
 	}
-	
-	private void darwProjectiles(){
+		
+	private void drawProjectiles(){
 		for(Projectile prj: Projectiles.getInstance().getAll()){
-			game.getBatch().draw(prj.getCurrentFrame(stateTime),prj.getPosition()[0],prj.getPosition()[1]);
+			game.getBatch().draw(prj.getCurrentFrame(stateTime),prj.getPos()[0],prj.getPos()[1]);
 		}
 	}
 	private void drawProjectileShadow(){
 		for(Projectile prj: Projectiles.getInstance().getAll()){
-			prj.updatePosition();
-			game.getBatch().draw(prj.getShadow(),prj.getPosition()[0]+8,prj.getPosition()[1]-25);
+			prj.updatePosition(enMoSys);
+			game.getBatch().draw(prj.getShadow(),prj.getPos()[0]+8,prj.getPos()[1]-25);
 		}
+		Projectiles.getInstance().update();
 	}
 
 	// Calculates which tiles need to be rendered
@@ -161,11 +163,6 @@ public class GameManager implements Screen {
 		}
 
 		// Movement
-		int[] toWalk = new int[] { 0, 0 };
-		int charPosXStart = 0;
-		int charPosYStart = 0;
-		int charPosXEnd = 0;
-		int charPosYEnd = 0;
 		// S Pressed
 		if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
 			prevKey = currentKey;
@@ -198,21 +195,7 @@ public class GameManager implements Screen {
 					currentKey = '-';
 				}
 			}
-			charPosXStart = (character.getPos()[0] + character.getPos()[0] % 128) / 128;
-			charPosYStart = (character.getPos()[1] + character.getPos()[1] % 128) / 128;
-			charPosXEnd = (character.getPos()[0] - character.getCurrentFrame(stateTime).getRegionWidth()
-					+ (character.getPos()[0] - character.getCurrentFrame(stateTime).getRegionWidth()) % 128) / 128;
-
-			toWalk[1] = character.getSpeed();
-			if (!map[charPosXStart][charPosYStart + 1].isWalkable()
-					|| !map[charPosXEnd][charPosYStart + 1].isWalkable()) {
-				toWalk[1] = map[charPosXStart][charPosYStart + 1].getyPos() - character.getPos()[1]
-						- character.getCurrentFrame(stateTime).getRegionHeight() - 1;
-				if (toWalk[1] > character.getSpeed()) {
-					toWalk[1] = character.getSpeed();
-				}
-			}
-			toWalk[0] = 0;
+			enMoSys.moveTop(character, character.getSpeed());
 			character.setCurrentAni(Playable.W_BACK);
 			break;
 		case 'D':
@@ -224,19 +207,7 @@ public class GameManager implements Screen {
 					currentKey = '-';
 				}
 			}
-			charPosXStart = (character.getPos()[0] + character.getPos()[0] % 128) / 128;
-			charPosYStart = character.getPos()[1] / 128;
-			charPosYEnd = (character.getPos()[1] + character.getCurrentFrame(stateTime).getRegionHeight()) / 128;
-			toWalk[0] = character.getSpeed();
-			if (!map[charPosXStart + 1][charPosYStart].isWalkable()
-					|| !map[charPosXStart + 1][charPosYEnd].isWalkable()) {
-				toWalk[0] = map[charPosXStart + 1][charPosYStart].getxPos() - character.getPos()[0]
-						- character.getCurrentFrame(stateTime).getRegionWidth() - 2;
-				if (toWalk[0] > character.getSpeed()) {
-					toWalk[0] = character.getSpeed();
-				}
-			}
-			toWalk[1] = 0;
+			enMoSys.moveRight(character, character.getSpeed());
 			character.setCurrentAni(Playable.W_RIGHT);
 			break;
 		case 'S':
@@ -248,37 +219,10 @@ public class GameManager implements Screen {
 					currentKey = '-';
 				}
 			}
-			charPosXStart = (character.getPos()[0] + character.getPos()[0] % 128) / 128;
-			charPosYStart = (character.getPos()[1] + character.getPos()[1] % 128) / 128;
-			charPosXEnd = (character.getPos()[0] - character.getCurrentFrame(stateTime).getRegionWidth()
-					+ (character.getPos()[0] - character.getCurrentFrame(stateTime).getRegionWidth()) % 128) / 128;
-
-			toWalk[1] = -character.getSpeed();
-			if (!map[charPosXStart][charPosYStart - 1].isWalkable()
-					|| !map[charPosXEnd][charPosYStart - 1].isWalkable()) {
-				toWalk[1] = -(character.getPos()[1] - map[charPosXStart][charPosYStart - 1].getyPos() - 129);
-				if (toWalk[1] < character.getSpeed() && toWalk[1] != 0) {
-					toWalk[1] = -character.getSpeed();
-				}
-			}
-			toWalk[0] = 0;
+			enMoSys.moveDown(character, character.getSpeed());
 			character.setCurrentAni(Playable.W_FRONT);
 			break;
 		case 'A':
-			charPosXStart = (character.getPos()[0] + character.getPos()[0] % 128) / 128;
-			charPosYStart = character.getPos()[1] / 128;
-			charPosYEnd = (character.getPos()[1] + character.getCurrentFrame(stateTime).getRegionHeight()) / 128;
-
-			toWalk[0] = -character.getSpeed();
-			if (!map[charPosXStart - 1][charPosYStart].isWalkable()
-					|| !map[charPosXStart - 1][charPosYEnd].isWalkable()) {
-				toWalk[0] = -(character.getPos()[0] - map[charPosXStart - 1][charPosYStart].getxPos() - 128);
-				if (toWalk[0] < character.getSpeed() && toWalk[0] != 0) {
-					toWalk[0] = -character.getSpeed();
-				}
-			}
-			toWalk[1] = 0;
-			character.setCurrentAni(Playable.W_LEFT);
 			if (!Gdx.input.isKeyPressed(Input.Keys.A)) {
 				if (prevKey != '-') {
 					currentKey = prevKey;
@@ -287,12 +231,13 @@ public class GameManager implements Screen {
 					currentKey = '-';
 				}
 			}
+			enMoSys.moveLeft(character, character.getSpeed());
+			character.setCurrentAni(Playable.W_LEFT);
 			break;
 		case '-':
 			prevKey = '-';
 		}
-		character.getPos()[0] += toWalk[0];
-		character.getPos()[1] += toWalk[1];
+
 		game.getCamera().position.x = character.getPos()[0];
 		game.getCamera().position.y = character.getPos()[1];
 		game.setPro();

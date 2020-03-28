@@ -3,12 +3,11 @@ package com.verminsnest.entities;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.verminsnest.projectiles.Projectile;
-import com.verminsnest.projectiles.Projectiles;
+import com.verminsnest.singletons.Projectiles;
 
 public class Mage extends Playable {
 	public Mage(int[] pos) {
-		super(pos, 5, 5, 5);
+		super(pos,new int[]{TextureRegion.split(new Texture("textures/characters/mage/Mage-W-Front.png"), 64, 74)[0][0].getRegionWidth(), TextureRegion.split(new Texture("textures/characters/mage/Mage-W-Front.png"), 64, 74)[0][0].getRegionHeight()}, 5, 5, 5);
 	}
 
 	@Override
@@ -74,22 +73,22 @@ public class Mage extends Playable {
 			case IDLE:
 			case W_FRONT:
 				prj.setDirection(new int[] { 0, speed * -3 });
-				prj.getPosition()[0] += currentAni.getKeyFrame(0).getRegionWidth()/4;
-				prj.getPosition()[1] +=currentAni.getKeyFrame(0).getRegionHeight()/4;
+				prj.getPos()[0] += currentAni.getKeyFrame(0).getRegionWidth()/4;
+				prj.getPos()[1] +=currentAni.getKeyFrame(0).getRegionHeight()/4;
 				break;
 			case W_BACK:
 				prj.setDirection(new int[] { 0, speed * 3 });
-				prj.getPosition()[0] += currentAni.getKeyFrame(0).getRegionWidth()/4;
-				prj.getPosition()[1] +=currentAni.getKeyFrame(0).getRegionHeight();
+				prj.getPos()[0] += currentAni.getKeyFrame(0).getRegionWidth()/4;
+				prj.getPos()[1] +=currentAni.getKeyFrame(0).getRegionHeight();
 				break;
 			case W_RIGHT:
 				prj.setDirection(new int[] { speed * 3, 0 });
-				prj.getPosition()[0] += currentAni.getKeyFrame(0).getRegionWidth()/2;
-				prj.getPosition()[1] +=currentAni.getKeyFrame(0).getRegionHeight()/4;
+				prj.getPos()[0] += currentAni.getKeyFrame(0).getRegionWidth()/2;
+				prj.getPos()[1] +=currentAni.getKeyFrame(0).getRegionHeight()/4;
 				break;
 			case W_LEFT:
 				prj.setDirection(new int[] { speed * -3, 0 });
-				prj.getPosition()[1] +=currentAni.getKeyFrame(0).getRegionHeight()/4;
+				prj.getPos()[1] +=currentAni.getKeyFrame(0).getRegionHeight()/4;
 				break;
 			}
 			prj.setCurrentAni(Projectile.FLYING);

@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public abstract class Playable {
+public abstract class Playable extends Entity {
 	
 	protected Animation<TextureRegion> frontWalkAni;
 	protected Animation<TextureRegion> backWalkAni;
@@ -21,7 +21,7 @@ public abstract class Playable {
 	public final static int IDLE = 4;
 	protected int currentDir;
 	
-	protected int[] pos;	
+	
 	protected int speed;
 	protected int agility;
 	protected int strength;
@@ -29,12 +29,11 @@ public abstract class Playable {
 	protected float lastAttack;
 	
 	
-	public Playable(int[] position,int speed, int dmg, int agi){
+	public Playable(int[] position,int[] size, int speed, int dmg, int agi){
+		super(position,size);
 		setSpeed(speed);
 		setStrength(dmg);
 		setAgility(agi);
-		
-		setPos(position);
 		
 		shadowTexture = new Texture("textures/characters/Shadow.png");
 		
@@ -45,14 +44,6 @@ public abstract class Playable {
 	public abstract void init();
 	
 	public abstract void attack(float stateTime);
-
-	public int[] getPos() {
-		return pos;
-	}
-
-	public void setPos(int[] pos) {
-		this.pos = pos;
-	}
 
 	public int getSpeed() {
 		return speed;

@@ -109,7 +109,11 @@ public class WorldGen {
 	private void printArray(int[][] map){
 		for (int y = map[0].length - 1; y > -1; y--) {
 			for (int x = 0; x < map.length; x++) {
-				System.out.print("["+map[x][y]+"]");
+				if(map[x][y] == 0){
+					System.out.print("[x]");
+				}else{
+					System.out.print("[-]");
+				}
 			}
 			System.out.print("\n");
 		}
