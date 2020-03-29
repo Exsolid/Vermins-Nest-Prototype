@@ -87,31 +87,4 @@ public class EntityMovementSystem {
 		}
 		return true;
 	}
-//	public boolean setOnPos(int xRest, int yRest, int width, int height, String entity){
-//		int xInvert = 127 - xRest;
-//		int yInvert = 127 - xRest;
-//		int xStart = (xInvert+xInvert%8)/8;
-//		int yStart = (yInvert+yInvert%8)/8;
-//		int xEnd = xInvert+width;
-//		if(xEnd>127) xEnd = 127;
-//		int yEnd = yInvert+height;
-//		if(yEnd>127) yEnd = 127;
-//		
-//		for(int y = 0; y < grid[0].length; y++){
-//			for(int x = 0; x < grid.length; x++){
-//				if(x >= xStart && x <= xEnd && y <= yEnd && y>= yStart){
-//					if(!grid[x][y].getEntity().equals(entity) && !grid[x][y].getEntity().equals(null)){
-//						return false;
-//					}else{
-//						grid[x][y].setEntity(entity);
-//					}
-//				}else{
-//					if(grid[x][y].getEntity().equals(entity)){
-//						grid[x][y].setEntity(null);
-//					}
-//				}
-//			}
-//		}
-//		return true;
-//	}
 }

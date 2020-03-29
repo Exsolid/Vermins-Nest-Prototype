@@ -9,6 +9,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.verminsnest.exceptions.OutOfBounds;
 import com.verminsnest.gamedev.VerminsNest;
+import com.verminsnest.mapgen.WorldGen;
 import com.verminsnest.misc.Button;
 import com.verminsnest.misc.ButtonManager;
 
@@ -142,7 +143,11 @@ public class MainMenu implements Screen {
 			if (!movementBlocked) {
 				switch (bManager.getIndex()) {
 				case START:
-					game.screenGameManager(new Texture("textures/level-sheets/cave/Mountain-Sheet.png"));
+					// World generation
+					WorldGen gen = new WorldGen();
+					gen.setData(6, 30, 30, 10,new Texture("textures/level-sheets/cave/Mountain-Sheet.png"));
+					game.screenLoading(LoadingScreen.GAMEMANAGER);
+					
 					this.dispose();
 					break;
 				case SETTINGS:

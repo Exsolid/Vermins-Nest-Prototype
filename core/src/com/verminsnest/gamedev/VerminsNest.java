@@ -3,11 +3,11 @@ package com.verminsnest.gamedev;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.verminsnest.config.Configurator;
 import com.verminsnest.screens.GameManager;
+import com.verminsnest.screens.LoadingScreen;
 import com.verminsnest.screens.MainMenu;
 import com.verminsnest.screens.PauseMenu;
 import com.verminsnest.screens.SettingsMenu;
@@ -19,6 +19,7 @@ public class VerminsNest extends Game {
 	private GameManager gameMan;
 	private SettingsMenu settingsMenu;
 	private PauseMenu pauseMenu;
+	private LoadingScreen loadingScreen;
 	
 	private SpriteBatch batch;
 	private Runtime r;
@@ -83,14 +84,19 @@ public class VerminsNest extends Game {
 		r.gc();
 	}
 	
+	public void screenLoading(int nextScreenID){
+		if(loadingScreen == null) loadingScreen = new LoadingScreen(this,nextScreenID);
+		this.setScreen(loadingScreen);
+		r.gc();
+	}
 	public void screenMainMenu(){
 		if(mainMenu == null)mainMenu = new MainMenu(this);
 		this.setScreen(mainMenu);
 		r.gc();
 	}
 	
-	public void screenGameManager(Texture sheet){
-		if(gameMan == null)gameMan = new GameManager(sheet,this);
+	public void screenGameManager(){
+		if(gameMan == null)gameMan = new GameManager(this);
 		if(pauseMenu == null) pauseMenu = new PauseMenu(this);
 		pauseMenu.init();
 		gameMan.init();

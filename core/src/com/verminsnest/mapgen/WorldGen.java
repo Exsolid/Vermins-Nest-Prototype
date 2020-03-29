@@ -5,18 +5,39 @@ import java.util.Random;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.verminsnest.core.LoadingModule;
+import com.verminsnest.singletons.RuntimeData;
 
-public class WorldGen {
+public class WorldGen extends LoadingModule{
 
 	private Random rand = new Random();
 	private ArrayList<Room> rooms;
 
+	private int roomCount;
+	private int maxRoomSizeX;
+	private int maxRoomSizeY;
+	private int minRoomSize;
+	private Texture sheet;
+	
 	public WorldGen() {
+		super("Generating map");
 		rooms = new ArrayList<>();
 	}
-
-	public int[][] caveGen(int roomCount, int maxRoomSizeX, int maxRoomSizeY, int minRoomSize) {
-		
+	
+	public void setData(int roomCount, int maxRoomSizeX, int maxRoomSizeY, int minRoomSize, Texture sheet){
+		this.maxRoomSizeX = maxRoomSizeX;
+		this.maxRoomSizeY = maxRoomSizeY;
+		this.roomCount = roomCount;
+		this.minRoomSize = minRoomSize;
+		this.sheet = sheet;
+	}
+	
+	@Override
+	public void execute() {
+		this.caveGen();
+	}
+	
+	public void caveGen() {
 		if(roomCount%2!=0){
 			roomCount++;
 		}
@@ -54,7 +75,8 @@ public class WorldGen {
 			}
 		}
 		printArray(map);
-		return map;
+		RuntimeData.getInstance().setMap(this.fillGraphics(sheet, map));
+		this.setDone();
 	}
 
 	

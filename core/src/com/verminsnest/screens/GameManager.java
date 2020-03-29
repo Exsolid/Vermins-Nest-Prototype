@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.verminsnest.core.EntityMovementSystem;
 import com.verminsnest.entities.Mage;
@@ -13,13 +12,12 @@ import com.verminsnest.entities.Playable;
 import com.verminsnest.entities.Projectile;
 import com.verminsnest.gamedev.VerminsNest;
 import com.verminsnest.mapgen.MapCell;
-import com.verminsnest.mapgen.WorldGen;
 import com.verminsnest.singletons.Projectiles;
+import com.verminsnest.singletons.RuntimeData;
 
 public class GameManager implements Screen {
 
 	// Textures
-	private Texture sheet;
 	private Playable character;
 	private MapCell[][] map;
 	private ArrayList<MapCell> toDraw;
@@ -41,9 +39,8 @@ public class GameManager implements Screen {
 	private float stateTime;
 	private boolean running;
 
-	public GameManager(Texture sheet, VerminsNest game) {
+	public GameManager( VerminsNest game) {
 		this.game = game;
-		this.sheet = sheet;
 		character = new Mage(new int[] { 0, 0 });
 	}
 
@@ -67,11 +64,8 @@ public class GameManager implements Screen {
 		// Rendering
 		running = true;
 		stateTime = 0f;
-
-		// World generation
-		WorldGen gen = new WorldGen();
-		int[][] map = gen.caveGen(6, 30, 30, 10);
-		this.map = gen.fillGraphics(sheet, map);
+		
+		this.map = RuntimeData.getInstance().getMap();
 		for (int x = 0; x < map.length; x++) {
 			for (int y = 0; y < map[0].length; y++) {
 				if (this.map[x][y].isWalkable()) {
@@ -242,26 +236,6 @@ public class GameManager implements Screen {
 		game.getCamera().position.y = character.getPos()[1];
 		game.setPro();
 		calcToDraw();
-
-		// Enter Pressed
-		if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
-			WorldGen gen = new WorldGen();
-			int[][] map = gen.caveGen(4, 15, 20, 10);
-			this.map = gen.fillGraphics(sheet, map);
-			for (int x = 0; x < map.length; x++) {
-				for (int y = 0; y < map[0].length; y++) {
-					if (this.map[x][y].isWalkable()) {
-						character.getPos()[0] = this.map[x][y].getxPos();
-						character.getPos()[1] = this.map[x][y].getyPos();
-					}
-				}
-			}
-			game.getCamera().position.set(character.getPos()[0], character.getPos()[1], 0);
-			game.setPro();
-			calcToDraw();
-			movementBlocked = true;
-			blockStartTime = System.currentTimeMillis();
-		}
 		
 		//Pause
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE) && !movementBlocked) {
