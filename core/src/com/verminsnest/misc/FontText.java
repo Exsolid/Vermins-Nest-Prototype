@@ -9,23 +9,18 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
-import com.verminsnest.exceptions.OutOfBounds;
 
 public class FontText {
-	private int size;
 	private int[] sizes;
 	private BitmapFont font;
 	private FreeTypeFontParameter fontPara;
 	private FreeTypeFontGenerator fontGen;
 	private ArrayList<String> text;
-	private String singleText;
 	private int[] pos;
 	
 	public FontText(String text,int size){
-		this.size = size;
 		this.sizes = new int[2];
 		this.pos = new int[2];
-		singleText = text;
 		this.text = new ArrayList<String>();
 		
 		char[] chars = text.toCharArray();
@@ -47,7 +42,6 @@ public class FontText {
 	}
 	
 	public void setText(String text){
-		singleText = text;
 		this.text.clear();
 		char[] chars = text.toCharArray();
 		int count = 0;
@@ -62,11 +56,7 @@ public class FontText {
 		}
 	}
 	
-	public void setMidOfBounds(int[] pos, int[] size, int fontSize){
-		if(fontSize > 0){
-			//TODO Resize
-		}
-		
+	public void setMidOfBounds(int[] pos, int[] size){
 		GlyphLayout layout = new GlyphLayout();
 		int height = 0;
 		int width = 0;
@@ -76,11 +66,6 @@ public class FontText {
 		for(String str: text){
 			layout.setText(font, str);
 			if(layout.width > width) width = (int) layout.width;
-		}
-		try{
-			if(height+16 > size[1] || width +16 > size[0]) throw new OutOfBounds(singleText);
-		}catch(OutOfBounds e){
-			this.setMidOfBounds(pos, size, fontSize-1);
 		}
 		
 		this.pos[1] = pos[1]+size[1]/2-height/2;

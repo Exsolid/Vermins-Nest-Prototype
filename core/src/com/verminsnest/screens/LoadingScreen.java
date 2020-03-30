@@ -31,8 +31,8 @@ public class LoadingScreen implements Screen{
 		backgroundImg = new Texture("textures/menus/Background.png");
 		scrollImg = new Texture("textures/menus/SettingsScroll.png");
 		
-		loadingText = new FontText("Loading..",50);
-		loadingText.setMidOfBounds(new int[]{(int) game.getCamera().position.x-scrollImg.getWidth()/2,(int) game.getCamera().position.y-scrollImg.getHeight()/2}, new int[]{scrollImg.getWidth(), scrollImg.getHeight()}, 10);
+		loadingText = new FontText("Loading..",75);
+		loadingText.setMidOfBounds(new int[]{(int) game.getCamera().position.x-scrollImg.getWidth()/2,(int) game.getCamera().position.y-scrollImg.getHeight()/2}, new int[]{scrollImg.getWidth(), scrollImg.getHeight()});
 	}
 
 	@Override
@@ -40,6 +40,7 @@ public class LoadingScreen implements Screen{
 		if(!LoadingModules.getInstance().getModules().isEmpty() && !LoadingModules.getInstance().getModules().get(0).isRunning()){
 			LoadingModules.getInstance().getModules().get(0).load();
 			loadingText.setText(LoadingModules.getInstance().getModules().get(0).getDescription());
+			loadingText.setMidOfBounds(new int[]{(int) game.getCamera().position.x-scrollImg.getWidth()/2,(int) game.getCamera().position.y-scrollImg.getHeight()/2}, new int[]{scrollImg.getWidth(), scrollImg.getHeight()});
 		}else if(LoadingModules.getInstance().getModules().isEmpty()){
 			this.dispose();
 			switch(nextScreenID){

@@ -12,7 +12,6 @@ import com.verminsnest.entities.Playable;
 import com.verminsnest.entities.Projectile;
 import com.verminsnest.gamedev.VerminsNest;
 import com.verminsnest.mapgen.MapCell;
-import com.verminsnest.singletons.Projectiles;
 import com.verminsnest.singletons.RuntimeData;
 
 public class GameManager implements Screen {
@@ -41,7 +40,6 @@ public class GameManager implements Screen {
 
 	public GameManager( VerminsNest game) {
 		this.game = game;
-		character = new Mage(new int[] { 0, 0 });
 	}
 
 	@Override
@@ -55,6 +53,7 @@ public class GameManager implements Screen {
 
 	// Initialization
 	public void init() {
+		character = new Mage(new int[] { 0, 0 });
 		// Controls
 		blockTime = 0;
 		blockStartTime = System.currentTimeMillis();
@@ -120,16 +119,16 @@ public class GameManager implements Screen {
 	}
 		
 	private void drawProjectiles(){
-		for(Projectile prj: Projectiles.getInstance().getAll()){
+		for(Projectile prj: RuntimeData.getInstance().getCurrentProjectiles()){
 			game.getBatch().draw(prj.getCurrentFrame(stateTime),prj.getPos()[0],prj.getPos()[1]);
 		}
 	}
 	private void drawProjectileShadow(){
-		for(Projectile prj: Projectiles.getInstance().getAll()){
+		for(Projectile prj: RuntimeData.getInstance().getCurrentProjectiles()){
 			prj.updatePosition(enMoSys);
 			game.getBatch().draw(prj.getShadow(),prj.getPos()[0]+8,prj.getPos()[1]-25);
 		}
-		Projectiles.getInstance().update();
+		RuntimeData.getInstance().updateProjectiles();
 	}
 
 	// Calculates which tiles need to be rendered

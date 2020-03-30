@@ -1,5 +1,8 @@
 package com.verminsnest.singletons;
 
+import java.util.ArrayList;
+
+import com.verminsnest.entities.Projectile;
 import com.verminsnest.mapgen.MapCell;
 
 public class RuntimeData {
@@ -7,8 +10,12 @@ public class RuntimeData {
 	private static RuntimeData instance;
 	private MapCell[][] map;
 	
+	private ArrayList<Projectile> projectiles;
+	private ArrayList<Projectile> updatedProjectiles;
+	
 	private RuntimeData(){
-		
+		projectiles = new ArrayList<Projectile>();
+		updatedProjectiles = new ArrayList<Projectile>();
 	}
 	
 	public static RuntimeData getInstance(){
@@ -22,5 +29,25 @@ public class RuntimeData {
 
 	public void setMap(MapCell[][] map) {
 		this.map = map;
+	}
+	
+	public void updateProjectiles(){
+		projectiles.clear();
+		projectiles.addAll(updatedProjectiles);
+	}
+	public ArrayList<Projectile> getCurrentProjectiles(){
+		return projectiles;
+	}
+	public void addProjectile(Projectile prj){
+		updatedProjectiles.add(prj);
+	}
+	
+	public void removeProjectile(Projectile prj){
+		updatedProjectiles.remove(prj);
+	}
+	
+	public void clearData(){
+		updatedProjectiles.clear();
+		projectiles.clear();
 	}
 }

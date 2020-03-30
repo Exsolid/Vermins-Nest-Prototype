@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.verminsnest.core.EntityMovementSystem;
-import com.verminsnest.singletons.Projectiles;
+import com.verminsnest.singletons.RuntimeData;
 
 public class Projectile extends Entity{
 	
@@ -61,22 +61,22 @@ public class Projectile extends Entity{
 	public void updatePosition(EntityMovementSystem sys){
 		if(direction[0] > 0){
 			if(!sys.moveRight(this,direction[0])){
-				Projectiles.getInstance().remove(this);
+				RuntimeData.getInstance().removeProjectile(this);
 			}
 		}
 		else if(direction[0] < 0){
 			if(!sys.moveLeft(this,direction[0]*-1)){
-				Projectiles.getInstance().remove(this);
+				RuntimeData.getInstance().removeProjectile(this);
 			}
 		}
 		else if(direction[1] > 0){
 			if(!sys.moveTop(this,direction[1])){
-				Projectiles.getInstance().remove(this);
+				RuntimeData.getInstance().removeProjectile(this);
 			}
 		}
 		else if(direction[1] < 0){
 			if(!sys.moveDown(this,direction[1]*-1)){
-				Projectiles.getInstance().remove(this);
+				RuntimeData.getInstance().removeProjectile(this);
 			}
 		}
 	}

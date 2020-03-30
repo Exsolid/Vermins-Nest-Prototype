@@ -3,7 +3,7 @@ package com.verminsnest.entities;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.verminsnest.singletons.Projectiles;
+import com.verminsnest.singletons.RuntimeData;
 
 public class Mage extends Playable {
 	public Mage(int[] pos) {
@@ -92,7 +92,7 @@ public class Mage extends Playable {
 				break;
 			}
 			prj.setCurrentAni(Projectile.FLYING);
-			Projectiles.getInstance().add(prj);
+			RuntimeData.getInstance().addProjectile(prj);
 			lastAttack = stateTime;
 		}
 	}

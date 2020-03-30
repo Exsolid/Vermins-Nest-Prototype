@@ -11,6 +11,7 @@ import com.verminsnest.exceptions.OutOfBounds;
 import com.verminsnest.gamedev.VerminsNest;
 import com.verminsnest.misc.Button;
 import com.verminsnest.misc.ButtonManager;
+import com.verminsnest.singletons.RuntimeData;
 
 public class PauseMenu implements Screen {
 
@@ -98,6 +99,7 @@ public class PauseMenu implements Screen {
 				game.togglePause();
 				break;
 			case QUIT:
+				RuntimeData.getInstance().clearData();
 				this.dispose();
 				game.screenMainMenu();
 				break;
