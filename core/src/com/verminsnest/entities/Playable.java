@@ -102,4 +102,12 @@ public abstract class Playable extends Entity {
 		}
 	}
 	
+	public void dispose(){
+		shadowTexture.dispose();
+		frontWalkAni.getKeyFrame(0).getTexture().dispose();
+		backWalkAni.getKeyFrame(0).getTexture().dispose();
+		leftWalkAni.getKeyFrame(0).getTexture().dispose();
+		rightWalkAni.getKeyFrame(0).getTexture().dispose();
+		idleAni.getKeyFrame(0).getTexture().dispose();
+	}
 }

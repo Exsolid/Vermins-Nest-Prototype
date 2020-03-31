@@ -43,10 +43,17 @@ public class RuntimeData {
 	}
 	
 	public void removeProjectile(Projectile prj){
+		prj.dispose();
 		updatedProjectiles.remove(prj);
 	}
 	
 	public void clearData(){
+		for(Projectile prj: projectiles){
+			prj.dispose();
+		}
+		for(Projectile prj: updatedProjectiles){
+			prj.dispose();
+		}
 		updatedProjectiles.clear();
 		projectiles.clear();
 	}

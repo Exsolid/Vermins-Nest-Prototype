@@ -100,8 +100,7 @@ public class PauseMenu implements Screen {
 				break;
 			case QUIT:
 				RuntimeData.getInstance().clearData();
-				this.dispose();
-				game.screenMainMenu();
+				game.screenMainMenu(this);
 				break;
 		}
 		}
@@ -131,8 +130,8 @@ public class PauseMenu implements Screen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
+		backgroundScrollImg.dispose();
+		bManager.dispose();
 	}
 
 }

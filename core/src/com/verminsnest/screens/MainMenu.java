@@ -107,10 +107,10 @@ public class MainMenu implements Screen {
 
 	@Override
 	public void dispose() {
+		running = false;
 		bManager.dispose();
 		backgroundImg.dispose();
 		backgroundScrollImg.dispose();
-		running = false;
 	}
 
 	public void close() {
@@ -146,9 +146,7 @@ public class MainMenu implements Screen {
 					// World generation
 					WorldGen gen = new WorldGen();
 					gen.setData(6, 30, 30, 10,new Texture("textures/level-sheets/cave/Mountain-Sheet.png"));
-					game.screenLoading(LoadingScreen.GAMEMANAGER);
-					
-					this.dispose();
+					game.screenLoading(LoadingScreen.GAMEMANAGER, this);
 					break;
 				case SETTINGS:
 					game.screenSettings();;

@@ -42,13 +42,13 @@ public class LoadingScreen implements Screen{
 			loadingText.setText(LoadingModules.getInstance().getModules().get(0).getDescription());
 			loadingText.setMidOfBounds(new int[]{(int) game.getCamera().position.x-scrollImg.getWidth()/2,(int) game.getCamera().position.y-scrollImg.getHeight()/2}, new int[]{scrollImg.getWidth(), scrollImg.getHeight()});
 		}else if(LoadingModules.getInstance().getModules().isEmpty()){
-			this.dispose();
 			switch(nextScreenID){
 			case GAMEMANAGER:
+				game.initGameManager(this);
 				game.screenGameManager();
 				break;
 			default:
-				game.screenMainMenu();
+				game.screenMainMenu(this);
 				//TODO Log this
 			}
 		}

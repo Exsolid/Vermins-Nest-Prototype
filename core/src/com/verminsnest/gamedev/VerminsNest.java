@@ -2,6 +2,7 @@ package com.verminsnest.gamedev;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FillViewport;
@@ -84,22 +85,34 @@ public class VerminsNest extends Game {
 		r.gc();
 	}
 	
-	public void screenLoading(int nextScreenID){
-		if(loadingScreen == null) loadingScreen = new LoadingScreen(this,nextScreenID);
-		this.setScreen(loadingScreen);
-		r.gc();
-	}
-	public void screenMainMenu(){
+	public void screenMainMenu(Screen toDispose){
 		if(mainMenu == null)mainMenu = new MainMenu(this);
 		this.setScreen(mainMenu);
+		if(toDispose instanceof PauseMenu){
+			gameMan.dispose();
+		}
+		toDispose.dispose();
 		r.gc();
 	}
 	
-	public void screenGameManager(){
+	public void initGameManager(Screen toDispose){
 		if(gameMan == null)gameMan = new GameManager(this);
 		if(pauseMenu == null) pauseMenu = new PauseMenu(this);
 		pauseMenu.init();
 		gameMan.init();
+		toDispose.dispose();
+		r.gc();
+	}
+	
+	public void screenLoading(int nextScreenID, Screen toDispose){
+		if(loadingScreen == null) loadingScreen = new LoadingScreen(this,nextScreenID);
+		this.setScreen(loadingScreen);
+		toDispose.dispose();
+		r.gc();
+	}
+	
+	public void screenGameManager(){
+		if(gameMan == null) gameMan = new GameManager(this);
 		this.setScreen(gameMan);
 		r.gc();
 	}

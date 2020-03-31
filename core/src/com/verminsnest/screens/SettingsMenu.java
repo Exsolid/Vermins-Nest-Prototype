@@ -146,8 +146,7 @@ public class SettingsMenu implements Screen {
 		settingsScrollImg.dispose();
 		menuScrollImg.dispose();
 		settingsMenuManager.dispose();
-		if (currentMenuManager != null)
-			currentMenuManager.dispose();
+		if (currentMenuManager != null)currentMenuManager.dispose();
 	}
 
 	// Change to preferences later
@@ -316,8 +315,7 @@ public class SettingsMenu implements Screen {
 					case CONTROLS:
 						break;
 					case BACK:
-						this.dispose();
-						game.screenMainMenu();
+						game.screenMainMenu(this);
 						break;
 					}
 					break;

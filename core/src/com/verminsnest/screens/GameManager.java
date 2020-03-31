@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.verminsnest.core.EntityMovementSystem;
 import com.verminsnest.entities.Mage;
 import com.verminsnest.entities.Playable;
@@ -276,12 +275,7 @@ public class GameManager implements Screen {
 
 	@Override
 	public void dispose() {
-		for (int y = 0; y < map[0].length; y++) {
-			for (int x = 0; x < map.length; x++) {
-				for (TextureRegion text : map[x][y].getLayers()) {
-					text.getTexture().dispose();
-				}
-			}
-		}
+		map[0][0].getLayers().get(0).getTexture().dispose();
+		character.dispose();
 	}
 }

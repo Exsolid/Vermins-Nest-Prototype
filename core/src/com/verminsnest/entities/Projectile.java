@@ -92,4 +92,13 @@ public class Projectile extends Entity{
 	public void setDirection(int[] dir){
 		this.direction = dir;
 	}
+
+	@Override
+	public void dispose() {
+		shadow.dispose();
+		flyingAni.getKeyFrame(0).getTexture().dispose();
+		//TODO do animations and dispose them
+//		hitAni.getKeyFrame(0).getTexture().dispose();
+//		castAni.getKeyFrame(0).getTexture().dispose();
+	}
 }

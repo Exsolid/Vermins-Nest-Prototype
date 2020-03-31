@@ -26,4 +26,6 @@ public abstract class Entity {
 	private void setId(String id) {
 		this.id = id;
 	}
+	
+	public abstract void dispose();
 }
