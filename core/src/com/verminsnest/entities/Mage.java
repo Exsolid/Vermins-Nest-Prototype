@@ -74,21 +74,22 @@ public class Mage extends Playable {
 			case W_FRONT:
 				prj.setDirection(new int[] { 0, speed * -3 });
 				prj.getPos()[0] += currentAni.getKeyFrame(0).getRegionWidth()/4;
-				prj.getPos()[1] +=currentAni.getKeyFrame(0).getRegionHeight()/4;
+				prj.getPos()[1] -= prj.getSize()[1];
 				break;
 			case W_BACK:
 				prj.setDirection(new int[] { 0, speed * 3 });
 				prj.getPos()[0] += currentAni.getKeyFrame(0).getRegionWidth()/4;
-				prj.getPos()[1] +=currentAni.getKeyFrame(0).getRegionHeight();
+				prj.getPos()[1] += currentAni.getKeyFrame(0).getRegionWidth()*1.5;
 				break;
 			case W_RIGHT:
 				prj.setDirection(new int[] { speed * 3, 0 });
-				prj.getPos()[0] += currentAni.getKeyFrame(0).getRegionWidth()/2;
-				prj.getPos()[1] +=currentAni.getKeyFrame(0).getRegionHeight()/4;
+				prj.getPos()[0] += currentAni.getKeyFrame(0).getRegionWidth()*1.5;
+				prj.getPos()[1] += currentAni.getKeyFrame(0).getRegionHeight()/4;
 				break;
 			case W_LEFT:
 				prj.setDirection(new int[] { speed * -3, 0 });
 				prj.getPos()[1] +=currentAni.getKeyFrame(0).getRegionHeight()/4;
+				prj.getPos()[0] -= prj.getSize()[0];
 				break;
 			}
 			prj.setCurrentAni(Projectile.FLYING);

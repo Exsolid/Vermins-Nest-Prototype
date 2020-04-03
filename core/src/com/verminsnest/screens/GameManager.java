@@ -36,6 +36,8 @@ public class GameManager implements Screen {
 	private float updateStep = 1 / 120f;
 	private float stateTime;
 	private boolean running;
+	
+	private Mage temp;
 
 	public GameManager( VerminsNest game) {
 		this.game = game;
@@ -73,7 +75,9 @@ public class GameManager implements Screen {
 			}
 		}
 		enMoSys = new EntityMovementSystem(this.map);
-		enMoSys.setPos(character);
+		RuntimeData.getInstance().getEntities().add(character);
+		temp = new Mage(new int[]{character.getPos()[0]-100,character.getPos()[1]});
+		RuntimeData.getInstance().getEntities().add(temp);
 		// Textures
 		toDraw = new ArrayList<>();
 	}
@@ -101,6 +105,8 @@ public class GameManager implements Screen {
 				game.getBatch().draw(character.getShadow(), character.getPos()[0] + 8, character.getPos()[1] - 18);
 				drawProjectileShadow();
 				//Draw character
+				game.getBatch().draw(temp.getCurrentFrame(stateTime), temp.getPos()[0],
+						temp.getPos()[1]);
 				game.getBatch().draw(character.getCurrentFrame(stateTime), character.getPos()[0],
 						character.getPos()[1]);
 				character.setCurrentAni(Playable.IDLE);

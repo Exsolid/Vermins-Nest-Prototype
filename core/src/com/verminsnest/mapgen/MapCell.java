@@ -10,15 +10,17 @@ public class MapCell {
 	private int xPos;
 	private int yPos;
 	private CellEntity[][] grid;
+	private int gridSize;
 	
 	public MapCell(TextureRegion firstLayer, int xPos, int yPos){
 		layers = new ArrayList<TextureRegion>();
 		layers.add(firstLayer);
 		setxPos(xPos);
 		setyPos(yPos);
-		grid = new CellEntity[8][8];
-		for(int y = 0; y <8; y++){
-			for(int x = 0; x <8; x++){
+		gridSize = 12;
+		grid = new CellEntity[gridSize][gridSize];
+		for(int y = 0; y <gridSize; y++){
+			for(int x = 0; x <gridSize; x++){
 				grid[x][y] = new CellEntity();
 			}
 		}
@@ -58,5 +60,13 @@ public class MapCell {
 
 	public void setyPos(int yPos) {
 		this.yPos = yPos;
+	}
+
+	public int getGridSize() {
+		return gridSize;
+	}
+
+	public void setGridSize(int gridSize) {
+		this.gridSize = gridSize;
 	}
 }

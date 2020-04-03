@@ -2,6 +2,7 @@ package com.verminsnest.singletons;
 
 import java.util.ArrayList;
 
+import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.Projectile;
 import com.verminsnest.mapgen.MapCell;
 
@@ -13,7 +14,10 @@ public class RuntimeData {
 	private ArrayList<Projectile> projectiles;
 	private ArrayList<Projectile> updatedProjectiles;
 	
+	private ArrayList<Entity> entities;
+	
 	private RuntimeData(){
+		entities = new ArrayList<Entity>();
 		projectiles = new ArrayList<Projectile>();
 		updatedProjectiles = new ArrayList<Projectile>();
 	}
@@ -56,5 +60,9 @@ public class RuntimeData {
 		}
 		updatedProjectiles.clear();
 		projectiles.clear();
+	}
+
+	public ArrayList<Entity> getEntities() {
+		return entities;
 	}
 }
