@@ -12,8 +12,6 @@ public class Projectile extends Entity{
 	protected Animation<TextureRegion> flyingAni;
 	protected Animation<TextureRegion> hitAni;
 	protected Animation<TextureRegion> castAni;
-	protected Animation<TextureRegion> currentAni;
-	protected Texture shadow;
 	
 	public final static int FLYING = 0;
 	public final static int HIT = 1;
@@ -38,10 +36,6 @@ public class Projectile extends Entity{
 	
 	public TextureRegion getCurrentFrame(float stateTime) {
 		return currentAni.getKeyFrame(stateTime, true);
-	}
-	
-	public Texture getShadow(){
-		return shadow;
 	}
 	
 	public void setCurrentAni(int aniKey){

@@ -6,6 +6,7 @@ import java.util.Random;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.verminsnest.core.LoadingModule;
+import com.verminsnest.gamedev.VerminsNest;
 import com.verminsnest.singletons.RuntimeData;
 
 public class WorldGen extends LoadingModule{
@@ -19,8 +20,8 @@ public class WorldGen extends LoadingModule{
 	private int minRoomSize;
 	private Texture sheet;
 	
-	public WorldGen() {
-		super("Generating map");
+	public WorldGen(VerminsNest game) {
+		super(game.getConfig().getMessage("LoadingScreen_MapGen"));
 		rooms = new ArrayList<>();
 	}
 	

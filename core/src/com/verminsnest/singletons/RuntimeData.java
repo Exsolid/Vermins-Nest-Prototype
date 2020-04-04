@@ -15,8 +15,10 @@ public class RuntimeData {
 	private ArrayList<Projectile> updatedProjectiles;
 	
 	private ArrayList<Entity> entities;
+	private ArrayList<Entity> removedEntities;
 	
 	private RuntimeData(){
+		removedEntities = new ArrayList<Entity>();
 		entities = new ArrayList<Entity>();
 		projectiles = new ArrayList<Projectile>();
 		updatedProjectiles = new ArrayList<Projectile>();
@@ -26,7 +28,7 @@ public class RuntimeData {
 		if(instance ==  null)instance = new RuntimeData();
 		return instance;
 	}
-
+	
 	public MapCell[][] getMap() {
 		return map;
 	}
@@ -46,9 +48,13 @@ public class RuntimeData {
 		updatedProjectiles.add(prj);
 	}
 	
+	public ArrayList<Entity> getRemoved(){
+		return removedEntities;
+	}
+	
 	public void removeProjectile(Projectile prj){
-		prj.dispose();
 		updatedProjectiles.remove(prj);
+		removedEntities.add(prj);
 	}
 	
 	public void clearData(){
@@ -58,6 +64,10 @@ public class RuntimeData {
 		for(Projectile prj: updatedProjectiles){
 			prj.dispose();
 		}
+		for(Entity ent: entities){
+			ent.dispose();
+		}
+		entities.clear();
 		updatedProjectiles.clear();
 		projectiles.clear();
 	}

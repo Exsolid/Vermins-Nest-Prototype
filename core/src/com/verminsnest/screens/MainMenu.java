@@ -144,7 +144,7 @@ public class MainMenu implements Screen {
 				switch (bManager.getIndex()) {
 				case START:
 					// World generation
-					WorldGen gen = new WorldGen();
+					WorldGen gen = new WorldGen(game);
 					gen.setData(6, 30, 30, 10,new Texture("textures/level-sheets/cave/Mountain-Sheet.png"));
 					game.screenLoading(LoadingScreen.GAMEMANAGER, this);
 					break;

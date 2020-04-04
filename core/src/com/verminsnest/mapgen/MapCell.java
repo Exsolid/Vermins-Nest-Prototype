@@ -9,21 +9,12 @@ public class MapCell {
 	private boolean isWalkable;
 	private int xPos;
 	private int yPos;
-	private CellEntity[][] grid;
-	private int gridSize;
 	
 	public MapCell(TextureRegion firstLayer, int xPos, int yPos){
 		layers = new ArrayList<TextureRegion>();
 		layers.add(firstLayer);
 		setxPos(xPos);
 		setyPos(yPos);
-		gridSize = 12;
-		grid = new CellEntity[gridSize][gridSize];
-		for(int y = 0; y <gridSize; y++){
-			for(int x = 0; x <gridSize; x++){
-				grid[x][y] = new CellEntity();
-			}
-		}
 		setWalkable(true);
 	}
 	
@@ -42,10 +33,6 @@ public class MapCell {
 		this.isWalkable = isWalkable;
 	}
 	
-	public CellEntity[][] getGrid(){
-		return grid;
-	}
-	
 	public int getxPos() {
 		return xPos;
 	}
@@ -60,13 +47,5 @@ public class MapCell {
 
 	public void setyPos(int yPos) {
 		this.yPos = yPos;
-	}
-
-	public int getGridSize() {
-		return gridSize;
-	}
-
-	public void setGridSize(int gridSize) {
-		this.gridSize = gridSize;
 	}
 }

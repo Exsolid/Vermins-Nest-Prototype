@@ -11,8 +11,6 @@ public abstract class Playable extends Entity {
 	protected Animation<TextureRegion> rightWalkAni;
 	protected Animation<TextureRegion> leftWalkAni;
 	protected Animation<TextureRegion> idleAni;
-	protected Animation<TextureRegion> currentAni;
-	protected Texture shadowTexture;
 	
 	public final static int W_FRONT = 0;
 	public final static int W_BACK = 1;
@@ -35,7 +33,7 @@ public abstract class Playable extends Entity {
 		setStrength(dmg);
 		setAgility(agi);
 		
-		shadowTexture = new Texture("textures/characters/Shadow.png");
+		shadow = new Texture("textures/characters/Shadow.png");
 		
 		init();
 		currentDir = IDLE;
@@ -68,14 +66,6 @@ public abstract class Playable extends Entity {
 	public void setStrength(int strength) {
 		this.strength = strength;
 	}
-
-	public TextureRegion getCurrentFrame(float stateTime) {
-		return currentAni.getKeyFrame(stateTime, true);
-	}
-	
-	public Texture getShadow(){
-		return shadowTexture;
-	}
 	
 	public void setCurrentAni(int animationKey) {
 		switch (animationKey){
@@ -103,7 +93,7 @@ public abstract class Playable extends Entity {
 	}
 	
 	public void dispose(){
-		shadowTexture.dispose();
+		shadow.dispose();
 		frontWalkAni.getKeyFrame(0).getTexture().dispose();
 		backWalkAni.getKeyFrame(0).getTexture().dispose();
 		leftWalkAni.getKeyFrame(0).getTexture().dispose();

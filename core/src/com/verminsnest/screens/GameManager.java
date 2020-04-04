@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.verminsnest.core.EntityMovementSystem;
+import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.Mage;
 import com.verminsnest.entities.Playable;
 import com.verminsnest.entities.Projectile;
@@ -90,10 +91,20 @@ public class GameManager implements Screen {
 			if (timeSinceRender >= updateStep) {
 				stateTime += delta;
 				timeSinceRender -= updateStep;
+
+				RuntimeData.getInstance().updateProjectiles();
 				manageControls();
-				
 				//Draw stuff
 				game.getBatch().begin();
+				
+				//Draw removed, then dispose
+				for(Entity ent: RuntimeData.getInstance().getRemoved()){
+					game.getBatch().draw(ent.getShadow(),ent.getPos()[0]+8,ent.getPos()[1]-18);
+				}
+				for(Entity ent: RuntimeData.getInstance().getRemoved()){
+					game.getBatch().draw(ent.getCurrentFrame(stateTime),ent.getPos()[0],ent.getPos()[1]);
+				}
+				RuntimeData.getInstance().getRemoved().clear();        
 				//Draw ground
 				for (MapCell cell : toDraw) {
 					game.getBatch().draw(cell.getLayers().get(0), cell.getxPos(), cell.getyPos());
@@ -102,15 +113,14 @@ public class GameManager implements Screen {
 					}
 				}
 				//Draw shadows
-				game.getBatch().draw(character.getShadow(), character.getPos()[0] + 8, character.getPos()[1] - 18);
+				for(Entity ent: RuntimeData.getInstance().getEntities()){
+					game.getBatch().draw(ent.getShadow(),ent.getPos()[0]+8,ent.getPos()[1]-18);
+				}
 				drawProjectileShadow();
-				//Draw character
-				game.getBatch().draw(temp.getCurrentFrame(stateTime), temp.getPos()[0],
-						temp.getPos()[1]);
-				game.getBatch().draw(character.getCurrentFrame(stateTime), character.getPos()[0],
-						character.getPos()[1]);
-				character.setCurrentAni(Playable.IDLE);
-				//Draw projectiles
+				//Draw entities
+				for(Entity ent: RuntimeData.getInstance().getEntities()){
+					game.getBatch().draw(ent.getCurrentFrame(stateTime),ent.getPos()[0],ent.getPos()[1]);
+				}
 				drawProjectiles();
 				//Draw walls
 				for (MapCell cell : toDraw) {
@@ -133,7 +143,6 @@ public class GameManager implements Screen {
 			prj.updatePosition(enMoSys);
 			game.getBatch().draw(prj.getShadow(),prj.getPos()[0]+8,prj.getPos()[1]-25);
 		}
-		RuntimeData.getInstance().updateProjectiles();
 	}
 
 	// Calculates which tiles need to be rendered
@@ -233,6 +242,7 @@ public class GameManager implements Screen {
 			character.setCurrentAni(Playable.W_LEFT);
 			break;
 		case '-':
+			character.setCurrentAni(Playable.IDLE);
 			prevKey = '-';
 		}
 
