@@ -14,7 +14,6 @@ import com.verminsnest.exceptions.OutOfBounds;
 
 public class ButtonManager {
 	
-	private String name;
 	//All Buttons
 	private ArrayList<Button> buttonList;
 	private int index;
@@ -31,9 +30,8 @@ public class ButtonManager {
 	private int size;
 	
 	//Create and dispose
-	public ButtonManager(ArrayList<Button> buttonList, String name){
+	public ButtonManager(ArrayList<Button> buttonList){
 		this.buttonList = buttonList;
-		this.name = name;
 		this.buttonList.get(0).setActiv(true);
 		leftOption = "<";
 		rightOption = ">";
@@ -48,10 +46,6 @@ public class ButtonManager {
 		fontPara.size = size/2;
 		opFont = fontGen.generateFont(fontPara);	
 		opFont.setColor(Color.valueOf(passivColor));
-	}
-	
-	public String getName() {
-		return name;
 	}
 
 	public void dispose(){

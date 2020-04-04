@@ -62,7 +62,7 @@ public class FontText {
 		int width = 0;
 		
 		layout.setText(font, text.get(0));
-		height = (int) (layout.height*text.size()+layout.height/3*text.size());
+		height = (int) (layout.height*text.size()*2);
 		for(String str: text){
 			layout.setText(font, str);
 			if(layout.width > width) width = (int) layout.width;
@@ -79,7 +79,7 @@ public class FontText {
 		font.dispose();
 	}
 	public void draw(SpriteBatch batch){
-		int step = text.size()/sizes[1];
+		int step = sizes[1]/text.size();
 		int currentHeight = pos[1];
 		for(String str: text){
 			font.draw(batch, str,pos[0],currentHeight);

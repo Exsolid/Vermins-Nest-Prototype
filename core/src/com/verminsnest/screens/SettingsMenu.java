@@ -79,7 +79,7 @@ public class SettingsMenu implements Screen {
 		buttonList.add(new Button(game.getConfig().getMessage("SettingsMenu_Sound")));
 		buttonList.add(new Button(game.getConfig().getMessage("SettingsMenu_Controls")));
 		buttonList.add(new Button(game.getConfig().getMessage("SettingsMenu_Back")));
-		settingsMenuManager = new ButtonManager(buttonList, "Settings Menu");
+		settingsMenuManager = new ButtonManager(buttonList);
 		settingsMenuManager.setSize(100);
 		try {
 			settingsMenuManager.calcMidofBounds(menuScrollImg.getWidth(), menuScrollImg.getHeight(), menuScrollPos);
@@ -293,7 +293,7 @@ public class SettingsMenu implements Screen {
 						tempButton = new Button(game.getConfig().getMessage("SettingsMenu_Back"));
 						buttonList.add(tempButton);
 
-						currentMenuManager = new ButtonManager(buttonList, "Graphics Menu");
+						currentMenuManager = new ButtonManager(buttonList);
 						currentMenuManager.setSize(100);
 						currentMenuManager.calcMidofBounds(settingsScrollImg.getWidth(), settingsScrollImg.getHeight(),
 								settingsScrollPos);
@@ -305,7 +305,7 @@ public class SettingsMenu implements Screen {
 						buttonList.add(new Button(game.getConfig().getMessage("SoundMenu_Music")));
 						buttonList.add(new Button(game.getConfig().getMessage("SoundMenu_Effects")));
 						buttonList.add(new Button(game.getConfig().getMessage("SettingsMenu_Back")));
-						currentMenuManager = new ButtonManager(buttonList, "Sound Menu");
+						currentMenuManager = new ButtonManager(buttonList);
 						currentMenuManager.setSize(100);
 						currentMenuManager.calcMidofBounds(settingsScrollImg.getWidth(), settingsScrollImg.getHeight(),
 								settingsScrollPos);

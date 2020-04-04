@@ -43,7 +43,7 @@ public class PauseMenu implements Screen {
 		
 		buttonList.add(backButton);
 		buttonList.add(quitButton);
-		bManager = new ButtonManager(buttonList,"MainMenu");
+		bManager = new ButtonManager(buttonList);
 		bManager.setSize(100);
 		try {
 			bManager.calcMidofBounds(backgroundScrollImg.getWidth(), backgroundScrollImg.getHeight(), new Point((int)(game.getCamera().position.x - backgroundScrollImg.getWidth() / 2),

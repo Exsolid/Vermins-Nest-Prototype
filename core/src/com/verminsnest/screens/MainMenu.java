@@ -63,7 +63,7 @@ public class MainMenu implements Screen {
 		buttonList.add(settingsButton);
 		buttonList.add(creditsButton);
 		buttonList.add(quitButton);
-		bManager = new ButtonManager(buttonList,"MainMenu");
+		bManager = new ButtonManager(buttonList);
 		bManager.setSize(100);
 		try {
 			bManager.calcMidofBounds(backgroundScrollImg.getWidth(), backgroundScrollImg.getHeight(), new Point(game.getConfig().getResolution()[0] / 2 - backgroundScrollImg.getWidth() / 2,
