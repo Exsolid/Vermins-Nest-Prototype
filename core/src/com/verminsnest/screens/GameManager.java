@@ -121,13 +121,14 @@ public class GameManager implements Screen {
 				for(Entity ent: RuntimeData.getInstance().getEntities()){
 					game.getBatch().draw(ent.getCurrentFrame(stateTime),ent.getPos()[0],ent.getPos()[1]);
 				}
-				drawProjectiles();
 				//Draw walls
 				for (MapCell cell : toDraw) {
 					if (cell.getLayers().size() > 1 && !cell.isWalkable()) {
 						game.getBatch().draw(cell.getLayers().get(1), cell.getxPos(), cell.getyPos());
 					}
 				}
+
+				drawProjectiles();
 				game.getBatch().end();
 			}
 		}
@@ -135,7 +136,7 @@ public class GameManager implements Screen {
 		
 	private void drawProjectiles(){
 		for(Projectile prj: RuntimeData.getInstance().getCurrentProjectiles()){
-			game.getBatch().draw(prj.getCurrentFrame(stateTime),prj.getPos()[0],prj.getPos()[1]);
+			game.getBatch().draw(prj.getCurrentFrame(stateTime),prj.getPos()[0],prj.getPos()[1], prj.getSize()[0]/2, prj.getSize()[1]/2, prj.getSize()[0], prj.getSize()[1], 1, 1, prj.getRotation());
 		}
 	}
 	private void drawProjectileShadow(){

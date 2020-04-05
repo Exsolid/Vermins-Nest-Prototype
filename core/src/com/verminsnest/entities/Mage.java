@@ -19,7 +19,7 @@ public class Mage extends Playable {
 		for (int i = 0; i < temp[0].length; i++) {
 			frames[i] = temp[0][i];
 		}
-		frontWalkAni = new Animation<TextureRegion>(0.025f * this.speed, frames);
+		frontWalkAni = new Animation<TextureRegion>(1f / this.speed, frames);
 
 		Texture wBackSheet = new Texture("textures/characters/mage/Mage-W-Back.png");
 		temp = TextureRegion.split(wBackSheet, 64, 74);
@@ -28,7 +28,7 @@ public class Mage extends Playable {
 		for (int i = 0; i < temp[0].length; i++) {
 			frames[i] = temp[0][i];
 		}
-		backWalkAni = new Animation<TextureRegion>(0.025f * this.speed, frames);
+		backWalkAni = new Animation<TextureRegion>(1f / this.speed, frames);
 
 		Texture wRightSheet = new Texture("textures/characters/mage/Mage-W-Right.png");
 		temp = TextureRegion.split(wRightSheet, 64, 74);
@@ -37,7 +37,7 @@ public class Mage extends Playable {
 		for (int i = 0; i < temp[0].length; i++) {
 			frames[i] = temp[0][i];
 		}
-		rightWalkAni = new Animation<TextureRegion>(0.025f * this.speed, frames);
+		rightWalkAni = new Animation<TextureRegion>(1f / this.speed, frames);
 
 		Texture wleftSheet = new Texture("textures/characters/mage/Mage-W-Left.png");
 		temp = TextureRegion.split(wleftSheet, 64, 74);
@@ -46,7 +46,7 @@ public class Mage extends Playable {
 		for (int i = 0; i < temp[0].length; i++) {
 			frames[i] = temp[0][i];
 		}
-		leftWalkAni = new Animation<TextureRegion>(0.025f * this.speed, frames);
+		leftWalkAni = new Animation<TextureRegion>(1f / this.speed, frames);
 
 		Texture idleSheet = new Texture("textures/characters/mage/Mage-Idle.png");
 		temp = TextureRegion.split(idleSheet, 64, 74);
@@ -67,32 +67,35 @@ public class Mage extends Playable {
 	@Override
 	public void attack(float stateTime) {
 		if (lastAttack < stateTime - agility/5) {
-			Projectile prj = new Projectile(strength,new Texture("textures/characters/mage/FireBall-Shadow.png"), new Texture("textures/characters/mage/FireBall.png"), null, null,
-					32, 32, new int[] { pos[0], pos[1] });
+			Projectile prj = null;
 			switch (currentDir) {
 			case IDLE:
 			case W_FRONT:
-				prj.setDirection(new int[] { 0, speed * -3 });
+				prj = new Projectile(Projectile.SOUTH,agility,strength,new Texture("textures/characters/mage/FireBall-Shadow.png"), new Texture("textures/projectiles/fireball/FireBall-Flying.png"), new Texture("textures/projectiles/fireball/FireBall-Hit.png"), new Texture("textures/projectiles/fireball/FireBall-Cast.png"),
+						32, 32, new int[] { pos[0], pos[1] },stateTime);
 				prj.getPos()[0] += currentAni.getKeyFrame(0).getRegionWidth()/4;
 				prj.getPos()[1] -= prj.getSize()[1];
 				break;
 			case W_BACK:
-				prj.setDirection(new int[] { 0, speed * 3 });
+				prj = new Projectile(Projectile.NORTH,agility,strength,new Texture("textures/characters/mage/FireBall-Shadow.png"), new Texture("textures/projectiles/fireball/FireBall-Flying.png"), new Texture("textures/projectiles/fireball/FireBall-Hit.png"), new Texture("textures/projectiles/fireball/FireBall-Cast.png"),
+						32, 32, new int[] { pos[0], pos[1] },stateTime);
 				prj.getPos()[0] += currentAni.getKeyFrame(0).getRegionWidth()/4;
 				prj.getPos()[1] += currentAni.getKeyFrame(0).getRegionWidth()*1.5;
 				break;
 			case W_RIGHT:
-				prj.setDirection(new int[] { speed * 3, 0 });
+				prj = new Projectile(Projectile.EAST,agility,strength,new Texture("textures/characters/mage/FireBall-Shadow.png"), new Texture("textures/projectiles/fireball/FireBall-Flying.png"), new Texture("textures/projectiles/fireball/FireBall-Hit.png"), new Texture("textures/projectiles/fireball/FireBall-Cast.png"),
+						32, 32, new int[] { pos[0], pos[1] },stateTime);
 				prj.getPos()[0] += currentAni.getKeyFrame(0).getRegionWidth()*1.5;
 				prj.getPos()[1] += currentAni.getKeyFrame(0).getRegionHeight()/4;
 				break;
 			case W_LEFT:
-				prj.setDirection(new int[] { speed * -3, 0 });
+				prj = new Projectile(Projectile.WEST,agility,strength,new Texture("textures/characters/mage/FireBall-Shadow.png"), new Texture("textures/projectiles/fireball/FireBall-Flying.png"), new Texture("textures/projectiles/fireball/FireBall-Hit.png"), new Texture("textures/projectiles/fireball/FireBall-Cast.png"),
+						32, 32, new int[] { pos[0], pos[1] },stateTime);
 				prj.getPos()[1] +=currentAni.getKeyFrame(0).getRegionHeight()/4;
 				prj.getPos()[0] -= prj.getSize()[0];
 				break;
 			}
-			prj.setCurrentAni(Projectile.FLYING);
+			prj.setCurrentAni(Projectile.CAST);
 			RuntimeData.getInstance().addProjectile(prj);
 			lastAttack = stateTime;
 		}
