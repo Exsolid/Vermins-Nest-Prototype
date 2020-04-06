@@ -1,4 +1,4 @@
-package com.verminsnest.misc;
+package com.verminsnest.misc.gui;
 
 import java.awt.Point;
 import java.util.ArrayList;

@@ -7,9 +7,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.verminsnest.core.EntityMovementSystem;
 import com.verminsnest.entities.Entity;
-import com.verminsnest.entities.Mage;
-import com.verminsnest.entities.Playable;
-import com.verminsnest.entities.Projectile;
+import com.verminsnest.entities.playables.Mage;
+import com.verminsnest.entities.playables.Playable;
+import com.verminsnest.entities.projectiles.Projectile;
 import com.verminsnest.gamedev.VerminsNest;
 import com.verminsnest.mapgen.MapCell;
 import com.verminsnest.singletons.RuntimeData;
@@ -61,6 +61,7 @@ public class GameManager implements Screen {
 		blockStartTime = System.currentTimeMillis();
 		movementBlocked = true;
 		prevKey = '-';
+		currentKey = '-';
 
 		// Rendering
 		running = true;

@@ -9,8 +9,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.verminsnest.exceptions.OutOfBounds;
 import com.verminsnest.gamedev.VerminsNest;
-import com.verminsnest.misc.Button;
-import com.verminsnest.misc.ButtonManager;
+import com.verminsnest.misc.gui.Button;
+import com.verminsnest.misc.gui.ButtonManager;
 import com.verminsnest.singletons.RuntimeData;
 
 public class PauseMenu implements Screen {

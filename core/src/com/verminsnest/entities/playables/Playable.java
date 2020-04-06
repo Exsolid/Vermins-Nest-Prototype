@@ -1,8 +1,9 @@
-package com.verminsnest.entities;
+package com.verminsnest.entities.playables;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.verminsnest.entities.Entity;
 
 public abstract class Playable extends Entity {
 	
@@ -28,7 +29,7 @@ public abstract class Playable extends Entity {
 	
 	
 	public Playable(int[] position,int[] size, int speed, int dmg, int agi){
-		super(position,size);
+		super(position);
 		setSpeed(speed);
 		setStrength(dmg);
 		setAgility(agi);
@@ -36,7 +37,8 @@ public abstract class Playable extends Entity {
 		shadow = new Texture("textures/characters/Shadow.png");
 		
 		init();
-		currentDir = IDLE;
+		this.setCurrentAni(IDLE);
+		this.setSize(currentAni.getKeyFrame(0).getRegionWidth(),currentAni.getKeyFrame(0).getRegionHeight());
 	}
 	
 	public abstract void init();

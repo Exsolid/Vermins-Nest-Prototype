@@ -3,7 +3,7 @@ package com.verminsnest.screens;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.verminsnest.gamedev.VerminsNest;
-import com.verminsnest.misc.FontText;
+import com.verminsnest.misc.gui.FontText;
 import com.verminsnest.singletons.LoadingModules;
 
 public class LoadingScreen implements Screen{

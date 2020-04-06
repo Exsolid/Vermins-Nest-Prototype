@@ -3,7 +3,7 @@ package com.verminsnest.singletons;
 import java.util.ArrayList;
 
 import com.verminsnest.entities.Entity;
-import com.verminsnest.entities.Projectile;
+import com.verminsnest.entities.projectiles.Projectile;
 import com.verminsnest.mapgen.MapCell;
 
 public class RuntimeData {

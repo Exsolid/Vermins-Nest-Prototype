@@ -1,6 +1,6 @@
 package com.verminsnest.exceptions;
 
-import com.verminsnest.misc.Button;
+import com.verminsnest.misc.gui.Button;
 
 public class OutOfBounds extends Exception {
 	private static final long serialVersionUID = 1L;

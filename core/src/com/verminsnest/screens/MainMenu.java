@@ -10,8 +10,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.verminsnest.exceptions.OutOfBounds;
 import com.verminsnest.gamedev.VerminsNest;
 import com.verminsnest.mapgen.WorldGen;
-import com.verminsnest.misc.Button;
-import com.verminsnest.misc.ButtonManager;
+import com.verminsnest.misc.gui.Button;
+import com.verminsnest.misc.gui.ButtonManager;
 
 public class MainMenu implements Screen {
 

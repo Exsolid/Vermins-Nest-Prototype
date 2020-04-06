@@ -1,12 +1,12 @@
-package com.verminsnest.entities;
+package com.verminsnest.entities.projectiles;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.verminsnest.core.EntityMovementSystem;
+import com.verminsnest.entities.Entity;
 import com.verminsnest.singletons.RuntimeData;
 
-public class Projectile extends Entity{
+public abstract class Projectile extends Entity{
 	
 	public final static int NORTH = 0;
 	public final static int WEST = 1;
@@ -24,48 +24,20 @@ public class Projectile extends Entity{
 	public final static int TODELETE = 3;
 	private int state;
 	
-	private int damage;
-	private int speed;
+	protected int damage;
+	protected int speed;
 	
 	private float internalStateTime;
 	private float lastStateTime;
 	private boolean toReset;
 	
-	public Projectile(int direction, int agility,int damage,Texture shadow, Texture flyingSheet, Texture hitSheet, Texture castSheet, int width, int height, int[] position, float stateTime){
-		super(position, new int[]{TextureRegion.split(flyingSheet, width, height)[0][0].getRegionWidth(),TextureRegion.split(flyingSheet, width, height)[0][0].getRegionHeight()});
+	public Projectile(int direction, int agility,int damage, int[] position, float stateTime){
+		super(position);
 		
 		//Data
 		this.setDamage(damage);
 		speed = agility;
 		this.direction = direction;		
-		
-		//Textures
-		this.shadow = shadow;
-		
-		TextureRegion[][] temp = TextureRegion.split(flyingSheet, width, height);
-		TextureRegion[] frames = new TextureRegion[temp[0].length];
-		
-		for(int i = 0; i< temp[0].length; i++){
-			frames[i] = temp[0][i];
-		}
-		flyingAni = new Animation<TextureRegion>(0.85f/agility,frames);
-		
-		temp = TextureRegion.split(hitSheet, width, height);
-		frames = new TextureRegion[temp[0].length];
-		
-		for(int i = 0; i< temp[0].length; i++){
-			frames[i] = temp[0][i];
-		}
-		hitAni = new Animation<TextureRegion>(0.01f*agility,frames);
-		
-		temp = TextureRegion.split(castSheet, width, height);
-		frames = new TextureRegion[temp[0].length];
-		
-		for(int i = 0; i< temp[0].length; i++){
-			frames[i] = temp[0][i];
-		}
-		castAni = new Animation<TextureRegion>(0.75f/agility,frames);
-		
 		//Texture orientation
 		switch(direction){
 		case SOUTH:
@@ -78,10 +50,14 @@ public class Projectile extends Entity{
 			rotation = -90;
 			break;
 		}
-		
 		internalStateTime = 0;
 		lastStateTime = stateTime;
+		init();
+		this.setCurrentAni(CAST);
+		this.setSize(currentAni.getKeyFrame(0).getRegionWidth(),currentAni.getKeyFrame(0).getRegionHeight());
 	}
+	
+	public abstract void init();
 	
 	public TextureRegion getCurrentFrame(float stateTime) {
 		if(toReset){

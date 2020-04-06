@@ -11,11 +11,13 @@ public abstract class Entity {
 	protected Animation<TextureRegion> currentAni;
 	protected Texture shadow;
 	
-	public Entity(int[] pos, int[] size){
+	public Entity(int[] pos){
 		this.pos = pos;
-		this.size = size;
 		this.setId(this.toString());
+		init();
 	}
+	
+	public abstract void init();
 	
 	public int[] getPos(){
 		return pos;
@@ -23,6 +25,10 @@ public abstract class Entity {
 	
 	public int[] getSize(){
 		return size;
+	}
+	
+	protected void setSize(int width, int height){
+		size = new int[]{width,height};
 	}
 
 	public String getId() {
