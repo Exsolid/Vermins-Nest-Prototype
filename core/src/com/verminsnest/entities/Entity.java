@@ -3,15 +3,19 @@ package com.verminsnest.entities;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.verminsnest.singletons.RuntimeData;
 
 public abstract class Entity {
+	protected int textureID = -1;
 	protected int[] pos;
 	protected int[] size;
 	private String id;
 	protected Animation<TextureRegion> currentAni;
 	protected Texture shadow;
 	
-	public Entity(int[] pos){
+	public Entity(int[] pos, int textureID){
+		RuntimeData.getInstance().loadTextures(textureID);
+		this.textureID = textureID;
 		this.pos = pos;
 		this.setId(this.toString());
 		init();
@@ -46,5 +50,11 @@ public abstract class Entity {
 	public TextureRegion getCurrentFrame(float stateTime) {
 		return currentAni.getKeyFrame(stateTime, true);
 	}
-	public abstract void dispose();
+	public void dispose(){
+		//TODO log textureid -1
+		RuntimeData.getInstance().disposeTextures(textureID);
+	}
+	public int getTextureID(){
+		return textureID;
+	}
 }

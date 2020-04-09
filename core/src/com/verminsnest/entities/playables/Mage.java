@@ -5,16 +5,17 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.verminsnest.entities.projectiles.Fireball;
 import com.verminsnest.entities.projectiles.Projectile;
+import com.verminsnest.misc.assets.VNAssetManager;
 import com.verminsnest.singletons.RuntimeData;
 
 public class Mage extends Playable {
 	public Mage(int[] pos) {
-		super(pos,new int[]{TextureRegion.split(new Texture("textures/characters/mage/Mage-W-Front.png"), 64, 74)[0][0].getRegionWidth(), TextureRegion.split(new Texture("textures/characters/mage/Mage-W-Front.png"), 64, 74)[0][0].getRegionHeight()}, 7, 7, 7);
+		super(VNAssetManager.GAMEPLAY_MAGE, pos, 7, 7, 7);
 	}
 
 	@Override
 	public void init() {
-		Texture wFrontSheet = new Texture("textures/characters/mage/Mage-W-Front.png");
+		Texture wFrontSheet = RuntimeData.getInstance().getAsset("textures/characters/mage/Mage-W-Front.png");
 		TextureRegion[][] temp = TextureRegion.split(wFrontSheet, 64, 74);
 		TextureRegion[] frames = new TextureRegion[temp[0].length];
 
@@ -23,7 +24,7 @@ public class Mage extends Playable {
 		}
 		frontWalkAni = new Animation<TextureRegion>(1f / this.speed, frames);
 
-		Texture wBackSheet = new Texture("textures/characters/mage/Mage-W-Back.png");
+		Texture wBackSheet = RuntimeData.getInstance().getAsset("textures/characters/mage/Mage-W-Back.png");
 		temp = TextureRegion.split(wBackSheet, 64, 74);
 		frames = new TextureRegion[temp[0].length];
 
@@ -32,7 +33,7 @@ public class Mage extends Playable {
 		}
 		backWalkAni = new Animation<TextureRegion>(1f / this.speed, frames);
 
-		Texture wRightSheet = new Texture("textures/characters/mage/Mage-W-Right.png");
+		Texture wRightSheet = RuntimeData.getInstance().getAsset("textures/characters/mage/Mage-W-Right.png");
 		temp = TextureRegion.split(wRightSheet, 64, 74);
 		frames = new TextureRegion[temp[0].length];
 
@@ -41,7 +42,7 @@ public class Mage extends Playable {
 		}
 		rightWalkAni = new Animation<TextureRegion>(1f / this.speed, frames);
 
-		Texture wleftSheet = new Texture("textures/characters/mage/Mage-W-Left.png");
+		Texture wleftSheet = RuntimeData.getInstance().getAsset("textures/characters/mage/Mage-W-Left.png");
 		temp = TextureRegion.split(wleftSheet, 64, 74);
 		frames = new TextureRegion[temp[0].length];
 
@@ -50,7 +51,7 @@ public class Mage extends Playable {
 		}
 		leftWalkAni = new Animation<TextureRegion>(1f / this.speed, frames);
 
-		Texture idleSheet = new Texture("textures/characters/mage/Mage-Idle.png");
+		Texture idleSheet = RuntimeData.getInstance().getAsset("textures/characters/mage/Mage-Idle.png");
 		temp = TextureRegion.split(idleSheet, 64, 74);
 		frames = new TextureRegion[temp[0].length];
 
@@ -93,7 +94,7 @@ public class Mage extends Playable {
 				break;
 			}
 			prj.setCurrentAni(Projectile.CAST);
-			RuntimeData.getInstance().addProjectile(prj);
+			RuntimeData.getInstance().addEntity(prj);
 			lastAttack = stateTime;
 		}
 	}

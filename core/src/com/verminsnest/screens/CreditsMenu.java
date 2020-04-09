@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Texture;
 import com.verminsnest.exceptions.OutOfBounds;
 import com.verminsnest.gamedev.VerminsNest;
 import com.verminsnest.misc.gui.Button;
 import com.verminsnest.misc.gui.ButtonManager;
 import com.verminsnest.misc.gui.FontText;
+import com.verminsnest.singletons.RuntimeData;
 
 public class CreditsMenu implements Screen {
 
@@ -19,8 +19,6 @@ public class CreditsMenu implements Screen {
 	private VerminsNest game;
 	private boolean running;
 	//Textures
-	private Texture backgroundImg;
-	private Texture backgroundScrollImg;
 	private Point scrollPos;
 	//Text
 	private FontText title;
@@ -38,11 +36,8 @@ public class CreditsMenu implements Screen {
 	@Override
 	public void show() {
 		//Misc
-		running = true;		
-		//Textures
-		backgroundImg = new Texture("textures/menus/Background.png");
-		backgroundScrollImg = new Texture("textures/menus/SettingsScroll.png");
-		scrollPos = new Point(game.getConfig().getResolution()[0]/2-backgroundScrollImg.getWidth()/2,game.getConfig().getResolution()[1]/2-backgroundScrollImg.getHeight()/2);
+		running = true;
+		scrollPos = new Point(game.getConfig().getResolution()[0]/2-RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getWidth()/2,game.getConfig().getResolution()[1]/2-RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getHeight()/2);
 		
 		// Buttons
 		blockTime = 0;
@@ -53,7 +48,7 @@ public class CreditsMenu implements Screen {
 		backButton = new ButtonManager(buttonList);
 		backButton.setSize(100);
 		try {
-			backButton.calcMidofBounds(backgroundScrollImg.getWidth(), backgroundScrollImg.getHeight()/3, new Point(scrollPos.x,scrollPos.y));
+			backButton.calcMidofBounds(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getWidth(), RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getHeight()/3, new Point(scrollPos.x,scrollPos.y));
 		} catch (OutOfBounds e) {
 			e.printStackTrace();
 		}
@@ -62,8 +57,8 @@ public class CreditsMenu implements Screen {
 		credits= new FontText("-> The LIBGDX framework \n"
 				+ "-> The font saratogajean \n"
 				+ "(Licenes can be found in the gamefiles)", 35);
-		title.setMidOfBounds(new int[]{scrollPos.x,(int) (scrollPos.y*3.5)},new int[]{backgroundScrollImg.getWidth(), backgroundScrollImg.getHeight()});
-		credits.setMidOfBounds(new int[]{scrollPos.x,(int) (scrollPos.y*1.5)},new int[]{backgroundScrollImg.getWidth(), backgroundScrollImg.getHeight()});
+		title.setMidOfBounds(new int[]{scrollPos.x,(int) (scrollPos.y*3.5)},new int[]{RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getWidth(), RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getHeight()});
+		credits.setMidOfBounds(new int[]{scrollPos.x,(int) (scrollPos.y*1.5)},new int[]{RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getWidth(), RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getHeight()});
 		
 	}
 
@@ -71,8 +66,8 @@ public class CreditsMenu implements Screen {
 	public void render(float delta) {
 		if(running){
 			game.getBatch().begin();
-			game.getBatch().draw(backgroundImg, 0, 0);
-			game.getBatch().draw(backgroundScrollImg,scrollPos.x,scrollPos.y);
+			game.getBatch().draw(RuntimeData.getInstance().getAsset("textures/general/Background.png"), 0, 0);
+			game.getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png"),scrollPos.x,scrollPos.y);
 			backButton.draw(game.getBatch());
 			title.draw(game.getBatch());
 			credits.draw(game.getBatch());
@@ -110,8 +105,6 @@ public class CreditsMenu implements Screen {
 		credits.dispose();
 		title.dispose();
 		backButton.dispose();
-		backgroundImg.dispose();
-		backgroundScrollImg.dispose();
 	}
 
 }

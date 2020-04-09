@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Texture;
 import com.verminsnest.exceptions.OutOfBounds;
 import com.verminsnest.gamedev.VerminsNest;
 import com.verminsnest.misc.gui.Button;
 import com.verminsnest.misc.gui.ButtonManager;
+import com.verminsnest.singletons.RuntimeData;
 
 public class SettingsMenu implements Screen {
 
@@ -20,9 +20,6 @@ public class SettingsMenu implements Screen {
 	private boolean running;
 
 	// Textures
-	private Texture backgroundImg;
-	private Texture menuScrollImg;
-	private Texture settingsScrollImg;
 	private Point menuScrollPos;
 	private Point settingsScrollPos;
 
@@ -55,11 +52,6 @@ public class SettingsMenu implements Screen {
 		// Misc
 		running = true;
 
-		// Textures
-		menuScrollImg = new Texture("textures/menus/MenuScroll.png");
-		settingsScrollImg = new Texture("textures/menus/SettingsScroll.png");
-		backgroundImg = new Texture("textures/menus/Background.png");
-
 		// Buttons
 		blockTime = 0;
 		blockStartTime = System.currentTimeMillis();
@@ -68,10 +60,10 @@ public class SettingsMenu implements Screen {
 
 		// Positions
 		menuScrollPos = new Point(
-				Gdx.graphics.getWidth() / 2 - (menuScrollImg.getWidth() + settingsScrollImg.getWidth()) / 2,
-				Gdx.graphics.getHeight() / 2 - menuScrollImg.getHeight() / 2);
+				Gdx.graphics.getWidth() / 2 - (RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth() + RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getWidth()) / 2,
+				Gdx.graphics.getHeight() / 2 - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2);
 		settingsScrollPos = new Point(Gdx.graphics.getWidth() / 2,
-				Gdx.graphics.getHeight() / 2 - menuScrollImg.getHeight() / 2);
+				Gdx.graphics.getHeight() / 2 - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2);
 
 		// Main settings menu
 		ArrayList<Button> buttonList = new ArrayList<Button>();
@@ -82,7 +74,7 @@ public class SettingsMenu implements Screen {
 		settingsMenuManager = new ButtonManager(buttonList);
 		settingsMenuManager.setSize(100);
 		try {
-			settingsMenuManager.calcMidofBounds(menuScrollImg.getWidth(), menuScrollImg.getHeight(), menuScrollPos);
+			settingsMenuManager.calcMidofBounds(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth(), RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight(), menuScrollPos);
 		} catch (OutOfBounds e) {
 			e.printStackTrace();
 		}
@@ -93,10 +85,10 @@ public class SettingsMenu implements Screen {
 		if (running) {
 			game.setPro();
 			game.getBatch().begin();
-			game.getBatch().draw(backgroundImg, game.getConfig().getResolution()[0] / 2 - backgroundImg.getWidth() / 2,
-					game.getConfig().getResolution()[1] / 2 - backgroundImg.getHeight() / 2);
-			game.getBatch().draw(menuScrollImg, menuScrollPos.x, menuScrollPos.y);
-			game.getBatch().draw(settingsScrollImg, settingsScrollPos.x, settingsScrollPos.y);
+			game.getBatch().draw(RuntimeData.getInstance().getAsset("textures/general/Background.png"), game.getConfig().getResolution()[0] / 2 - RuntimeData.getInstance().getAsset("textures/general/Background.png").getWidth() / 2,
+					game.getConfig().getResolution()[1] / 2 - RuntimeData.getInstance().getAsset("textures/general/Background.png").getHeight() / 2);
+			game.getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png"), menuScrollPos.x, menuScrollPos.y);
+			game.getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png"), settingsScrollPos.x, settingsScrollPos.y);
 			settingsMenuManager.draw(game.getBatch());
 			if (currentMenuManager != null) {
 				currentMenuManager.draw(game.getBatch());
@@ -116,12 +108,12 @@ public class SettingsMenu implements Screen {
 	public void resize(int width, int height) {
 		game.resize(game.getConfig().getResolution()[0], game.getConfig().getResolution()[1]);
 		menuScrollPos = new Point(
-				Gdx.graphics.getWidth() / 2 - (menuScrollImg.getWidth() + settingsScrollImg.getWidth()) / 2,
-				Gdx.graphics.getHeight() / 2 - menuScrollImg.getHeight() / 2);
+				Gdx.graphics.getWidth() / 2 - (RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth() + RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getWidth()) / 2,
+				Gdx.graphics.getHeight() / 2 - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2);
 		settingsScrollPos = new Point(Gdx.graphics.getWidth() / 2,
-				Gdx.graphics.getHeight() / 2 - menuScrollImg.getHeight() / 2);
+				Gdx.graphics.getHeight() / 2 - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2);
 		try {
-			settingsMenuManager.calcMidofBounds(menuScrollImg.getWidth(), menuScrollImg.getHeight(), menuScrollPos);
+			settingsMenuManager.calcMidofBounds(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth(), RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight(), menuScrollPos);
 		} catch (OutOfBounds e) {
 			e.printStackTrace();
 		}
@@ -142,9 +134,6 @@ public class SettingsMenu implements Screen {
 	@Override
 	public void dispose() {
 		running = false;
-		backgroundImg.dispose();
-		settingsScrollImg.dispose();
-		menuScrollImg.dispose();
 		settingsMenuManager.dispose();
 		if (currentMenuManager != null)currentMenuManager.dispose();
 	}
@@ -295,7 +284,7 @@ public class SettingsMenu implements Screen {
 
 						currentMenuManager = new ButtonManager(buttonList);
 						currentMenuManager.setSize(100);
-						currentMenuManager.calcMidofBounds(settingsScrollImg.getWidth(), settingsScrollImg.getHeight(),
+						currentMenuManager.calcMidofBounds(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getWidth(), RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getHeight(),
 								settingsScrollPos);
 						menuIndex = 0;
 						settingsMenuManager.deactivate();
@@ -307,7 +296,7 @@ public class SettingsMenu implements Screen {
 						buttonList.add(new Button(game.getConfig().getMessage("SettingsMenu_Back")));
 						currentMenuManager = new ButtonManager(buttonList);
 						currentMenuManager.setSize(100);
-						currentMenuManager.calcMidofBounds(settingsScrollImg.getWidth(), settingsScrollImg.getHeight(),
+						currentMenuManager.calcMidofBounds(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getWidth(), RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getHeight(),
 								settingsScrollPos);
 						menuIndex = 1;
 						settingsMenuManager.deactivate();

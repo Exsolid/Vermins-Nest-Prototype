@@ -6,12 +6,13 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Texture;
 import com.verminsnest.exceptions.OutOfBounds;
 import com.verminsnest.gamedev.VerminsNest;
 import com.verminsnest.mapgen.WorldGen;
+import com.verminsnest.misc.assets.VNAssetManager;
 import com.verminsnest.misc.gui.Button;
 import com.verminsnest.misc.gui.ButtonManager;
+import com.verminsnest.singletons.RuntimeData;
 
 public class MainMenu implements Screen {
 
@@ -29,10 +30,6 @@ public class MainMenu implements Screen {
 	private static final int CREDITS = 2;
 	private static final int QUIT = 3;
 
-	// Textures
-	private Texture backgroundImg;
-	private Texture backgroundScrollImg;
-
 	public MainMenu(VerminsNest game) {
 		this.game = game;
 	}
@@ -44,10 +41,8 @@ public class MainMenu implements Screen {
 		// Misc
 		running = true;
 
-		// Textures
-		backgroundImg = new Texture("textures/menus/Background.png");
-		backgroundScrollImg = new Texture("textures/menus/MenuScroll.png");
-
+		RuntimeData.getInstance().loadTextures(VNAssetManager.MENU);
+		
 		// Buttons
 		blockTime = 0;
 		blockStartTime = System.currentTimeMillis();
@@ -66,8 +61,8 @@ public class MainMenu implements Screen {
 		bManager = new ButtonManager(buttonList);
 		bManager.setSize(100);
 		try {
-			bManager.calcMidofBounds(backgroundScrollImg.getWidth(), backgroundScrollImg.getHeight(), new Point(game.getConfig().getResolution()[0] / 2 - backgroundScrollImg.getWidth() / 2,
-					game.getConfig().getResolution()[1] / 2 - backgroundScrollImg.getHeight() / 2));
+			bManager.calcMidofBounds(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth(), RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight(), new Point(game.getConfig().getResolution()[0] / 2 - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth() / 2,
+					game.getConfig().getResolution()[1] / 2 - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2));
 		} catch (OutOfBounds e) {
 			e.printStackTrace();
 		}
@@ -78,10 +73,10 @@ public class MainMenu implements Screen {
 		if (running) {
 			game.setPro();
 			game.getBatch().begin();
-			game.getBatch().draw(backgroundImg,game.getConfig().getResolution()[0] / 2 - backgroundImg.getWidth() / 2,
-					game.getConfig().getResolution()[1] / 2 - backgroundImg.getHeight() / 2);
-			game.getBatch().draw(backgroundScrollImg, game.getConfig().getResolution()[0] / 2 - backgroundScrollImg.getWidth() / 2,
-					game.getConfig().getResolution()[1] / 2 - backgroundScrollImg.getHeight() / 2);
+			game.getBatch().draw(RuntimeData.getInstance().getAsset("textures/general/Background.png"),game.getConfig().getResolution()[0] / 2 - RuntimeData.getInstance().getAsset("textures/general/Background.png").getWidth() / 2,
+					game.getConfig().getResolution()[1] / 2 - RuntimeData.getInstance().getAsset("textures/general/Background.png").getHeight() / 2);
+			game.getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png"), game.getConfig().getResolution()[0] / 2 - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth() / 2,
+					game.getConfig().getResolution()[1] / 2 - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2);
 			bManager.draw(game.getBatch());
 			game.getBatch().end();
 			this.mangageControls();
@@ -109,8 +104,6 @@ public class MainMenu implements Screen {
 	public void dispose() {
 		running = false;
 		bManager.dispose();
-		backgroundImg.dispose();
-		backgroundScrollImg.dispose();
 	}
 
 	public void close() {
@@ -144,8 +137,9 @@ public class MainMenu implements Screen {
 				switch (bManager.getIndex()) {
 				case START:
 					// World generation
+					RuntimeData.getInstance().loadTextures(VNAssetManager.GAMEPLAY);
 					WorldGen gen = new WorldGen(game);
-					gen.setData(6, 30, 30, 10,new Texture("textures/level-sheets/cave/Mountain-Sheet.png"));
+					gen.setData(6, 30, 30, 10,(RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Mountain-Sheet.png")));
 					game.screenLoading(LoadingScreen.GAMEMANAGER, this);
 					break;
 				case SETTINGS:
@@ -157,6 +151,7 @@ public class MainMenu implements Screen {
 					this.dispose();
 					break;
 				case QUIT:
+					RuntimeData.getInstance().dispose();
 					this.dispose();
 					this.close();
 					break;

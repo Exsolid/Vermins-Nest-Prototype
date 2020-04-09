@@ -28,8 +28,8 @@ public abstract class Playable extends Entity {
 	protected float lastAttack;
 	
 	
-	public Playable(int[] position,int[] size, int speed, int dmg, int agi){
-		super(position);
+	public Playable(int textureID,int[] position, int speed, int dmg, int agi){
+		super(position,textureID);
 		setSpeed(speed);
 		setStrength(dmg);
 		setAgility(agi);
@@ -92,14 +92,5 @@ public abstract class Playable extends Entity {
 			currentDir = IDLE;
 			break;
 		}
-	}
-	
-	public void dispose(){
-		shadow.dispose();
-		frontWalkAni.getKeyFrame(0).getTexture().dispose();
-		backWalkAni.getKeyFrame(0).getTexture().dispose();
-		leftWalkAni.getKeyFrame(0).getTexture().dispose();
-		rightWalkAni.getKeyFrame(0).getTexture().dispose();
-		idleAni.getKeyFrame(0).getTexture().dispose();
 	}
 }

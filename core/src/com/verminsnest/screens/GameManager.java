@@ -37,8 +37,6 @@ public class GameManager implements Screen {
 	private float updateStep = 1 / 120f;
 	private float stateTime;
 	private boolean running;
-	
-	private Mage temp;
 
 	public GameManager( VerminsNest game) {
 		this.game = game;
@@ -77,9 +75,7 @@ public class GameManager implements Screen {
 			}
 		}
 		enMoSys = new EntityMovementSystem(this.map);
-		RuntimeData.getInstance().getEntities().add(character);
-		temp = new Mage(new int[]{character.getPos()[0]-100,character.getPos()[1]});
-		RuntimeData.getInstance().getEntities().add(temp);
+		RuntimeData.getInstance().addEntity(character);
 		// Textures
 		toDraw = new ArrayList<>();
 	}
@@ -93,19 +89,17 @@ public class GameManager implements Screen {
 				stateTime += delta;
 				timeSinceRender -= updateStep;
 
-				RuntimeData.getInstance().updateProjectiles();
 				manageControls();
 				//Draw stuff
 				game.getBatch().begin();
 				
-				//Draw removed, then dispose
+				//Draw removed one last time
 				for(Entity ent: RuntimeData.getInstance().getRemoved()){
 					game.getBatch().draw(ent.getShadow(),ent.getPos()[0]+8,ent.getPos()[1]-18);
 				}
 				for(Entity ent: RuntimeData.getInstance().getRemoved()){
 					game.getBatch().draw(ent.getCurrentFrame(stateTime),ent.getPos()[0],ent.getPos()[1]);
-				}
-				RuntimeData.getInstance().getRemoved().clear();        
+				}      
 				//Draw ground
 				for (MapCell cell : toDraw) {
 					game.getBatch().draw(cell.getLayers().get(0), cell.getxPos(), cell.getyPos());
@@ -117,10 +111,13 @@ public class GameManager implements Screen {
 				for(Entity ent: RuntimeData.getInstance().getEntities()){
 					game.getBatch().draw(ent.getShadow(),ent.getPos()[0]+8,ent.getPos()[1]-18);
 				}
-				drawProjectileShadow();
 				//Draw entities
 				for(Entity ent: RuntimeData.getInstance().getEntities()){
-					game.getBatch().draw(ent.getCurrentFrame(stateTime),ent.getPos()[0],ent.getPos()[1]);
+					if(ent instanceof Projectile){
+						game.getBatch().draw(ent.getCurrentFrame(stateTime), ent.getPos()[0],ent.getPos()[1], ent.getSize()[0]/2, ent.getSize()[1]/2, ent.getSize()[0], ent.getSize()[1], 1, 1, ((Projectile) ent).getRotation());
+					}else{
+						game.getBatch().draw(ent.getCurrentFrame(stateTime),ent.getPos()[0],ent.getPos()[1]);
+					}
 				}
 				//Draw walls
 				for (MapCell cell : toDraw) {
@@ -128,22 +125,15 @@ public class GameManager implements Screen {
 						game.getBatch().draw(cell.getLayers().get(1), cell.getxPos(), cell.getyPos());
 					}
 				}
-
-				drawProjectiles();
 				game.getBatch().end();
+
+				RuntimeData.getInstance().updateEntities();
+				for(Entity ent: RuntimeData.getInstance().getEntities()){
+					if(ent instanceof Projectile){
+						((Projectile) ent).updatePosition(enMoSys);
+					}
+				}
 			}
-		}
-	}
-		
-	private void drawProjectiles(){
-		for(Projectile prj: RuntimeData.getInstance().getCurrentProjectiles()){
-			game.getBatch().draw(prj.getCurrentFrame(stateTime),prj.getPos()[0],prj.getPos()[1], prj.getSize()[0]/2, prj.getSize()[1]/2, prj.getSize()[0], prj.getSize()[1], 1, 1, prj.getRotation());
-		}
-	}
-	private void drawProjectileShadow(){
-		for(Projectile prj: RuntimeData.getInstance().getCurrentProjectiles()){
-			prj.updatePosition(enMoSys);
-			game.getBatch().draw(prj.getShadow(),prj.getPos()[0]+8,prj.getPos()[1]-25);
 		}
 	}
 

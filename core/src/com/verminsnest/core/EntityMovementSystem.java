@@ -31,16 +31,7 @@ public class EntityMovementSystem {
 						}
 					}
 				}
-				for(Entity refEnt: RuntimeData.getInstance().getCurrentProjectiles()){
-					if(!entity.equals(refEnt)){
-						for(int x = entity.getPos()[0]; x <= entity.getPos()[0]+entity.getSize()[0]; x++){
-							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
-								return false;
-							}
-						}
-					}
-				}
-					entity.getPos()[1] += 1;
+				entity.getPos()[1] += 1;
 			}
 		}
 		return true;
@@ -56,15 +47,6 @@ public class EntityMovementSystem {
 			}else{
 				int y = entity.getPos()[1]-1;
 				for(Entity refEnt: RuntimeData.getInstance().getEntities()){
-					if(!entity.equals(refEnt)){
-						for(int x = entity.getPos()[0]; x <= entity.getPos()[0]+entity.getSize()[0]; x++){
-							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
-								return false;
-							}
-						}
-					}
-				}
-				for(Entity refEnt: RuntimeData.getInstance().getCurrentProjectiles()){
 					if(!entity.equals(refEnt)){
 						for(int x = entity.getPos()[0]; x <= entity.getPos()[0]+entity.getSize()[0]; x++){
 							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
@@ -97,15 +79,6 @@ public class EntityMovementSystem {
 						}
 					}
 				}
-				for(Entity refEnt: RuntimeData.getInstance().getCurrentProjectiles()){
-					if(!entity.equals(refEnt)){
-						for(int y = entity.getPos()[1]; y <= entity.getPos()[1]+entity.getSize()[1]; y++){
-							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
-								return false;
-							}
-						}
-					}
-				}
 					entity.getPos()[0] -= 1;
 			}
 		}
@@ -122,15 +95,6 @@ public class EntityMovementSystem {
 			}else{
 				int x = entity.getPos()[0]+entity.getSize()[0]+1;
 				for(Entity refEnt: RuntimeData.getInstance().getEntities()){
-					if(!entity.equals(refEnt)){
-						for(int y = entity.getPos()[1]; y <= entity.getPos()[1]+entity.getSize()[1]; y++){
-							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
-								return false;
-							}
-						}
-					}
-				}
-				for(Entity refEnt: RuntimeData.getInstance().getCurrentProjectiles()){
 					if(!entity.equals(refEnt)){
 						for(int y = entity.getPos()[1]; y <= entity.getPos()[1]+entity.getSize()[1]; y++){
 							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){

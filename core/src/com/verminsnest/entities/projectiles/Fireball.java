@@ -3,11 +3,13 @@ package com.verminsnest.entities.projectiles;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.verminsnest.misc.assets.VNAssetManager;
+import com.verminsnest.singletons.RuntimeData;
 
 public class Fireball extends Projectile{
 
 	public Fireball(int direction, int agility, int damage, int[] position, float stateTime) {
-		super(direction, agility, damage, position, stateTime);
+		super(VNAssetManager.GAMEPLAY_FIREBALL,direction, agility, damage, position, stateTime);
 	}
 
 	@Override
@@ -17,10 +19,10 @@ public class Fireball extends Projectile{
 			agility = 11;
 		}
 		//Textures
-		this.shadow = new Texture("textures/characters/mage/FireBall-Shadow.png");
-		Texture flyingSheet = new Texture("textures/projectiles/fireball/FireBall-Flying.png");
-		Texture hitSheet = new Texture("textures/projectiles/fireball/FireBall-Hit.png");
-		Texture castSheet = new Texture("textures/projectiles/fireball/FireBall-Cast.png");
+		this.shadow = RuntimeData.getInstance().getAsset("textures/projectiles/fireball/FireBall-Shadow.png");
+		Texture flyingSheet = RuntimeData.getInstance().getAsset("textures/projectiles/fireball/FireBall-Flying.png");
+		Texture hitSheet = RuntimeData.getInstance().getAsset("textures/projectiles/fireball/FireBall-Hit.png");
+		Texture castSheet = RuntimeData.getInstance().getAsset("textures/projectiles/fireball/FireBall-Cast.png");
 		TextureRegion[][] temp = TextureRegion.split(flyingSheet, flyingSheet.getHeight(), flyingSheet.getHeight());
 		TextureRegion[] frames = new TextureRegion[temp[0].length];
 		

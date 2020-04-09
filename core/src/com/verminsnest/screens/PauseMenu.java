@@ -6,17 +6,14 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Texture;
 import com.verminsnest.exceptions.OutOfBounds;
 import com.verminsnest.gamedev.VerminsNest;
+import com.verminsnest.misc.assets.VNAssetManager;
 import com.verminsnest.misc.gui.Button;
 import com.verminsnest.misc.gui.ButtonManager;
 import com.verminsnest.singletons.RuntimeData;
 
 public class PauseMenu implements Screen {
-
-
-	private Texture backgroundScrollImg;
 
 	private VerminsNest game;
 	private boolean running;
@@ -46,16 +43,14 @@ public class PauseMenu implements Screen {
 		bManager = new ButtonManager(buttonList);
 		bManager.setSize(100);
 		try {
-			bManager.calcMidofBounds(backgroundScrollImg.getWidth(), backgroundScrollImg.getHeight(), new Point((int)(game.getCamera().position.x - backgroundScrollImg.getWidth() / 2),
-					(int) (game.getCamera().position.y - backgroundScrollImg.getHeight() / 2)));
+			bManager.calcMidofBounds(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth(), RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight(), new Point((int)(game.getCamera().position.x - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth() / 2),
+					(int) (game.getCamera().position.y - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2)));
 		} catch (OutOfBounds e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public void init(){
-		backgroundScrollImg = new Texture("textures/menus/MenuScroll.png");
-		
 		// Buttons
 		blockTime = 0;
 		blockStartTime = System.currentTimeMillis();
@@ -68,8 +63,8 @@ public class PauseMenu implements Screen {
 	public void render(float delta) {
 		if (running) {
 			game.getBatch().begin();
-			game.getBatch().draw(backgroundScrollImg, game.getCamera().position.x - backgroundScrollImg.getWidth() / 2,
-					game.getCamera().position.y - backgroundScrollImg.getHeight() / 2);
+			game.getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png"), game.getCamera().position.x - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth() / 2,
+					game.getCamera().position.y - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2);
 			bManager.draw(game.getBatch());
 			game.getBatch().end();
 			this.mangageControls();
@@ -99,6 +94,7 @@ public class PauseMenu implements Screen {
 				game.togglePause();
 				break;
 			case QUIT:
+				RuntimeData.getInstance().disposeTextures(VNAssetManager.GAMEPLAY);;
 				RuntimeData.getInstance().clearData();
 				game.screenMainMenu(this);
 				break;
@@ -130,7 +126,6 @@ public class PauseMenu implements Screen {
 
 	@Override
 	public void dispose() {
-		backgroundScrollImg.dispose();
 		bManager.dispose();
 	}
 

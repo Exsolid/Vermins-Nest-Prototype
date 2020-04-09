@@ -2,8 +2,9 @@ package com.verminsnest.singletons;
 
 import java.util.ArrayList;
 
+import com.verminsnest.misc.assets.VNAssetManager;
+import com.badlogic.gdx.graphics.Texture;
 import com.verminsnest.entities.Entity;
-import com.verminsnest.entities.projectiles.Projectile;
 import com.verminsnest.mapgen.MapCell;
 
 public class RuntimeData {
@@ -11,17 +12,17 @@ public class RuntimeData {
 	private static RuntimeData instance;
 	private MapCell[][] map;
 	
-	private ArrayList<Projectile> projectiles;
-	private ArrayList<Projectile> updatedProjectiles;
-	
 	private ArrayList<Entity> entities;
 	private ArrayList<Entity> removedEntities;
+	private ArrayList<Entity> addedEntities;
+
+	private VNAssetManager assetManager;
 	
 	private RuntimeData(){
 		removedEntities = new ArrayList<Entity>();
 		entities = new ArrayList<Entity>();
-		projectiles = new ArrayList<Projectile>();
-		updatedProjectiles = new ArrayList<Projectile>();
+		addedEntities = new ArrayList<Entity>();
+		assetManager = new VNAssetManager();
 	}
 	
 	public static RuntimeData getInstance(){
@@ -37,42 +38,73 @@ public class RuntimeData {
 		this.map = map;
 	}
 	
-	public void updateProjectiles(){
-		projectiles.clear();
-		projectiles.addAll(updatedProjectiles);
+	public void addEntity(Entity ent){
+		addedEntities.add(ent);
 	}
-	public ArrayList<Projectile> getCurrentProjectiles(){
-		return projectiles;
+	
+	public void removeEntity(Entity ent){
+		removedEntities.add(ent);
 	}
-	public void addProjectile(Projectile prj){
-		updatedProjectiles.add(prj);
+	
+	public void updateEntities(){
+		entities.addAll(addedEntities);
+		addedEntities.clear();
+		boolean found = false;
+		for(Entity ent: removedEntities){
+			for(Entity refEnt: entities){
+				if(refEnt.getClass().equals(ent.getClass())){
+					found = true;
+				}
+			}
+			if(!found){
+				ent.dispose();
+			}
+			entities.remove(ent);
+		}
+		removedEntities.clear();
+	}
+	
+	public ArrayList<Entity> getCurrentEntities(){
+		return entities;
 	}
 	
 	public ArrayList<Entity> getRemoved(){
 		return removedEntities;
 	}
 	
-	public void removeProjectile(Projectile prj){
-		updatedProjectiles.remove(prj);
-		removedEntities.add(prj);
-	}
-	
 	public void clearData(){
-		for(Projectile prj: projectiles){
-			prj.dispose();
-		}
-		for(Projectile prj: updatedProjectiles){
-			prj.dispose();
-		}
 		for(Entity ent: entities){
 			ent.dispose();
 		}
+		for(Entity ent: addedEntities){
+			ent.dispose();
+		}
+		for(Entity ent: removedEntities){
+			ent.dispose();
+		}
+		map = null;
 		entities.clear();
-		updatedProjectiles.clear();
-		projectiles.clear();
+		addedEntities.clear();
+		removedEntities.clear();
 	}
 
 	public ArrayList<Entity> getEntities() {
-		return entities;
+		return new ArrayList<Entity>(entities);
+	}
+	
+	public Texture getAsset(String path){
+		return assetManager.getAsset(path);
+	}
+	
+	public void loadTextures(int id){
+		assetManager.loadTextures(id);
+	}
+	
+	public void disposeTextures(int id){
+		assetManager.disposeTextures(id);
+	}
+	public void dispose(){
+		assetManager.dispose();
+		instance = null;
 	}
 }

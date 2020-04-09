@@ -31,8 +31,8 @@ public abstract class Projectile extends Entity{
 	private float lastStateTime;
 	private boolean toReset;
 	
-	public Projectile(int direction, int agility,int damage, int[] position, float stateTime){
-		super(position);
+	public Projectile(int textureID, int direction, int agility,int damage, int[] position, float stateTime){
+		super(position, textureID);
 		
 		//Data
 		this.setDamage(damage);
@@ -129,7 +129,7 @@ public abstract class Projectile extends Entity{
 				pos[1] += speed;
 			}
 		}else if(state == TODELETE){
-			RuntimeData.getInstance().removeProjectile(this);
+			RuntimeData.getInstance().removeEntity(this);
 		}
 	}
 
@@ -151,13 +151,5 @@ public abstract class Projectile extends Entity{
 		}else{
 			return 0;
 		}
-	}
-	
-	@Override
-	public void dispose() {
-		shadow.dispose();
-		flyingAni.getKeyFrame(0).getTexture().dispose();
-		hitAni.getKeyFrame(0).getTexture().dispose();
-		castAni.getKeyFrame(0).getTexture().dispose();
 	}
 }
