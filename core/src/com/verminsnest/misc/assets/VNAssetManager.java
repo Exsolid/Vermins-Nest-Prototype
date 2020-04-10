@@ -10,6 +10,7 @@ public class VNAssetManager {
 	public final static int GAMEPLAY = 1;
 	public final static int GAMEPLAY_MAGE = 2;
 	public final static int GAMEPLAY_FIREBALL = 3;
+	public final static int GAMEPLAY_TINKER = 4;
 	private AssetManager assetManager;
 	
 	public VNAssetManager(){
@@ -33,6 +34,17 @@ public class VNAssetManager {
 			assetManager.load("textures/characters/mage/Mage-W-Right.png", Texture.class);
 			assetManager.load("textures/characters/mage/Mage-W-Left.png", Texture.class);
 			assetManager.load("textures/characters/mage/Mage-Idle.png", Texture.class);
+			break;
+		case GAMEPLAY_TINKER:
+			assetManager.load("textures/enemies/tinker/Tinker-A-Back.png", Texture.class);
+			assetManager.load("textures/enemies/tinker/Tinker-A-Front.png", Texture.class);
+			assetManager.load("textures/enemies/tinker/Tinker-A-Left.png", Texture.class);
+			assetManager.load("textures/enemies/tinker/Tinker-A-Right.png", Texture.class);
+			assetManager.load("textures/enemies/tinker/Tinker-W-Back.png", Texture.class);
+			assetManager.load("textures/enemies/tinker/Tinker-W-Front.png", Texture.class);
+			assetManager.load("textures/enemies/tinker/Tinker-W-Left.png", Texture.class);
+			assetManager.load("textures/enemies/tinker/Tinker-W-Right.png", Texture.class);
+			assetManager.load("textures/enemies/tinker/Tinker-Idle.png", Texture.class);
 			break;
 		case MENU:
 			assetManager.load("textures/general/Background.png", Texture.class);
@@ -66,6 +78,17 @@ public class VNAssetManager {
 			this.unload("textures/characters/mage/Mage-W-Right.png");
 			this.unload("textures/characters/mage/Mage-W-Left.png");
 			this.unload("textures/characters/mage/Mage-Idle.png");
+			break;
+		case GAMEPLAY_TINKER:
+			assetManager.unload("textures/enemies/tinker/Tinker-A-Back.png");
+			assetManager.unload("textures/enemies/tinker/Tinker-A-Front.png");
+			assetManager.unload("textures/enemies/tinker/Tinker-A-Left.png");
+			assetManager.unload("textures/enemies/tinker/Tinker-A-Right.png");
+			assetManager.unload("textures/enemies/tinker/Tinker-W-Back.png");
+			assetManager.unload("textures/enemies/tinker/Tinker-W-Front.png");
+			assetManager.unload("textures/enemies/tinker/Tinker-W-Left.png");
+			assetManager.unload("textures/enemies/tinker/Tinker-W-Right.png");
+			assetManager.unload("textures/enemies/tinker/Tinker-Idle.png");
 			break;
 		case MENU:
 			this.unload("textures/general/Background.png");

@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.verminsnest.core.EntityMovementSystem;
 import com.verminsnest.entities.Entity;
+import com.verminsnest.entities.enemies.Tinker;
 import com.verminsnest.entities.playables.Mage;
 import com.verminsnest.entities.playables.Playable;
 import com.verminsnest.entities.projectiles.Projectile;
@@ -25,12 +25,8 @@ public class GameManager implements Screen {
 	private long blockTime;
 	private boolean movementBlocked;
 	private long blockStartTime;
-	private char currentKey;
-	private char prevKey;
-
 	// Game
 	private VerminsNest game;
-	private EntityMovementSystem enMoSys;
 	
 	// Rendering
 	private float timeSinceRender = 0;
@@ -58,8 +54,6 @@ public class GameManager implements Screen {
 		blockTime = 0;
 		blockStartTime = System.currentTimeMillis();
 		movementBlocked = true;
-		prevKey = '-';
-		currentKey = '-';
 
 		// Rendering
 		running = true;
@@ -74,8 +68,7 @@ public class GameManager implements Screen {
 				}
 			}
 		}
-		enMoSys = new EntityMovementSystem(this.map);
-		RuntimeData.getInstance().addEntity(character);
+		new Tinker(new int[]{character.getPos()[0]-200,character.getPos()[1]-100});
 		// Textures
 		toDraw = new ArrayList<>();
 	}
@@ -111,6 +104,12 @@ public class GameManager implements Screen {
 				for(Entity ent: RuntimeData.getInstance().getEntities()){
 					game.getBatch().draw(ent.getShadow(),ent.getPos()[0]+8,ent.getPos()[1]-18);
 				}
+				//Draw walls
+				for (MapCell cell : toDraw) {
+					if (cell.getLayers().size() > 1 && !cell.isWalkable()) {
+						game.getBatch().draw(cell.getLayers().get(1), cell.getxPos(), cell.getyPos());
+					}
+				}
 				//Draw entities
 				for(Entity ent: RuntimeData.getInstance().getEntities()){
 					if(ent instanceof Projectile){
@@ -119,20 +118,9 @@ public class GameManager implements Screen {
 						game.getBatch().draw(ent.getCurrentFrame(stateTime),ent.getPos()[0],ent.getPos()[1]);
 					}
 				}
-				//Draw walls
-				for (MapCell cell : toDraw) {
-					if (cell.getLayers().size() > 1 && !cell.isWalkable()) {
-						game.getBatch().draw(cell.getLayers().get(1), cell.getxPos(), cell.getyPos());
-					}
-				}
 				game.getBatch().end();
 
 				RuntimeData.getInstance().updateEntities();
-				for(Entity ent: RuntimeData.getInstance().getEntities()){
-					if(ent instanceof Projectile){
-						((Projectile) ent).updatePosition(enMoSys);
-					}
-				}
 			}
 		}
 	}
@@ -160,84 +148,6 @@ public class GameManager implements Screen {
 		if (blockTime > 30) {
 			movementBlocked = false;
 		}
-
-		// Movement
-		// S Pressed
-		if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
-			prevKey = currentKey;
-			currentKey = 'S';
-		}
-		// D Pressed
-		if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
-			prevKey = currentKey;
-			currentKey = 'D';
-		}
-		// A Pressed
-		if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-			prevKey = currentKey;
-			currentKey = 'A';
-		}
-		// W Pressed
-		if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
-			prevKey = currentKey;
-			currentKey = 'W';
-		}
-
-		//Calculates proper movement
-		switch (currentKey) {
-		case 'W':
-			if (!Gdx.input.isKeyPressed(Input.Keys.W)) {
-				if (prevKey != '-') {
-					currentKey = prevKey;
-					prevKey = '-';
-				} else {
-					currentKey = '-';
-				}
-			}
-			enMoSys.moveTop(character, character.getSpeed());
-			character.setCurrentAni(Playable.W_BACK);
-			break;
-		case 'D':
-			if (!Gdx.input.isKeyPressed(Input.Keys.D)) {
-				if (prevKey != '-') {
-					currentKey = prevKey;
-					prevKey = '-';
-				} else {
-					currentKey = '-';
-				}
-			}
-			enMoSys.moveRight(character, character.getSpeed());
-			character.setCurrentAni(Playable.W_RIGHT);
-			break;
-		case 'S':
-			if (!Gdx.input.isKeyPressed(Input.Keys.S)) {
-				if (prevKey != '-') {
-					currentKey = prevKey;
-					prevKey = '-';
-				} else {
-					currentKey = '-';
-				}
-			}
-			enMoSys.moveDown(character, character.getSpeed());
-			character.setCurrentAni(Playable.W_FRONT);
-			break;
-		case 'A':
-			if (!Gdx.input.isKeyPressed(Input.Keys.A)) {
-				if (prevKey != '-') {
-					currentKey = prevKey;
-					prevKey = '-';
-				} else {
-					currentKey = '-';
-				}
-			}
-			enMoSys.moveLeft(character, character.getSpeed());
-			character.setCurrentAni(Playable.W_LEFT);
-			break;
-		case '-':
-			character.setCurrentAni(Playable.IDLE);
-			prevKey = '-';
-		}
-
 		game.getCamera().position.x = character.getPos()[0];
 		game.getCamera().position.y = character.getPos()[1];
 		game.setPro();

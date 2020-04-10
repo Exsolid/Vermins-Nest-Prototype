@@ -2,7 +2,6 @@ package com.verminsnest.entities.projectiles;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.verminsnest.core.EntityMovementSystem;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.singletons.RuntimeData;
 
@@ -104,18 +103,18 @@ public abstract class Projectile extends Entity{
 		}
 	}
 
-	public void updatePosition(EntityMovementSystem sys){
+	public void update(){
 		if(state == FLYING){
-			if(direction == EAST && !sys.moveRight(this,speed)){
+			if(direction == EAST && !RuntimeData.getInstance().getMovmentSystem().moveRight(this,speed)){
 				setCurrentAni(HIT);
 			}
-			else if(direction == WEST && !sys.moveLeft(this,speed)){
+			else if(direction == WEST && !RuntimeData.getInstance().getMovmentSystem().moveLeft(this,speed)){
 				setCurrentAni(HIT);
 			}
-			else if(direction == NORTH && !sys.moveTop(this,speed)){
+			else if(direction == NORTH && !RuntimeData.getInstance().getMovmentSystem().moveTop(this,speed)){
 				setCurrentAni(HIT);
 			}
-			else if(direction == SOUTH && !sys.moveDown(this,speed)){
+			else if(direction == SOUTH && !RuntimeData.getInstance().getMovmentSystem().moveDown(this,speed)){
 				setCurrentAni(HIT);
 			}
 		}else if(state == HIT){

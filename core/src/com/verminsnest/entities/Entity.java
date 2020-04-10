@@ -15,6 +15,7 @@ public abstract class Entity {
 	
 	public Entity(int[] pos, int textureID){
 		RuntimeData.getInstance().loadTextures(textureID);
+		RuntimeData.getInstance().addEntity(this);
 		this.textureID = textureID;
 		this.pos = pos;
 		this.setId(this.toString());
@@ -22,6 +23,8 @@ public abstract class Entity {
 	}
 	
 	public abstract void init();
+	public abstract void setCurrentAni(int animationKey);
+	public abstract void update();
 	
 	public int[] getPos(){
 		return pos;

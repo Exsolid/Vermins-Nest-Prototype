@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.verminsnest.misc.assets.VNAssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.verminsnest.core.EntityMovementSystem;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.mapgen.MapCell;
 
@@ -17,6 +18,7 @@ public class RuntimeData {
 	private ArrayList<Entity> addedEntities;
 
 	private VNAssetManager assetManager;
+	private EntityMovementSystem enMoSys;
 	
 	private RuntimeData(){
 		removedEntities = new ArrayList<Entity>();
@@ -36,6 +38,7 @@ public class RuntimeData {
 
 	public void setMap(MapCell[][] map) {
 		this.map = map;
+		enMoSys = new EntityMovementSystem(this.map);
 	}
 	
 	public void addEntity(Entity ent){
@@ -62,6 +65,10 @@ public class RuntimeData {
 			entities.remove(ent);
 		}
 		removedEntities.clear();
+
+		for(Entity ent: entities){
+			ent.update();
+		}
 	}
 	
 	public ArrayList<Entity> getCurrentEntities(){
@@ -90,6 +97,10 @@ public class RuntimeData {
 
 	public ArrayList<Entity> getEntities() {
 		return new ArrayList<Entity>(entities);
+	}
+	
+	public EntityMovementSystem getMovmentSystem(){
+		return enMoSys;
 	}
 	
 	public Texture getAsset(String path){

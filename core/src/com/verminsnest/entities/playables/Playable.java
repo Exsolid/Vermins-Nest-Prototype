@@ -1,9 +1,12 @@
 package com.verminsnest.entities.playables;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.verminsnest.entities.Entity;
+import com.verminsnest.singletons.RuntimeData;
 
 public abstract class Playable extends Entity {
 	
@@ -27,12 +30,18 @@ public abstract class Playable extends Entity {
 	
 	protected float lastAttack;
 	
+	private char currentKey;
+	private char prevKey;
+
 	
 	public Playable(int textureID,int[] position, int speed, int dmg, int agi){
 		super(position,textureID);
 		setSpeed(speed);
 		setStrength(dmg);
 		setAgility(agi);
+		
+		prevKey = '-';
+		currentKey = '-';
 		
 		shadow = new Texture("textures/characters/Shadow.png");
 		
@@ -42,9 +51,86 @@ public abstract class Playable extends Entity {
 	}
 	
 	public abstract void init();
-	
 	public abstract void attack(float stateTime);
 
+	public void update(){
+		if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
+			prevKey = currentKey;
+			currentKey = 'S';
+		}
+		// D Pressed
+		if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
+			prevKey = currentKey;
+			currentKey = 'D';
+		}
+		// A Pressed
+		if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
+			prevKey = currentKey;
+			currentKey = 'A';
+		}
+		// W Pressed
+		if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
+			prevKey = currentKey;
+			currentKey = 'W';
+		}
+
+		//Calculates proper movement
+		switch (currentKey) {
+		case 'W':
+			if (!Gdx.input.isKeyPressed(Input.Keys.W)) {
+				if (prevKey != '-') {
+					currentKey = prevKey;
+					prevKey = '-';
+				} else {
+					currentKey = '-';
+				}
+			}
+			RuntimeData.getInstance().getMovmentSystem().moveTop(this, this.getSpeed());
+			this.setCurrentAni(Playable.W_BACK);
+			break;
+		case 'D':
+			if (!Gdx.input.isKeyPressed(Input.Keys.D)) {
+				if (prevKey != '-') {
+					currentKey = prevKey;
+					prevKey = '-';
+				} else {
+					currentKey = '-';
+				}
+			}
+			RuntimeData.getInstance().getMovmentSystem().moveRight(this, this.getSpeed());
+			this.setCurrentAni(Playable.W_RIGHT);
+			break;
+		case 'S':
+			if (!Gdx.input.isKeyPressed(Input.Keys.S)) {
+				if (prevKey != '-') {
+					currentKey = prevKey;
+					prevKey = '-';
+				} else {
+					currentKey = '-';
+				}
+			}
+			RuntimeData.getInstance().getMovmentSystem().moveDown(this, this.getSpeed());
+			this.setCurrentAni(Playable.W_FRONT);
+			break;
+		case 'A':
+			if (!Gdx.input.isKeyPressed(Input.Keys.A)) {
+				if (prevKey != '-') {
+					currentKey = prevKey;
+					prevKey = '-';
+				} else {
+					currentKey = '-';
+				}
+			}
+			RuntimeData.getInstance().getMovmentSystem().moveLeft(this, this.getSpeed());
+			this.setCurrentAni(Playable.W_LEFT);
+			break;
+		case '-':
+			this.setCurrentAni(Playable.IDLE);
+			prevKey = '-';
+		}
+
+	}
+	
 	public int getSpeed() {
 		return speed;
 	}
@@ -69,6 +155,7 @@ public abstract class Playable extends Entity {
 		this.strength = strength;
 	}
 	
+	@Override
 	public void setCurrentAni(int animationKey) {
 		switch (animationKey){
 		case W_FRONT:
