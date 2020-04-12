@@ -3,6 +3,7 @@ package com.verminsnest.entities.enemies;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.singletons.RuntimeData;
 
@@ -33,6 +34,9 @@ public abstract class Enemy extends Entity {
 	protected int agility;
 	protected int strength;
 	
+	protected Vector2 leftVision;
+	protected Vector2 rightVision;
+	
 	public Enemy(int[] pos, int textureID, int agility, int speed, int strength) {
 		super(pos, textureID);
 		setSpeed(speed);
@@ -42,19 +46,90 @@ public abstract class Enemy extends Entity {
 		shadow = new Texture("textures/characters/Shadow.png");
 		
 		init();
-		this.setCurrentAni(IDLE);
+		this.setCurrentAni(W_FRONT);
 		this.setSize(currentAni.getKeyFrame(0).getRegionWidth(),currentAni.getKeyFrame(0).getRegionHeight());
+		
+		leftVision = new Vector2(pos[0]+size[0]/2, pos[1]).nor();
+		leftVision.setAngle(-45);
+		rightVision = new Vector2(pos[0]+size[0]/2, pos[1]).nor();
+		rightVision.setAngle(-135);
+ 
 	}
 	
 	public void update(){
-		for(Entity ent: RuntimeData.getInstance().getEntities()){
-			if(ent != this){
-				if(ent.getPos()[1] > this.getPos()[1]-400 &&ent.getPos()[1] < this.getPos()[1] && ent.getPos()[0] < this.getPos()[0]+this.getSize()[0]&& ent.getPos()[0] > this.getPos()[0]){
-					setCurrentAni(W_BACK);
-				}else{
-					setCurrentAni(IDLE);
+		int range = 300;
+		boolean found = false;
+		for(int i = 0; i<range; i+=16){
+
+			int yRight = (int) (pos[1]+i*rightVision.y); 
+			int xLeft = 0; 
+			int xRight = 0;
+			int yLeft = 0; 
+			int yMax = 0; 
+			int xMax = 0; 
+			for(Entity ent: RuntimeData.getInstance().getEntities()){
+				switch(state){
+				case IDLE:
+				case W_FRONT:
+				case A_FRONT:
+					leftVision.setAngle(-45);
+					rightVision.setAngle(-135);
+					xLeft = (int) (pos[0]+size[0]/2+i*leftVision.x); 
+					xRight = (int) (pos[0]+size[0]/2+i*rightVision.x);
+					yLeft = (int) (pos[1]+size[1]/2+i*leftVision.y); 
+					yMax = (int) (pos[1]+size[1]/2+range*leftVision.y); 
+					if((ent.getPos()[0]<xLeft && ent.getPos()[0]>xRight || ent.getPos()[0]+ent.getSize()[0]<xLeft && ent.getPos()[0]+ent.getSize()[0]>xRight)
+							&&(ent.getPos()[1]<yLeft && ent.getPos()[1]>yMax || ent.getPos()[1]+ent.getSize()[1]<yLeft && ent.getPos()[1]+ent.getSize()[1]>yMax) && ent != this){
+						found = true;
+					}
+					break;
+				case W_LEFT:
+				case A_LEFT:
+					leftVision.setAngle(-135);
+					rightVision.setAngle(135);
+					yLeft = (int) (pos[1]+size[1]/2+i*leftVision.y); 
+					yRight= (int) (pos[1]+size[1]/2+i*rightVision.y); 
+					xLeft = (int) (pos[0]+size[0]/2+i*leftVision.x);
+					xMax = (int) (pos[0]+size[0]/2+range*leftVision.x); 
+					if((ent.getPos()[1]>yLeft && ent.getPos()[1]<yRight || ent.getPos()[1]+ent.getSize()[1]>yLeft && ent.getPos()[1]+ent.getSize()[1]<yRight)
+							&&(ent.getPos()[0]<xLeft && ent.getPos()[0]>xMax || ent.getPos()[0]+ent.getSize()[0]<xLeft && ent.getPos()[0]+ent.getSize()[0]>xMax) && ent != this){
+						found = true;
+					}
+					break;
+				case W_RIGHT:
+				case A_RIGHT:
+					leftVision.setAngle(45);
+					rightVision.setAngle(-45);
+					yLeft = (int) (pos[1]+size[1]/2+i*leftVision.y); 
+					yRight= (int) (pos[1]+size[1]/2+i*rightVision.y); 
+					xLeft = (int) (pos[0]+size[0]/2+i*leftVision.x);
+					xMax = (int) (pos[0]+size[0]/2+range*leftVision.x); 
+					if((ent.getPos()[1]<yLeft && ent.getPos()[1]>yRight || ent.getPos()[1]+ent.getSize()[1]<yLeft && ent.getPos()[1]+ent.getSize()[1]>yRight)
+							&&(ent.getPos()[0]>xLeft && ent.getPos()[0]<xMax || ent.getPos()[0]+ent.getSize()[0]>xLeft && ent.getPos()[0]+ent.getSize()[0]<xMax) && ent != this){
+						found = true;
+					}
+					break;
+				case A_BACK:
+				case W_BACK:
+					leftVision.setAngle(135);
+					rightVision.setAngle(45);
+					xLeft = (int) (pos[0]+size[0]/2+i*leftVision.x); 
+					xRight = (int) (pos[0]+size[0]/2+i*rightVision.x);
+					yLeft = (int) (pos[1]+size[1]/2+i*leftVision.y); 
+					yMax = (int) (pos[1]+size[1]/2+range*leftVision.y); 
+					if((ent.getPos()[0]>xLeft && ent.getPos()[0]<xRight || ent.getPos()[0]+ent.getSize()[0]>xLeft && ent.getPos()[0]+ent.getSize()[0]<xRight)
+							&&(ent.getPos()[1]>yLeft && ent.getPos()[1]<yMax || ent.getPos()[1]+ent.getSize()[1]>yLeft && ent.getPos()[1]+ent.getSize()[1]<yMax ) && ent != this){
+						found = true;
+					}
+					break;
 				}
 			}
+		}
+		//TODO ANN
+		if(found){
+			System.out.println("FOUND");
+		}else{
+			System.out.println("NO");
 		}
 	}
 	
