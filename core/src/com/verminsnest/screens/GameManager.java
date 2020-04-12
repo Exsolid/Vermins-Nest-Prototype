@@ -102,7 +102,7 @@ public class GameManager implements Screen {
 				}
 				//Draw shadows
 				for(Entity ent: RuntimeData.getInstance().getEntities()){
-					game.getBatch().draw(ent.getShadow(),ent.getPos()[0]+8,ent.getPos()[1]-18);
+					game.getBatch().draw(ent.getShadow(),ent.getPos()[0]+ent.getSize()[0]*1/8,ent.getPos()[1]-4);
 				}
 				//Draw walls
 				for (MapCell cell : toDraw) {
@@ -172,7 +172,6 @@ public class GameManager implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -187,7 +186,6 @@ public class GameManager implements Screen {
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
 
 	}
 
