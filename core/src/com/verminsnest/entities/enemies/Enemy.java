@@ -52,7 +52,7 @@ public abstract class Enemy extends Entity {
 		setAgility(agility);
 		setStrength(strength);
 		
-		shadow = new Texture("textures/characters/Shadow.png");
+		shadow = new Texture("textures/enemies/Shadow.png");
 		
 		init();
 		this.setCurrentAni(IDLE);
