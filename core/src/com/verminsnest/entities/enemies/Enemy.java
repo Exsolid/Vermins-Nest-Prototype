@@ -3,7 +3,6 @@ package com.verminsnest.entities.enemies;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -41,10 +40,12 @@ public abstract class Enemy extends Entity {
 	
 	private Vector2 leftVision;
 	private Vector2 rightVision;
-	private Entity alerted;
-	private Entity playerAlerted;
+	protected Entity alerted;
+	protected Entity playerAlerted;
 	private float timer;
 	private int lastDirCount;
+	protected boolean movedLeftOf;
+	protected boolean movedRightOf;
 	
 	public Enemy(int[] pos, int textureID, int agility, int speed, int strength) {
 		super(pos, textureID);
@@ -52,7 +53,7 @@ public abstract class Enemy extends Entity {
 		setAgility(agility);
 		setStrength(strength);
 		
-		shadow = new Texture("textures/enemies/Shadow.png");
+		shadow = RuntimeData.getInstance().getAsset("textures/enemies/Shadow.png");
 		
 		init();
 		this.setCurrentAni(IDLE);
@@ -70,11 +71,12 @@ public abstract class Enemy extends Entity {
 		updateAction();
 		timer += Gdx.graphics.getDeltaTime();
 	}
-	
+	protected abstract void chooseAvoidAction(int xDistance, int yDistance);
+	protected abstract void chooseAgressiveAction(int xDistance, int yDistance);
 	private void updateAction(){
 		if(alerted != null && alerted instanceof Playable){
 			if(timer < 3){
-				//TODO ANN current action
+				chooseAgressiveAction(this.pos[0]-alerted.getPos()[0],this.pos[1]-alerted.getPos()[1]);
 			}else{
 				playerAlerted = null;
 				alerted = null;
@@ -82,8 +84,8 @@ public abstract class Enemy extends Entity {
 				setCurrentAni(IDLE);
 			}
 		}else if(alerted != null && (alerted instanceof Projectile || alerted instanceof Enemy)){
-			if(timer < 0.1){
-				//TODO ANN current action
+			if(timer < 1){
+				chooseAvoidAction(this.pos[0]-alerted.getPos()[0],this.pos[1]-alerted.getPos()[1]);
 			}else{
 				if(playerAlerted != null){
 					alerted = playerAlerted;
@@ -119,11 +121,13 @@ public abstract class Enemy extends Entity {
 					yMax = (int) (pos[1]+size[1]/2+range*leftVision.y); 
 					if((ent.getPos()[0]<xLeft && ent.getPos()[0]>xRight || ent.getPos()[0]+ent.getSize()[0]<xLeft && ent.getPos()[0]+ent.getSize()[0]>xRight)
 							&&(ent.getPos()[1]<yLeft && ent.getPos()[1]>yMax || ent.getPos()[1]+ent.getSize()[1]<yLeft && ent.getPos()[1]+ent.getSize()[1]>yMax) && ent != this){
-						alerted = ent;
-						if(ent instanceof Playable){
-							playerAlerted = ent;
+						if(!(ent instanceof Enemy)){
+							alerted = ent;
+							if(ent instanceof Playable){
+								playerAlerted = ent;
+							}
+							timer= 0;
 						}
-						timer= 0;
 					}
 					break;
 				case W_LEFT:
@@ -136,11 +140,13 @@ public abstract class Enemy extends Entity {
 					xMax = (int) (pos[0]+size[0]/2+range*leftVision.x); 
 					if((ent.getPos()[1]>yLeft && ent.getPos()[1]<yRight || ent.getPos()[1]+ent.getSize()[1]>yLeft && ent.getPos()[1]+ent.getSize()[1]<yRight)
 							&&(ent.getPos()[0]<xLeft && ent.getPos()[0]>xMax || ent.getPos()[0]+ent.getSize()[0]<xLeft && ent.getPos()[0]+ent.getSize()[0]>xMax) && ent != this){
-						alerted = ent;
-						if(ent instanceof Playable){
-							playerAlerted = ent;
+						if(!(ent instanceof Enemy)){
+							alerted = ent;
+							if(ent instanceof Playable){
+								playerAlerted = ent;
+							}
+							timer= 0;
 						}
-						timer= 0;
 					}
 					break;
 				case W_RIGHT:
@@ -153,11 +159,13 @@ public abstract class Enemy extends Entity {
 					xMax = (int) (pos[0]+size[0]/2+range*leftVision.x); 
 					if((ent.getPos()[1]<yLeft && ent.getPos()[1]>yRight || ent.getPos()[1]+ent.getSize()[1]<yLeft && ent.getPos()[1]+ent.getSize()[1]>yRight)
 							&&(ent.getPos()[0]>xLeft && ent.getPos()[0]<xMax || ent.getPos()[0]+ent.getSize()[0]>xLeft && ent.getPos()[0]+ent.getSize()[0]<xMax) && ent != this){
-						alerted = ent;
-						if(ent instanceof Playable){
-							playerAlerted = ent;
+						if(!(ent instanceof Enemy)){
+							alerted = ent;
+							if(ent instanceof Playable){
+								playerAlerted = ent;
+							}
+							timer= 0;
 						}
-						timer= 0;
 					}
 					break;
 				case A_BACK:
@@ -170,11 +178,13 @@ public abstract class Enemy extends Entity {
 					yMax = (int) (pos[1]+size[1]/2+range*leftVision.y); 
 					if((ent.getPos()[0]>xLeft && ent.getPos()[0]<xRight || ent.getPos()[0]+ent.getSize()[0]>xLeft && ent.getPos()[0]+ent.getSize()[0]<xRight)
 							&&(ent.getPos()[1]>yLeft && ent.getPos()[1]<yMax || ent.getPos()[1]+ent.getSize()[1]>yLeft && ent.getPos()[1]+ent.getSize()[1]<yMax ) && ent != this){
-						alerted = ent;
-						if(ent instanceof Playable){
-							playerAlerted = ent;
+						if(!(ent instanceof Enemy)){
+								alerted = ent;
+							if(ent instanceof Playable){
+								playerAlerted = ent;
+							}
+							timer= 0;
 						}
-						timer= 0;
 					}
 					break;
 				}
@@ -182,113 +192,106 @@ public abstract class Enemy extends Entity {
 		}
 	}
 	
-	private void walkLeftOf(){
+	protected void walkLeftOf(){
 		int x = Math.abs(alerted.getPos()[0]-this.pos[0])+1;
 		int y = Math.abs(alerted.getPos()[1]-this.pos[1])+1;
-		if(lastDirCount < 0){
-			 if(alerted.getPos()[0] >= this.pos[0] && alerted.getPos()[1] >= this.pos[1] && x < y){
-				 RuntimeData.getInstance().getMovmentSystem().moveRight(this,speed);
-				 setCurrentAni(W_RIGHT);
-			 }else if(alerted.getPos()[0] >= this.pos[0] && alerted.getPos()[1] >= this.pos[1] && x > y){
-				 RuntimeData.getInstance().getMovmentSystem().moveTop(this,speed);
-				 setCurrentAni(W_BACK);
-			 }
-			 else if(alerted.getPos()[0] <= this.pos[0] && alerted.getPos()[1] <= this.pos[1] && x < y){
-				 RuntimeData.getInstance().getMovmentSystem().moveLeft(this,speed);
-				 setCurrentAni(W_LEFT);
-			 }else if(alerted.getPos()[0] <= this.pos[0] && alerted.getPos()[1] <= this.pos[1] && x > y){
-				 RuntimeData.getInstance().getMovmentSystem().moveDown(this,speed);
-				 setCurrentAni(W_FRONT);
-			 }
-			 else if(alerted.getPos()[0] >= this.pos[0] && alerted.getPos()[1] <= this.pos[1] && x < y){
-				 RuntimeData.getInstance().getMovmentSystem().moveLeft(this,speed);
-				 setCurrentAni(W_LEFT);
-			 }else if(alerted.getPos()[0] >= this.pos[0] && alerted.getPos()[1] <= this.pos[1] && x > y){
-				 RuntimeData.getInstance().getMovmentSystem().moveTop(this,speed);
-				 setCurrentAni(W_BACK);
-			 }
-			 else if(alerted.getPos()[0] <= this.pos[0] && alerted.getPos()[1] >= this.pos[1] && x < y){
-				 RuntimeData.getInstance().getMovmentSystem().moveRight(this,speed);
-				 setCurrentAni(W_RIGHT);
-			 }else if(alerted.getPos()[0] <= this.pos[0] && alerted.getPos()[1] >= this.pos[1] && x > y){
-				 RuntimeData.getInstance().getMovmentSystem().moveDown(this,speed);
-				 setCurrentAni(W_FRONT);
-			 }
-			 lastDirCount = 3;
-		}else{
-			switch (state){
-			case IDLE:
-			case W_FRONT:
-				RuntimeData.getInstance().getMovmentSystem().moveDown(this,speed);
-				break;
-			case W_BACK:
-				 RuntimeData.getInstance().getMovmentSystem().moveTop(this,speed);
-				break;
-			case W_LEFT:
-				 RuntimeData.getInstance().getMovmentSystem().moveLeft(this,speed);
-				break;
-			case W_RIGHT:
-				 RuntimeData.getInstance().getMovmentSystem().moveRight(this,speed);
-				break;
+			if(!movedLeftOf){
+				if(alerted.getPos()[0]>this.getPos()[0] && alerted.getPos()[1]>this.getPos()[1] && x < y&& ((Projectile)alerted).getRotation() == 180){
+					 RuntimeData.getInstance().getMovmentSystem().moveLeft(this, speed);
+					 setCurrentAni(W_LEFT);
+					 lastDirCount = 4;
+					 movedLeftOf = true;
+				 }else if(alerted.getPos()[0]<this.getPos()[0] && alerted.getPos()[1]<this.getPos()[1] && x < y&& ((Projectile)alerted).getRotation() == 0){
+					 RuntimeData.getInstance().getMovmentSystem().moveRight(this, speed);
+					 setCurrentAni(W_RIGHT);
+					 lastDirCount = 4;
+					 movedLeftOf = true;
+				 }else if(alerted.getPos()[0]<this.getPos()[0] && alerted.getPos()[1]>this.getPos()[1] && x > y&& ((Projectile)alerted).getRotation() == -90){
+					 RuntimeData.getInstance().getMovmentSystem().moveDown(this, speed);
+					 setCurrentAni(W_FRONT);
+					 lastDirCount = 4;
+					 movedLeftOf = true;
+				 }else if(alerted.getPos()[0]>this.getPos()[0] && alerted.getPos()[1]<this.getPos()[1] && x > y&& ((Projectile)alerted).getRotation() == 90){
+					 RuntimeData.getInstance().getMovmentSystem().moveTop(this, speed);
+					 setCurrentAni(W_BACK);
+					 lastDirCount = 4;
+					 movedLeftOf = true;
+				 }
+			}else{
+				switch (state){
+				case IDLE:
+				case W_FRONT:
+					RuntimeData.getInstance().getMovmentSystem().moveDown(this,speed);
+					break;
+				case W_BACK:
+					 RuntimeData.getInstance().getMovmentSystem().moveTop(this,speed);
+					break;
+				case W_LEFT:
+					 RuntimeData.getInstance().getMovmentSystem().moveLeft(this,speed);
+					break;
+				case W_RIGHT:
+					 RuntimeData.getInstance().getMovmentSystem().moveRight(this,speed);
+					break;
+				}
+				lastDirCount--;
+				if(lastDirCount < 0){
+					movedLeftOf = false;
 			}
-			lastDirCount--;
 		}
 	}
 	
-	private void walkRightOf(){
+	protected void walkRightOf(){
 		int x = Math.abs(alerted.getPos()[0]-this.pos[0])+1;
 		int y = Math.abs(alerted.getPos()[1]-this.pos[1])+1;
-		if(lastDirCount < 0){
-			 if(alerted.getPos()[0] >= this.pos[0] && alerted.getPos()[1] >= this.pos[1] && x < y){
-				 RuntimeData.getInstance().getMovmentSystem().moveLeft(this,speed);
-				 setCurrentAni(W_LEFT);
-			 }else if(alerted.getPos()[0] >= this.pos[0] && alerted.getPos()[1] >= this.pos[1] && x > y){
-				 RuntimeData.getInstance().getMovmentSystem().moveDown(this,speed);
-				 setCurrentAni(W_FRONT);
-			 }
-			 else if(alerted.getPos()[0] <= this.pos[0] && alerted.getPos()[1] <= this.pos[1] && x < y){
-				 RuntimeData.getInstance().getMovmentSystem().moveRight(this,speed);
-				 setCurrentAni(W_RIGHT);
-			 }else if(alerted.getPos()[0] <= this.pos[0] && alerted.getPos()[1] <= this.pos[1] && x > y){
-				 RuntimeData.getInstance().getMovmentSystem().moveTop(this,speed);
-				 setCurrentAni(W_BACK);
-			 }
-			 else if(alerted.getPos()[0] >= this.pos[0] && alerted.getPos()[1] <= this.pos[1] && x < y){
-				 RuntimeData.getInstance().getMovmentSystem().moveRight(this,speed);
-				 setCurrentAni(W_RIGHT);
-			 }else if(alerted.getPos()[0] >= this.pos[0] && alerted.getPos()[1] <= this.pos[1] && x > y){
-				 RuntimeData.getInstance().getMovmentSystem().moveDown(this,speed);
-				 setCurrentAni(W_FRONT);
-			 }
-			 else if(alerted.getPos()[0] <= this.pos[0] && alerted.getPos()[1] >= this.pos[1] && x < y){
-				 RuntimeData.getInstance().getMovmentSystem().moveLeft(this,speed);
-				 setCurrentAni(W_LEFT);
-			 }else if(alerted.getPos()[0] <= this.pos[0] && alerted.getPos()[1] >= this.pos[1] && x > y){
-				 RuntimeData.getInstance().getMovmentSystem().moveTop(this,speed);
-				 setCurrentAni(W_BACK);
-			 }
-			 lastDirCount = 3;
-		}else{
-			switch (state){
-			case IDLE:
-			case W_FRONT:
-				RuntimeData.getInstance().getMovmentSystem().moveDown(this,speed);
-				break;
-			case W_BACK:
-				 RuntimeData.getInstance().getMovmentSystem().moveTop(this,speed);
-				break;
-			case W_LEFT:
-				 RuntimeData.getInstance().getMovmentSystem().moveLeft(this,speed);
-				break;
-			case W_RIGHT:
-				 RuntimeData.getInstance().getMovmentSystem().moveRight(this,speed);
-				break;
+
+		if(alerted instanceof Projectile){
+				if(!movedRightOf){
+					 if(alerted.getPos()[0]>=this.getPos()[0] && alerted.getPos()[1]>=this.getPos()[1] && x > y && ((Projectile)alerted).getRotation() == 90){
+						 RuntimeData.getInstance().getMovmentSystem().moveDown(this, speed);
+						 setCurrentAni(W_FRONT);
+						 lastDirCount = 3;
+						 movedRightOf = true;
+					 }else if(alerted.getPos()[0]<=this.getPos()[0] && alerted.getPos()[1]<=this.getPos()[1] && x > y && ((Projectile)alerted).getRotation() == -90){
+						 RuntimeData.getInstance().getMovmentSystem().moveTop(this, speed);
+						 setCurrentAni(W_BACK);
+						 lastDirCount = 3;
+						 movedRightOf = true;
+					 }else if(alerted.getPos()[0]<=this.getPos()[0] && alerted.getPos()[1]>=this.getPos()[1] && x < y && ((Projectile)alerted).getRotation() == 180){
+						 RuntimeData.getInstance().getMovmentSystem().moveRight(this, speed);
+						 setCurrentAni(W_RIGHT);
+						 lastDirCount = 3;
+						 movedRightOf = true;
+					 }else if(alerted.getPos()[0]>=this.getPos()[0] && alerted.getPos()[1]<=this.getPos()[1] && x < y&& ((Projectile)alerted).getRotation() == 0){
+						 RuntimeData.getInstance().getMovmentSystem().moveLeft(this, speed);
+						 setCurrentAni(W_LEFT);
+						 lastDirCount = 3;
+						 movedRightOf = true;
+					 }
+				}else{
+					switch (state){
+					case IDLE:
+					case W_FRONT:
+						RuntimeData.getInstance().getMovmentSystem().moveDown(this,speed);
+						break;
+					case W_BACK:
+						 RuntimeData.getInstance().getMovmentSystem().moveTop(this,speed);
+						break;
+					case W_LEFT:
+						 RuntimeData.getInstance().getMovmentSystem().moveLeft(this,speed);
+						break;
+					case W_RIGHT:
+						 RuntimeData.getInstance().getMovmentSystem().moveRight(this,speed);
+						break;
+					}
+					lastDirCount--;
+					if(lastDirCount < 0){
+						movedRightOf = false;
+				}
 			}
-			lastDirCount--;
 		}
 	}
 	
-	private void walkTowards(){
+	protected void walkTowards(){
 		if(lastDirCount < 0){
 			Random rand = new Random();
 			 int x = Math.abs(alerted.getPos()[0]-this.pos[0])+1;
@@ -330,10 +333,11 @@ public abstract class Enemy extends Entity {
 				break;
 			}
 			lastDirCount--;
+			
 		}
 	}
 	
-	private void walkAway(){
+	protected void walkAway(){
 		if(lastDirCount < 0){
 			Random rand = new Random();
 			 int x = Math.abs(alerted.getPos()[0]-this.pos[0])+1;
@@ -356,7 +360,7 @@ public abstract class Enemy extends Entity {
 					 RuntimeData.getInstance().getMovmentSystem().moveTop(this,speed);
 					 setCurrentAni(W_BACK);
 				 }
-			 }
+			 }   
 			 lastDirCount = 4;
 		}else{
 			switch (state){

@@ -94,7 +94,6 @@ public class Mage extends Playable {
 				break;
 			}
 			prj.setCurrentAni(Projectile.CAST);
-			RuntimeData.getInstance().addEntity(prj);
 			lastAttack = stateTime;
 		}
 	}

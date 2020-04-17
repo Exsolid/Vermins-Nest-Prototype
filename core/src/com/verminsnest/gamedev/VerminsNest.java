@@ -7,11 +7,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.verminsnest.config.Configurator;
-import com.verminsnest.screens.GameManager;
 import com.verminsnest.screens.LoadingScreen;
 import com.verminsnest.screens.MainMenu;
-import com.verminsnest.screens.PauseMenu;
 import com.verminsnest.screens.SettingsMenu;
+import com.verminsnest.screens.gameplay.GameManager;
 
 public class VerminsNest extends Game {
 	
@@ -19,7 +18,6 @@ public class VerminsNest extends Game {
 	private MainMenu mainMenu;
 	private GameManager gameMan;
 	private SettingsMenu settingsMenu;
-	private PauseMenu pauseMenu;
 	private LoadingScreen loadingScreen;
 	
 	private SpriteBatch batch;
@@ -88,18 +86,13 @@ public class VerminsNest extends Game {
 	public void screenMainMenu(Screen toDispose){
 		if(mainMenu == null)mainMenu = new MainMenu(this);
 		this.setScreen(mainMenu);
-		if(toDispose instanceof PauseMenu){
-			gameMan.dispose();
-		}
 		toDispose.dispose();
 		r.gc();
 	}
 	
-	public void initGameManager(Screen toDispose){
+	public void screenGameManager(Screen toDispose){
 		if(gameMan == null)gameMan = new GameManager(this);
-		if(pauseMenu == null) pauseMenu = new PauseMenu(this);
-		pauseMenu.init();
-		gameMan.init();
+		this.setScreen(gameMan);
 		toDispose.dispose();
 		r.gc();
 	}
@@ -108,25 +101,6 @@ public class VerminsNest extends Game {
 		if(loadingScreen == null) loadingScreen = new LoadingScreen(this,nextScreenID);
 		this.setScreen(loadingScreen);
 		toDispose.dispose();
-		r.gc();
-	}
-	
-	public void screenGameManager(){
-		if(gameMan == null) gameMan = new GameManager(this);
-		this.setScreen(gameMan);
-		r.gc();
-	}
-	
-	public void togglePause(){
-		if(gameMan.isRunning()){
-			gameMan.pause();
-			this.setScreen(pauseMenu);
-			pauseMenu.resume();
-		}else{
-			pauseMenu.pause();
-			this.setScreen(gameMan);
-			gameMan.resume();
-		}
 		r.gc();
 	}
 	

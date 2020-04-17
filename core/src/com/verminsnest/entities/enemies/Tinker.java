@@ -3,11 +3,12 @@ package com.verminsnest.entities.enemies;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.verminsnest.entities.projectiles.Projectile;
 import com.verminsnest.misc.assets.VNAssetManager;
 import com.verminsnest.singletons.RuntimeData;
 
 public class Tinker extends Enemy {
-
+	
 	public Tinker(int[] pos) {
 		super(pos, VNAssetManager.GAMEPLAY_TINKER,5,5,5);
 	}
@@ -58,5 +59,20 @@ public class Tinker extends Enemy {
 			frames[i] = temp[0][i];
 		}
 		idleAni = new Animation<TextureRegion>(0.5f, frames);
+	}
+
+	@Override
+	protected void chooseAvoidAction(int xDistance, int yDistance) {
+		walkRightOf();
+		walkLeftOf();
+		if(!movedLeftOf && !movedRightOf){
+			if(playerAlerted != null)alerted = playerAlerted;
+			chooseAgressiveAction(xDistance,yDistance);
+		}
+	}
+
+	@Override
+	protected void chooseAgressiveAction(int xDistance, int yDistance) {
+		walkTowards();
 	}
 }

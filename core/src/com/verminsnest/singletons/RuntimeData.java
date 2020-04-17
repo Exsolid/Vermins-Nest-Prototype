@@ -89,6 +89,7 @@ public class RuntimeData {
 		for(Entity ent: removedEntities){
 			ent.dispose();
 		}
+		map[0][0].getLayers().get(0).getTexture().dispose();
 		map = null;
 		entities.clear();
 		addedEntities.clear();

@@ -19,7 +19,6 @@ public class Fireball extends Projectile{
 			agility = 11;
 		}
 		//Textures
-		this.shadow = RuntimeData.getInstance().getAsset("textures/projectiles/fireball/FireBall-Shadow.png");
 		Texture flyingSheet = RuntimeData.getInstance().getAsset("textures/projectiles/fireball/FireBall-Flying.png");
 		Texture hitSheet = RuntimeData.getInstance().getAsset("textures/projectiles/fireball/FireBall-Hit.png");
 		Texture castSheet = RuntimeData.getInstance().getAsset("textures/projectiles/fireball/FireBall-Cast.png");

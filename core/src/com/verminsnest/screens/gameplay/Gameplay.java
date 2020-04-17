@@ -1,10 +1,9 @@
-package com.verminsnest.screens;
+package com.verminsnest.screens.gameplay;
 
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.enemies.Tinker;
 import com.verminsnest.entities.playables.Mage;
@@ -14,81 +13,52 @@ import com.verminsnest.gamedev.VerminsNest;
 import com.verminsnest.mapgen.MapCell;
 import com.verminsnest.singletons.RuntimeData;
 
-public class GameManager implements Screen {
-
-	// Textures
-	private Playable character;
-	private MapCell[][] map;
-	private ArrayList<MapCell> toDraw;
-
+public class Gameplay extends GameplayScreen{
 	// Controls
 	private long blockTime;
 	private boolean movementBlocked;
 	private long blockStartTime;
-	// Game
-	private VerminsNest game;
+	// Textures
+	private Playable character;
+	private ArrayList<MapCell> toDraw;
 	
-	// Rendering
-	private float timeSinceRender = 0;
-	private float updateStep = 1 / 120f;
-	private float stateTime;
-	private boolean running;
-
-	public GameManager( VerminsNest game) {
-		this.game = game;
-	}
-
-	@Override
-	public void show() {
+	public Gameplay(VerminsNest game,GameManager gameMan) {
+		super(game,gameMan);
+		
+		character = new Mage(new int[] { 0, 0 });
+		// Controls
+		blockTime = 0;
+		blockStartTime = System.currentTimeMillis();
+		movementBlocked = true;
+		
+		for (int x = 0; x < RuntimeData.getInstance().getMap().length; x++) {
+			for (int y = 0; y < RuntimeData.getInstance().getMap()[0].length; y++) {
+				if (RuntimeData.getInstance().getMap()[x][y].isWalkable()) {
+					character.getPos()[0] = RuntimeData.getInstance().getMap()[x][y].getxPos();
+					character.getPos()[1] = RuntimeData.getInstance().getMap()[x][y].getyPos();
+				}
+			}
+		}
+		for( int i = 100; i<200; i+=100){
+			new Tinker(new int[]{character.getPos()[0]-i,character.getPos()[1]-100});
+		}
+		// Textures
+		toDraw = new ArrayList<>();
 		// Camera
 		game.getCamera().position.set(character.getPos()[0], character.getPos()[1], 0);
 		game.getCamera().update();
 		game.setPro();
 		calcToDraw();
 	}
-
-	// Initialization
-	public void init() {
-		character = new Mage(new int[] { 0, 0 });
-		// Controls
-		blockTime = 0;
-		blockStartTime = System.currentTimeMillis();
-		movementBlocked = true;
-
-		// Rendering
-		running = true;
-		stateTime = 0f;
-		
-		this.map = RuntimeData.getInstance().getMap();
-		for (int x = 0; x < map.length; x++) {
-			for (int y = 0; y < map[0].length; y++) {
-				if (this.map[x][y].isWalkable()) {
-					character.getPos()[0] = this.map[x][y].getxPos();
-					character.getPos()[1] = this.map[x][y].getyPos();
-				}
-			}
-		}
-		new Tinker(new int[]{character.getPos()[0]-200,character.getPos()[1]-100});
-		// Textures
-		toDraw = new ArrayList<>();
-	}
-
-	@Override
-	public void render(float delta) {
-		if (running) {
-			timeSinceRender += Gdx.graphics.getDeltaTime();
-			//Cap out rendering cycle to 120 frames/second
-			if (timeSinceRender >= updateStep) {
-				stateTime += delta;
-				timeSinceRender -= updateStep;
-
-				manageControls();
+	
+	public void render(float stateTime) {
 				//Draw stuff
 				game.getBatch().begin();
-				
 				//Draw removed one last time
 				for(Entity ent: RuntimeData.getInstance().getRemoved()){
-					game.getBatch().draw(ent.getShadow(),ent.getPos()[0]+8,ent.getPos()[1]-18);
+					if(ent.getShadow() != null){
+						game.getBatch().draw(ent.getShadow(),ent.getPos()[0]+8,ent.getPos()[1]-18);
+					}
 				}
 				for(Entity ent: RuntimeData.getInstance().getRemoved()){
 					game.getBatch().draw(ent.getCurrentFrame(stateTime),ent.getPos()[0],ent.getPos()[1]);
@@ -102,7 +72,9 @@ public class GameManager implements Screen {
 				}
 				//Draw shadows
 				for(Entity ent: RuntimeData.getInstance().getEntities()){
-					game.getBatch().draw(ent.getShadow(),ent.getPos()[0],ent.getPos()[1]);
+					if(ent.getShadow() != null){
+						game.getBatch().draw(ent.getShadow(),ent.getPos()[0],ent.getPos()[1]);	
+					}
 				}
 				//Draw walls
 				for (MapCell cell : toDraw) {
@@ -119,12 +91,31 @@ public class GameManager implements Screen {
 					}
 				}
 				game.getBatch().end();
-
-				RuntimeData.getInstance().updateEntities();
-			}
+	}
+	
+	public void manageControls(float stateTime) {
+		blockTime = System.currentTimeMillis() - blockStartTime;
+		if (blockTime > 30) {
+			movementBlocked = false;
+		}
+		game.getCamera().position.x = character.getPos()[0];
+		game.getCamera().position.y = character.getPos()[1];
+		game.setPro();
+		calcToDraw();
+		
+		//Pause
+		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE) && !movementBlocked) {
+			gameMan.setState(GameManager.PAUSEMENU);
+			movementBlocked = true;
+			blockStartTime = System.currentTimeMillis();
+		}
+		
+		//Attacking
+		if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+			character.attack(stateTime);
 		}
 	}
-
+	
 	// Calculates which tiles need to be rendered
 	private void calcToDraw() {
 		int[] width = new int[2];
@@ -137,61 +128,18 @@ public class GameManager implements Screen {
 		toDraw.clear();
 		for (int y = height[0]; y <= height[1]; y++) {
 			for (int x = width[0]; x <= width[1]; x++) {
-				toDraw.add(map[x][y]);
+				toDraw.add(RuntimeData.getInstance().getMap()[x][y]);
 			}
 		}
 	}
 
-	private void manageControls() {
-
-		blockTime = System.currentTimeMillis() - blockStartTime;
-		if (blockTime > 30) {
-			movementBlocked = false;
-		}
-		game.getCamera().position.x = character.getPos()[0];
-		game.getCamera().position.y = character.getPos()[1];
-		game.setPro();
-		calcToDraw();
-		
-		//Pause
-		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE) && !movementBlocked) {
-			game.togglePause();
-			movementBlocked = true;
-			blockStartTime = System.currentTimeMillis();
-		}
-		
-		//Attacking
-		if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
-			character.attack(stateTime);
-		}
-	}
-
-	public boolean isRunning() {
-		return running;
-	}
-
-	@Override
-	public void resize(int width, int height) {
-	}
-
-	@Override
-	public void pause() {
-		running = false;
-	}
-
-	@Override
-	public void resume() {
-		running = true;
-	}
-
-	@Override
-	public void hide() {
-
-	}
-
 	@Override
 	public void dispose() {
-		map[0][0].getLayers().get(0).getTexture().dispose();
-		character.dispose();
+	}
+
+	@Override
+	public void update(float stateTime) {
+		RuntimeData.getInstance().updateEntities();
+		manageControls(stateTime);
 	}
 }

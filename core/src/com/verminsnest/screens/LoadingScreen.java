@@ -46,8 +46,7 @@ public class LoadingScreen implements Screen{
 			}else if(LoadingModules.getInstance().getModules().isEmpty()){
 				switch(nextScreenID){
 				case GAMEMANAGER:
-					game.initGameManager(this);
-					game.screenGameManager();
+					game.screenGameManager(this);
 					RuntimeData.getInstance().disposeTextures(VNAssetManager.MENU);
 					break;
 				default:
