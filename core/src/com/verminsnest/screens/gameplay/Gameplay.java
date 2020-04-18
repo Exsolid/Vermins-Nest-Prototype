@@ -73,7 +73,7 @@ public class Gameplay extends GameplayScreen{
 				//Draw shadows
 				for(Entity ent: RuntimeData.getInstance().getEntities()){
 					if(ent.getShadow() != null){
-						game.getBatch().draw(ent.getShadow(),ent.getPos()[0],ent.getPos()[1]);	
+						game.getBatch().draw(ent.getShadow(),ent.getPos()[0],ent.getPos()[1]+ent.getYShadowOffset());	
 					}
 				}
 				//Draw walls

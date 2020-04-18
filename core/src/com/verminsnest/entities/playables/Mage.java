@@ -16,7 +16,7 @@ public class Mage extends Playable {
 	@Override
 	public void init() {
 		Texture wFrontSheet = RuntimeData.getInstance().getAsset("textures/characters/mage/Mage-W-Front.png");
-		TextureRegion[][] temp = TextureRegion.split(wFrontSheet, 64, 74);
+		TextureRegion[][] temp = TextureRegion.split(wFrontSheet, 50, 64);
 		TextureRegion[] frames = new TextureRegion[temp[0].length];
 
 		for (int i = 0; i < temp[0].length; i++) {
@@ -25,7 +25,7 @@ public class Mage extends Playable {
 		frontWalkAni = new Animation<TextureRegion>(1f / this.speed, frames);
 
 		Texture wBackSheet = RuntimeData.getInstance().getAsset("textures/characters/mage/Mage-W-Back.png");
-		temp = TextureRegion.split(wBackSheet, 64, 74);
+		temp = TextureRegion.split(wBackSheet, 50, 64);
 		frames = new TextureRegion[temp[0].length];
 
 		for (int i = 0; i < temp[0].length; i++) {
@@ -34,7 +34,7 @@ public class Mage extends Playable {
 		backWalkAni = new Animation<TextureRegion>(1f / this.speed, frames);
 
 		Texture wRightSheet = RuntimeData.getInstance().getAsset("textures/characters/mage/Mage-W-Right.png");
-		temp = TextureRegion.split(wRightSheet, 64, 74);
+		temp = TextureRegion.split(wRightSheet, 50, 64);
 		frames = new TextureRegion[temp[0].length];
 
 		for (int i = 0; i < temp[0].length; i++) {
@@ -43,7 +43,7 @@ public class Mage extends Playable {
 		rightWalkAni = new Animation<TextureRegion>(1f / this.speed, frames);
 
 		Texture wleftSheet = RuntimeData.getInstance().getAsset("textures/characters/mage/Mage-W-Left.png");
-		temp = TextureRegion.split(wleftSheet, 64, 74);
+		temp = TextureRegion.split(wleftSheet, 50, 64);
 		frames = new TextureRegion[temp[0].length];
 
 		for (int i = 0; i < temp[0].length; i++) {
@@ -52,13 +52,14 @@ public class Mage extends Playable {
 		leftWalkAni = new Animation<TextureRegion>(1f / this.speed, frames);
 
 		Texture idleSheet = RuntimeData.getInstance().getAsset("textures/characters/mage/Mage-Idle.png");
-		temp = TextureRegion.split(idleSheet, 64, 74);
+		temp = TextureRegion.split(idleSheet, 50, 64);
 		frames = new TextureRegion[temp[0].length];
 
 		for (int i = 0; i < temp[0].length; i++) {
 			frames[i] = temp[0][i];
 		}
 		idleAni = new Animation<TextureRegion>(0.5f, frames);
+		yShadowOffset = -15;
 	}
 
 	@Override

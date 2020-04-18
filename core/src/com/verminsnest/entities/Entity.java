@@ -12,6 +12,7 @@ public abstract class Entity {
 	private String id;
 	protected Animation<TextureRegion> currentAni;
 	protected Texture shadow;
+	protected int yShadowOffset;
 	
 	public Entity(int[] pos, int textureID){
 		RuntimeData.getInstance().loadTextures(textureID);
@@ -32,6 +33,10 @@ public abstract class Entity {
 	
 	public int[] getSize(){
 		return size;
+	}
+	
+	public int getYShadowOffset(){
+		return yShadowOffset;
 	}
 	
 	protected void setSize(int width, int height){

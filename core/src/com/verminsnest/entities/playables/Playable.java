@@ -43,7 +43,7 @@ public abstract class Playable extends Entity {
 		prevKey = '-';
 		currentKey = '-';
 		
-		shadow = new Texture("textures/characters/Shadow.png");
+		shadow = RuntimeData.getInstance().getAsset("textures/characters/Character-Shadow.png");
 		
 		init();
 		this.setCurrentAni(IDLE);

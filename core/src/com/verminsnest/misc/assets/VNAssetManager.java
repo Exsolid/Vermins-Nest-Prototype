@@ -23,6 +23,7 @@ public class VNAssetManager {
 			assetManager.load("textures/menus/scrolls/VerticalScroll_Small.png", Texture.class);
 			assetManager.load("textures/level-sheets/cave/Mountain-Sheet.png", Texture.class);
 			assetManager.load("textures/enemies/Shadow.png", Texture.class);
+			assetManager.load("textures/characters/Character-Shadow.png", Texture.class);
 			break;
 			case GAMEPLAY_FIREBALL:
 			assetManager.load("textures/projectiles/fireball/FireBall-Shadow.png", Texture.class);
@@ -66,6 +67,7 @@ public class VNAssetManager {
 		case GAMEPLAY:
 			this.unload("textures/menus/scrolls/VerticalScroll_Small.png");
 			this.unload("textures/level-sheets/cave/Mountain-Sheet.png");
+			this.unload("textures/characters/Character-Shadow.png");
 			this.unload("textures/enemies/Shadow.png");
 			break;
 		case GAMEPLAY_FIREBALL:
