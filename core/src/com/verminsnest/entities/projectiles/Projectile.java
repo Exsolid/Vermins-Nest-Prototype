@@ -30,6 +30,8 @@ public abstract class Projectile extends Entity{
 	private float lastStateTime;
 	private boolean toReset;
 	
+	public static String iconPath;
+	
 	public Projectile(int textureID, int direction, int agility,int damage, int[] position, float stateTime){
 		super(position, textureID);
 		

@@ -8,6 +8,8 @@ import com.verminsnest.singletons.RuntimeData;
 
 public class Fireball extends Projectile{
 
+	public static String iconPath = "textures/projectiles/fireball/FireBall_Icon.png";
+	
 	public Fireball(int direction, int agility, int damage, int[] position, float stateTime) {
 		super(VNAssetManager.GAMEPLAY_FIREBALL,direction, agility, damage, position, stateTime);
 	}

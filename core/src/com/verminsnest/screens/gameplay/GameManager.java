@@ -3,6 +3,7 @@ package com.verminsnest.screens.gameplay;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.verminsnest.gamedev.VerminsNest;
+import com.verminsnest.screens.gameplay.menus.PauseMenu;
 
 public class GameManager implements Screen {
 
@@ -46,9 +47,9 @@ public class GameManager implements Screen {
 					gameplay.render(stateTime);
 					break;
 				case PAUSEMENU:
-					pausemenu.update(stateTime);
 					gameplay.render(stateTime);
 					pausemenu.render(stateTime);
+					pausemenu.update(stateTime);
 					break;
 				case INVMENU:
 					break;

@@ -37,6 +37,7 @@ public abstract class Enemy extends Entity {
 	protected int speed;
 	protected int agility;
 	protected int strength;
+	protected int health;
 	
 	private Vector2 leftVision;
 	private Vector2 rightVision;
@@ -47,9 +48,10 @@ public abstract class Enemy extends Entity {
 	protected boolean movedLeftOf;
 	protected boolean movedRightOf;
 	
-	public Enemy(int[] pos, int textureID, int agility, int speed, int strength) {
+	public Enemy(int[] pos, int textureID, int agility, int speed, int strength, int health) {
 		super(pos, textureID);
 		setSpeed(speed);
+		setHealth(health);
 		setAgility(agility);
 		setStrength(strength);
 		
@@ -446,5 +448,13 @@ public abstract class Enemy extends Entity {
 
 	public void setStrength(int strength) {
 		this.strength = strength;
+	}
+
+	public int getHealth() {
+		return health;
+	}
+
+	public void setHealth(int health) {
+		this.health = health;
 	}
 }

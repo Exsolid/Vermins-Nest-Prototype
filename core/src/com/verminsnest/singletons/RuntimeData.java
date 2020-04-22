@@ -6,6 +6,7 @@ import com.verminsnest.misc.assets.VNAssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.verminsnest.core.EntityMovementSystem;
 import com.verminsnest.entities.Entity;
+import com.verminsnest.entities.playables.Playable;
 import com.verminsnest.mapgen.MapCell;
 
 public class RuntimeData {
@@ -16,6 +17,7 @@ public class RuntimeData {
 	private ArrayList<Entity> entities;
 	private ArrayList<Entity> removedEntities;
 	private ArrayList<Entity> addedEntities;
+	private Playable character;
 
 	private VNAssetManager assetManager;
 	private EntityMovementSystem enMoSys;
@@ -118,5 +120,13 @@ public class RuntimeData {
 	public void dispose(){
 		assetManager.dispose();
 		instance = null;
+	}
+
+	public Playable getCharacter() {
+		return character;
+	}
+
+	public void setCharacter(Playable character) {
+		this.character = character;
 	}
 }

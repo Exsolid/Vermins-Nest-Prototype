@@ -21,6 +21,10 @@ public class VNAssetManager {
 		switch (id){
 		case GAMEPLAY:
 			assetManager.load("textures/menus/scrolls/VerticalScroll_Small.png", Texture.class);
+			assetManager.load("textures/menus/scrolls/HorizontalScroll_Minimum.png", Texture.class);
+			assetManager.load("textures/menus/frames/HealthFrame.png", Texture.class);
+			assetManager.load("textures/menus/frames/AbilityFrame.png", Texture.class);
+			assetManager.load("textures/menus/frames/AbilityFrameBackground.png", Texture.class);
 			assetManager.load("textures/level-sheets/cave/Mountain-Sheet.png", Texture.class);
 			assetManager.load("textures/enemies/Shadow.png", Texture.class);
 			assetManager.load("textures/characters/Character-Shadow.png", Texture.class);
@@ -36,6 +40,7 @@ public class VNAssetManager {
 			assetManager.load("textures/characters/mage/Mage-W-Right.png", Texture.class);
 			assetManager.load("textures/characters/mage/Mage-W-Left.png", Texture.class);
 			assetManager.load("textures/characters/mage/Mage-Idle.png", Texture.class);
+			assetManager.load("textures/projectiles/fireball/FireBall_Icon.png", Texture.class);
 			break;
 		case GAMEPLAY_TINKER:
 			assetManager.load("textures/enemies/tinker/Tinker-A-Back.png", Texture.class);
@@ -66,6 +71,10 @@ public class VNAssetManager {
 		switch (id){
 		case GAMEPLAY:
 			this.unload("textures/menus/scrolls/VerticalScroll_Small.png");
+			this.unload("textures/menus/scrolls/HorizontalScroll_Minimum.png");
+			this.unload("textures/menus/frames/HealthFrame.png");
+			this.unload("textures/menus/frames/AbilityFrame.png");
+			this.unload("textures/menus/frames/AbilityFrameBackground.png");
 			this.unload("textures/level-sheets/cave/Mountain-Sheet.png");
 			this.unload("textures/characters/Character-Shadow.png");
 			this.unload("textures/enemies/Shadow.png");
@@ -82,17 +91,18 @@ public class VNAssetManager {
 			this.unload("textures/characters/mage/Mage-W-Right.png");
 			this.unload("textures/characters/mage/Mage-W-Left.png");
 			this.unload("textures/characters/mage/Mage-Idle.png");
+			this.unload("textures/projectiles/fireball/FireBall_Icon.png");
 			break;
 		case GAMEPLAY_TINKER:
-			assetManager.unload("textures/enemies/tinker/Tinker-A-Back.png");
-			assetManager.unload("textures/enemies/tinker/Tinker-A-Front.png");
-			assetManager.unload("textures/enemies/tinker/Tinker-A-Left.png");
-			assetManager.unload("textures/enemies/tinker/Tinker-A-Right.png");
-			assetManager.unload("textures/enemies/tinker/Tinker-W-Back.png");
-			assetManager.unload("textures/enemies/tinker/Tinker-W-Front.png");
-			assetManager.unload("textures/enemies/tinker/Tinker-W-Left.png");
-			assetManager.unload("textures/enemies/tinker/Tinker-W-Right.png");
-			assetManager.unload("textures/enemies/tinker/Tinker-Idle.png");
+			this.unload("textures/enemies/tinker/Tinker-A-Back.png");
+			this.unload("textures/enemies/tinker/Tinker-A-Front.png");
+			this.unload("textures/enemies/tinker/Tinker-A-Left.png");
+			this.unload("textures/enemies/tinker/Tinker-A-Right.png");
+			this.unload("textures/enemies/tinker/Tinker-W-Back.png");
+			this.unload("textures/enemies/tinker/Tinker-W-Front.png");
+			this.unload("textures/enemies/tinker/Tinker-W-Left.png");
+			this.unload("textures/enemies/tinker/Tinker-W-Right.png");
+			this.unload("textures/enemies/tinker/Tinker-Idle.png");
 			break;
 		case MENU:
 			this.unload("textures/general/Background.png");

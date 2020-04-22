@@ -2,7 +2,6 @@ package com.verminsnest.entities.playables;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.verminsnest.entities.Entity;
@@ -27,16 +26,18 @@ public abstract class Playable extends Entity {
 	protected int speed;
 	protected int agility;
 	protected int strength;
+	protected int health;
 	
-	protected float lastAttack;
+	protected float attackCooldown;
+	protected String attackIconPath;
 	
 	private char currentKey;
 	private char prevKey;
-
 	
-	public Playable(int textureID,int[] position, int speed, int dmg, int agi){
+	public Playable(int textureID,int[] position, int speed, int dmg, int agi, int health){
 		super(position,textureID);
 		setSpeed(speed);
+		setHealth(health);
 		setStrength(dmg);
 		setAgility(agi);
 		
@@ -50,8 +51,14 @@ public abstract class Playable extends Entity {
 		this.setSize(currentAni.getKeyFrame(0).getRegionWidth(),currentAni.getKeyFrame(0).getRegionHeight());
 	}
 	
+	public void attack(float stateTime){
+		if (attackCooldown < stateTime - 1/(agility*0.2)) {
+			attackAction(stateTime);
+		}
+	}
+	
 	public abstract void init();
-	public abstract void attack(float stateTime);
+	public abstract void attackAction(float stateTime);
 
 	public void update(){
 		if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
@@ -73,7 +80,6 @@ public abstract class Playable extends Entity {
 			prevKey = currentKey;
 			currentKey = 'W';
 		}
-
 		//Calculates proper movement
 		switch (currentKey) {
 		case 'W':
@@ -179,5 +185,23 @@ public abstract class Playable extends Entity {
 			currentDir = IDLE;
 			break;
 		}
+	}
+
+	public int getHealth() {
+		return health;
+	}
+
+	public void setHealth(int health) {
+		this.health = health;
+	}
+
+	public String getAttackIcon() {
+		return attackIconPath;
+	}
+	
+	public float[] getAttackDetails(float stateTime){
+		float cd = (float) (attackCooldown+1/(agility*0.2)-stateTime);
+		if(cd <0) cd = 0;
+		return new float[]{cd ,(float) (1/(agility*0.2))};
 	}
 }

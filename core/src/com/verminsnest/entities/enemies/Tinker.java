@@ -3,14 +3,13 @@ package com.verminsnest.entities.enemies;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.verminsnest.entities.projectiles.Projectile;
 import com.verminsnest.misc.assets.VNAssetManager;
 import com.verminsnest.singletons.RuntimeData;
 
 public class Tinker extends Enemy {
 	
 	public Tinker(int[] pos) {
-		super(pos, VNAssetManager.GAMEPLAY_TINKER,5,5,5);
+		super(pos, VNAssetManager.GAMEPLAY_TINKER,5,5,5,5);
 	}
 
 	@Override

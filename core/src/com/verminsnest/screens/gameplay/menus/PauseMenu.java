@@ -1,4 +1,4 @@
-package com.verminsnest.screens.gameplay;
+package com.verminsnest.screens.gameplay.menus;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -10,6 +10,8 @@ import com.verminsnest.gamedev.VerminsNest;
 import com.verminsnest.misc.assets.VNAssetManager;
 import com.verminsnest.misc.gui.Button;
 import com.verminsnest.misc.gui.ButtonManager;
+import com.verminsnest.screens.gameplay.GameManager;
+import com.verminsnest.screens.gameplay.GameplayScreen;
 import com.verminsnest.singletons.RuntimeData;
 
 public class PauseMenu extends GameplayScreen{

@@ -62,18 +62,23 @@ public class FontText {
 		int width = 0;
 		
 		layout.setText(font, text.get(0));
-		height = (int) (layout.height*text.size()*2);
+		height = (int) (layout.height*text.size());
 		for(String str: text){
 			layout.setText(font, str);
 			if(layout.width > width) width = (int) layout.width;
 		}
 		
-		this.pos[1] = pos[1]+size[1]/2-height/2;
+		this.pos[1] = pos[1]+size[1]/2+height/2;
 		this.pos[0] = pos[0]+size[0]/2-width/2;
 		this.sizes[0] = width;
 		this.sizes[1] = height;
 	}
 	
+	public int[] getPos(){
+		return pos;
+	}
+	
+		
 	public void dispose(){
 		fontGen.dispose();
 		font.dispose();

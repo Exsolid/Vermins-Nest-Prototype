@@ -7,10 +7,10 @@ import com.badlogic.gdx.Input;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.enemies.Tinker;
 import com.verminsnest.entities.playables.Mage;
-import com.verminsnest.entities.playables.Playable;
 import com.verminsnest.entities.projectiles.Projectile;
 import com.verminsnest.gamedev.VerminsNest;
 import com.verminsnest.mapgen.MapCell;
+import com.verminsnest.screens.gameplay.menus.GameplayMenu;
 import com.verminsnest.singletons.RuntimeData;
 
 public class Gameplay extends GameplayScreen{
@@ -19,13 +19,15 @@ public class Gameplay extends GameplayScreen{
 	private boolean movementBlocked;
 	private long blockStartTime;
 	// Textures
-	private Playable character;
 	private ArrayList<MapCell> toDraw;
+	
+	//Gui
+	private GameplayMenu gui;
 	
 	public Gameplay(VerminsNest game,GameManager gameMan) {
 		super(game,gameMan);
-		
-		character = new Mage(new int[] { 0, 0 });
+		gui = new GameplayMenu(game,gameMan);
+		RuntimeData.getInstance().setCharacter(new Mage(new int[] { 0, 0 }));
 		// Controls
 		blockTime = 0;
 		blockStartTime = System.currentTimeMillis();
@@ -34,18 +36,18 @@ public class Gameplay extends GameplayScreen{
 		for (int x = 0; x < RuntimeData.getInstance().getMap().length; x++) {
 			for (int y = 0; y < RuntimeData.getInstance().getMap()[0].length; y++) {
 				if (RuntimeData.getInstance().getMap()[x][y].isWalkable()) {
-					character.getPos()[0] = RuntimeData.getInstance().getMap()[x][y].getxPos();
-					character.getPos()[1] = RuntimeData.getInstance().getMap()[x][y].getyPos();
+					RuntimeData.getInstance().getCharacter().getPos()[0] = RuntimeData.getInstance().getMap()[x][y].getxPos();
+					RuntimeData.getInstance().getCharacter().getPos()[1] = RuntimeData.getInstance().getMap()[x][y].getyPos();
 				}
 			}
 		}
 		for( int i = 100; i<200; i+=100){
-			new Tinker(new int[]{character.getPos()[0]-i,character.getPos()[1]-100});
+			new Tinker(new int[]{RuntimeData.getInstance().getCharacter().getPos()[0]-i,RuntimeData.getInstance().getCharacter().getPos()[1]-100});
 		}
 		// Textures
 		toDraw = new ArrayList<>();
 		// Camera
-		game.getCamera().position.set(character.getPos()[0], character.getPos()[1], 0);
+		game.getCamera().position.set(RuntimeData.getInstance().getCharacter().getPos()[0], RuntimeData.getInstance().getCharacter().getPos()[1], 0);
 		game.getCamera().update();
 		game.setPro();
 		calcToDraw();
@@ -91,6 +93,7 @@ public class Gameplay extends GameplayScreen{
 					}
 				}
 				game.getBatch().end();
+				gui.render(stateTime);
 	}
 	
 	public void manageControls(float stateTime) {
@@ -98,9 +101,6 @@ public class Gameplay extends GameplayScreen{
 		if (blockTime > 30) {
 			movementBlocked = false;
 		}
-		game.getCamera().position.x = character.getPos()[0];
-		game.getCamera().position.y = character.getPos()[1];
-		game.setPro();
 		calcToDraw();
 		
 		//Pause
@@ -112,18 +112,21 @@ public class Gameplay extends GameplayScreen{
 		
 		//Attacking
 		if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
-			character.attack(stateTime);
+			RuntimeData.getInstance().getCharacter().attack(stateTime);
 		}
+		game.getCamera().position.x = RuntimeData.getInstance().getCharacter().getPos()[0];
+		game.getCamera().position.y = RuntimeData.getInstance().getCharacter().getPos()[1];
+		game.setPro();
 	}
 	
 	// Calculates which tiles need to be rendered
 	private void calcToDraw() {
 		int[] width = new int[2];
 		int[] height = new int[2];
-		width[0] = (character.getPos()[0] - 1920 / 2) / 128;
-		width[1] = (character.getPos()[0] + 1920 / 2) / 128;
-		height[0] = (character.getPos()[1] - 1055 / 2) / 128;
-		height[1] = (character.getPos()[1] + 1055 / 2) / 128;
+		width[0] = (RuntimeData.getInstance().getCharacter().getPos()[0] - 1920 / 2) / 128;
+		width[1] = (RuntimeData.getInstance().getCharacter().getPos()[0] + 1920 / 2) / 128;
+		height[0] = (RuntimeData.getInstance().getCharacter().getPos()[1] - 1055 / 2) / 128;
+		height[1] = (RuntimeData.getInstance().getCharacter().getPos()[1] + 1055 / 2) / 128;
 
 		toDraw.clear();
 		for (int y = height[0]; y <= height[1]; y++) {
@@ -140,6 +143,7 @@ public class Gameplay extends GameplayScreen{
 	@Override
 	public void update(float stateTime) {
 		RuntimeData.getInstance().updateEntities();
+		gui.update(stateTime);
 		manageControls(stateTime);
 	}
 }
