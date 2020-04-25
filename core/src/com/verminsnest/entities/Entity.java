@@ -20,12 +20,11 @@ public abstract class Entity {
 		this.textureID = textureID;
 		this.pos = pos;
 		this.setId(this.toString());
-		init();
 	}
 	
 	public abstract void init();
 	public abstract void setCurrentAni(int animationKey);
-	public abstract void update();
+	public abstract void update(float stateTime);
 	
 	public int[] getPos(){
 		return pos;

@@ -51,7 +51,7 @@ public class RuntimeData {
 		removedEntities.add(ent);
 	}
 	
-	public void updateEntities(){
+	public void updateEntities(float stateTime){
 		entities.addAll(addedEntities);
 		addedEntities.clear();
 		boolean found = false;
@@ -69,7 +69,7 @@ public class RuntimeData {
 		removedEntities.clear();
 
 		for(Entity ent: entities){
-			ent.update();
+			ent.update(stateTime);
 		}
 	}
 	

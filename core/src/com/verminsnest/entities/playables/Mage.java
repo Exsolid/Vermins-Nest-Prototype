@@ -94,6 +94,7 @@ public class Mage extends Playable {
 			prj.getPos()[0] -= prj.getSize()[0];
 			break;
 		}
+		prj.setFriendly(true);
 		prj.setCurrentAni(Projectile.CAST);
 		attackCooldown = stateTime;
 	}

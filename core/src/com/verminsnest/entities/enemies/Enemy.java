@@ -48,6 +48,7 @@ public abstract class Enemy extends Entity {
 	protected boolean movedLeftOf;
 	protected boolean movedRightOf;
 	
+	protected float lastAttack;
 	public Enemy(int[] pos, int textureID, int agility, int speed, int strength, int health) {
 		super(pos, textureID);
 		setSpeed(speed);
@@ -68,17 +69,60 @@ public abstract class Enemy extends Entity {
  
 	}
 	
-	public void update(){
+	public void update(float stateTime){
 		updateVision();
-		updateAction();
+		updateAction(stateTime);
 		timer += Gdx.graphics.getDeltaTime();
 	}
-	protected abstract void chooseAvoidAction(int xDistance, int yDistance);
-	protected abstract void chooseAgressiveAction(int xDistance, int yDistance);
-	private void updateAction(){
+	protected abstract void chooseAvoidAction(int xDistance, int yDistance, float stateTime);
+	protected abstract void chooseAgressiveAction(int xDistance, int yDistance, float stateTime);
+	protected abstract void attack(float stateTime);
+	
+	private void updateAction(float stateTime){
 		if(alerted != null && alerted instanceof Playable){
 			if(timer < 3){
-				chooseAgressiveAction(this.pos[0]-alerted.getPos()[0],this.pos[1]-alerted.getPos()[1]);
+				int xDis = 0;
+				int yDis = 0;
+				switch(state){
+				case W_FRONT:
+				case A_FRONT:
+				case IDLE:
+					yDis = alerted.getPos()[1]+alerted.getSize()[1]-this.pos[1];
+					if(Math.abs(this.pos[0]- alerted.getPos()[0])<this.getSize()[0]){
+						xDis = 0;
+					}else{
+						xDis =999;
+					}
+					break;
+				case W_BACK:
+				case A_BACK:
+					yDis = alerted.getPos()[1]-(this.pos[1]+this.size[1]);
+					if(Math.abs(this.pos[0]- alerted.getPos()[0])<this.getSize()[0]){
+						xDis = 0;
+					}else{
+						xDis =999;
+					}
+					break;
+				case W_LEFT:
+				case A_LEFT:
+					xDis = alerted.getPos()[0]+alerted.getSize()[0]-this.pos[0];
+					if(Math.abs(this.pos[1]- alerted.getPos()[1])<this.getSize()[1]){
+						yDis = 0;
+					}else{
+						yDis =999;
+					}
+					break;
+				case W_RIGHT:
+				case A_RIGHT:
+					xDis = alerted.getPos()[0]-(this.pos[0]+this.size[0]);
+					if(Math.abs(this.pos[1]- alerted.getPos()[1])<this.getSize()[1]){
+						yDis = 0;
+					}else{
+						yDis =999;
+					}
+					break;
+				}
+				chooseAgressiveAction(xDis,yDis,stateTime);
 			}else{
 				playerAlerted = null;
 				alerted = null;
@@ -87,7 +131,25 @@ public abstract class Enemy extends Entity {
 			}
 		}else if(alerted != null && (alerted instanceof Projectile || alerted instanceof Enemy)){
 			if(timer < 1){
-				chooseAvoidAction(this.pos[0]-alerted.getPos()[0],this.pos[1]-alerted.getPos()[1]);
+				int xDis = 0;
+				int yDis = 0;
+				switch(state){
+				case W_FRONT:
+				case A_FRONT:				
+				case W_BACK:
+				case A_BACK:
+					yDis = alerted.getPos()[1]+alerted.getSize()[1]-this.pos[1];
+					xDis = alerted.getPos()[0]+alerted.getSize()[0]/2- this.pos[0]+alerted.getSize()[0]/2;
+					break;
+				case W_LEFT:
+				case A_LEFT:				
+				case W_RIGHT:
+				case A_RIGHT:
+					xDis = alerted.getPos()[0]+alerted.getSize()[0]-this.pos[1];
+					yDis = alerted.getPos()[1]+alerted.getSize()[1]/2- this.pos[1]+alerted.getSize()[1]/2;
+					break;
+				}
+				chooseAvoidAction(xDis,yDis,stateTime);
 			}else{
 				if(playerAlerted != null){
 					alerted = playerAlerted;
@@ -124,11 +186,18 @@ public abstract class Enemy extends Entity {
 					if((ent.getPos()[0]<xLeft && ent.getPos()[0]>xRight || ent.getPos()[0]+ent.getSize()[0]<xLeft && ent.getPos()[0]+ent.getSize()[0]>xRight)
 							&&(ent.getPos()[1]<yLeft && ent.getPos()[1]>yMax || ent.getPos()[1]+ent.getSize()[1]<yLeft && ent.getPos()[1]+ent.getSize()[1]>yMax) && ent != this){
 						if(!(ent instanceof Enemy)){
-							alerted = ent;
-							if(ent instanceof Playable){
-								playerAlerted = ent;
+							if(ent instanceof Projectile){
+								if(((Projectile)ent).isFriendly()){
+									alerted = ent;	
+									timer= 0;	
+								}
+							}else{
+								alerted = ent;							
+								if(ent instanceof Playable){
+									playerAlerted = ent;
+								}
+								timer= 0;
 							}
-							timer= 0;
 						}
 					}
 					break;
@@ -143,11 +212,18 @@ public abstract class Enemy extends Entity {
 					if((ent.getPos()[1]>yLeft && ent.getPos()[1]<yRight || ent.getPos()[1]+ent.getSize()[1]>yLeft && ent.getPos()[1]+ent.getSize()[1]<yRight)
 							&&(ent.getPos()[0]<xLeft && ent.getPos()[0]>xMax || ent.getPos()[0]+ent.getSize()[0]<xLeft && ent.getPos()[0]+ent.getSize()[0]>xMax) && ent != this){
 						if(!(ent instanceof Enemy)){
-							alerted = ent;
-							if(ent instanceof Playable){
-								playerAlerted = ent;
+							if(ent instanceof Projectile){
+								if(((Projectile)ent).isFriendly()){
+									alerted = ent;	
+									timer= 0;	
+								}
+							}else{
+								alerted = ent;
+								if(ent instanceof Playable){
+									playerAlerted = ent;
+								}
+								timer= 0;
 							}
-							timer= 0;
 						}
 					}
 					break;
@@ -162,11 +238,18 @@ public abstract class Enemy extends Entity {
 					if((ent.getPos()[1]<yLeft && ent.getPos()[1]>yRight || ent.getPos()[1]+ent.getSize()[1]<yLeft && ent.getPos()[1]+ent.getSize()[1]>yRight)
 							&&(ent.getPos()[0]>xLeft && ent.getPos()[0]<xMax || ent.getPos()[0]+ent.getSize()[0]>xLeft && ent.getPos()[0]+ent.getSize()[0]<xMax) && ent != this){
 						if(!(ent instanceof Enemy)){
-							alerted = ent;
-							if(ent instanceof Playable){
-								playerAlerted = ent;
+							if(ent instanceof Projectile){
+								if(((Projectile)ent).isFriendly()){
+									alerted = ent;	
+									timer= 0;	
+								}
+							}else{
+								alerted = ent;
+								if(ent instanceof Playable){
+									playerAlerted = ent;
+								}
+								timer= 0;
 							}
-							timer= 0;
 						}
 					}
 					break;
@@ -181,11 +264,18 @@ public abstract class Enemy extends Entity {
 					if((ent.getPos()[0]>xLeft && ent.getPos()[0]<xRight || ent.getPos()[0]+ent.getSize()[0]>xLeft && ent.getPos()[0]+ent.getSize()[0]<xRight)
 							&&(ent.getPos()[1]>yLeft && ent.getPos()[1]<yMax || ent.getPos()[1]+ent.getSize()[1]>yLeft && ent.getPos()[1]+ent.getSize()[1]<yMax ) && ent != this){
 						if(!(ent instanceof Enemy)){
+							if(ent instanceof Projectile){
+								if(((Projectile)ent).isFriendly()){
+									alerted = ent;	
+									timer= 0;	
+								}
+							}else{
 								alerted = ent;
-							if(ent instanceof Playable){
-								playerAlerted = ent;
+								if(ent instanceof Playable){
+									playerAlerted = ent;
+								}
+								timer= 0;
 							}
-							timer= 0;
 						}
 					}
 					break;
@@ -208,7 +298,7 @@ public abstract class Enemy extends Entity {
 					 setCurrentAni(W_RIGHT);
 					 lastDirCount = 4;
 					 movedLeftOf = true;
-				 }else if(alerted.getPos()[0]<this.getPos()[0] && alerted.getPos()[1]>this.getPos()[1] && x > y&& ((Projectile)alerted).getRotation() == -90){
+				 }else if(alerted.getPos()[0]<this.getPos()[0] && alerted.getPos()[1]>this.getPos()[1] && x > y&& ((Projectile)alerted).getRotation() == 270){
 					 RuntimeData.getInstance().getMovmentSystem().moveDown(this, speed);
 					 setCurrentAni(W_FRONT);
 					 lastDirCount = 4;
@@ -388,15 +478,15 @@ public abstract class Enemy extends Entity {
 	public void setCurrentAni(int animationKey) {
 		switch (animationKey){
 		case A_FRONT:
-			currentAni = frontWalkAni;
+			currentAni = frontAttackAni;
 			state = A_FRONT;
 			break;
 		case A_BACK:
-			currentAni = backWalkAni;
+			currentAni = backAttackAni;
 			state = A_BACK;
 			break;
 		case A_LEFT:
-			currentAni = leftWalkAni;
+			currentAni = leftAttackAni;
 			state = A_LEFT;
 			break;
 		case A_RIGHT:

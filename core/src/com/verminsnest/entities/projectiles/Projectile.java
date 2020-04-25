@@ -11,8 +11,8 @@ public abstract class Projectile extends Entity{
 	public final static int WEST = 1;
 	public final static int EAST = 2;
 	public final static int SOUTH = 3;
-	private int direction;
-	private int rotation;
+	protected int direction;
+	protected float rotation;
 	
 	protected Animation<TextureRegion> flyingAni;
 	protected Animation<TextureRegion> hitAni;
@@ -26,16 +26,19 @@ public abstract class Projectile extends Entity{
 	protected int damage;
 	protected int speed;
 	
-	private float internalStateTime;
-	private float lastStateTime;
-	private boolean toReset;
+	protected float internalStateTime;
+	protected float lastStateTime;
+	protected boolean toReset;
 	
 	public static String iconPath;
+	
+	private boolean isFriendly;
 	
 	public Projectile(int textureID, int direction, int agility,int damage, int[] position, float stateTime){
 		super(position, textureID);
 		
 		//Data
+		isFriendly = false;
 		this.setDamage(damage);
 		speed = agility;
 		this.direction = direction;		
@@ -48,7 +51,7 @@ public abstract class Projectile extends Entity{
 			rotation = 90;
 			break;
 		case EAST:
-			rotation = -90;
+			rotation = 270;
 			break;
 		}
 		internalStateTime = 0;
@@ -60,12 +63,16 @@ public abstract class Projectile extends Entity{
 	
 	public abstract void init();
 	
-	public TextureRegion getCurrentFrame(float stateTime) {
+	protected void updateStateTime(float stateTime){
 		if(toReset){
 			lastStateTime=stateTime;
 			toReset = false;
 		}
 		internalStateTime = stateTime -lastStateTime;
+	}
+	
+	public TextureRegion getCurrentFrame(float stateTime) {
+		updateStateTime(stateTime);
 		if(state == CAST){
 			if(currentAni.isAnimationFinished(internalStateTime)){
 				setCurrentAni(FLYING);
@@ -105,7 +112,7 @@ public abstract class Projectile extends Entity{
 		}
 	}
 
-	public void update(){
+	public void update(float stateTime){
 		if(state == FLYING){
 			if(direction == EAST && !RuntimeData.getInstance().getMovmentSystem().moveRight(this,speed)){
 				setCurrentAni(HIT);
@@ -146,11 +153,19 @@ public abstract class Projectile extends Entity{
 		return state;
 	}	
 	
-	public int getRotation() {
+	public float getRotation() {
 		if(state != CAST){
 			return rotation;
 		}else{
 			return 0;
 		}
+	}
+
+	public boolean isFriendly() {
+		return isFriendly;
+	}
+
+	public void setFriendly(boolean isFriendly) {
+		this.isFriendly = isFriendly;
 	}
 }

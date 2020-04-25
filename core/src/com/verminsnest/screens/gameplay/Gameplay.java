@@ -142,7 +142,7 @@ public class Gameplay extends GameplayScreen{
 
 	@Override
 	public void update(float stateTime) {
-		RuntimeData.getInstance().updateEntities();
+		RuntimeData.getInstance().updateEntities(stateTime);
 		gui.update(stateTime);
 		manageControls(stateTime);
 	}

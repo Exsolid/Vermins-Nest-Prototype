@@ -8,8 +8,12 @@ public class VNAssetManager {
 	public final static int MENU = 0;
 	
 	public final static int GAMEPLAY = 1;
+	
 	public final static int GAMEPLAY_MAGE = 2;
+	
 	public final static int GAMEPLAY_FIREBALL = 3;
+	public final static int GAMEPLAY_SLASH_SMALL = 5;
+	
 	public final static int GAMEPLAY_TINKER = 4;
 	private AssetManager assetManager;
 	
@@ -29,11 +33,15 @@ public class VNAssetManager {
 			assetManager.load("textures/enemies/Shadow.png", Texture.class);
 			assetManager.load("textures/characters/Character-Shadow.png", Texture.class);
 			break;
-			case GAMEPLAY_FIREBALL:
+		case GAMEPLAY_FIREBALL:
 			assetManager.load("textures/projectiles/fireball/FireBall-Shadow.png", Texture.class);
 			assetManager.load("textures/projectiles/fireball/FireBall-Flying.png", Texture.class);
 			assetManager.load("textures/projectiles/fireball/FireBall-Hit.png", Texture.class);
 			assetManager.load("textures/projectiles/fireball/FireBall-Cast.png", Texture.class);
+		case GAMEPLAY_SLASH_SMALL:
+			assetManager.load("textures/projectiles/slash/SlashLeft.png", Texture.class);
+			assetManager.load("textures/projectiles/slash/SlashRight.png", Texture.class);
+			break;
 		case GAMEPLAY_MAGE:
 			assetManager.load("textures/characters/mage/Mage-W-Front.png", Texture.class);
 			assetManager.load("textures/characters/mage/Mage-W-Back.png", Texture.class);
@@ -84,6 +92,9 @@ public class VNAssetManager {
 			this.unload("textures/projectiles/fireball/FireBall-Flying.png");
 			this.unload("textures/projectiles/fireball/FireBall-Hit.png");
 			this.unload("textures/projectiles/fireball/FireBall-Cast.png");
+			break;		
+		case GAMEPLAY_SLASH_SMALL:
+			this.unload("textures/projectiles/slash/Slash.png");
 			break;
 		case GAMEPLAY_MAGE:
 			this.unload("textures/characters/mage/Mage-W-Front.png");

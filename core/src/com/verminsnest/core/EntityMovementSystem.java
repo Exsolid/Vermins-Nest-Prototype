@@ -2,15 +2,18 @@ package com.verminsnest.core;
 
 
 import com.verminsnest.entities.Entity;
+import com.verminsnest.entities.projectiles.Projectile;
 import com.verminsnest.mapgen.MapCell;
 import com.verminsnest.singletons.RuntimeData;
 
 public class EntityMovementSystem {
 	
 	private MapCell[][] map;
+	private EntityDamageSystem entDmgSys;
 	
 	public EntityMovementSystem(MapCell[][] map){
 		this.map = map;
+		entDmgSys = new EntityDamageSystem();
 	}
 	
 	public boolean moveTop(Entity entity, int speed){
@@ -26,7 +29,11 @@ public class EntityMovementSystem {
 					if(!entity.equals(refEnt)){
 						for(int x = entity.getPos()[0]; x <= entity.getPos()[0]+entity.getSize()[0]; x++){
 							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
-								return false;
+								if(entity instanceof Projectile){
+									entDmgSys.addHit((Projectile)entity, refEnt);
+								}else{
+									return false;
+								}
 							}
 						}
 					}
@@ -50,7 +57,11 @@ public class EntityMovementSystem {
 					if(!entity.equals(refEnt)){
 						for(int x = entity.getPos()[0]; x <= entity.getPos()[0]+entity.getSize()[0]; x++){
 							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
-								return false;
+								if(entity instanceof Projectile){
+									entDmgSys.addHit((Projectile)entity, refEnt);
+								}else{
+									return false;
+								}
 							}
 						}
 					}
@@ -74,7 +85,11 @@ public class EntityMovementSystem {
 					if(!entity.equals(refEnt)){
 						for(int y = entity.getPos()[1]; y <= entity.getPos()[1]+entity.getSize()[1]; y++){
 							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
-								return false;
+								if(entity instanceof Projectile){
+									entDmgSys.addHit((Projectile)entity, refEnt);
+								}else{
+									return false;
+								}
 							}
 						}
 					}
@@ -98,7 +113,11 @@ public class EntityMovementSystem {
 					if(!entity.equals(refEnt)){
 						for(int y = entity.getPos()[1]; y <= entity.getPos()[1]+entity.getSize()[1]; y++){
 							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
-								return false;
+								if(entity instanceof Projectile){
+									entDmgSys.addHit((Projectile)entity, refEnt);
+								}else{
+									return false;
+								}
 							}
 						}
 					}

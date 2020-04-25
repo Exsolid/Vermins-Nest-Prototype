@@ -60,7 +60,7 @@ public abstract class Playable extends Entity {
 	public abstract void init();
 	public abstract void attackAction(float stateTime);
 
-	public void update(){
+	public void update(float stateTime){
 		if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
 			prevKey = currentKey;
 			currentKey = 'S';
