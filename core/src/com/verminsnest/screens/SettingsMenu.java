@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.verminsnest.core.VerminsNest;
+import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.exceptions.OutOfBounds;
-import com.verminsnest.gamedev.VerminsNest;
 import com.verminsnest.misc.gui.Button;
 import com.verminsnest.misc.gui.ButtonManager;
-import com.verminsnest.singletons.RuntimeData;
 
 public class SettingsMenu implements Screen {
 

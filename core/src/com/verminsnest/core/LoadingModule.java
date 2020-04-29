@@ -1,6 +1,6 @@
 package com.verminsnest.core;
 
-import com.verminsnest.singletons.LoadingModules;
+import com.verminsnest.core.singletons.LoadingModules;
 
 public abstract class LoadingModule{
 	private String description;

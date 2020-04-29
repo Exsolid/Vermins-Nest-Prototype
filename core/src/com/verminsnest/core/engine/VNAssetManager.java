@@ -1,4 +1,4 @@
-package com.verminsnest.misc.assets;
+package com.verminsnest.core.engine;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
@@ -26,12 +26,19 @@ public class VNAssetManager {
 		case GAMEPLAY:
 			assetManager.load("textures/menus/scrolls/VerticalScroll_Small.png", Texture.class);
 			assetManager.load("textures/menus/scrolls/HorizontalScroll_Minimum.png", Texture.class);
+			
 			assetManager.load("textures/menus/frames/HealthFrame.png", Texture.class);
 			assetManager.load("textures/menus/frames/AbilityFrame.png", Texture.class);
+			assetManager.load("textures/menus/frames/RoomFrame.png", Texture.class);
 			assetManager.load("textures/menus/frames/AbilityFrameBackground.png", Texture.class);
+			assetManager.load("textures/menus/frames/MapFrame.png", Texture.class);
+			assetManager.load("textures/menus/frames/StatusFrame.png", Texture.class);
+			
 			assetManager.load("textures/level-sheets/cave/Mountain-Sheet.png", Texture.class);
+			
 			assetManager.load("textures/enemies/Shadow.png", Texture.class);
 			assetManager.load("textures/characters/Character-Shadow.png", Texture.class);
+			assetManager.load("textures/characters/Minimap-Pointer.png", Texture.class);
 			break;
 		case GAMEPLAY_FIREBALL:
 			assetManager.load("textures/projectiles/fireball/FireBall-Shadow.png", Texture.class);
@@ -80,12 +87,19 @@ public class VNAssetManager {
 		case GAMEPLAY:
 			this.unload("textures/menus/scrolls/VerticalScroll_Small.png");
 			this.unload("textures/menus/scrolls/HorizontalScroll_Minimum.png");
+			
 			this.unload("textures/menus/frames/HealthFrame.png");
 			this.unload("textures/menus/frames/AbilityFrame.png");
+			this.unload("textures/menus/frames/RoomFrame.png");
 			this.unload("textures/menus/frames/AbilityFrameBackground.png");
+			this.unload("textures/menus/frames/MapFrame.png");
+			this.unload("textures/menus/frames/StatusFrame.png");
+			
 			this.unload("textures/level-sheets/cave/Mountain-Sheet.png");
+			
 			this.unload("textures/characters/Character-Shadow.png");
 			this.unload("textures/enemies/Shadow.png");
+			this.unload("textures/characters/Minimap-Pointer.png");
 			break;
 		case GAMEPLAY_FIREBALL:
 			this.unload("textures/projectiles/fireball/FireBall-Shadow.png");

@@ -1,4 +1,4 @@
-package com.verminsnest.singletons;
+package com.verminsnest.core.singletons;
 
 import java.util.ArrayList;
 

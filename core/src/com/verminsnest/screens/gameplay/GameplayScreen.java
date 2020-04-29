@@ -1,6 +1,6 @@
 package com.verminsnest.screens.gameplay;
 
-import com.verminsnest.gamedev.VerminsNest;
+import com.verminsnest.core.VerminsNest;
 
 public abstract class GameplayScreen {
 	protected VerminsNest game;

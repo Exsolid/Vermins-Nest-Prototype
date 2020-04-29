@@ -1,4 +1,4 @@
-package com.verminsnest.mapgen;
+package com.verminsnest.generation;
 
 
 import java.util.ArrayList;

@@ -3,10 +3,11 @@ package com.verminsnest.entities.playables;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.verminsnest.core.Indentifiers;
+import com.verminsnest.core.engine.VNAssetManager;
+import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.entities.projectiles.Fireball;
 import com.verminsnest.entities.projectiles.Projectile;
-import com.verminsnest.misc.assets.VNAssetManager;
-import com.verminsnest.singletons.RuntimeData;
 
 public class Mage extends Playable {
 	public Mage(int[] pos) {
@@ -72,30 +73,30 @@ public class Mage extends Playable {
 	public void attackAction(float stateTime) {
 		Projectile prj = null;
 		switch (currentDir) {
-		case IDLE:
-		case W_FRONT:
-			prj = new Fireball(Projectile.SOUTH, agility, strength, new int[] { pos[0], pos[1] }, stateTime);
+		case Indentifiers.STATE_IDLE:
+		case Indentifiers.STATE_WALK_SOUTH:
+			prj = new Fireball(Indentifiers.DIRECTION_SOUTH, agility, strength, new int[] { pos[0], pos[1] }, stateTime);
 			prj.getPos()[0] += currentAni.getKeyFrame(0).getRegionWidth() / 4;
 			prj.getPos()[1] -= prj.getSize()[1];
 			break;
-		case W_BACK:
-			prj = new Fireball(Projectile.NORTH, agility, strength, new int[] { pos[0], pos[1] }, stateTime);
+		case Indentifiers.STATE_WALK_NORTH:
+			prj = new Fireball(Indentifiers.DIRECTION_NORTH, agility, strength, new int[] { pos[0], pos[1] }, stateTime);
 			prj.getPos()[0] += currentAni.getKeyFrame(0).getRegionWidth() / 4;
 			prj.getPos()[1] += currentAni.getKeyFrame(0).getRegionWidth() * 1.5;
 			break;
-		case W_RIGHT:
-			prj = new Fireball(Projectile.EAST, agility, strength, new int[] { pos[0], pos[1] }, stateTime);
+		case Indentifiers.STATE_WALK_EAST:
+			prj = new Fireball(Indentifiers.DIRECTION_EAST, agility, strength, new int[] { pos[0], pos[1] }, stateTime);
 			prj.getPos()[0] += currentAni.getKeyFrame(0).getRegionWidth() * 1.5;
 			prj.getPos()[1] += currentAni.getKeyFrame(0).getRegionHeight() / 4;
 			break;
-		case W_LEFT:
-			prj = new Fireball(Projectile.WEST, agility, strength, new int[] { pos[0], pos[1] }, stateTime);
+		case Indentifiers.STATE_WALK_WEST:
+			prj = new Fireball(Indentifiers.DIRECTION_WEST, agility, strength, new int[] { pos[0], pos[1] }, stateTime);
 			prj.getPos()[1] += currentAni.getKeyFrame(0).getRegionHeight() / 4;
 			prj.getPos()[0] -= prj.getSize()[0];
 			break;
 		}
 		prj.setFriendly(true);
-		prj.setCurrentAni(Projectile.CAST);
+		prj.setCurrentAni(Indentifiers.STATE_CAST);
 		attackCooldown = stateTime;
 	}
 }

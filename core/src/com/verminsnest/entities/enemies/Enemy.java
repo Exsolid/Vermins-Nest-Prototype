@@ -6,10 +6,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.verminsnest.core.Indentifiers;
+import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.playables.Playable;
 import com.verminsnest.entities.projectiles.Projectile;
-import com.verminsnest.singletons.RuntimeData;
 
 public abstract class Enemy extends Entity {
 	protected Animation<TextureRegion> frontAttackAni;
@@ -22,16 +23,6 @@ public abstract class Enemy extends Entity {
 	protected Animation<TextureRegion> leftWalkAni;
 	protected Animation<TextureRegion> idleAni;
 	
-	
-	public final static int W_FRONT = 0;
-	public final static int W_BACK = 1;
-	public final static int W_LEFT = 2;
-	public final static int W_RIGHT = 3;
-	public final static int IDLE = 4;
-	public final static int A_FRONT = 5;
-	public final static int A_BACK = 6;
-	public final static int A_LEFT = 7;
-	public final static int A_RIGHT = 8;
 	protected int state;
 	
 	protected int speed;
@@ -59,7 +50,7 @@ public abstract class Enemy extends Entity {
 		shadow = RuntimeData.getInstance().getAsset("textures/enemies/Shadow.png");
 		
 		init();
-		this.setCurrentAni(IDLE);
+		this.setCurrentAni(Indentifiers.STATE_IDLE);
 		this.setSize(currentAni.getKeyFrame(0).getRegionWidth(),currentAni.getKeyFrame(0).getRegionHeight());
 		
 		leftVision = new Vector2(pos[0]+size[0]/2, pos[1]).nor();
@@ -84,9 +75,9 @@ public abstract class Enemy extends Entity {
 				int xDis = 0;
 				int yDis = 0;
 				switch(state){
-				case W_FRONT:
-				case A_FRONT:
-				case IDLE:
+				case Indentifiers.STATE_WALK_SOUTH:
+				case Indentifiers.STATE_ATTACK_SOUTH:
+				case Indentifiers.STATE_IDLE:
 					yDis = alerted.getPos()[1]+alerted.getSize()[1]-this.pos[1];
 					if(Math.abs(this.pos[0]- alerted.getPos()[0])<this.getSize()[0]){
 						xDis = 0;
@@ -94,8 +85,8 @@ public abstract class Enemy extends Entity {
 						xDis =999;
 					}
 					break;
-				case W_BACK:
-				case A_BACK:
+				case Indentifiers.STATE_WALK_NORTH:
+				case Indentifiers.STATE_ATTACK_NORTH:
 					yDis = alerted.getPos()[1]-(this.pos[1]+this.size[1]);
 					if(Math.abs(this.pos[0]- alerted.getPos()[0])<this.getSize()[0]){
 						xDis = 0;
@@ -103,8 +94,8 @@ public abstract class Enemy extends Entity {
 						xDis =999;
 					}
 					break;
-				case W_LEFT:
-				case A_LEFT:
+				case Indentifiers.STATE_WALK_WEST:
+				case Indentifiers.STATE_ATTACK_WEST:
 					xDis = alerted.getPos()[0]+alerted.getSize()[0]-this.pos[0];
 					if(Math.abs(this.pos[1]- alerted.getPos()[1])<this.getSize()[1]){
 						yDis = 0;
@@ -112,8 +103,8 @@ public abstract class Enemy extends Entity {
 						yDis =999;
 					}
 					break;
-				case W_RIGHT:
-				case A_RIGHT:
+				case Indentifiers.STATE_WALK_EAST:
+				case Indentifiers.STATE_ATTACK_EAST:
 					xDis = alerted.getPos()[0]-(this.pos[0]+this.size[0]);
 					if(Math.abs(this.pos[1]- alerted.getPos()[1])<this.getSize()[1]){
 						yDis = 0;
@@ -127,24 +118,24 @@ public abstract class Enemy extends Entity {
 				playerAlerted = null;
 				alerted = null;
 				lastDirCount = -1;
-				setCurrentAni(IDLE);
+				setCurrentAni(Indentifiers.STATE_IDLE);
 			}
 		}else if(alerted != null && (alerted instanceof Projectile || alerted instanceof Enemy)){
 			if(timer < 1){
 				int xDis = 0;
 				int yDis = 0;
 				switch(state){
-				case W_FRONT:
-				case A_FRONT:				
-				case W_BACK:
-				case A_BACK:
+				case Indentifiers.STATE_WALK_SOUTH:
+				case Indentifiers.STATE_ATTACK_SOUTH:				
+				case Indentifiers.STATE_WALK_NORTH:
+				case Indentifiers.STATE_ATTACK_NORTH:
 					yDis = alerted.getPos()[1]+alerted.getSize()[1]-this.pos[1];
 					xDis = alerted.getPos()[0]+alerted.getSize()[0]/2- this.pos[0]+alerted.getSize()[0]/2;
 					break;
-				case W_LEFT:
-				case A_LEFT:				
-				case W_RIGHT:
-				case A_RIGHT:
+				case Indentifiers.STATE_WALK_WEST:
+				case Indentifiers.STATE_ATTACK_WEST:				
+				case Indentifiers.STATE_WALK_EAST:
+				case Indentifiers.STATE_ATTACK_EAST:
 					xDis = alerted.getPos()[0]+alerted.getSize()[0]-this.pos[1];
 					yDis = alerted.getPos()[1]+alerted.getSize()[1]/2- this.pos[1]+alerted.getSize()[1]/2;
 					break;
@@ -157,7 +148,7 @@ public abstract class Enemy extends Entity {
 					alerted = null;
 				}
 				lastDirCount = -1;
-				setCurrentAni(IDLE);
+				setCurrentAni(Indentifiers.STATE_IDLE);
 			}
 		}
 	}
@@ -174,9 +165,9 @@ public abstract class Enemy extends Entity {
 			int xMax = 0; 
 			for(Entity ent: RuntimeData.getInstance().getEntities()){
 				switch(state){
-				case IDLE:
-				case W_FRONT:
-				case A_FRONT:
+				case Indentifiers.STATE_IDLE:
+				case Indentifiers.STATE_WALK_SOUTH:
+				case Indentifiers.STATE_ATTACK_SOUTH:
 					leftVision.setAngle(-45);
 					rightVision.setAngle(-135);
 					xLeft = (int) (pos[0]+size[0]/2+i*leftVision.x); 
@@ -201,8 +192,8 @@ public abstract class Enemy extends Entity {
 						}
 					}
 					break;
-				case W_LEFT:
-				case A_LEFT:
+				case Indentifiers.STATE_WALK_WEST:
+				case Indentifiers.STATE_ATTACK_WEST:
 					leftVision.setAngle(-135);
 					rightVision.setAngle(135);
 					yLeft = (int) (pos[1]+size[1]/2+i*leftVision.y); 
@@ -227,8 +218,8 @@ public abstract class Enemy extends Entity {
 						}
 					}
 					break;
-				case W_RIGHT:
-				case A_RIGHT:
+				case Indentifiers.STATE_WALK_EAST:
+				case Indentifiers.STATE_ATTACK_EAST:
 					leftVision.setAngle(45);
 					rightVision.setAngle(-45);
 					yLeft = (int) (pos[1]+size[1]/2+i*leftVision.y); 
@@ -253,8 +244,8 @@ public abstract class Enemy extends Entity {
 						}
 					}
 					break;
-				case A_BACK:
-				case W_BACK:
+				case Indentifiers.STATE_ATTACK_NORTH:
+				case Indentifiers.STATE_WALK_NORTH:
 					leftVision.setAngle(135);
 					rightVision.setAngle(45);
 					xLeft = (int) (pos[0]+size[0]/2+i*leftVision.x); 
@@ -290,38 +281,38 @@ public abstract class Enemy extends Entity {
 			if(!movedLeftOf){
 				if(alerted.getPos()[0]>this.getPos()[0] && alerted.getPos()[1]>this.getPos()[1] && x < y&& ((Projectile)alerted).getRotation() == 180){
 					 RuntimeData.getInstance().getMovmentSystem().moveLeft(this, speed);
-					 setCurrentAni(W_LEFT);
+					 setCurrentAni(Indentifiers.STATE_WALK_WEST);
 					 lastDirCount = 4;
 					 movedLeftOf = true;
 				 }else if(alerted.getPos()[0]<this.getPos()[0] && alerted.getPos()[1]<this.getPos()[1] && x < y&& ((Projectile)alerted).getRotation() == 0){
 					 RuntimeData.getInstance().getMovmentSystem().moveRight(this, speed);
-					 setCurrentAni(W_RIGHT);
+					 setCurrentAni(Indentifiers.STATE_WALK_EAST);
 					 lastDirCount = 4;
 					 movedLeftOf = true;
 				 }else if(alerted.getPos()[0]<this.getPos()[0] && alerted.getPos()[1]>this.getPos()[1] && x > y&& ((Projectile)alerted).getRotation() == 270){
 					 RuntimeData.getInstance().getMovmentSystem().moveDown(this, speed);
-					 setCurrentAni(W_FRONT);
+					 setCurrentAni(Indentifiers.STATE_WALK_SOUTH);
 					 lastDirCount = 4;
 					 movedLeftOf = true;
 				 }else if(alerted.getPos()[0]>this.getPos()[0] && alerted.getPos()[1]<this.getPos()[1] && x > y&& ((Projectile)alerted).getRotation() == 90){
 					 RuntimeData.getInstance().getMovmentSystem().moveTop(this, speed);
-					 setCurrentAni(W_BACK);
+					 setCurrentAni(Indentifiers.STATE_WALK_NORTH);
 					 lastDirCount = 4;
 					 movedLeftOf = true;
 				 }
 			}else{
 				switch (state){
-				case IDLE:
-				case W_FRONT:
+				case Indentifiers.STATE_IDLE:
+				case Indentifiers.STATE_WALK_SOUTH:
 					RuntimeData.getInstance().getMovmentSystem().moveDown(this,speed);
 					break;
-				case W_BACK:
+				case Indentifiers.STATE_WALK_NORTH:
 					 RuntimeData.getInstance().getMovmentSystem().moveTop(this,speed);
 					break;
-				case W_LEFT:
+				case Indentifiers.STATE_WALK_WEST:
 					 RuntimeData.getInstance().getMovmentSystem().moveLeft(this,speed);
 					break;
-				case W_RIGHT:
+				case Indentifiers.STATE_WALK_EAST:
 					 RuntimeData.getInstance().getMovmentSystem().moveRight(this,speed);
 					break;
 				}
@@ -340,38 +331,38 @@ public abstract class Enemy extends Entity {
 				if(!movedRightOf){
 					 if(alerted.getPos()[0]>=this.getPos()[0] && alerted.getPos()[1]>=this.getPos()[1] && x > y && ((Projectile)alerted).getRotation() == 90){
 						 RuntimeData.getInstance().getMovmentSystem().moveDown(this, speed);
-						 setCurrentAni(W_FRONT);
+						 setCurrentAni(Indentifiers.STATE_WALK_SOUTH);
 						 lastDirCount = 3;
 						 movedRightOf = true;
 					 }else if(alerted.getPos()[0]<=this.getPos()[0] && alerted.getPos()[1]<=this.getPos()[1] && x > y && ((Projectile)alerted).getRotation() == -90){
 						 RuntimeData.getInstance().getMovmentSystem().moveTop(this, speed);
-						 setCurrentAni(W_BACK);
+						 setCurrentAni(Indentifiers.STATE_WALK_NORTH);
 						 lastDirCount = 3;
 						 movedRightOf = true;
 					 }else if(alerted.getPos()[0]<=this.getPos()[0] && alerted.getPos()[1]>=this.getPos()[1] && x < y && ((Projectile)alerted).getRotation() == 180){
 						 RuntimeData.getInstance().getMovmentSystem().moveRight(this, speed);
-						 setCurrentAni(W_RIGHT);
+						 setCurrentAni(Indentifiers.STATE_WALK_EAST);
 						 lastDirCount = 3;
 						 movedRightOf = true;
 					 }else if(alerted.getPos()[0]>=this.getPos()[0] && alerted.getPos()[1]<=this.getPos()[1] && x < y&& ((Projectile)alerted).getRotation() == 0){
 						 RuntimeData.getInstance().getMovmentSystem().moveLeft(this, speed);
-						 setCurrentAni(W_LEFT);
+						 setCurrentAni(Indentifiers.STATE_WALK_WEST);
 						 lastDirCount = 3;
 						 movedRightOf = true;
 					 }
 				}else{
 					switch (state){
-					case IDLE:
-					case W_FRONT:
+					case Indentifiers.STATE_IDLE:
+					case Indentifiers.STATE_WALK_SOUTH:
 						RuntimeData.getInstance().getMovmentSystem().moveDown(this,speed);
 						break;
-					case W_BACK:
+					case Indentifiers.STATE_WALK_NORTH:
 						 RuntimeData.getInstance().getMovmentSystem().moveTop(this,speed);
 						break;
-					case W_LEFT:
+					case Indentifiers.STATE_WALK_WEST:
 						 RuntimeData.getInstance().getMovmentSystem().moveLeft(this,speed);
 						break;
-					case W_RIGHT:
+					case Indentifiers.STATE_WALK_EAST:
 						 RuntimeData.getInstance().getMovmentSystem().moveRight(this,speed);
 						break;
 					}
@@ -393,34 +384,34 @@ public abstract class Enemy extends Entity {
 			 if(randX >= randY){
 				 if(alerted.getPos()[0]>this.pos[0]){
 					 RuntimeData.getInstance().getMovmentSystem().moveRight(this,speed);
-					 setCurrentAni(W_RIGHT);
+					 setCurrentAni(Indentifiers.STATE_WALK_EAST);
 				 }else{
 					 RuntimeData.getInstance().getMovmentSystem().moveLeft(this,speed);
-					 setCurrentAni(W_LEFT);
+					 setCurrentAni(Indentifiers.STATE_WALK_WEST);
 				 }
 			 }else{
 				 if(alerted.getPos()[1]>this.pos[1]){
 					 RuntimeData.getInstance().getMovmentSystem().moveTop(this,speed);
-					 setCurrentAni(W_BACK);
+					 setCurrentAni(Indentifiers.STATE_WALK_NORTH);
 				 }else{
 					 RuntimeData.getInstance().getMovmentSystem().moveDown(this,speed);
-					 setCurrentAni(W_FRONT);
+					 setCurrentAni(Indentifiers.STATE_WALK_SOUTH);
 				 }
 			 }
 			 lastDirCount = 4;
 		}else{
 			switch (state){
-			case IDLE:
-			case W_FRONT:
+			case Indentifiers.STATE_IDLE:
+			case Indentifiers.STATE_WALK_SOUTH:
 				RuntimeData.getInstance().getMovmentSystem().moveDown(this,speed);
 				break;
-			case W_BACK:
+			case Indentifiers.STATE_WALK_NORTH:
 				 RuntimeData.getInstance().getMovmentSystem().moveTop(this,speed);
 				break;
-			case W_LEFT:
+			case Indentifiers.STATE_WALK_WEST:
 				 RuntimeData.getInstance().getMovmentSystem().moveLeft(this,speed);
 				break;
-			case W_RIGHT:
+			case Indentifiers.STATE_WALK_EAST:
 				 RuntimeData.getInstance().getMovmentSystem().moveRight(this,speed);
 				break;
 			}
@@ -439,34 +430,34 @@ public abstract class Enemy extends Entity {
 			 if(randX > randY){
 				 if(alerted.getPos()[0]>this.pos[0]){
 					 RuntimeData.getInstance().getMovmentSystem().moveLeft(this,speed);
-					 setCurrentAni(W_LEFT);
+					 setCurrentAni(Indentifiers.STATE_WALK_WEST);
 				 }else{
 					 RuntimeData.getInstance().getMovmentSystem().moveRight(this,speed);
-					 setCurrentAni(W_RIGHT);
+					 setCurrentAni(Indentifiers.STATE_WALK_EAST);
 				 }
 			 }else{
 				 if(alerted.getPos()[1]>this.pos[1]){
 					 RuntimeData.getInstance().getMovmentSystem().moveDown(this,speed);
-					 setCurrentAni(W_FRONT);
+					 setCurrentAni(Indentifiers.STATE_WALK_SOUTH);
 				 }else{
 					 RuntimeData.getInstance().getMovmentSystem().moveTop(this,speed);
-					 setCurrentAni(W_BACK);
+					 setCurrentAni(Indentifiers.STATE_WALK_NORTH);
 				 }
 			 }   
 			 lastDirCount = 4;
 		}else{
 			switch (state){
-			case IDLE:
-			case W_FRONT:
+			case Indentifiers.STATE_IDLE:
+			case Indentifiers.STATE_WALK_SOUTH:
 				RuntimeData.getInstance().getMovmentSystem().moveDown (this,speed);
 				break;
-			case W_BACK:
+			case Indentifiers.STATE_WALK_NORTH:
 				 RuntimeData.getInstance().getMovmentSystem().moveTop(this,speed);
 				break;
-			case W_LEFT:
+			case Indentifiers.STATE_WALK_WEST:
 				 RuntimeData.getInstance().getMovmentSystem().moveLeft(this,speed);
 				break;
-			case W_RIGHT:
+			case Indentifiers.STATE_WALK_EAST:
 				 RuntimeData.getInstance().getMovmentSystem().moveRight(this,speed);
 				break;
 			}
@@ -477,41 +468,41 @@ public abstract class Enemy extends Entity {
 	@Override
 	public void setCurrentAni(int animationKey) {
 		switch (animationKey){
-		case A_FRONT:
+		case Indentifiers.STATE_ATTACK_SOUTH:
 			currentAni = frontAttackAni;
-			state = A_FRONT;
+			state = Indentifiers.STATE_ATTACK_SOUTH;
 			break;
-		case A_BACK:
+		case Indentifiers.STATE_ATTACK_NORTH:
 			currentAni = backAttackAni;
-			state = A_BACK;
+			state = Indentifiers.STATE_ATTACK_NORTH;
 			break;
-		case A_LEFT:
+		case Indentifiers.STATE_ATTACK_WEST:
 			currentAni = leftAttackAni;
-			state = A_LEFT;
+			state = Indentifiers.STATE_ATTACK_WEST;
 			break;
-		case A_RIGHT:
+		case Indentifiers.STATE_ATTACK_EAST:
 			currentAni = rightWalkAni;
-			state = A_RIGHT;
+			state = Indentifiers.STATE_ATTACK_EAST;
 			break;
-		case W_FRONT:
+		case Indentifiers.STATE_WALK_SOUTH:
 			currentAni = frontWalkAni;
-			state = W_FRONT;
+			state = Indentifiers.STATE_WALK_SOUTH;
 			break;
-		case W_BACK:
+		case Indentifiers.STATE_WALK_NORTH:
 			currentAni = backWalkAni;
-			state = W_BACK;
+			state = Indentifiers.STATE_WALK_NORTH;
 			break;
-		case W_LEFT:
+		case Indentifiers.STATE_WALK_WEST:
 			currentAni = leftWalkAni;
-			state = W_LEFT;
+			state = Indentifiers.STATE_WALK_WEST;
 			break;
-		case W_RIGHT:
+		case Indentifiers.STATE_WALK_EAST:
 			currentAni = rightWalkAni;
-			state = W_RIGHT;
+			state = Indentifiers.STATE_WALK_EAST;
 			break;
-		case IDLE:
+		case Indentifiers.STATE_IDLE:
 			currentAni = idleAni;
-			state = IDLE;
+			state = Indentifiers.STATE_IDLE;
 			break;
 		}
 	}

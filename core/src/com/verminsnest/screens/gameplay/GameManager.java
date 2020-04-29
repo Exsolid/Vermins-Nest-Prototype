@@ -2,7 +2,7 @@ package com.verminsnest.screens.gameplay;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.verminsnest.gamedev.VerminsNest;
+import com.verminsnest.core.VerminsNest;
 import com.verminsnest.screens.gameplay.menus.PauseMenu;
 
 public class GameManager implements Screen {

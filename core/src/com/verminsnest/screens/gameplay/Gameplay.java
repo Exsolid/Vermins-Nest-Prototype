@@ -4,14 +4,14 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.verminsnest.core.VerminsNest;
+import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.enemies.Tinker;
 import com.verminsnest.entities.playables.Mage;
 import com.verminsnest.entities.projectiles.Projectile;
-import com.verminsnest.gamedev.VerminsNest;
-import com.verminsnest.mapgen.MapCell;
+import com.verminsnest.generation.MapCell;
 import com.verminsnest.screens.gameplay.menus.GameplayMenu;
-import com.verminsnest.singletons.RuntimeData;
 
 public class Gameplay extends GameplayScreen{
 	// Controls

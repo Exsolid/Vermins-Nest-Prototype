@@ -1,18 +1,19 @@
-package com.verminsnest.singletons;
+package com.verminsnest.core.singletons;
 
 import java.util.ArrayList;
 
-import com.verminsnest.misc.assets.VNAssetManager;
 import com.badlogic.gdx.graphics.Texture;
-import com.verminsnest.core.EntityMovementSystem;
+import com.verminsnest.core.engine.EntityMovementSystem;
+import com.verminsnest.core.engine.VNAssetManager;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.playables.Playable;
-import com.verminsnest.mapgen.MapCell;
+import com.verminsnest.generation.MapCell;
+import com.verminsnest.generation.MapData;
 
 public class RuntimeData {
 
 	private static RuntimeData instance;
-	private MapCell[][] map;
+	private MapData map;
 	
 	private ArrayList<Entity> entities;
 	private ArrayList<Entity> removedEntities;
@@ -35,12 +36,12 @@ public class RuntimeData {
 	}
 	
 	public MapCell[][] getMap() {
-		return map;
+		return map.getData();
 	}
 
-	public void setMap(MapCell[][] map) {
+	public void setMap(MapData map) {
 		this.map = map;
-		enMoSys = new EntityMovementSystem(this.map);
+		enMoSys = new EntityMovementSystem(this.map.getData());
 	}
 	
 	public void addEntity(Entity ent){
@@ -49,6 +50,10 @@ public class RuntimeData {
 	
 	public void removeEntity(Entity ent){
 		removedEntities.add(ent);
+	}
+	
+	public MapData getMapData(){
+		return map;
 	}
 	
 	public void updateEntities(float stateTime){
@@ -91,7 +96,7 @@ public class RuntimeData {
 		for(Entity ent: removedEntities){
 			ent.dispose();
 		}
-		map[0][0].getLayers().get(0).getTexture().dispose();
+		map.getData()[0][0].getLayers().get(0).getTexture().dispose();
 		map = null;
 		entities.clear();
 		addedEntities.clear();

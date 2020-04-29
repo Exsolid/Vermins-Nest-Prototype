@@ -4,8 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.verminsnest.core.Indentifiers;
+import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.entities.Entity;
-import com.verminsnest.singletons.RuntimeData;
 
 public abstract class Playable extends Entity {
 	
@@ -15,11 +16,6 @@ public abstract class Playable extends Entity {
 	protected Animation<TextureRegion> leftWalkAni;
 	protected Animation<TextureRegion> idleAni;
 	
-	public final static int W_FRONT = 0;
-	public final static int W_BACK = 1;
-	public final static int W_LEFT = 2;
-	public final static int W_RIGHT = 3;
-	public final static int IDLE = 4;
 	protected int currentDir;
 	
 	
@@ -27,6 +23,7 @@ public abstract class Playable extends Entity {
 	protected int agility;
 	protected int strength;
 	protected int health;
+	protected int maxHealth;
 	
 	protected float attackCooldown;
 	protected String attackIconPath;
@@ -38,6 +35,7 @@ public abstract class Playable extends Entity {
 		super(position,textureID);
 		setSpeed(speed);
 		setHealth(health);
+		setMaxHealth(health);
 		setStrength(dmg);
 		setAgility(agi);
 		
@@ -47,7 +45,7 @@ public abstract class Playable extends Entity {
 		shadow = RuntimeData.getInstance().getAsset("textures/characters/Character-Shadow.png");
 		
 		init();
-		this.setCurrentAni(IDLE);
+		this.setCurrentAni(Indentifiers.STATE_IDLE);
 		this.setSize(currentAni.getKeyFrame(0).getRegionWidth(),currentAni.getKeyFrame(0).getRegionHeight());
 	}
 	
@@ -92,7 +90,7 @@ public abstract class Playable extends Entity {
 				}
 			}
 			RuntimeData.getInstance().getMovmentSystem().moveTop(this, this.getSpeed());
-			this.setCurrentAni(Playable.W_BACK);
+			this.setCurrentAni(Indentifiers.STATE_WALK_NORTH);
 			break;
 		case 'D':
 			if (!Gdx.input.isKeyPressed(Input.Keys.D)) {
@@ -104,7 +102,7 @@ public abstract class Playable extends Entity {
 				}
 			}
 			RuntimeData.getInstance().getMovmentSystem().moveRight(this, this.getSpeed());
-			this.setCurrentAni(Playable.W_RIGHT);
+			this.setCurrentAni(Indentifiers.STATE_WALK_EAST);
 			break;
 		case 'S':
 			if (!Gdx.input.isKeyPressed(Input.Keys.S)) {
@@ -116,7 +114,7 @@ public abstract class Playable extends Entity {
 				}
 			}
 			RuntimeData.getInstance().getMovmentSystem().moveDown(this, this.getSpeed());
-			this.setCurrentAni(Playable.W_FRONT);
+			this.setCurrentAni(Indentifiers.STATE_WALK_SOUTH);
 			break;
 		case 'A':
 			if (!Gdx.input.isKeyPressed(Input.Keys.A)) {
@@ -128,10 +126,10 @@ public abstract class Playable extends Entity {
 				}
 			}
 			RuntimeData.getInstance().getMovmentSystem().moveLeft(this, this.getSpeed());
-			this.setCurrentAni(Playable.W_LEFT);
+			this.setCurrentAni(Indentifiers.STATE_WALK_WEST);
 			break;
 		case '-':
-			this.setCurrentAni(Playable.IDLE);
+			this.setCurrentAni(Indentifiers.STATE_IDLE);
 			prevKey = '-';
 		}
 
@@ -164,25 +162,25 @@ public abstract class Playable extends Entity {
 	@Override
 	public void setCurrentAni(int animationKey) {
 		switch (animationKey){
-		case W_FRONT:
+		case Indentifiers.STATE_WALK_SOUTH:
 			currentAni = frontWalkAni;
-			currentDir = W_FRONT;
+			currentDir = Indentifiers.STATE_WALK_SOUTH;
 			break;
-		case W_BACK:
+		case Indentifiers.STATE_WALK_NORTH:
 			currentAni = backWalkAni;
-			currentDir = W_BACK;
+			currentDir = Indentifiers.STATE_WALK_NORTH;
 			break;
-		case W_LEFT:
+		case Indentifiers.STATE_WALK_WEST:
 			currentAni = leftWalkAni;
-			currentDir = W_LEFT;
+			currentDir = Indentifiers.STATE_WALK_WEST;
 			break;
-		case W_RIGHT:
+		case Indentifiers.STATE_WALK_EAST:
 			currentAni = rightWalkAni;
-			currentDir = W_RIGHT;
+			currentDir = Indentifiers.STATE_WALK_EAST;
 			break;
-		case IDLE:
+		case Indentifiers.STATE_IDLE:
 			currentAni = idleAni;
-			currentDir = IDLE;
+			currentDir = Indentifiers.STATE_IDLE;
 			break;
 		}
 	}
@@ -203,5 +201,13 @@ public abstract class Playable extends Entity {
 		float cd = (float) (attackCooldown+1/(agility*0.2)-stateTime);
 		if(cd <0) cd = 0;
 		return new float[]{cd ,(float) (1/(agility*0.2))};
+	}
+
+	public int getMaxHealth() {
+		return maxHealth;
+	}
+
+	public void setMaxHealth(int maxHealth) {
+		this.maxHealth = maxHealth;
 	}
 }

@@ -1,12 +1,13 @@
-package com.verminsnest.core;
+package com.verminsnest.core.engine;
 
 import java.util.ArrayList;
 
+import com.verminsnest.core.Indentifiers;
+import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.enemies.Enemy;
 import com.verminsnest.entities.playables.Playable;
 import com.verminsnest.entities.projectiles.Projectile;
-import com.verminsnest.singletons.RuntimeData;
 
 public class EntityDamageSystem {
 
@@ -43,7 +44,7 @@ public class EntityDamageSystem {
 			if(hit instanceof Playable && !source.isFriendly()){
 				((Playable)hit).setHealth(((Playable)hit).getHealth()-source.getDamage());
 			}
-			source.setCurrentAni(Projectile.HIT);
+			source.setCurrentAni(Indentifiers.STATE_HIT);
 		}
 	}
 }

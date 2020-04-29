@@ -5,14 +5,14 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.verminsnest.core.VerminsNest;
+import com.verminsnest.core.engine.VNAssetManager;
+import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.exceptions.OutOfBounds;
-import com.verminsnest.gamedev.VerminsNest;
-import com.verminsnest.misc.assets.VNAssetManager;
 import com.verminsnest.misc.gui.Button;
 import com.verminsnest.misc.gui.ButtonManager;
 import com.verminsnest.screens.gameplay.GameManager;
 import com.verminsnest.screens.gameplay.GameplayScreen;
-import com.verminsnest.singletons.RuntimeData;
 
 public class PauseMenu extends GameplayScreen{
 	private ButtonManager bManager;

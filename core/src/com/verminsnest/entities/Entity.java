@@ -3,7 +3,7 @@ package com.verminsnest.entities;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.verminsnest.singletons.RuntimeData;
+import com.verminsnest.core.singletons.RuntimeData;
 
 public abstract class Entity {
 	protected int textureID = -1;

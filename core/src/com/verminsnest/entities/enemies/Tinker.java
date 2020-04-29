@@ -3,12 +3,13 @@ package com.verminsnest.entities.enemies;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.verminsnest.core.Indentifiers;
+import com.verminsnest.core.engine.VNAssetManager;
+import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.entities.projectiles.Projectile;
 import com.verminsnest.entities.projectiles.slashes.Slash;
 import com.verminsnest.entities.projectiles.slashes.SlashLeftSmall;
 import com.verminsnest.entities.projectiles.slashes.SlashRightSmall;
-import com.verminsnest.misc.assets.VNAssetManager;
-import com.verminsnest.singletons.RuntimeData;
 
 public class Tinker extends Enemy {
 	
@@ -96,7 +97,10 @@ public class Tinker extends Enemy {
 		walkRightOf();
 		walkLeftOf();
 		if(!movedLeftOf && !movedRightOf){
-			if(playerAlerted != null)alerted = playerAlerted;
+			if(playerAlerted == null){
+				playerAlerted = RuntimeData.getInstance().getCharacter();
+			}
+			alerted = playerAlerted;
 			chooseAgressiveAction(xDistance,yDistance, stateTime);
 		}
 	}
@@ -116,42 +120,42 @@ public class Tinker extends Enemy {
 			lastAttack = stateTime;
 			Slash temp = null;
 			switch(state){
-			case W_FRONT:
-			case IDLE:
-			case A_FRONT:
-				temp = new SlashRightSmall(Projectile.SOUTH, 4, strength, new int[]{pos[0]+size[0]/2,pos[1]}, stateTime);
+			case Indentifiers.STATE_WALK_SOUTH:
+			case Indentifiers.STATE_IDLE:
+			case Indentifiers.STATE_ATTACK_SOUTH:
+				temp = new SlashRightSmall(Indentifiers.DIRECTION_SOUTH, 4, strength, new int[]{pos[0]+size[0]/2,pos[1]}, stateTime);
 				temp.getPos()[1] -= temp.getSize()[1]+5;
 				temp.getPos()[0] -= temp.getSize()[0]+15;
-				temp = new SlashLeftSmall(Projectile.SOUTH, 4, strength, new int[]{pos[0]+size[0]/2,pos[1]}, stateTime);
+				temp = new SlashLeftSmall(Indentifiers.DIRECTION_SOUTH, 4, strength, new int[]{pos[0]+size[0]/2,pos[1]}, stateTime);
 				temp.getPos()[1] -= temp.getSize()[1]+5;
 				temp.getPos()[0] += 15;
-				setCurrentAni(A_FRONT);
+				setCurrentAni(Indentifiers.STATE_ATTACK_SOUTH);
 				break;
-			case W_BACK:
-			case A_BACK:
-				temp = new SlashLeftSmall(Projectile.NORTH, 4, strength, new int[]{pos[0]+size[0]/2,pos[1]+this.size[1]+5}, stateTime);
+			case Indentifiers.STATE_WALK_NORTH:
+			case Indentifiers.STATE_ATTACK_NORTH:
+				temp = new SlashLeftSmall(Indentifiers.DIRECTION_NORTH, 4, strength, new int[]{pos[0]+size[0]/2,pos[1]+this.size[1]+5}, stateTime);
 				temp.getPos()[0] -= temp.getSize()[0]+15;
-				temp = new SlashRightSmall(Projectile.NORTH, 4, strength, new int[]{pos[0]+size[0]/2,pos[1]+this.size[1]+5}, stateTime);
+				temp = new SlashRightSmall(Indentifiers.DIRECTION_NORTH, 4, strength, new int[]{pos[0]+size[0]/2,pos[1]+this.size[1]+5}, stateTime);
 				temp.getPos()[0] += 15;
-				setCurrentAni(A_BACK);
+				setCurrentAni(Indentifiers.STATE_ATTACK_NORTH);
 				break;
-			case W_LEFT:
-			case A_LEFT:
-				temp = new SlashRightSmall(Projectile.WEST, 4, strength, new int[]{pos[0],pos[1]+size[1]/2}, stateTime);
+			case Indentifiers.STATE_WALK_WEST:
+			case Indentifiers.STATE_ATTACK_WEST:
+				temp = new SlashRightSmall(Indentifiers.DIRECTION_WEST, 4, strength, new int[]{pos[0],pos[1]+size[1]/2}, stateTime);
 				temp.getPos()[0] -= temp.getSize()[1]+10;
 				temp.getPos()[1] += temp.getSize()[0];
-				temp = new SlashLeftSmall(Projectile.WEST, 4, strength, new int[]{pos[0],pos[1]+size[1]/2}, stateTime);
+				temp = new SlashLeftSmall(Indentifiers.DIRECTION_WEST, 4, strength, new int[]{pos[0],pos[1]+size[1]/2}, stateTime);
 				temp.getPos()[0] -= temp.getSize()[1]+10;
 				temp.getPos()[1] -= temp.getSize()[0];
-				setCurrentAni(A_LEFT);
+				setCurrentAni(Indentifiers.STATE_ATTACK_WEST);
 				break;
-			case W_RIGHT:
-			case A_RIGHT:
-				temp = new SlashLeftSmall(Projectile.EAST, 4, strength, new int[]{pos[0]+this.size[0]+5,pos[1]+size[1]/2}, stateTime);
+			case Indentifiers.STATE_WALK_EAST:
+			case Indentifiers.STATE_ATTACK_EAST:
+				temp = new SlashLeftSmall(Indentifiers.DIRECTION_EAST, 4, strength, new int[]{pos[0]+this.size[0]+5,pos[1]+size[1]/2}, stateTime);
 				temp.getPos()[1] += temp.getSize()[0];
-				temp = new SlashRightSmall(Projectile.EAST, 4, strength, new int[]{pos[0]+this.size[0]+5,pos[1]+size[1]/2}, stateTime);
+				temp = new SlashRightSmall(Indentifiers.DIRECTION_EAST, 4, strength, new int[]{pos[0]+this.size[0]+5,pos[1]+size[1]/2}, stateTime);
 				temp.getPos()[1] -= temp.getSize()[0];
-				setCurrentAni(A_RIGHT);
+				setCurrentAni(Indentifiers.STATE_ATTACK_EAST);
 				break;
 			}
 		}

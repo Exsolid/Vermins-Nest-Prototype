@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.verminsnest.core.VerminsNest;
+import com.verminsnest.core.engine.VNAssetManager;
+import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.exceptions.OutOfBounds;
-import com.verminsnest.gamedev.VerminsNest;
-import com.verminsnest.mapgen.WorldGen;
-import com.verminsnest.misc.assets.VNAssetManager;
+import com.verminsnest.generation.World;
 import com.verminsnest.misc.gui.Button;
 import com.verminsnest.misc.gui.ButtonManager;
-import com.verminsnest.singletons.RuntimeData;
 
 public class MainMenu implements Screen {
 
@@ -138,8 +138,8 @@ public class MainMenu implements Screen {
 				case START:
 					// World generation
 					RuntimeData.getInstance().loadTextures(VNAssetManager.GAMEPLAY);
-					WorldGen gen = new WorldGen(game);
-					gen.setData(6, 30, 30, 10,(RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Mountain-Sheet.png")));
+					World gen = new World(game);
+					gen.setData(20, 20, 20, 10,(RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Mountain-Sheet.png")));
 					game.screenLoading(LoadingScreen.GAMEMANAGER, this);
 					break;
 				case SETTINGS:

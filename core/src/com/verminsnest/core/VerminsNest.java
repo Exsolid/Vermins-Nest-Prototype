@@ -1,4 +1,4 @@
-package com.verminsnest.gamedev;
+package com.verminsnest.core;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;

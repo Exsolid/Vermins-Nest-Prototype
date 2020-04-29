@@ -2,25 +2,18 @@ package com.verminsnest.entities.projectiles;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.verminsnest.core.Indentifiers;
+import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.entities.Entity;
-import com.verminsnest.singletons.RuntimeData;
 
 public abstract class Projectile extends Entity{
-	
-	public final static int NORTH = 0;
-	public final static int WEST = 1;
-	public final static int EAST = 2;
-	public final static int SOUTH = 3;
 	protected int direction;
 	protected float rotation;
 	
 	protected Animation<TextureRegion> flyingAni;
 	protected Animation<TextureRegion> hitAni;
 	protected Animation<TextureRegion> castAni;
-	public final static int FLYING = 0;
-	public final static int HIT = 1;
-	public final static int CAST = 2;
-	public final static int TODELETE = 3;
+	
 	private int state;
 	
 	protected int damage;
@@ -44,20 +37,20 @@ public abstract class Projectile extends Entity{
 		this.direction = direction;		
 		//Texture orientation
 		switch(direction){
-		case SOUTH:
+		case Indentifiers.DIRECTION_SOUTH:
 			rotation = 180;
 			break;
-		case WEST:
+		case Indentifiers.DIRECTION_WEST:
 			rotation = 90;
 			break;
-		case EAST:
+		case Indentifiers.DIRECTION_EAST:
 			rotation = 270;
 			break;
 		}
 		internalStateTime = 0;
 		lastStateTime = stateTime;
 		init();
-		this.setCurrentAni(CAST);
+		this.setCurrentAni(Indentifiers.STATE_CAST);
 		this.setSize(currentAni.getKeyFrame(0).getRegionWidth(),currentAni.getKeyFrame(0).getRegionHeight());
 	}
 	
@@ -73,20 +66,20 @@ public abstract class Projectile extends Entity{
 	
 	public TextureRegion getCurrentFrame(float stateTime) {
 		updateStateTime(stateTime);
-		if(state == CAST){
+		if(state == Indentifiers.STATE_CAST){
 			if(currentAni.isAnimationFinished(internalStateTime)){
-				setCurrentAni(FLYING);
+				setCurrentAni(Indentifiers.STATE_FLYING);
 			}
 			return currentAni.getKeyFrame(internalStateTime, false);
-		}else if(state == FLYING){
+		}else if(state == Indentifiers.STATE_FLYING){
 			return currentAni.getKeyFrame(internalStateTime, true);
 		}
-		else if(state == HIT ){
+		else if(state == Indentifiers.STATE_HIT ){
 			if(currentAni.isAnimationFinished(internalStateTime)){
-				state = TODELETE;
+				state = Indentifiers.STATE_TODELETE;
 			}
 			return currentAni.getKeyFrame(internalStateTime, false);
-		}else if(state == TODELETE){
+		}else if(state == Indentifiers.STATE_TODELETE){
 			return currentAni.getKeyFrame(currentAni.getAnimationDuration(), false);
 		}
 		return null;
@@ -94,49 +87,49 @@ public abstract class Projectile extends Entity{
 	
 	public void setCurrentAni(int aniKey){
 		switch(aniKey){
-		case FLYING:
+		case Indentifiers.STATE_FLYING:
 			currentAni = flyingAni;
-			state = FLYING;
+			state = Indentifiers.STATE_FLYING;
 			toReset = true;
 			break;
-		case HIT:
+		case Indentifiers.STATE_HIT:
 			currentAni = hitAni;
-			state = HIT;
+			state = Indentifiers.STATE_HIT;
 			toReset = true;
 			break;
-		case CAST:
+		case Indentifiers.STATE_CAST:
 			currentAni = castAni;
-			state = CAST;
+			state = Indentifiers.STATE_CAST;
 			toReset = true;
 			break;
 		}
 	}
 
 	public void update(float stateTime){
-		if(state == FLYING){
-			if(direction == EAST && !RuntimeData.getInstance().getMovmentSystem().moveRight(this,speed)){
-				setCurrentAni(HIT);
+		if(state == Indentifiers.STATE_FLYING){
+			if(direction == Indentifiers.DIRECTION_EAST && !RuntimeData.getInstance().getMovmentSystem().moveRight(this,speed)){
+				setCurrentAni(Indentifiers.STATE_HIT);
 			}
-			else if(direction == WEST && !RuntimeData.getInstance().getMovmentSystem().moveLeft(this,speed)){
-				setCurrentAni(HIT);
+			else if(direction == Indentifiers.DIRECTION_WEST && !RuntimeData.getInstance().getMovmentSystem().moveLeft(this,speed)){
+				setCurrentAni(Indentifiers.STATE_HIT);
 			}
-			else if(direction == NORTH && !RuntimeData.getInstance().getMovmentSystem().moveTop(this,speed)){
-				setCurrentAni(HIT);
+			else if(direction == Indentifiers.DIRECTION_NORTH && !RuntimeData.getInstance().getMovmentSystem().moveTop(this,speed)){
+				setCurrentAni(Indentifiers.STATE_HIT);
 			}
-			else if(direction == SOUTH && !RuntimeData.getInstance().getMovmentSystem().moveDown(this,speed)){
-				setCurrentAni(HIT);
+			else if(direction == Indentifiers.DIRECTION_SOUTH && !RuntimeData.getInstance().getMovmentSystem().moveDown(this,speed)){
+				setCurrentAni(Indentifiers.STATE_HIT);
 			}
-		}else if(state == HIT){
-			if(direction == WEST){
+		}else if(state == Indentifiers.STATE_HIT){
+			if(direction == Indentifiers.DIRECTION_WEST){
 				pos[0] -= speed;
-			}else if(direction == EAST){
+			}else if(direction == Indentifiers.DIRECTION_EAST){
 				pos[0] += speed;
-			}else if(direction == SOUTH){
+			}else if(direction == Indentifiers.DIRECTION_SOUTH){
 				pos[1] -= speed;
-			}else if(direction == NORTH){
+			}else if(direction == Indentifiers.DIRECTION_NORTH){
 				pos[1] += speed;
 			}
-		}else if(state == TODELETE){
+		}else if(state == Indentifiers.STATE_TODELETE){
 			RuntimeData.getInstance().removeEntity(this);
 		}
 	}
@@ -154,7 +147,7 @@ public abstract class Projectile extends Entity{
 	}	
 	
 	public float getRotation() {
-		if(state != CAST){
+		if(state != Indentifiers.STATE_CAST){
 			return rotation;
 		}else{
 			return 0;

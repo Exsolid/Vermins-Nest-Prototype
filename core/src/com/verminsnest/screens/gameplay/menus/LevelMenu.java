@@ -1,9 +1,9 @@
 package com.verminsnest.screens.gameplay.menus;
 
-import com.verminsnest.gamedev.VerminsNest;
+import com.verminsnest.core.VerminsNest;
+import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.screens.gameplay.GameManager;
 import com.verminsnest.screens.gameplay.GameplayScreen;
-import com.verminsnest.singletons.RuntimeData;
 
 public class LevelMenu extends GameplayScreen{
 	

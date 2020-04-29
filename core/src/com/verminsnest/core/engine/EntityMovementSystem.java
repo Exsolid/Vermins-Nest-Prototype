@@ -1,10 +1,10 @@
-package com.verminsnest.core;
+package com.verminsnest.core.engine;
 
 
+import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.projectiles.Projectile;
-import com.verminsnest.mapgen.MapCell;
-import com.verminsnest.singletons.RuntimeData;
+import com.verminsnest.generation.MapCell;
 
 public class EntityMovementSystem {
 	
