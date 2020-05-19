@@ -18,6 +18,9 @@ public abstract class Playable extends Entity {
 	
 	protected int currentDir;
 	
+	protected int killCount;
+	protected int killLimit;
+	protected int skillPoints;
 	
 	protected int speed;
 	protected int agility;
@@ -38,6 +41,8 @@ public abstract class Playable extends Entity {
 		setMaxHealth(health);
 		setStrength(dmg);
 		setAgility(agi);
+		
+		skillPoints = 2;
 		
 		prevKey = '-';
 		currentKey = '-';
@@ -209,5 +214,13 @@ public abstract class Playable extends Entity {
 
 	public void setMaxHealth(int maxHealth) {
 		this.maxHealth = maxHealth;
+	}
+	
+	public int getSkillPoints(){
+		return skillPoints;
+	}
+	
+	public void setSkilPoints(int skillPoints){
+		this.skillPoints = skillPoints;
 	}
 }

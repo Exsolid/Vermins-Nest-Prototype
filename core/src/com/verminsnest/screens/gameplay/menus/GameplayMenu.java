@@ -9,9 +9,8 @@ import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.generation.Room;
 import com.verminsnest.misc.gui.FontText;
 import com.verminsnest.screens.gameplay.GameManager;
-import com.verminsnest.screens.gameplay.GameplayScreen;
 
-public class GameplayMenu extends GameplayScreen {
+public class GameplayMenu extends GameplayOverlay {
 	private int[] dataScrollPos;
 	private int[] mapPos;
 	private int[] attackDataPos;
@@ -26,7 +25,7 @@ public class GameplayMenu extends GameplayScreen {
 	public GameplayMenu(VerminsNest game, GameManager gameMan) {
 		super(game, gameMan);
 		rooms = new ArrayList<>();
-		hp = new FontText("0", 50);
+		hp = new FontText("0", 50, false);
 		attackDataPos = new int[] { 0, 0 };
 		abilityDataPos = new int[] { 0, 0 };
 		mapPos = new int[] { 0, 0 };
@@ -205,8 +204,7 @@ public class GameplayMenu extends GameplayScreen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
+		hp.dispose();
 	}
 
 	private class MinimapRoom {

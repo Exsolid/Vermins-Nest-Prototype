@@ -1,37 +1,38 @@
 package com.verminsnest.screens.gameplay;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.verminsnest.core.VerminsNest;
+import com.verminsnest.screens.VNScreen;
+import com.verminsnest.screens.gameplay.menus.LevelMenu;
 import com.verminsnest.screens.gameplay.menus.PauseMenu;
 
-public class GameManager implements Screen {
-
-	// Game
-	private VerminsNest game;
+public class GameManager extends VNScreen {
 	
 	// Rendering
 	private float timeSinceRender = 0;
 	private float updateStep = 1 / 120f;
 	private float stateTime;
 
+	//Control blocking
+	private long blockTime;
+	private boolean controlBlocked;
+	private long blockStartTime;
+	
 	public static final int RUNNING = 0;
 	public static final int PAUSEMENU = 1;
-	public static final int INVMENU = 2;
+	public static final int LEVELMENU = 2;
 	private int state;
 	
 	private Gameplay gameplay;
-	private PauseMenu pausemenu;
+	private PauseMenu pauseMenu;
+	private LevelMenu levelMenu;
 	
 	public GameManager( VerminsNest game) {
-		this.game = game;
+		super(game);
 	}
 
 	@Override
 	public void show() {
-		gameplay = new Gameplay(game, this);
-		pausemenu = new PauseMenu(game, this);
-		state = RUNNING;
 	}
 
 	@Override
@@ -48,13 +49,19 @@ public class GameManager implements Screen {
 					break;
 				case PAUSEMENU:
 					gameplay.render(stateTime);
-					pausemenu.render(stateTime);
-					pausemenu.update(stateTime);
+					pauseMenu.render(stateTime);
+					pauseMenu.update(stateTime);
 					break;
-				case INVMENU:
+				case LEVELMENU:
+					gameplay.render(stateTime);
+					levelMenu.render(stateTime);
+					levelMenu.update(stateTime);
 					break;
 				}
-			
+				blockTime = System.currentTimeMillis() - blockStartTime;
+				if (blockTime > 225) {
+					controlBlocked = false;
+				}
 		}
 	}
 
@@ -64,14 +71,24 @@ public class GameManager implements Screen {
 			this.state = RUNNING;
 			break;
 		case PAUSEMENU:
-			pausemenu.init();
+			pauseMenu.init();
 			this.state = PAUSEMENU;
 			break;
-		case INVMENU:
-			this.state = INVMENU;
+		case LEVELMENU:
+			levelMenu.init();
+			this.state = LEVELMENU;
 			break;
 		}
+		this.resetBlocked();
+	}
 	
+	public void resetBlocked(){
+		controlBlocked = true;
+		blockStartTime = System.currentTimeMillis();
+	}
+	
+	public boolean isControlBlocked(){
+		return controlBlocked;
 	}
 	
 	@Override
@@ -94,6 +111,32 @@ public class GameManager implements Screen {
 	@Override
 	public void dispose() {
 		gameplay.dispose();
-		pausemenu.dispose();
+		levelMenu.dispose();
+		pauseMenu.dispose();
+		isDisposed = true;
+	}
+
+	@Override
+	public void init() {
+		gameplay = new Gameplay(game, this);
+		pauseMenu = new PauseMenu(game, this);
+		levelMenu = new LevelMenu(game, this);
+		pauseMenu.init();
+		levelMenu.init();
+		
+		state = RUNNING;
+		
+
+		// Controls
+		blockTime = 0;
+		blockStartTime = System.currentTimeMillis();
+		controlBlocked = true;
+		isDisposed = false;
+	}
+
+	@Override
+	public void reload() {
+		// TODO Auto-generated method stub
+		
 	}
 }

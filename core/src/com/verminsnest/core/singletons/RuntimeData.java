@@ -3,6 +3,8 @@ package com.verminsnest.core.singletons;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.verminsnest.config.Configurator;
+import com.verminsnest.core.VerminsNest;
 import com.verminsnest.core.engine.EntityMovementSystem;
 import com.verminsnest.core.engine.VNAssetManager;
 import com.verminsnest.entities.Entity;
@@ -22,16 +24,22 @@ public class RuntimeData {
 
 	private VNAssetManager assetManager;
 	private EntityMovementSystem enMoSys;
+	private VerminsNest game;
+	
 	
 	private RuntimeData(){
+	}
+	
+	public void init(VerminsNest game){
 		removedEntities = new ArrayList<Entity>();
 		entities = new ArrayList<Entity>();
 		addedEntities = new ArrayList<Entity>();
 		assetManager = new VNAssetManager();
+		this.game = game;
 	}
 	
 	public static RuntimeData getInstance(){
-		if(instance ==  null)instance = new RuntimeData();
+		if(instance == null) instance = new RuntimeData();
 		return instance;
 	}
 	
@@ -133,5 +141,13 @@ public class RuntimeData {
 
 	public void setCharacter(Playable character) {
 		this.character = character;
+	}
+	
+	public Configurator getConfig(){
+		return game.getConfig();
+	}
+	
+	public boolean areAssetsLoaded(int id){
+		return assetManager.areAssetsLoaded(id);
 	}
 }

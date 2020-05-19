@@ -26,6 +26,7 @@ public class VNAssetManager {
 		case GAMEPLAY:
 			assetManager.load("textures/menus/scrolls/VerticalScroll_Small.png", Texture.class);
 			assetManager.load("textures/menus/scrolls/HorizontalScroll_Minimum.png", Texture.class);
+			assetManager.load("textures/menus/scrolls/VerticalScroll_Big.png", Texture.class);
 			
 			assetManager.load("textures/menus/frames/HealthFrame.png", Texture.class);
 			assetManager.load("textures/menus/frames/AbilityFrame.png", Texture.class);
@@ -86,6 +87,7 @@ public class VNAssetManager {
 		switch (id){
 		case GAMEPLAY:
 			this.unload("textures/menus/scrolls/VerticalScroll_Small.png");
+			this.unload("textures/menus/scrolls/VerticalScroll_Big.png");
 			this.unload("textures/menus/scrolls/HorizontalScroll_Minimum.png");
 			
 			this.unload("textures/menus/frames/HealthFrame.png");
@@ -136,6 +138,25 @@ public class VNAssetManager {
 			break;
 		}
 		assetManager.update();
+	}
+	
+	public boolean areAssetsLoaded(int id){
+		switch (id){
+		case GAMEPLAY:
+			return assetManager.isLoaded("textures/menus/scrolls/VerticalScroll_Small.png");
+		case GAMEPLAY_FIREBALL:
+			return assetManager.isLoaded("textures/projectiles/fireball/FireBall-Shadow.png");
+		case GAMEPLAY_SLASH_SMALL:
+			return assetManager.isLoaded("textures/projectiles/slash/Slash.png");
+		case GAMEPLAY_MAGE:
+			return assetManager.isLoaded("textures/characters/mage/Mage-W-Front.png");
+		case GAMEPLAY_TINKER:
+			return assetManager.isLoaded("textures/enemies/tinker/Tinker-A-Back.png");
+		case MENU:
+			return assetManager.isLoaded("textures/general/Background.png");
+		default:
+			return false;
+		}
 	}
 	
 	private void unload(String path){

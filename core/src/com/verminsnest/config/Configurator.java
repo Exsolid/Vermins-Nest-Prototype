@@ -6,12 +6,10 @@ import java.util.ResourceBundle;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.assets.AssetManager;
 public class Configurator {
 
 	private Preferences prefs;
 	private ResourceBundle bundle;
-	public static AssetManager assets = new AssetManager();
 	
 	public Configurator(){
 		Locale language;

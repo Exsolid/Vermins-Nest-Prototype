@@ -1,23 +1,23 @@
 package com.verminsnest.misc.gui;
 
-import java.awt.Point;
 import java.util.ArrayList;
 
 public class Button {
 	//Values
-	private String text;
-	private ArrayList<String> options;
+	private FontText text;
+	private ArrayList<FontText> leftArrow;
+	private ArrayList<FontText> rightArrow;
+	private ArrayList<FontText> options;
 	
 	//Operands
 	private int optionsIndex;
 	private boolean isActiv;
-	private int[] titleSpecs; 
-	private int[] optionSpecs;
-	public Button(String text){
-		this.text = text;
-		options = new ArrayList<String>();
-		setTitleSpecs(new int[2]);
-		setOptionSpecs(new int[2]);
+	
+	public Button(String text, int size){
+		this.text = new FontText(text, size, true);
+		options = new ArrayList<>();
+		leftArrow = new ArrayList<>();
+		rightArrow = new ArrayList<>();
 	}
 	
 	//To use in ButtonManager
@@ -27,25 +27,26 @@ public class Button {
 
 	public void setActiv(boolean isActiv) {
 		this.isActiv = isActiv;
+		text.switchColor(isActiv);
 	}
 	
 	//Option handling
 	public void nextOption(){
 		if(optionsIndex == options.size()-1) optionsIndex = 0;
 		else optionsIndex++;
+		rightArrow.get(optionsIndex).blink();
 	}
 	
 	public void prevOption(){
 		if(optionsIndex == 0) optionsIndex = options.size()-1;
 		else optionsIndex--;
+		leftArrow.get(optionsIndex).blink();
 	}
 	
-	public void addOption(String opText){
-		options.add(opText);
-	}
-	
-	public void removeOption(){
-		options.remove(optionsIndex);
+	public void addOption(String opText, String leftArrow, String rightArrow, boolean optsWithQualifiers){
+		options.add(new FontText(opText,text.getSize()/2, optsWithQualifiers));
+		this.leftArrow.add(new FontText(leftArrow,text.getSize()/2, false));
+		this.rightArrow.add(new FontText(rightArrow,text.getSize()/2, false));
 	}
 	
 	public boolean hasOptions(){
@@ -53,38 +54,52 @@ public class Button {
 		else return true;
 	}
 	
-	public String getOption(){
+	public FontText getOption(){
+		if(options.isEmpty()) return null;
 		return options.get(optionsIndex);
 	}
-	//Title
-	public String getText() {
-		return text;
-	}
-
-	//Specs handling
-	public void setTitlePos(Point pos) {
-		titleSpecs[0] = pos.x;
-		titleSpecs[1] = pos.y;
-	}
-
-	public void setOptionsPos(Point optionsPos) {
-		optionSpecs[0] = optionsPos.x;
-		optionSpecs[1] = optionsPos.y;
+	
+	public ArrayList<FontText> getOptions(){
+		return options;
 	}
 	
-	public int[] getTitleSpecs() {
-		return titleSpecs;
+	public FontText getText() {
+		return text;
+	}
+	
+	public void dispose(){
+		text.dispose();
+		for(FontText opts: options){
+			opts.dispose();
+		}
+		for(FontText arr: leftArrow){
+			arr.dispose();
+		}
+		for(FontText arr: rightArrow){
+			arr.dispose();
+		}
 	}
 
-	public void setTitleSpecs(int[] titleSpecs) {
-		this.titleSpecs = titleSpecs;
+	public FontText getRightArrow() {
+		return rightArrow.get(optionsIndex);
 	}
 
-	public int[] getOptionSpecs() {
-		return optionSpecs;
+	public FontText getLeftArrow() {
+		return leftArrow.get(optionsIndex);
+	}
+	
+	public ArrayList<FontText> getRightArrows() {
+		return rightArrow;
 	}
 
-	public void setOptionSpecs(int[] optionSpecs) {
-		this.optionSpecs = optionSpecs;
+	public ArrayList<FontText> getLeftArrows() {
+		return leftArrow;
+	}
+	
+	public void reload(){
+		text.reload();
+		for(FontText opts: options){
+			opts.reload();
+		}
 	}
 }

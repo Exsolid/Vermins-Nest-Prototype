@@ -1,57 +1,44 @@
 package com.verminsnest.misc.gui;
 
-import java.awt.Point;
 import java.util.ArrayList;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
-import com.verminsnest.exceptions.OutOfBounds;
 
 public class ButtonManager {
 	
 	//All Buttons
 	private ArrayList<Button> buttonList;
 	private int index;
-	private String leftOption;
-	private String rightOption;
 	
-	//Font generations
-	private FreeTypeFontGenerator fontGen;
-	private BitmapFont font;
-	private BitmapFont opFont;
-	private FreeTypeFontParameter fontPara;
-	private String activColor;
-	private String passivColor;
-	private int size;
+	//Button options
+	private boolean isVertical;
 	
+	//Reload data
+	private int[] reSize;
+	private int[] rePos;
 	//Create and dispose
-	public ButtonManager(ArrayList<Button> buttonList){
-		this.buttonList = buttonList;
+	public ButtonManager(ArrayList<ArrayList<String>> buttonList, int size, boolean isVertical, String leftButton, String rightButton, boolean optsWithQualifiers){
+		this.buttonList = new ArrayList<>();
+		createButtons(buttonList, size,leftButton ,rightButton, optsWithQualifiers);	
+		this.isVertical = isVertical;
 		this.buttonList.get(0).setActiv(true);
-		leftOption = "<";
-		rightOption = ">";
-		
-		fontPara = new FreeTypeFontParameter();
-		fontGen = new FreeTypeFontGenerator(Gdx.files.internal("fonts/saratogajean+.ttf"));
-		size = 15;
-		fontPara.size = size;
-		activColor = "838383";
-		passivColor = "424242";
-		font = fontGen.generateFont(fontPara);
-		fontPara.size = size/2;
-		opFont = fontGen.generateFont(fontPara);	
-		opFont.setColor(Color.valueOf(passivColor));
 	}
 
+	private void createButtons(ArrayList<ArrayList<String>> buttonList, int size, String leftButton, String rightButton, boolean optsWithQualifiers){
+		int counter = 0;
+		for(ArrayList<String> button: buttonList){
+			this.buttonList.add(new Button(button.get(0),size));
+			for(int i = 1; i<button.size(); i++){
+				this.buttonList.get(counter).addOption(button.get(i),leftButton ,rightButton, optsWithQualifiers);
+			}
+			counter++;
+		}
+	}
+	
 	public void dispose(){
-		font.dispose();
-		opFont.dispose();
-		fontGen.dispose();
+		for(Button button: buttonList){
+			button.dispose();
+		}
 	}
 	
 	//Button handling
@@ -81,101 +68,86 @@ public class ButtonManager {
 		return index;
 	}
 	
-	public void activate(){
-		buttonList.get(index).setActiv(true);
-	}
-	
-	public void deactivate(){
-		buttonList.get(index).setActiv(false);
-	}
-	
-	//Drawing
-	public void setSize(int size){
-		font.dispose();
-		fontPara.size = size;
-		font = fontGen.generateFont(fontPara);
-		fontPara.size = size/2;
-		opFont = fontGen.generateFont(fontPara);
-		opFont.setColor(Color.valueOf(passivColor));
-		this.size = size;
-	}
-
-	public void setColors(String passiv, String activ){
-		activColor = activ;
-		passivColor = passiv;
-	}
-	
 	public void draw(SpriteBatch batch) {
-		for (int i = 0; i < buttonList.size(); i++) {
-			if (buttonList.get(i).isActiv())
-				font.setColor(Color.valueOf(activColor));
-			else
-				font.setColor(Color.valueOf(passivColor));
-			font.draw(batch, buttonList.get(i).getText(), buttonList.get(i).getTitleSpecs()[0], buttonList.get(i).getTitleSpecs()[1]);
-			if (buttonList.get(i).hasOptions()) {
-				opFont.draw(batch, buttonList.get(i).getOption(), buttonList.get(i).getOptionSpecs()[0],
-						buttonList.get(i).getOptionSpecs()[1]);
-				if (buttonList.get(i).isActiv()) {
-					if (buttonList.get(i).isActiv())
-						opFont.setColor(Color.valueOf(activColor));
-					else
-						opFont.setColor(Color.valueOf(passivColor));
-					GlyphLayout layout = new GlyphLayout();		
-					layout.setText(opFont, buttonList.get(i).getOption());					
-					opFont.draw(batch, leftOption, buttonList.get(i).getOptionSpecs()[0] - 50,
-							buttonList.get(i).getOptionSpecs()[1]);
-					opFont.draw(batch, rightOption, buttonList.get(i).getOptionSpecs()[0] + layout.width + 50,
-							buttonList.get(i).getOptionSpecs()[1]);
-					opFont.setColor(Color.valueOf(passivColor));
-				}
+		for(Button button: buttonList){
+			button.getText().draw(batch);
+			if(button.getOption() != null){
+				button.getOption().draw(batch);
+				button.getLeftArrow().draw(batch);
+				button.getRightArrow().draw(batch);
 			}
 		}
 	}
 	
-	public void calcMidofBounds(int width, int height, Point pos) throws OutOfBounds{
-		//Calculate total height
+	public void setMidOfBounds(int[] size, int[] pos){
+		reSize = size;
+		rePos = pos;
+		
 		int totalHeight = 0;
-		GlyphLayout layout = new GlyphLayout();
-		layout.setText(font, buttonList.get(0).getText());
-		for(int i = 0; i < buttonList.size(); i++){
-			totalHeight += layout.height;
-			if(buttonList.get(i).hasOptions())totalHeight += layout.height/3;
-			if(i != buttonList.size()-1){
-				if(buttonList.get(i).hasOptions())totalHeight += layout.height/1.5;
-				else totalHeight += layout.height/3;
-			}
-			if(totalHeight > height) throw new OutOfBounds(buttonList.get(i));
-		}
+		FontText biggestX = null;
 		
-		//Set Button and options height and Width
-		Point tempPos = new Point();
-		int heightToBegin = totalHeight/2;
-		for(int i = 0; i < buttonList.size(); i++){
-			layout.setText(font, buttonList.get(i).getText());
-			tempPos.x = (int) (pos.x + width/2 - layout.width/2);
-			tempPos.y = (int) (pos.y + height/2 + totalHeight - heightToBegin);
-			buttonList.get(i).setTitlePos(tempPos);
-			
-			if(buttonList.get(i).hasOptions()){
-				totalHeight -= layout.height + layout.height/3;
-				layout.setText(opFont, buttonList.get(i).getOption());
-				
-				tempPos.x = (int) (pos.x + width/2 - layout.width/2);
-				tempPos.y = (int) (pos.y + height/2 + totalHeight - heightToBegin - layout.height/2);
-				buttonList.get(i).setOptionsPos(tempPos);
-				
-				layout.setText(font, buttonList.get(i).getText());
-				totalHeight -= layout.height + layout.height/1.5;
-			}else totalHeight -= layout.height + layout.height/3;
+		for(Button button: buttonList){
+			totalHeight += button.getText().getBounds()[1]*2;
+			if(isVertical){
+				if(button.getOption() != null){
+					totalHeight += button.getOption().getBounds()[1]*2;
+				}
+			}else{
+				if(biggestX == null ||button.getText().getBounds()[0] < biggestX.getBounds()[0])biggestX =button.getText();
+			}
+		}
+		int[] tempPos = new int[]{pos[0]+size[0]/2,pos[1]+size[1]/2+totalHeight/2};
+		
+		for(Button button: buttonList){
+			tempPos[1] -= button.getText().getBounds()[1];
+			int count = 0;
+			if(isVertical){
+				button.getText().getPos()[0] = tempPos[0]-button.getText().getBounds()[0]/2;
+				button.getText().getPos()[1] = tempPos[1];
+				tempPos[1] -= button.getText().getBounds()[1];
+				if(button.hasOptions()){
+					tempPos[1] -= button.getOption().getBounds()[1];
+				}
+				for(FontText option: button.getOptions()){
+					option.getPos()[0] = tempPos[0]-option.getBounds()[0]/2;
+					option.getPos()[1] = tempPos[1];
+					button.getLeftArrows().get(count).getPos()[0] = option.getPos()[0]-33;
+					button.getLeftArrows().get(count).getPos()[1] = option.getPos()[1];
+					button.getRightArrows().get(count).getPos()[0] = option.getPos()[0]+option.getBounds()[0]+25;
+					button.getRightArrows().get(count).getPos()[1] = option.getPos()[1];		
+					count++;
+				}
+				if(button.hasOptions()){
+					tempPos[1] -= button.getOption().getBounds()[1];
+				}
+			}else{
+				for(FontText option: button.getOptions()){
+					option.getPos()[0] = tempPos[0]-option.getBounds()[0]/2+biggestX.getBounds()[0]/2+80;
+					option.getPos()[1] = tempPos[1];
+					button.getLeftArrows().get(count).getPos()[0] = option.getPos()[0]-33;
+					button.getLeftArrows().get(count).getPos()[1] = option.getPos()[1];
+					button.getRightArrows().get(count).getPos()[0] = option.getPos()[0]+option.getBounds()[0]+25;
+					button.getRightArrows().get(count).getPos()[1] = option.getPos()[1];
+					count++;
+				}
+				if(count != 0){
+					button.getText().getPos()[0] = tempPos[0]-button.getText().getBounds()[0]/2-80;
+	 				button.getText().getPos()[1] = tempPos[1];
+				}else{
+					button.getText().getPos()[0] = tempPos[0]-button.getText().getBounds()[0]/2;
+					button.getText().getPos()[1] = tempPos[1];
+				}
+				tempPos[1] -= button.getText().getBounds()[1]*1.25;
+			}
 		}
 	}
 	
-	public void reCalcOptions(Button button, String oldOption, String newOption){
-		GlyphLayout layout = new GlyphLayout();		
-		layout.setText(opFont, newOption);
-		GlyphLayout oldLayout = new GlyphLayout();		
-		oldLayout.setText(opFont, oldOption);
-		
-		button.setOptionsPos(new Point((int) (button.getOptionSpecs()[0]+oldLayout.width/2-layout.width/2),button.getOptionSpecs()[1]));
+	public void reload(){
+		for(Button butt: buttonList){
+			butt.reload();
+		}
+		if(reSize != null){
+			setMidOfBounds(reSize,rePos);
+		}
 	}
 }

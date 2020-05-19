@@ -12,11 +12,11 @@ public class DesktopLauncher {
 		config.addIcon("textures/general/VerminsIcon32x32.png", Files.FileType.Internal);
 		config.addIcon("textures/general/VerminsIcon16x16.png", Files.FileType.Internal);
 		config.width = 1920;
-		config.height = 1055;
+		config.height = 1080;
 		config.x = 0;
 		config.y = 0;
 		config.resizable = false;
-		config.vSyncEnabled = false;
+		config.vSyncEnabled = true;
 		new LwjglApplication(new VerminsNest(), config);
 	}
 }

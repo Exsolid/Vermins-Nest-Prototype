@@ -12,12 +12,9 @@ import com.verminsnest.entities.playables.Mage;
 import com.verminsnest.entities.projectiles.Projectile;
 import com.verminsnest.generation.MapCell;
 import com.verminsnest.screens.gameplay.menus.GameplayMenu;
+import com.verminsnest.screens.gameplay.menus.GameplayOverlay;
 
-public class Gameplay extends GameplayScreen{
-	// Controls
-	private long blockTime;
-	private boolean movementBlocked;
-	private long blockStartTime;
+public class Gameplay extends GameplayOverlay{
 	// Textures
 	private ArrayList<MapCell> toDraw;
 	
@@ -28,10 +25,6 @@ public class Gameplay extends GameplayScreen{
 		super(game,gameMan);
 		gui = new GameplayMenu(game,gameMan);
 		RuntimeData.getInstance().setCharacter(new Mage(new int[] { 0, 0 }));
-		// Controls
-		blockTime = 0;
-		blockStartTime = System.currentTimeMillis();
-		movementBlocked = true;
 		
 		for (int x = 0; x < RuntimeData.getInstance().getMap().length; x++) {
 			for (int y = 0; y < RuntimeData.getInstance().getMap()[0].length; y++) {
@@ -97,17 +90,17 @@ public class Gameplay extends GameplayScreen{
 	}
 	
 	public void manageControls(float stateTime) {
-		blockTime = System.currentTimeMillis() - blockStartTime;
-		if (blockTime > 30) {
-			movementBlocked = false;
-		}
 		calcToDraw();
 		
 		//Pause
-		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE) && !movementBlocked) {
+		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE) && !gameMan.isControlBlocked()) {
 			gameMan.setState(GameManager.PAUSEMENU);
-			movementBlocked = true;
-			blockStartTime = System.currentTimeMillis();
+			gameMan.resetBlocked();
+		}
+		
+		if (Gdx.input.isKeyPressed(Input.Keys.I) && !gameMan.isControlBlocked()) {
+			gameMan.setState(GameManager.LEVELMENU);
+			gameMan.resetBlocked();
 		}
 		
 		//Attacking
@@ -138,6 +131,7 @@ public class Gameplay extends GameplayScreen{
 
 	@Override
 	public void dispose() {
+		gui.dispose();
 	}
 
 	@Override

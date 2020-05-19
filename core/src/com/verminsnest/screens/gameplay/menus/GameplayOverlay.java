@@ -1,12 +1,13 @@
-package com.verminsnest.screens.gameplay;
+package com.verminsnest.screens.gameplay.menus;
 
 import com.verminsnest.core.VerminsNest;
+import com.verminsnest.screens.gameplay.GameManager;
 
-public abstract class GameplayScreen {
+public abstract class GameplayOverlay {
 	protected VerminsNest game;
 	protected GameManager gameMan;
 	
-	public GameplayScreen(VerminsNest game,GameManager gameMan) {
+	public GameplayOverlay(VerminsNest game,GameManager gameMan) {
 
 		this.gameMan = gameMan;
 		this.game = game;
