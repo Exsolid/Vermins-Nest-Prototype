@@ -4,14 +4,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.verminsnest.core.Indentifiers;
-import com.verminsnest.core.engine.VNAssetManager;
 import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.entities.projectiles.Fireball;
 import com.verminsnest.entities.projectiles.Projectile;
 
 public class Mage extends Playable {
 	public Mage(int[] pos) {
-		super(VNAssetManager.GAMEPLAY_MAGE, pos, 7, 7, 7, 50);
+		super(Indentifiers.ASSETMANAGER_MAGE, pos, 7, 7, 7, 50);
 		attackIconPath = Fireball.iconPath;
 	}
 
@@ -72,7 +71,7 @@ public class Mage extends Playable {
 	@Override
 	public void attackAction(float stateTime) {
 		Projectile prj = null;
-		switch (currentDir) {
+		switch (state) {
 		case Indentifiers.STATE_IDLE:
 		case Indentifiers.STATE_WALK_SOUTH:
 			prj = new Fireball(Indentifiers.DIRECTION_SOUTH, agility, strength, new int[] { pos[0], pos[1] }, stateTime);

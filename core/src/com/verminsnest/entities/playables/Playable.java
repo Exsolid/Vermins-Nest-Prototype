@@ -16,8 +16,6 @@ public abstract class Playable extends Entity {
 	protected Animation<TextureRegion> leftWalkAni;
 	protected Animation<TextureRegion> idleAni;
 	
-	protected int currentDir;
-	
 	protected int killCount;
 	protected int killLimit;
 	protected int skillPoints;
@@ -169,23 +167,23 @@ public abstract class Playable extends Entity {
 		switch (animationKey){
 		case Indentifiers.STATE_WALK_SOUTH:
 			currentAni = frontWalkAni;
-			currentDir = Indentifiers.STATE_WALK_SOUTH;
+			state = Indentifiers.STATE_WALK_SOUTH;
 			break;
 		case Indentifiers.STATE_WALK_NORTH:
 			currentAni = backWalkAni;
-			currentDir = Indentifiers.STATE_WALK_NORTH;
+			state = Indentifiers.STATE_WALK_NORTH;
 			break;
 		case Indentifiers.STATE_WALK_WEST:
 			currentAni = leftWalkAni;
-			currentDir = Indentifiers.STATE_WALK_WEST;
+			state = Indentifiers.STATE_WALK_WEST;
 			break;
 		case Indentifiers.STATE_WALK_EAST:
 			currentAni = rightWalkAni;
-			currentDir = Indentifiers.STATE_WALK_EAST;
+			state = Indentifiers.STATE_WALK_EAST;
 			break;
 		case Indentifiers.STATE_IDLE:
 			currentAni = idleAni;
-			currentDir = Indentifiers.STATE_IDLE;
+			state = Indentifiers.STATE_IDLE;
 			break;
 		}
 	}

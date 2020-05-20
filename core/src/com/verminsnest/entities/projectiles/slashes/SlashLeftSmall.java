@@ -3,13 +3,13 @@ package com.verminsnest.entities.projectiles.slashes;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.verminsnest.core.engine.VNAssetManager;
+import com.verminsnest.core.Indentifiers;
 import com.verminsnest.core.singletons.RuntimeData;
 
 public class SlashLeftSmall extends Slash{
 
 	public SlashLeftSmall(int direction, int agility, int damage, int[] position, float stateTime) {
-		super(VNAssetManager.GAMEPLAY_SLASH_SMALL, direction, agility, damage, position, stateTime, false);
+		super(Indentifiers.ASSETMANAGER_SLASH_SMALL, direction, agility, damage, position, stateTime, false);
 	}
 
 	@Override

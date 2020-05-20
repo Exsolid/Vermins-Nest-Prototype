@@ -4,10 +4,11 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.verminsnest.core.Indentifiers;
 import com.verminsnest.core.VerminsNest;
 import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.entities.Entity;
-import com.verminsnest.entities.enemies.Tinker;
+import com.verminsnest.entities.eggs.Egg;
 import com.verminsnest.entities.playables.Mage;
 import com.verminsnest.entities.projectiles.Projectile;
 import com.verminsnest.generation.MapCell;
@@ -34,8 +35,8 @@ public class Gameplay extends GameplayOverlay{
 				}
 			}
 		}
-		for( int i = 100; i<200; i+=100){
-			new Tinker(new int[]{RuntimeData.getInstance().getCharacter().getPos()[0]-i,RuntimeData.getInstance().getCharacter().getPos()[1]-100});
+		for( int i = 100; i<500; i+=100){
+			new Egg(new int[]{RuntimeData.getInstance().getCharacter().getPos()[0]-i,RuntimeData.getInstance().getCharacter().getPos()[1]-100}, Indentifiers.ENEMY_TINKER);
 		}
 		// Textures
 		toDraw = new ArrayList<>();

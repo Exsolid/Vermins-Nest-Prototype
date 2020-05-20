@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.verminsnest.config.Configurator;
-import com.verminsnest.core.engine.VNAssetManager;
 import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.screens.LoadingScreen;
 import com.verminsnest.screens.gameplay.GameManager;
@@ -60,7 +59,7 @@ public class VerminsNest extends Game {
 		gameMan = new GameManager(this);
 		
 		RuntimeData.getInstance().init(this);
-		RuntimeData.getInstance().loadTextures(VNAssetManager.MENU);
+		RuntimeData.getInstance().loadTextures(Indentifiers.ASSETMANAGER_MENU);
 		this.showScreen(MAINMENU);
 	}
 	
@@ -128,8 +127,8 @@ public class VerminsNest extends Game {
 			if(!gameMan.isDisposed()){
 				gameMan.dispose();
 			}
-			if(RuntimeData.getInstance().areAssetsLoaded(VNAssetManager.MENU)){
-				RuntimeData.getInstance().loadTextures(VNAssetManager.MENU);
+			if(RuntimeData.getInstance().areAssetsLoaded(Indentifiers.ASSETMANAGER_MENU)){
+				RuntimeData.getInstance().loadTextures(Indentifiers.ASSETMANAGER_MENU);
 			}
 			if(mainMenu.isDisposed()){
 				initMenus();
@@ -163,7 +162,7 @@ public class VerminsNest extends Game {
 			gameMan.init();
 			this.setScreen(gameMan);
 			
-			RuntimeData.getInstance().disposeTextures(VNAssetManager.MENU);
+			RuntimeData.getInstance().disposeTextures(Indentifiers.ASSETMANAGER_MENU);
 			loadingScreen = null;
 			r.gc();
 			break;

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.verminsnest.core.Indentifiers;
 import com.verminsnest.core.VerminsNest;
-import com.verminsnest.core.engine.VNAssetManager;
 import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.generation.World;
 import com.verminsnest.misc.gui.ButtonManager;
@@ -115,7 +115,7 @@ public class MainMenu extends VNScreen {
 				switch (bManager.getIndex()) {
 				case START:
 					// World generation
-					RuntimeData.getInstance().loadTextures(VNAssetManager.GAMEPLAY);
+					RuntimeData.getInstance().loadTextures(Indentifiers.ASSETMANAGER_GAMEPLAY);
 					World gen = new World(game);
 					gen.setData(20, 20, 20, 10,
 							(RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Mountain-Sheet.png")));

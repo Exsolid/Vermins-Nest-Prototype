@@ -26,7 +26,7 @@ public class EntityMovementSystem {
 			}else{
 				int y = entity.getPos()[1]+entity.getSize()[1]+1;
 				for(Entity refEnt: RuntimeData.getInstance().getEntities()){
-					if(!entity.equals(refEnt)){
+					if(!entity.equals(refEnt) && refEnt.isObstacle()){
 						for(int x = entity.getPos()[0]; x <= entity.getPos()[0]+entity.getSize()[0]; x++){
 							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
 								if(entity instanceof Projectile){
@@ -54,7 +54,7 @@ public class EntityMovementSystem {
 			}else{
 				int y = entity.getPos()[1]-1;
 				for(Entity refEnt: RuntimeData.getInstance().getEntities()){
-					if(!entity.equals(refEnt)){
+					if(!entity.equals(refEnt) && refEnt.isObstacle()){
 						for(int x = entity.getPos()[0]; x <= entity.getPos()[0]+entity.getSize()[0]; x++){
 							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
 								if(entity instanceof Projectile){
@@ -82,7 +82,7 @@ public class EntityMovementSystem {
 			}else{
 				int x = entity.getPos()[0]-1;
 				for(Entity refEnt: RuntimeData.getInstance().getEntities()){
-					if(!entity.equals(refEnt)){
+					if(!entity.equals(refEnt) && refEnt.isObstacle()){
 						for(int y = entity.getPos()[1]; y <= entity.getPos()[1]+entity.getSize()[1]; y++){
 							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
 								if(entity instanceof Projectile){
@@ -110,7 +110,7 @@ public class EntityMovementSystem {
 			}else{
 				int x = entity.getPos()[0]+entity.getSize()[0]+1;
 				for(Entity refEnt: RuntimeData.getInstance().getEntities()){
-					if(!entity.equals(refEnt)){
+					if(!entity.equals(refEnt) && refEnt.isObstacle()){
 						for(int y = entity.getPos()[1]; y <= entity.getPos()[1]+entity.getSize()[1]; y++){
 							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
 								if(entity instanceof Projectile){

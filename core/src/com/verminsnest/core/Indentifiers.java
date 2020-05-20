@@ -1,11 +1,13 @@
 package com.verminsnest.core;
 
 public class Indentifiers {
+	//Direction IDs
 	public static final int DIRECTION_NORTH = 0;
 	public static final int DIRECTION_EAST = 1;
 	public static final int DIRECTION_SOUTH = 2;
 	public static final int DIRECTION_WEST = 3;
 	
+	//Animation IDs
 	public static final int STATE_WALK_NORTH = 0;
 	public static final int STATE_WALK_EAST = 1;
 	public static final int STATE_WALK_SOUTH = 2;
@@ -21,5 +23,22 @@ public class Indentifiers {
 	public static final int STATE_HIT = 11;
 	public static final int STATE_TODELETE = 12;
 	
+	public static final int STATE_HATCH = 13;
+	public static final int STATE_LEFTOVER = 14;
 	
+	//Enemy IDs
+	public static final int ENEMY_TINKER = 0;
+	
+	//Assetmanager stuff
+	public static final int ASSETMANAGER_MENU = 0;
+	public final static int ASSETMANAGER_GAMEPLAY = 1;	
+	
+	public final static int ASSETMANAGER_MAGE = 2;
+	
+	public final static int ASSETMANAGER_FIREBALL = 3;
+	public final static int ASSETMANAGER_SLASH_SMALL = 4;
+	
+	public final static int ASSETMANAGER_TINKER = 5;
+	public final static int ASSETMANAGER_EGG = 6;
+
 }

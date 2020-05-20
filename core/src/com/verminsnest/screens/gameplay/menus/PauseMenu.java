@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.verminsnest.core.Indentifiers;
 import com.verminsnest.core.VerminsNest;
-import com.verminsnest.core.engine.VNAssetManager;
 import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.misc.gui.ButtonManager;
 import com.verminsnest.screens.gameplay.GameManager;
@@ -73,7 +73,7 @@ public class PauseMenu extends GameplayOverlay{
 	@Override
 	public void dispose() {
 		bManager.dispose();
-		RuntimeData.getInstance().disposeTextures(VNAssetManager.GAMEPLAY);;
+		RuntimeData.getInstance().disposeTextures(Indentifiers.ASSETMANAGER_GAMEPLAY);;
 		RuntimeData.getInstance().clearData();
 	}
 

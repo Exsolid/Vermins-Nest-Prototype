@@ -4,9 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.verminsnest.core.Indentifiers;
-import com.verminsnest.core.engine.VNAssetManager;
 import com.verminsnest.core.singletons.RuntimeData;
-import com.verminsnest.entities.projectiles.Projectile;
 import com.verminsnest.entities.projectiles.slashes.Slash;
 import com.verminsnest.entities.projectiles.slashes.SlashLeftSmall;
 import com.verminsnest.entities.projectiles.slashes.SlashRightSmall;
@@ -14,7 +12,7 @@ import com.verminsnest.entities.projectiles.slashes.SlashRightSmall;
 public class Tinker extends Enemy {
 	
 	public Tinker(int[] pos) {
-		super(pos, VNAssetManager.GAMEPLAY_TINKER,7,6,5,25);
+		super(pos, Indentifiers.ASSETMANAGER_TINKER,7,6,5,25);
 	}
 
 	@Override

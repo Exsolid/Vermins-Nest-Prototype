@@ -14,8 +14,6 @@ public abstract class Projectile extends Entity{
 	protected Animation<TextureRegion> hitAni;
 	protected Animation<TextureRegion> castAni;
 	
-	private int state;
-	
 	protected int damage;
 	protected int speed;
 	

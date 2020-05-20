@@ -3,7 +3,7 @@ package com.verminsnest.entities.projectiles;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.verminsnest.core.engine.VNAssetManager;
+import com.verminsnest.core.Indentifiers;
 import com.verminsnest.core.singletons.RuntimeData;
 
 public class Fireball extends Projectile{
@@ -11,7 +11,7 @@ public class Fireball extends Projectile{
 	public static String iconPath = "textures/projectiles/fireball/FireBall_Icon.png";
 	
 	public Fireball(int direction, int agility, int damage, int[] position, float stateTime) {
-		super(VNAssetManager.GAMEPLAY_FIREBALL,direction, agility, damage, position, stateTime);
+		super(Indentifiers.ASSETMANAGER_FIREBALL,direction, agility, damage, position, stateTime);
 	}
 
 	@Override

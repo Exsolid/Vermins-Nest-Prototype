@@ -13,12 +13,15 @@ public abstract class Entity {
 	protected Animation<TextureRegion> currentAni;
 	protected Texture shadow;
 	protected int yShadowOffset;
+	protected boolean isObstacle;
+	protected int state;
 	
 	public Entity(int[] pos, int textureID){
 		RuntimeData.getInstance().loadTextures(textureID);
 		RuntimeData.getInstance().addEntity(this);
 		this.textureID = textureID;
 		this.pos = pos;
+		isObstacle = true;
 		this.setId(this.toString());
 	}
 	
@@ -58,10 +61,17 @@ public abstract class Entity {
 		return currentAni.getKeyFrame(stateTime, true);
 	}
 	public void dispose(){
-		//TODO log textureid -1
 		RuntimeData.getInstance().disposeTextures(textureID);
 	}
 	public int getTextureID(){
 		return textureID;
+	}
+	
+	public boolean isObstacle(){
+		return isObstacle;
+	}
+	
+	public int getState(){
+		return state;
 	}
 }
