@@ -2,7 +2,9 @@ package com.verminsnest.core;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.verminsnest.config.Configurator;
@@ -59,6 +61,15 @@ public class VerminsNest extends Game {
 		gameMan = new GameManager(this);
 		
 		RuntimeData.getInstance().init(this);
+		RuntimeData.getInstance().loadTextures(Indentifiers.ASSETMANAGER_INIT);
+
+		Pixmap pixmap = new Pixmap(Gdx.files.internal("textures/misc/Cursor.png"));
+		int xHotspot = pixmap.getWidth() / 2;
+		int yHotspot = pixmap.getHeight() / 2;
+		Cursor cursor = Gdx.graphics.newCursor(pixmap, xHotspot, yHotspot);
+		Gdx.graphics.setCursor(cursor);
+		pixmap.dispose();
+		
 		RuntimeData.getInstance().loadTextures(Indentifiers.ASSETMANAGER_MENU);
 		this.showScreen(MAINMENU);
 	}

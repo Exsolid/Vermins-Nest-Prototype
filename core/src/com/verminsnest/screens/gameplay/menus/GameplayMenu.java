@@ -95,11 +95,11 @@ public class GameplayMenu extends GameplayOverlay {
 				}
 			}
 		}
-		game.getBatch().draw(RuntimeData.getInstance().getAsset("textures/characters/Minimap-Pointer.png"),
+		game.getBatch().draw(RuntimeData.getInstance().getAsset("textures/misc/Minimap-Pointer.png"),
 				mapPos[0] + RuntimeData.getInstance().getAsset("textures/menus/frames/MapFrame.png").getWidth() / 2
-						- RuntimeData.getInstance().getAsset("textures/characters/Minimap-Pointer.png").getWidth() / 2,
+						- RuntimeData.getInstance().getAsset("textures/misc/Minimap-Pointer.png").getWidth() / 2,
 				mapPos[1] + RuntimeData.getInstance().getAsset("textures/menus/frames/MapFrame.png").getHeight() / 2
-						- RuntimeData.getInstance().getAsset("textures/characters/Minimap-Pointer.png").getHeight()
+						- RuntimeData.getInstance().getAsset("textures/misc/Minimap-Pointer.png").getHeight()
 								/ 2);
 	}
 

@@ -120,7 +120,7 @@ public class MainMenu extends VNScreen {
 					World gen = new World(game);
 					gen.setData(7, 20, 20, 10,
 							(RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Mountain-Sheet.png")));
-					new EnemySpawner(20);
+					new EnemySpawner(3);
 					game.showScreen(VerminsNest.LOADGAME);
 					break;
 				case SETTINGS:

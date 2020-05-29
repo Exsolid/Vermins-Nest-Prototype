@@ -69,26 +69,25 @@ public class Mage extends Playable {
 	}
 
 	@Override
-	public void attackAction(float stateTime) {
+	public void attackAction(float stateTime, int direction) {
 		Projectile prj = null;
-		switch (state) {
-		case Indentifiers.STATE_IDLE:
-		case Indentifiers.STATE_WALK_SOUTH:
+		switch (direction) {
+		case Indentifiers.DIRECTION_SOUTH:
 			prj = new Fireball(Indentifiers.DIRECTION_SOUTH, agility, strength, new int[] { pos[0], pos[1] }, stateTime);
 			prj.getPos()[0] += currentAni.getKeyFrame(0).getRegionWidth() / 4;
 			prj.getPos()[1] -= prj.getSize()[1];
 			break;
-		case Indentifiers.STATE_WALK_NORTH:
+		case Indentifiers.DIRECTION_NORTH:
 			prj = new Fireball(Indentifiers.DIRECTION_NORTH, agility, strength, new int[] { pos[0], pos[1] }, stateTime);
 			prj.getPos()[0] += currentAni.getKeyFrame(0).getRegionWidth() / 4;
 			prj.getPos()[1] += currentAni.getKeyFrame(0).getRegionWidth() * 1.5;
 			break;
-		case Indentifiers.STATE_WALK_EAST:
+		case Indentifiers.DIRECTION_EAST:
 			prj = new Fireball(Indentifiers.DIRECTION_EAST, agility, strength, new int[] { pos[0], pos[1] }, stateTime);
 			prj.getPos()[0] += currentAni.getKeyFrame(0).getRegionWidth() * 1.5;
 			prj.getPos()[1] += currentAni.getKeyFrame(0).getRegionHeight() / 4;
 			break;
-		case Indentifiers.STATE_WALK_WEST:
+		case Indentifiers.DIRECTION_WEST:
 			prj = new Fireball(Indentifiers.DIRECTION_WEST, agility, strength, new int[] { pos[0], pos[1] }, stateTime);
 			prj.getPos()[1] += currentAni.getKeyFrame(0).getRegionHeight() / 4;
 			prj.getPos()[0] -= prj.getSize()[0];

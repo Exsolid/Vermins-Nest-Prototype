@@ -13,6 +13,11 @@ public class VNAssetManager {
 	
 	public void loadTextures(int id){
 		switch (id){
+		case(Indentifiers.ASSETMANAGER_INIT):
+			assetManager.load("textures/menus/scrolls/VerticalScroll_Small.png", Texture.class);
+			assetManager.load("textures/menus/scrolls/VerticalScroll_Big.png", Texture.class);
+			assetManager.load("textures/misc/Cursor.png", Texture.class);
+			break;
 		case Indentifiers.ASSETMANAGER_GAMEPLAY:
 			assetManager.load("textures/menus/scrolls/VerticalScroll_Small.png", Texture.class);
 			assetManager.load("textures/menus/scrolls/HorizontalScroll_Minimum.png", Texture.class);
@@ -29,7 +34,12 @@ public class VNAssetManager {
 			
 			assetManager.load("textures/enemies/Shadow.png", Texture.class);
 			assetManager.load("textures/characters/Character-Shadow.png", Texture.class);
-			assetManager.load("textures/characters/Minimap-Pointer.png", Texture.class);
+			
+			assetManager.load("textures/misc/Minimap-Pointer.png", Texture.class);
+			assetManager.load("textures/misc/Cursor.png", Texture.class);
+			break;
+		case Indentifiers.ASSETMANAGER_MENU:
+			assetManager.load("textures/general/Background.png", Texture.class);
 			break;
 		case Indentifiers.ASSETMANAGER_FIREBALL:
 			assetManager.load("textures/projectiles/fireball/FireBall-Shadow.png", Texture.class);
@@ -64,11 +74,6 @@ public class VNAssetManager {
 			assetManager.load("textures/gore/Gore-2.png", Texture.class);
 			assetManager.load("textures/gore/Gore-3.png", Texture.class);
 			break;
-		case Indentifiers.ASSETMANAGER_MENU:
-			assetManager.load("textures/general/Background.png", Texture.class);
-			assetManager.load("textures/menus/scrolls/VerticalScroll_Small.png", Texture.class);
-			assetManager.load("textures/menus/scrolls/VerticalScroll_Big.png", Texture.class);
-			break;
 		case Indentifiers.ASSETMANAGER_EGG:
 			assetManager.load("textures/enemies/eggs/Egg-Hatch.png", Texture.class);
 			assetManager.load("textures/enemies/eggs/Egg-Idle.png", Texture.class);
@@ -85,6 +90,11 @@ public class VNAssetManager {
 	
 	public void disposeTextures(int id){
 		switch (id){
+		case(Indentifiers.ASSETMANAGER_INIT):
+			this.unload("textures/menus/scrolls/VerticalScroll_Small.png");
+			this.unload("textures/menus/scrolls/VerticalScroll_Big.png");
+			this.unload("textures/misc/Cursor.png");
+			break;
 		case Indentifiers.ASSETMANAGER_GAMEPLAY:
 			this.unload("textures/menus/scrolls/VerticalScroll_Small.png");
 			this.unload("textures/menus/scrolls/VerticalScroll_Big.png");
@@ -101,7 +111,11 @@ public class VNAssetManager {
 			
 			this.unload("textures/characters/Character-Shadow.png");
 			this.unload("textures/enemies/Shadow.png");
-			this.unload("textures/characters/Minimap-Pointer.png");
+			this.unload("textures/misc/Minimap-Pointer.png");
+			this.unload("textures/misc/Cursor.png");
+			break;		
+		case Indentifiers.ASSETMANAGER_MENU:
+			this.unload("textures/general/Background.png");
 			break;
 		case Indentifiers.ASSETMANAGER_FIREBALL:
 			this.unload("textures/projectiles/fireball/FireBall-Shadow.png");
@@ -136,11 +150,6 @@ public class VNAssetManager {
 			this.unload("textures/gore/Gore-2.png");
 			this.unload("textures/gore/Gore-3.png");
 			break;
-		case Indentifiers.ASSETMANAGER_MENU:
-			this.unload("textures/general/Background.png");
-			this.unload("textures/menus/scrolls/VerticalScroll_Small.png");
-			this.unload("textures/menus/scrolls/VerticalScroll_Big.png");
-			break;
 		case Indentifiers.ASSETMANAGER_EGG:
 			this.unload("textures/enemies/eggs/Egg-Hatch.png");
 			this.unload("textures/enemies/eggs/Egg-Idle.png");
@@ -151,7 +160,9 @@ public class VNAssetManager {
 	}
 	
 	public boolean areAssetsLoaded(int id){
-		switch (id){
+		switch (id){		
+		case(Indentifiers.ASSETMANAGER_INIT):
+			return assetManager.isLoaded("textures/misc/Cursor.png");
 		case Indentifiers.ASSETMANAGER_GAMEPLAY:
 			return assetManager.isLoaded("textures/menus/scrolls/VerticalScroll_Small.png");
 		case Indentifiers.ASSETMANAGER_FIREBALL:

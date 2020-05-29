@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Vector3;
 import com.verminsnest.core.VerminsNest;
 import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.entities.Entity;
@@ -91,10 +92,6 @@ public class Gameplay extends GameplayOverlay{
 			gameMan.resetBlocked();
 		}
 		
-		//Attacking
-		if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
-			RuntimeData.getInstance().getCharacter().attack(stateTime);
-		}
 		game.getCamera().position.x = RuntimeData.getInstance().getCharacter().getPos()[0];
 		game.getCamera().position.y = RuntimeData.getInstance().getCharacter().getPos()[1];
 		game.setPro();

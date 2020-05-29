@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.verminsnest.core.Indentifiers;
 import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.entities.Entity;
@@ -32,6 +33,11 @@ public abstract class Playable extends Entity {
 	private char currentKey;
 	private char prevKey;
 	
+	private Vector2 topLeft;
+	private Vector2 bottomLeft;
+	private Vector2 topRight;
+	private Vector2 bottomRight;
+	
 	public Playable(int textureID,int[] position, int speed, int dmg, int agi, int health){
 		super(position,textureID);
 		setSpeed(speed);
@@ -50,16 +56,25 @@ public abstract class Playable extends Entity {
 		init();
 		this.setCurrentAni(Indentifiers.STATE_IDLE);
 		this.setSize(currentAni.getKeyFrame(0).getRegionWidth(),currentAni.getKeyFrame(0).getRegionHeight());
+		
+		topLeft = new Vector2(960, 540).nor();
+		topLeft.setAngle(135);
+		bottomLeft = new Vector2(960, 540).nor();
+		bottomLeft.setAngle(-135);
+		topRight = new Vector2(960, 540).nor();
+		topRight.setAngle(45);
+		bottomRight = new Vector2(960, 540).nor();
+		bottomRight.setAngle(-45);
 	}
 	
-	public void attack(float stateTime){
+	public void attack(float stateTime, int direction){
 		if (attackCooldown < stateTime - 1/(agility*0.2)) {
-			attackAction(stateTime);
+			attackAction(stateTime, direction);
 		}
 	}
 	
 	public abstract void init();
-	public abstract void attackAction(float stateTime);
+	public abstract void attackAction(float stateTime, int direction);
 
 	public void update(float stateTime){
 		if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
@@ -134,12 +149,22 @@ public abstract class Playable extends Entity {
 		case '-':
 			this.setCurrentAni(Indentifiers.STATE_IDLE);
 			prevKey = '-';
-		}
-
+		}		
 		
 		//Attacking
 		if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
-			RuntimeData.getInstance().getCharacter().attack(stateTime);
+			float mouseX =Gdx.input.getX()+pos[0]+size[0]/2-960;
+			float mouseY =Gdx.input.getY()+pos[1]+size[1]/2-540;
+			Vector2 mouseVector = new Vector2(Gdx.input.getX()-960,Gdx.input.getY()-540).nor();
+			if(mouseVector.y - bottomLeft.y >= 0 && mouseVector.y - topLeft.y <= 0 && mouseX < pos[0]+size[0]/2){
+				RuntimeData.getInstance().getCharacter().attack(stateTime, Indentifiers.DIRECTION_WEST);
+			}else if(mouseVector.y - bottomRight.y >= 0 && mouseVector.y - topRight.y <= 0&& mouseX > pos[0]+size[0]/2){
+				RuntimeData.getInstance().getCharacter().attack(stateTime, Indentifiers.DIRECTION_EAST);
+			}if(mouseVector.x - topRight.x <= 0 && mouseVector.x - topLeft.x >= 0 && mouseY < pos[1]+size[1]/2){
+				RuntimeData.getInstance().getCharacter().attack(stateTime, Indentifiers.DIRECTION_NORTH);
+			}else if(mouseVector.x - bottomRight.x <= 0 && mouseVector.x - bottomLeft.x >= 0 && mouseY > pos[1]+size[1]/2){
+				RuntimeData.getInstance().getCharacter().attack(stateTime, Indentifiers.DIRECTION_SOUTH);
+			}	
 		}
 	}
 	
