@@ -136,6 +136,11 @@ public abstract class Playable extends Entity {
 			prevKey = '-';
 		}
 
+		
+		//Attacking
+		if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+			RuntimeData.getInstance().getCharacter().attack(stateTime);
+		}
 	}
 	
 	public int getSpeed() {

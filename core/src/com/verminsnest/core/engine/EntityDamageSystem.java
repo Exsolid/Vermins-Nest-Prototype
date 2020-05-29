@@ -1,10 +1,12 @@
 package com.verminsnest.core.engine;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import com.verminsnest.core.Indentifiers;
 import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.entities.Entity;
+import com.verminsnest.entities.Gore;
 import com.verminsnest.entities.enemies.Enemy;
 import com.verminsnest.entities.playables.Playable;
 import com.verminsnest.entities.projectiles.Projectile;
@@ -39,7 +41,13 @@ public class EntityDamageSystem {
 			hitProjectiles.add(found);
 			if(hit instanceof Enemy && source.isFriendly()){
 				((Enemy)hit).setHealth(((Enemy)hit).getHealth()-source.getDamage());
-				if(((Enemy)hit).getHealth()<0)RuntimeData.getInstance().removeEntity(hit);
+				if(((Enemy)hit).getHealth()<0){					
+					Random rand = new Random();
+					for(int i = 0; i < rand.nextInt(4)+3; i++){
+						new Gore(new int[]{hit.getPos()[0], hit.getPos()[1]});
+					} 
+					RuntimeData.getInstance().removeEntity(hit);       
+				}
 			}
 			if(hit instanceof Playable && !source.isFriendly()){
 				((Playable)hit).setHealth(((Playable)hit).getHealth()-source.getDamage());

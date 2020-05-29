@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.verminsnest.core.Indentifiers;
 import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.entities.Entity;
+import com.verminsnest.entities.Gore;
 import com.verminsnest.entities.enemies.Tinker;
 
 public class Egg extends Entity {
@@ -100,6 +101,10 @@ public class Egg extends Entity {
 					break;
 				}
 				hatched = true;
+				Random rand = new Random();
+				for(int i = 0; i < rand.nextInt(3)+2; i++){
+					new Gore(new int[]{this.pos[0], this.pos[1]});
+				}
 				RuntimeData.getInstance().sortToLeftovers(this);
 			}
 			if (currentAni.isAnimationFinished(internalStateTime)) {

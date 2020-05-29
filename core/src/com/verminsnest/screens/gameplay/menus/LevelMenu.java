@@ -9,6 +9,7 @@ import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.misc.gui.ButtonManager;
 import com.verminsnest.misc.gui.FontText;
 import com.verminsnest.screens.gameplay.GameManager;
+import com.verminsnest.screens.gameplay.GameplayOverlay;
 
 public class LevelMenu extends GameplayOverlay {
 	
@@ -116,7 +117,6 @@ public class LevelMenu extends GameplayOverlay {
 	
 	@Override
 	public void render(float stateTime) {
-		game.getBatch().begin();
 		game.getBatch()
 				.draw(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png"),
 						game.getCamera().position.x - RuntimeData.getInstance()
@@ -126,7 +126,6 @@ public class LevelMenu extends GameplayOverlay {
 		levelType.draw(game.getBatch());
 		title.draw(game.getBatch());
 		points.draw(game.getBatch());
-		game.getBatch().end();
 	}
 
 	@Override

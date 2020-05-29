@@ -1,6 +1,7 @@
 package com.verminsnest.core.singletons;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.verminsnest.config.Configurator;
@@ -9,10 +10,13 @@ import com.verminsnest.core.VerminsNest;
 import com.verminsnest.core.engine.EntityMovementSystem;
 import com.verminsnest.core.engine.VNAssetManager;
 import com.verminsnest.entities.Entity;
+import com.verminsnest.entities.Gore;
+import com.verminsnest.entities.eggs.Egg;
+import com.verminsnest.entities.enemies.Tinker;
 import com.verminsnest.entities.playables.Playable;
 import com.verminsnest.entities.projectiles.Projectile;
-import com.verminsnest.generation.MapCell;
-import com.verminsnest.generation.MapData;
+import com.verminsnest.generation.map.MapCell;
+import com.verminsnest.generation.map.MapData;
 
 public class RuntimeData {
 
@@ -24,10 +28,13 @@ public class RuntimeData {
 
 	private ArrayList<Entity> entities;
 	private ArrayList<Entity> leftovers;
+	private ArrayList<Entity> gore;
 	private ArrayList<Entity> projectiles;
 	
+	private ArrayList<int[]> toInitEntities;
+	
 	private Playable character;
-
+	
 	private VNAssetManager assetManager;
 	private EntityMovementSystem enMoSys;
 	private VerminsNest game;
@@ -42,6 +49,8 @@ public class RuntimeData {
 		leftovers = new ArrayList<Entity>();
 		projectiles = new ArrayList<Entity>();
 		addedEntities = new ArrayList<Entity>();
+		gore = new ArrayList<Entity>();
+		toInitEntities= new ArrayList<>();
 		assetManager = new VNAssetManager();
 		this.game = game;
 	}
@@ -76,7 +85,10 @@ public class RuntimeData {
 		for(Entity ent: addedEntities){
 			if(ent instanceof Projectile){
 				projectiles.add(ent);
+			}else if(ent instanceof Gore){
+				gore.add(ent);
 			}else{
+			
 				if(ent.getState() != Indentifiers.STATE_LEFTOVER){
 					entities.add(ent);
 				}else{
@@ -97,6 +109,8 @@ public class RuntimeData {
 			}
 			if(ent instanceof Projectile){
 				projectiles.remove(ent);
+			}else if(ent instanceof Gore){
+				gore.remove(ent);
 			}else{
 				if(ent.getState() != Indentifiers.STATE_LEFTOVER){
 					entities.remove(ent);
@@ -108,13 +122,25 @@ public class RuntimeData {
 		removedEntities.clear();
 
 		for(Entity ent: entities){
-			ent.update(stateTime);
+			if(ent.getPos()[0] > character.getPos()[0]-1000 && ent.getPos()[0] < character.getPos()[0]+1000
+					&& ent.getPos()[1] > character.getPos()[1]-700 && ent.getPos()[1] < character.getPos()[1]+700){
+				ent.update(stateTime);
+			}
 		}
 		for(Entity ent: projectiles){
 			ent.update(stateTime);
 		}
 		for(Entity ent: leftovers){
-			ent.update(stateTime);
+			if(ent.getPos()[0] > character.getPos()[0]-1000 && ent.getPos()[0] < character.getPos()[0]+1000
+					&& ent.getPos()[1] > character.getPos()[1]-700 && ent.getPos()[1] < character.getPos()[1]+700){
+				ent.update(stateTime);
+			}
+		}
+		for(Entity ent: gore){
+			if(ent.getPos()[0] > character.getPos()[0]-1000 && ent.getPos()[0] < character.getPos()[0]+1000
+					&& ent.getPos()[1] > character.getPos()[1]-700 && ent.getPos()[1] < character.getPos()[1]+700){
+				ent.update(stateTime);
+			}
 		}
 	}
 
@@ -152,6 +178,7 @@ public class RuntimeData {
 
 	public ArrayList<Entity> getEntities() {
 		ArrayList<Entity> temp = new ArrayList<>();
+		temp.addAll(gore);
 		temp.addAll(leftovers);
 		temp.addAll(entities);
 		temp.addAll(projectiles);
@@ -192,5 +219,33 @@ public class RuntimeData {
 	
 	public boolean areAssetsLoaded(int id){
 		return assetManager.areAssetsLoaded(id);
+	}
+	
+	public void initEnemies(){
+		Random rand = new Random();
+		for(int[] data: toInitEntities){
+			switch(rand.nextInt(3)){
+			case 0:
+			case 1:
+				new Egg(new int[]{data[0], data[1]}, data[2]);
+				break;
+			case 2:
+				switch(data[2]){
+				case Indentifiers.ENEMY_TINKER:
+					new Tinker(new int[]{data[0], data[1]});
+					break;
+				}
+				break;
+			}
+		}
+		toInitEntities.clear();
+	}
+	
+	public void addEnemiesInit(int xPos, int yPos, int enemyID){
+		toInitEntities.add(new int[]{xPos,yPos,enemyID});
+	}
+	
+	public ArrayList<int[]> getEnemyInits(){
+		return toInitEntities;
 	}
 }

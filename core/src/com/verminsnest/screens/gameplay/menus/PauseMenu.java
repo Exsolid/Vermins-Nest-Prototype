@@ -9,6 +9,7 @@ import com.verminsnest.core.VerminsNest;
 import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.misc.gui.ButtonManager;
 import com.verminsnest.screens.gameplay.GameManager;
+import com.verminsnest.screens.gameplay.GameplayOverlay;
 
 public class PauseMenu extends GameplayOverlay{
 	private ButtonManager bManager;
@@ -36,11 +37,9 @@ public class PauseMenu extends GameplayOverlay{
 					(int) (game.getCamera().position.y - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2)});
 	}
 	public void render(float stateTime) {
-		game.getBatch().begin();
 		game.getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png"), game.getCamera().position.x - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth() / 2,
 				game.getCamera().position.y - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2);
 		bManager.draw(game.getBatch());
-		game.getBatch().end();
 	}
 	@Override
 	public void manageControls(float stateTime) {

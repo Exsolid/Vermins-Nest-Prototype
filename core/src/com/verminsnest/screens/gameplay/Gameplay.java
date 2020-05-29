@@ -4,16 +4,12 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.verminsnest.core.Indentifiers;
 import com.verminsnest.core.VerminsNest;
 import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.entities.Entity;
-import com.verminsnest.entities.eggs.Egg;
 import com.verminsnest.entities.playables.Mage;
-import com.verminsnest.entities.projectiles.Projectile;
-import com.verminsnest.generation.MapCell;
+import com.verminsnest.generation.map.MapCell;
 import com.verminsnest.screens.gameplay.menus.GameplayMenu;
-import com.verminsnest.screens.gameplay.menus.GameplayOverlay;
 
 public class Gameplay extends GameplayOverlay{
 	// Textures
@@ -35,9 +31,6 @@ public class Gameplay extends GameplayOverlay{
 				}
 			}
 		}
-		for( int i = 100; i<500; i+=100){
-			new Egg(new int[]{RuntimeData.getInstance().getCharacter().getPos()[0]-i,RuntimeData.getInstance().getCharacter().getPos()[1]-100}, Indentifiers.ENEMY_TINKER);
-		}
 		// Textures
 		toDraw = new ArrayList<>();
 		// Camera
@@ -49,7 +42,6 @@ public class Gameplay extends GameplayOverlay{
 	
 	public void render(float stateTime) {
 				//Draw stuff
-				game.getBatch().begin();
 				//Draw removed one last time
 				for(Entity ent: RuntimeData.getInstance().getRemoved()){
 					if(ent.getShadow() != null){
@@ -80,13 +72,8 @@ public class Gameplay extends GameplayOverlay{
 				}
 				//Draw entities
 				for(Entity ent: RuntimeData.getInstance().getEntities()){
-					if(ent instanceof Projectile){
-						game.getBatch().draw(ent.getCurrentFrame(stateTime), ent.getPos()[0],ent.getPos()[1], ent.getSize()[0]/2, ent.getSize()[1]/2, ent.getSize()[0], ent.getSize()[1], 1, 1, ((Projectile) ent).getRotation());
-					}else{
-						game.getBatch().draw(ent.getCurrentFrame(stateTime),ent.getPos()[0],ent.getPos()[1]);
-					}
+					game.getBatch().draw(ent.getCurrentFrame(stateTime), ent.getPos()[0],ent.getPos()[1], ent.getSize()[0]/2, ent.getSize()[1]/2, ent.getSize()[0], ent.getSize()[1], 1, 1, ent.getRotation());
 				}
-				game.getBatch().end();
 				gui.render(stateTime);
 	}
 	

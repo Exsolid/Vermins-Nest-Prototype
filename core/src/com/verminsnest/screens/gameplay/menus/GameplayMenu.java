@@ -6,9 +6,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.verminsnest.core.Indentifiers;
 import com.verminsnest.core.VerminsNest;
 import com.verminsnest.core.singletons.RuntimeData;
-import com.verminsnest.generation.Room;
+import com.verminsnest.generation.map.Room;
 import com.verminsnest.misc.gui.FontText;
 import com.verminsnest.screens.gameplay.GameManager;
+import com.verminsnest.screens.gameplay.GameplayOverlay;
 
 public class GameplayMenu extends GameplayOverlay {
 	private int[] dataScrollPos;
@@ -43,7 +44,6 @@ public class GameplayMenu extends GameplayOverlay {
 
 	@Override
 	public void render(float stateTime) {
-		game.getBatch().begin();
 		// Draw background stuff
 		game.getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/frames/StatusFrame.png"),
 				dataScrollPos[0], dataScrollPos[1]);
@@ -101,7 +101,6 @@ public class GameplayMenu extends GameplayOverlay {
 				mapPos[1] + RuntimeData.getInstance().getAsset("textures/menus/frames/MapFrame.png").getHeight() / 2
 						- RuntimeData.getInstance().getAsset("textures/characters/Minimap-Pointer.png").getHeight()
 								/ 2);
-		game.getBatch().end();
 	}
 
 	@Override

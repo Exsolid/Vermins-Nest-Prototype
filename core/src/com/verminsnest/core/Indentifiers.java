@@ -40,5 +40,6 @@ public class Indentifiers {
 	
 	public final static int ASSETMANAGER_TINKER = 5;
 	public final static int ASSETMANAGER_EGG = 6;
+	public final static int ASSETMANAGER_GORE = 7;
 
 }

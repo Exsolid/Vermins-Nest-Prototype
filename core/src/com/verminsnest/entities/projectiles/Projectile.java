@@ -8,7 +8,6 @@ import com.verminsnest.entities.Entity;
 
 public abstract class Projectile extends Entity{
 	protected int direction;
-	protected float rotation;
 	
 	protected Animation<TextureRegion> flyingAni;
 	protected Animation<TextureRegion> hitAni;
@@ -143,14 +142,6 @@ public abstract class Projectile extends Entity{
 	public int getState(){
 		return state;
 	}	
-	
-	public float getRotation() {
-		if(state != Indentifiers.STATE_CAST){
-			return rotation;
-		}else{
-			return 0;
-		}
-	}
 
 	public boolean isFriendly() {
 		return isFriendly;

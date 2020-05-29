@@ -42,6 +42,7 @@ public class GameManager extends VNScreen {
 			if (timeSinceRender >= updateStep) {
 				stateTime += delta;
 				timeSinceRender -= updateStep;
+				game.getBatch().begin();
 				switch(state){
 				case RUNNING:
 					gameplay.update(stateTime);
@@ -58,6 +59,7 @@ public class GameManager extends VNScreen {
 					levelMenu.update(stateTime);
 					break;
 				}
+				game.getBatch().end();
 				blockTime = System.currentTimeMillis() - blockStartTime;
 				if (blockTime > 225) {
 					controlBlocked = false;

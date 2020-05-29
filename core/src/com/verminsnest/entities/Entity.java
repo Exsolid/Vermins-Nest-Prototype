@@ -3,6 +3,7 @@ package com.verminsnest.entities;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.verminsnest.core.Indentifiers;
 import com.verminsnest.core.singletons.RuntimeData;
 
 public abstract class Entity {
@@ -15,6 +16,7 @@ public abstract class Entity {
 	protected int yShadowOffset;
 	protected boolean isObstacle;
 	protected int state;
+	protected float rotation;
 	
 	public Entity(int[] pos, int textureID){
 		RuntimeData.getInstance().loadTextures(textureID);
@@ -23,6 +25,7 @@ public abstract class Entity {
 		this.pos = pos;
 		isObstacle = true;
 		this.setId(this.toString());
+		rotation = 0;
 	}
 	
 	public abstract void init();
@@ -73,5 +76,13 @@ public abstract class Entity {
 	
 	public int getState(){
 		return state;
+	}
+
+	public float getRotation() {
+		if(state != Indentifiers.STATE_CAST){
+			return rotation;
+		}else{
+			return 0;
+		}
 	}
 }

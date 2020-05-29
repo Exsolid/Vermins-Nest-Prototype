@@ -59,6 +59,11 @@ public class VNAssetManager {
 			assetManager.load("textures/enemies/tinker/Tinker-W-Right.png", Texture.class);
 			assetManager.load("textures/enemies/tinker/Tinker-Idle.png", Texture.class);
 			break;
+		case Indentifiers.ASSETMANAGER_GORE:
+			assetManager.load("textures/gore/Gore-1.png", Texture.class);
+			assetManager.load("textures/gore/Gore-2.png", Texture.class);
+			assetManager.load("textures/gore/Gore-3.png", Texture.class);
+			break;
 		case Indentifiers.ASSETMANAGER_MENU:
 			assetManager.load("textures/general/Background.png", Texture.class);
 			assetManager.load("textures/menus/scrolls/VerticalScroll_Small.png", Texture.class);
@@ -126,6 +131,11 @@ public class VNAssetManager {
 			this.unload("textures/enemies/tinker/Tinker-W-Right.png");
 			this.unload("textures/enemies/tinker/Tinker-Idle.png");
 			break;
+		case Indentifiers.ASSETMANAGER_GORE:
+			this.unload("textures/gore/Gore-1.png");
+			this.unload("textures/gore/Gore-2.png");
+			this.unload("textures/gore/Gore-3.png");
+			break;
 		case Indentifiers.ASSETMANAGER_MENU:
 			this.unload("textures/general/Background.png");
 			this.unload("textures/menus/scrolls/VerticalScroll_Small.png");
@@ -152,6 +162,8 @@ public class VNAssetManager {
 			return assetManager.isLoaded("textures/characters/mage/Mage-W-Front.png");
 		case Indentifiers.ASSETMANAGER_TINKER:
 			return assetManager.isLoaded("textures/enemies/tinker/Tinker-A-Back.png");
+		case Indentifiers.ASSETMANAGER_GORE:
+			return assetManager.isLoaded("textures/gore/Gore-1.png");
 		case Indentifiers.ASSETMANAGER_MENU:
 			return assetManager.isLoaded("textures/general/Background.png");
 		case Indentifiers.ASSETMANAGER_EGG:

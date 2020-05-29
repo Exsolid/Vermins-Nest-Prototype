@@ -1,7 +1,6 @@
-package com.verminsnest.screens.gameplay.menus;
+package com.verminsnest.screens.gameplay;
 
 import com.verminsnest.core.VerminsNest;
-import com.verminsnest.screens.gameplay.GameManager;
 
 public abstract class GameplayOverlay {
 	protected VerminsNest game;

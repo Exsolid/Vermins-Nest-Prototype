@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.verminsnest.core.Indentifiers;
 import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.entities.Entity;
+import com.verminsnest.entities.Gore;
 import com.verminsnest.entities.eggs.Egg;
 import com.verminsnest.entities.playables.Playable;
 import com.verminsnest.entities.projectiles.Projectile;
@@ -175,7 +176,7 @@ public abstract class Enemy extends Entity {
 					yMax = (int) (pos[1]+size[1]/2+range*leftVision.y); 
 					if((ent.getPos()[0]<xLeft && ent.getPos()[0]>xRight || ent.getPos()[0]+ent.getSize()[0]<xLeft && ent.getPos()[0]+ent.getSize()[0]>xRight)
 							&&(ent.getPos()[1]<yLeft && ent.getPos()[1]>yMax || ent.getPos()[1]+ent.getSize()[1]<yLeft && ent.getPos()[1]+ent.getSize()[1]>yMax) && ent != this){
-						if(!(ent instanceof Enemy)&& !(ent instanceof Egg)){
+						if(!(ent instanceof Enemy)&& !(ent instanceof Egg)&& !(ent instanceof Gore)){
 							if(ent instanceof Projectile){
 								if(((Projectile)ent).isFriendly()){
 									alerted = ent;	
@@ -201,7 +202,7 @@ public abstract class Enemy extends Entity {
 					xMax = (int) (pos[0]+size[0]/2+range*leftVision.x); 
 					if((ent.getPos()[1]>yLeft && ent.getPos()[1]<yRight || ent.getPos()[1]+ent.getSize()[1]>yLeft && ent.getPos()[1]+ent.getSize()[1]<yRight)
 							&&(ent.getPos()[0]<xLeft && ent.getPos()[0]>xMax || ent.getPos()[0]+ent.getSize()[0]<xLeft && ent.getPos()[0]+ent.getSize()[0]>xMax) && ent != this){
-						if(!(ent instanceof Enemy)&& !(ent instanceof Egg)){
+						if(!(ent instanceof Enemy)&& !(ent instanceof Egg)&& !(ent instanceof Gore)){
 							if(ent instanceof Projectile){
 								if(((Projectile)ent).isFriendly()){
 									alerted = ent;	
@@ -227,7 +228,7 @@ public abstract class Enemy extends Entity {
 					xMax = (int) (pos[0]+size[0]/2+range*leftVision.x); 
 					if((ent.getPos()[1]<yLeft && ent.getPos()[1]>yRight || ent.getPos()[1]+ent.getSize()[1]<yLeft && ent.getPos()[1]+ent.getSize()[1]>yRight)
 							&&(ent.getPos()[0]>xLeft && ent.getPos()[0]<xMax || ent.getPos()[0]+ent.getSize()[0]>xLeft && ent.getPos()[0]+ent.getSize()[0]<xMax) && ent != this){
-						if(!(ent instanceof Enemy) && !(ent instanceof Egg)){
+						if(!(ent instanceof Enemy) && !(ent instanceof Egg) && !(ent instanceof Gore)){
 							if(ent instanceof Projectile){
 								if(((Projectile)ent).isFriendly()){
 									alerted = ent;	
@@ -253,7 +254,7 @@ public abstract class Enemy extends Entity {
 					yMax = (int) (pos[1]+size[1]/2+range*leftVision.y); 
 					if((ent.getPos()[0]>xLeft && ent.getPos()[0]<xRight || ent.getPos()[0]+ent.getSize()[0]>xLeft && ent.getPos()[0]+ent.getSize()[0]<xRight)
 							&&(ent.getPos()[1]>yLeft && ent.getPos()[1]<yMax || ent.getPos()[1]+ent.getSize()[1]>yLeft && ent.getPos()[1]+ent.getSize()[1]<yMax ) && ent != this){
-						if(!(ent instanceof Enemy)&& !(ent instanceof Egg)){
+						if(!(ent instanceof Enemy)&& !(ent instanceof Egg)&& !(ent instanceof Gore)){
 							if(ent instanceof Projectile){
 								if(((Projectile)ent).isFriendly()){
 									alerted = ent;	
