@@ -17,6 +17,7 @@ public abstract class Playable extends Entity {
 	protected Animation<TextureRegion> leftWalkAni;
 	protected Animation<TextureRegion> idleAni;
 	
+	protected int level;
 	protected int killCount;
 	protected int killLimit;
 	protected int skillPoints;
@@ -47,6 +48,9 @@ public abstract class Playable extends Entity {
 		setAgility(agi);
 		
 		skillPoints = 2;
+		killCount = 0;
+		killLimit = 10;
+		level = 5;
 		
 		prevKey = '-';
 		currentKey = '-';
@@ -57,13 +61,13 @@ public abstract class Playable extends Entity {
 		this.setCurrentAni(Indentifiers.STATE_IDLE);
 		this.setSize(currentAni.getKeyFrame(0).getRegionWidth(),currentAni.getKeyFrame(0).getRegionHeight());
 		
-		topLeft = new Vector2(960, 540).nor();
+		topLeft = new Vector2(RuntimeData.getInstance().getConfig().getResolution()[0]/2,(RuntimeData.getInstance().getConfig().getResolution()[1]+25)/2).nor();
 		topLeft.setAngle(135);
-		bottomLeft = new Vector2(960, 540).nor();
+		bottomLeft = new Vector2(RuntimeData.getInstance().getConfig().getResolution()[0]/2,(RuntimeData.getInstance().getConfig().getResolution()[1]+25)/2).nor();
 		bottomLeft.setAngle(-135);
-		topRight = new Vector2(960, 540).nor();
+		topRight = new Vector2(RuntimeData.getInstance().getConfig().getResolution()[0]/2,(RuntimeData.getInstance().getConfig().getResolution()[1]+25)/2).nor();
 		topRight.setAngle(45);
-		bottomRight = new Vector2(960, 540).nor();
+		bottomRight = new Vector2(RuntimeData.getInstance().getConfig().getResolution()[0]/2,(RuntimeData.getInstance().getConfig().getResolution()[1]+25)/2).nor();
 		bottomRight.setAngle(-45);
 	}
 	
@@ -153,16 +157,16 @@ public abstract class Playable extends Entity {
 		
 		//Attacking
 		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
-			float mouseX =Gdx.input.getX()+pos[0]+size[0]/2-960;
-			float mouseY =Gdx.input.getY()+pos[1]+size[1]/2-540;
-			Vector2 mouseVector = new Vector2(Gdx.input.getX()-960,Gdx.input.getY()-540).nor();
+			float mouseX =RuntimeData.getInstance().getMousePosInGameWorld().x;
+			float mouseY =RuntimeData.getInstance().getMousePosInGameWorld().y;
+			Vector2 mouseVector = new Vector2(mouseX-pos[0]+size[0]/2,mouseY-pos[1]+size[1]/2).nor();
 			if(mouseVector.y - bottomLeft.y >= 0 && mouseVector.y - topLeft.y <= 0 && mouseX < pos[0]+size[0]/2){
 				RuntimeData.getInstance().getCharacter().attack(stateTime, Indentifiers.DIRECTION_WEST);
 			}else if(mouseVector.y - bottomRight.y >= 0 && mouseVector.y - topRight.y <= 0&& mouseX > pos[0]+size[0]/2){
 				RuntimeData.getInstance().getCharacter().attack(stateTime, Indentifiers.DIRECTION_EAST);
-			}if(mouseVector.x - topRight.x <= 0 && mouseVector.x - topLeft.x >= 0 && mouseY < pos[1]+size[1]/2){
+			}if(mouseVector.x - topRight.x <= 0 && mouseVector.x - topLeft.x >= 0 && mouseY > pos[1]+size[1]/2){
 				RuntimeData.getInstance().getCharacter().attack(stateTime, Indentifiers.DIRECTION_NORTH);
-			}else if(mouseVector.x - bottomRight.x <= 0 && mouseVector.x - bottomLeft.x >= 0 && mouseY > pos[1]+size[1]/2){
+			}else if(mouseVector.x - bottomRight.x <= 0 && mouseVector.x - bottomLeft.x >= 0 && mouseY < pos[1]+size[1]/2){
 				RuntimeData.getInstance().getCharacter().attack(stateTime, Indentifiers.DIRECTION_SOUTH);
 			}	
 		}
@@ -250,5 +254,20 @@ public abstract class Playable extends Entity {
 	
 	public void setSkilPoints(int skillPoints){
 		this.skillPoints = skillPoints;
+	}
+	
+	public void updateKills(){
+		if(killCount+1 == killLimit){
+			killCount = 0;
+			killLimit += 5;
+			level++;
+			skillPoints += 2;
+		}else{
+			killCount++;
+		}
+	}
+	
+	public int[] getLevelData(){
+		return new int[]{level, killCount, killLimit};
 	}
 }

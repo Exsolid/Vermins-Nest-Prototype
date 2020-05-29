@@ -46,6 +46,7 @@ public class EntityDamageSystem {
 					for(int i = 0; i < rand.nextInt(4)+3; i++){
 						new Gore(new int[]{hit.getPos()[0], hit.getPos()[1]});
 					} 
+					RuntimeData.getInstance().getCharacter().updateKills();
 					RuntimeData.getInstance().removeEntity(hit);       
 				}
 			}

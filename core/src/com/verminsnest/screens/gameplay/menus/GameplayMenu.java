@@ -22,11 +22,17 @@ public class GameplayMenu extends GameplayOverlay {
 	private TextureRegion[][] attackCooldown;
 	private int attackData;
 	private FontText hp;
+	private FontText level;
+	private FontText killCounter;
 
 	public GameplayMenu(VerminsNest game, GameManager gameMan) {
 		super(game, gameMan);
 		rooms = new ArrayList<>();
+		
 		hp = new FontText("0", 50, false);
+		level = new FontText("0", 50, false);
+		killCounter = new FontText("0", 40, false);
+		
 		attackDataPos = new int[] { 0, 0 };
 		abilityDataPos = new int[] { 0, 0 };
 		mapPos = new int[] { 0, 0 };
@@ -72,8 +78,10 @@ public class GameplayMenu extends GameplayOverlay {
 						- RuntimeData.getInstance().getAsset(RuntimeData.getInstance().getCharacter().getAttackIcon())
 								.getHeight() / 2
 						+ 4);
-		// Draw hp text
+		// Draw character data
 		hp.draw(game.getBatch());
+		level.draw(game.getBatch());
+		killCounter.draw(game.getBatch());
 
 		// Draw map
 		for (MinimapRoom room : rooms) {
@@ -124,6 +132,25 @@ public class GameplayMenu extends GameplayOverlay {
 				new int[] { RuntimeData.getInstance().getAsset("textures/menus/frames/StatusFrame.png").getWidth(),
 						RuntimeData.getInstance().getAsset("textures/menus/frames/StatusFrame.png").getHeight() });
 		hp.getPos()[0] += RuntimeData.getInstance().getAsset("textures/menus/frames/StatusFrame.png").getWidth() / 4;
+		hp.getPos()[1] += 10;
+		//Update kills and levels
+		if(RuntimeData.getInstance().getCharacter().getSkillPoints() != 0){
+			level.setText("Level: " + Integer.toString(RuntimeData.getInstance().getCharacter().getLevelData()[0])+ "(+)");
+		}else{
+			level.setText("Level: " + Integer.toString(RuntimeData.getInstance().getCharacter().getLevelData()[0]));
+		}
+		level.setMidOfBounds(dataScrollPos,
+				new int[] { RuntimeData.getInstance().getAsset("textures/menus/frames/StatusFrame.png").getWidth(),
+						RuntimeData.getInstance().getAsset("textures/menus/frames/StatusFrame.png").getHeight() });
+		level.getPos()[1] += 10;
+		
+		// Update hp text position
+		killCounter.setText(Integer.toString(RuntimeData.getInstance().getCharacter().getLevelData()[1]) + "/"
+				+ Integer.toString(RuntimeData.getInstance().getCharacter().getLevelData()[2]));
+		killCounter.setMidOfBounds(dataScrollPos,
+				new int[] { RuntimeData.getInstance().getAsset("textures/menus/frames/StatusFrame.png").getWidth(),
+						RuntimeData.getInstance().getAsset("textures/menus/frames/StatusFrame.png").getHeight()});
+		killCounter.getPos()[1] -= killCounter.getBounds()[1];
 		// Update frame position
 		abilityDataPos[0] = dataScrollPos[0] + 100;
 		abilityDataPos[1] = dataScrollPos[1]

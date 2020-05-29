@@ -3,7 +3,9 @@ package com.verminsnest.core.singletons;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector3;
 import com.verminsnest.config.Configurator;
 import com.verminsnest.core.Indentifiers;
 import com.verminsnest.core.VerminsNest;
@@ -247,5 +249,9 @@ public class RuntimeData {
 	
 	public ArrayList<int[]> getEnemyInits(){
 		return toInitEntities;
+	}
+	
+	public Vector3 getMousePosInGameWorld() {
+		 return game.getCamera().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
 	}
 }
