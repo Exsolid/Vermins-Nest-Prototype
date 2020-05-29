@@ -152,7 +152,7 @@ public abstract class Playable extends Entity {
 		}		
 		
 		//Attacking
-		if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
 			float mouseX =Gdx.input.getX()+pos[0]+size[0]/2-960;
 			float mouseY =Gdx.input.getY()+pos[1]+size[1]/2-540;
 			Vector2 mouseVector = new Vector2(Gdx.input.getX()-960,Gdx.input.getY()-540).nor();
