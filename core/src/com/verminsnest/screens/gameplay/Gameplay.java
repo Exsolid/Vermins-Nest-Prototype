@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.math.Vector3;
 import com.verminsnest.core.VerminsNest;
 import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.playables.Mage;
+import com.verminsnest.entities.world.LevelEntrance;
 import com.verminsnest.generation.map.MapCell;
 import com.verminsnest.screens.gameplay.menus.GameplayMenu;
 
@@ -32,6 +32,7 @@ public class Gameplay extends GameplayOverlay{
 				}
 			}
 		}
+		new LevelEntrance(new int[]{RuntimeData.getInstance().getCharacter().getPos()[0]-200, RuntimeData.getInstance().getCharacter().getPos()[1]});
 		// Textures
 		toDraw = new ArrayList<>();
 		// Camera

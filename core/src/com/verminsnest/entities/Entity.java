@@ -19,7 +19,9 @@ public abstract class Entity {
 	protected float rotation;
 	
 	public Entity(int[] pos, int textureID){
-		RuntimeData.getInstance().loadTextures(textureID);
+		if(textureID != -1){
+			RuntimeData.getInstance().loadTextures(textureID);
+		}
 		RuntimeData.getInstance().addEntity(this);
 		this.textureID = textureID;
 		this.pos = pos;
@@ -64,7 +66,9 @@ public abstract class Entity {
 		return currentAni.getKeyFrame(stateTime, true);
 	}
 	public void dispose(){
-		RuntimeData.getInstance().disposeTextures(textureID);
+		if(textureID != -1){
+			RuntimeData.getInstance().disposeTextures(textureID);
+		}
 	}
 	public int getTextureID(){
 		return textureID;

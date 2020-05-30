@@ -23,7 +23,7 @@ public class Indentifiers {
 	public static final int STATE_HIT = 11;
 	public static final int STATE_TODELETE = 12;
 	
-	public static final int STATE_HATCH = 13;
+	public static final int STATE_SPAWNING = 13;
 	public static final int STATE_LEFTOVER = 14;
 	
 	//Enemy IDs

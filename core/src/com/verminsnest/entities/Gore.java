@@ -12,7 +12,7 @@ public class Gore extends Entity {
 	
 	private float internalStateTime;
 	private Texture texture;
-	private int textureID;
+	private int goreID;
 	private int[] movement;
 	private Random rand;
 	
@@ -20,9 +20,9 @@ public class Gore extends Entity {
 		super(pos, Indentifiers.ASSETMANAGER_GORE);
 		isObstacle = false;
 		rand = new Random();
-		textureID = rand.nextInt(3)+1;
+		goreID = rand.nextInt(3)+1;
 		movement = new int[2];
-		this.setSize(RuntimeData.getInstance().getAsset("textures/gore/Gore-"+textureID+".png").getWidth(), RuntimeData.getInstance().getAsset("textures/gore/Gore-"+textureID+".png").getHeight());
+		this.setSize(RuntimeData.getInstance().getAsset("textures/gore/Gore-"+goreID+".png").getWidth(), RuntimeData.getInstance().getAsset("textures/gore/Gore-"+goreID+".png").getHeight());
 		init();
 	}
 
@@ -44,7 +44,7 @@ public class Gore extends Entity {
 			movement = new int[]{rand.nextInt(3)-4,rand.nextInt(3)-4};
 			break;
 		}
-		switch(textureID){
+		switch(goreID){
 		case 1:
 			texture = RuntimeData.getInstance().getAsset("textures/gore/Gore-1.png");
 			break;

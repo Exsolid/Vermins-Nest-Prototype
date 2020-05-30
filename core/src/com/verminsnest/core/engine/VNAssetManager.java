@@ -31,6 +31,8 @@ public class VNAssetManager {
 			assetManager.load("textures/menus/frames/StatusFrame.png", Texture.class);
 			
 			assetManager.load("textures/level-sheets/cave/Mountain-Sheet.png", Texture.class);
+			assetManager.load("textures/level-sheets/cave/Mountain-Hole.png", Texture.class);
+			assetManager.load("textures/level-sheets/cave/Dirt-Cloud.png", Texture.class);
 			
 			assetManager.load("textures/enemies/Shadow.png", Texture.class);
 			assetManager.load("textures/characters/Character-Shadow.png", Texture.class);
@@ -108,6 +110,8 @@ public class VNAssetManager {
 			this.unload("textures/menus/frames/StatusFrame.png");
 			
 			this.unload("textures/level-sheets/cave/Mountain-Sheet.png");
+			this.unload("textures/level-sheets/cave/Mountain-Hole.png");
+			this.unload("textures/level-sheets/cave/Dirt-Cloud.png");
 			
 			this.unload("textures/characters/Character-Shadow.png");
 			this.unload("textures/enemies/Shadow.png");

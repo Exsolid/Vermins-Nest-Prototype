@@ -71,8 +71,8 @@ public class Egg extends Entity {
 			state = Indentifiers.STATE_IDLE;
 			currentAni = idleAni;
 			break;
-		case Indentifiers.STATE_HATCH:
-			state = Indentifiers.STATE_HATCH;
+		case Indentifiers.STATE_SPAWNING:
+			state = Indentifiers.STATE_SPAWNING;
 			currentAni = hatchAni;
 			break;
 		case Indentifiers.STATE_LEFTOVER:
@@ -89,11 +89,11 @@ public class Egg extends Entity {
 		switch (state) {
 		case Indentifiers.STATE_IDLE:
 			if (internalStateTime > hatchTime) {
-				setCurrentAni(Indentifiers.STATE_HATCH);
+				setCurrentAni(Indentifiers.STATE_SPAWNING);
 				internalStateTime = 0;
 			}
 			break;
-		case Indentifiers.STATE_HATCH:
+		case Indentifiers.STATE_SPAWNING:
 			if (!hatched) {
 				switch (enemyID) {
 				case Indentifiers.ENEMY_TINKER:
