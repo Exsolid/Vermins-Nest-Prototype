@@ -44,9 +44,12 @@ public class Gameplay extends GameplayOverlay{
 				//Draw ground
 				for (MapCell cell : toDraw) {
 					game.getBatch().draw(cell.getLayers().get(0), cell.getxPos(), cell.getyPos());
-					if (cell.getLayers().size() > 1 && cell.isWalkable()) {
-						game.getBatch().draw(cell.getLayers().get(1), cell.getxPos(), cell.getyPos());
+					if (cell.isWalkable()) {
+						for(int i = cell.getLayers().size()-1; i > 0; i--){
+							game.getBatch().draw(cell.getLayers().get(i), cell.getxPos(), cell.getyPos());
+						}
 					}
+					
 				}
 				//Draw shadows
 				for(Entity ent: RuntimeData.getInstance().getEntities()){
