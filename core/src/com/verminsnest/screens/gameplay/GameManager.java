@@ -2,6 +2,8 @@ package com.verminsnest.screens.gameplay;
 
 import com.badlogic.gdx.Gdx;
 import com.verminsnest.core.VerminsNest;
+import com.verminsnest.core.singletons.RuntimeData;
+import com.verminsnest.entities.playables.Mage;
 import com.verminsnest.screens.VNScreen;
 import com.verminsnest.screens.gameplay.menus.LevelMenu;
 import com.verminsnest.screens.gameplay.menus.PauseMenu;
@@ -120,11 +122,33 @@ public class GameManager extends VNScreen {
 
 	@Override
 	public void init() {
-		gameplay = new Gameplay(game, this);
-		pauseMenu = new PauseMenu(game, this);
-		levelMenu = new LevelMenu(game, this);
-		pauseMenu.init();
-		levelMenu.init();
+		
+		if(RuntimeData.getInstance().getCharacter() == null) {
+			RuntimeData.getInstance().setCharacter(new Mage(new int[] { 0, 0 }));
+			for (int x = 0; x < RuntimeData.getInstance().getMap().length; x++) {
+				for (int y = 0; y < RuntimeData.getInstance().getMap()[0].length; y++) {
+					if (RuntimeData.getInstance().getMap()[x][y].isWalkable()) {
+						RuntimeData.getInstance().getCharacter().getPos()[0] = RuntimeData.getInstance().getMap()[x][y].getxPos();
+						RuntimeData.getInstance().getCharacter().getPos()[1] = RuntimeData.getInstance().getMap()[x][y].getyPos();
+					}
+				}
+			}
+			
+			gameplay = new Gameplay(game, this);
+			pauseMenu = new PauseMenu(game, this);
+			levelMenu = new LevelMenu(game, this);
+			pauseMenu.init();
+			levelMenu.init();
+		}else {
+			for (int x = 0; x < RuntimeData.getInstance().getMap().length; x++) {
+				for (int y = 0; y < RuntimeData.getInstance().getMap()[0].length; y++) {
+					if (RuntimeData.getInstance().getMap()[x][y].isWalkable()) {
+						RuntimeData.getInstance().getCharacter().getPos()[0] = RuntimeData.getInstance().getMap()[x][y].getxPos();
+						RuntimeData.getInstance().getCharacter().getPos()[1] = RuntimeData.getInstance().getMap()[x][y].getyPos();
+					}
+				}
+			}
+		}
 		
 		state = RUNNING;
 		

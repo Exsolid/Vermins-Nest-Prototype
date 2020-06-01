@@ -6,10 +6,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.verminsnest.core.Indentifiers;
 import com.verminsnest.core.VerminsNest;
 import com.verminsnest.core.singletons.RuntimeData;
-import com.verminsnest.generation.map.Room;
 import com.verminsnest.misc.gui.FontText;
 import com.verminsnest.screens.gameplay.GameManager;
 import com.verminsnest.screens.gameplay.GameplayOverlay;
+import com.verminsnest.world.generation.map.Room;
 
 public class GameplayMenu extends GameplayOverlay {
 	private int[] dataScrollPos;
@@ -231,10 +231,11 @@ public class GameplayMenu extends GameplayOverlay {
 	@Override
 	public void dispose() {
 		hp.dispose();
+		level.dispose();
+		killCounter.dispose();
 	}
 
 	private class MinimapRoom {
-
 		private MinimapRoom(int[] position, TextureRegion[][] roomTextures, boolean toDraw) {
 			this.position = position;
 			this.roomTextures = roomTextures;

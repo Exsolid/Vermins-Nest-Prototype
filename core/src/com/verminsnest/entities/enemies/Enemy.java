@@ -38,6 +38,10 @@ public abstract class Enemy extends Entity {
 	protected boolean movedRightOf;
 	
 	protected float lastAttack;
+	
+	private boolean isLastDeath;
+	private boolean isReadyToDig;
+	
 	public Enemy(int[] pos, int textureID, int agility, int speed, int strength, int health) {
 		super(pos, textureID);
 		setSpeed(speed);
@@ -59,8 +63,65 @@ public abstract class Enemy extends Entity {
 	}
 	
 	public void update(float stateTime){
-		updateVision();
-		updateAction(stateTime);
+		if(isLastDeath) {
+			int[] thisMapPos = new int[2];
+			int[] playerMapPos = new int[2];
+			int[] goalPos = new int[2];
+			
+			thisMapPos[0] = (this.getPos()[0]-this.getPos()[0]%128)/128;
+			thisMapPos[1] = (this.getPos()[1]-this.getPos()[1]%128)/128;
+			
+			playerMapPos[0] = (RuntimeData.getInstance().getCharacter().getPos()[0]-RuntimeData.getInstance().getCharacter().getPos()[0]%128)/128;
+			playerMapPos[1] = (RuntimeData.getInstance().getCharacter().getPos()[1]-RuntimeData.getInstance().getCharacter().getPos()[1]%128)/128;
+			
+			goalPos[0] = this.getPos()[0]-this.getPos()[0]%128+128/2-size[0]/2;
+			goalPos[1] = this.getPos()[1]-this.getPos()[1]%128+128/2-size[1]/2;
+			
+			if(playerMapPos[0] == thisMapPos[0] && playerMapPos[1] == thisMapPos[1]) {
+				boolean[] dirs = RuntimeData.getInstance().getMapData().getWalkableDirs(thisMapPos);
+				if(dirs[0]) {
+					RuntimeData.getInstance().getMovmentSystem().moveTop(this, 1);
+				}
+				if(dirs[1]) {
+					RuntimeData.getInstance().getMovmentSystem().moveRight(this, 1);
+				}
+				if(dirs[2]) {
+					RuntimeData.getInstance().getMovmentSystem().moveDown(this, 1);
+				}
+				if(dirs[3]) {
+					RuntimeData.getInstance().getMovmentSystem().moveRight(this, 1);
+				}
+			}else{
+				int[] movement = new int[2];
+				if(goalPos[0] > pos[0]) {
+					movement[0] = +1;
+					movement[1] = 0;
+					setCurrentAni(Indentifiers.STATE_WALK_EAST);
+				}
+				else if(goalPos[0] < pos[0]) {
+					movement[0] = -1;
+					movement[1] = 0;
+					setCurrentAni(Indentifiers.STATE_WALK_WEST);
+				}else if(goalPos[1] > pos[1]) {
+					movement[1] = +1;
+					movement[0] = 0;
+					setCurrentAni(Indentifiers.STATE_WALK_NORTH);
+				}else if(goalPos[1] < pos[1]) {
+					movement[1] = -1;
+					movement[0] = 0;
+					setCurrentAni(Indentifiers.STATE_WALK_SOUTH);
+				}
+				
+				RuntimeData.getInstance().getMovmentSystem().move(this, movement);
+				
+				if(goalPos[0] == pos[0] && goalPos[1] == pos[1])isReadyToDig = true;
+			}
+			
+			
+		}else {
+			updateVision();
+			updateAction(stateTime);
+		}
 		timer += Gdx.graphics.getDeltaTime();
 	}
 	protected abstract void chooseAvoidAction(int xDistance, int yDistance, float stateTime);
@@ -535,5 +596,16 @@ public abstract class Enemy extends Entity {
 
 	public void setHealth(int health) {
 		this.health = health;
+	}
+	
+	public void setIsLastDeath(boolean isLast) {
+		this.isLastDeath = isLast;
+		timer = 0; 
+		alerted = null;
+		playerAlerted = null;
+	}
+	
+	public boolean isReadyToDig() {
+		return isReadyToDig;
 	}
 }

@@ -17,6 +17,8 @@ public class VNAssetManager {
 			assetManager.load("textures/menus/scrolls/VerticalScroll_Small.png", Texture.class);
 			assetManager.load("textures/menus/scrolls/VerticalScroll_Big.png", Texture.class);
 			assetManager.load("textures/misc/Cursor.png", Texture.class);
+
+			assetManager.load("textures/general/Background.png", Texture.class);
 			break;
 		case Indentifiers.ASSETMANAGER_GAMEPLAY:
 			assetManager.load("textures/menus/scrolls/VerticalScroll_Small.png", Texture.class);
@@ -40,9 +42,6 @@ public class VNAssetManager {
 			assetManager.load("textures/misc/Minimap-Pointer.png", Texture.class);
 			assetManager.load("textures/misc/Cursor.png", Texture.class);
 			break;
-		case Indentifiers.ASSETMANAGER_MENU:
-			assetManager.load("textures/general/Background.png", Texture.class);
-			break;
 		case Indentifiers.ASSETMANAGER_FIREBALL:
 			assetManager.load("textures/projectiles/fireball/FireBall-Shadow.png", Texture.class);
 			assetManager.load("textures/projectiles/fireball/FireBall-Flying.png", Texture.class);
@@ -58,7 +57,7 @@ public class VNAssetManager {
 			assetManager.load("textures/characters/mage/Mage-W-Right.png", Texture.class);
 			assetManager.load("textures/characters/mage/Mage-W-Left.png", Texture.class);
 			assetManager.load("textures/characters/mage/Mage-Idle.png", Texture.class);
-			assetManager.load("textures/projectiles/fireball/FireBall_Icon.png", Texture.class);
+			assetManager.load("textures/projectiles/fireball/FireBall-Icon.png", Texture.class);
 			break;
 		case Indentifiers.ASSETMANAGER_TINKER:
 			assetManager.load("textures/enemies/tinker/Tinker-A-Back.png", Texture.class);
@@ -118,9 +117,6 @@ public class VNAssetManager {
 			this.unload("textures/misc/Minimap-Pointer.png");
 			this.unload("textures/misc/Cursor.png");
 			break;		
-		case Indentifiers.ASSETMANAGER_MENU:
-			this.unload("textures/general/Background.png");
-			break;
 		case Indentifiers.ASSETMANAGER_FIREBALL:
 			this.unload("textures/projectiles/fireball/FireBall-Shadow.png");
 			this.unload("textures/projectiles/fireball/FireBall-Flying.png");
@@ -136,7 +132,7 @@ public class VNAssetManager {
 			this.unload("textures/characters/mage/Mage-W-Right.png");
 			this.unload("textures/characters/mage/Mage-W-Left.png");
 			this.unload("textures/characters/mage/Mage-Idle.png");
-			this.unload("textures/projectiles/fireball/FireBall_Icon.png");
+			this.unload("textures/projectiles/fireball/FireBall-Icon.png");
 			break;
 		case Indentifiers.ASSETMANAGER_TINKER:
 			this.unload("textures/enemies/tinker/Tinker-A-Back.png");
@@ -179,8 +175,6 @@ public class VNAssetManager {
 			return assetManager.isLoaded("textures/enemies/tinker/Tinker-A-Back.png");
 		case Indentifiers.ASSETMANAGER_GORE:
 			return assetManager.isLoaded("textures/gore/Gore-1.png");
-		case Indentifiers.ASSETMANAGER_MENU:
-			return assetManager.isLoaded("textures/general/Background.png");
 		case Indentifiers.ASSETMANAGER_EGG:
 			return assetManager.isLoaded("textures/enemies/eggs/Egg-Hatch.png");
 		default:

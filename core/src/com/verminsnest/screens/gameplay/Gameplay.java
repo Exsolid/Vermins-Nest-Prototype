@@ -7,10 +7,9 @@ import com.badlogic.gdx.Input;
 import com.verminsnest.core.VerminsNest;
 import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.entities.Entity;
-import com.verminsnest.entities.playables.Mage;
-import com.verminsnest.entities.world.LevelEntrance;
-import com.verminsnest.generation.map.MapCell;
 import com.verminsnest.screens.gameplay.menus.GameplayMenu;
+import com.verminsnest.world.generation.map.MapCell;
+import com.verminsnest.world.management.FloorManager;
 
 public class Gameplay extends GameplayOverlay{
 	// Textures
@@ -22,17 +21,6 @@ public class Gameplay extends GameplayOverlay{
 	public Gameplay(VerminsNest game,GameManager gameMan) {
 		super(game,gameMan);
 		gui = new GameplayMenu(game,gameMan);
-		RuntimeData.getInstance().setCharacter(new Mage(new int[] { 0, 0 }));
-		
-		for (int x = 0; x < RuntimeData.getInstance().getMap().length; x++) {
-			for (int y = 0; y < RuntimeData.getInstance().getMap()[0].length; y++) {
-				if (RuntimeData.getInstance().getMap()[x][y].isWalkable()) {
-					RuntimeData.getInstance().getCharacter().getPos()[0] = RuntimeData.getInstance().getMap()[x][y].getxPos();
-					RuntimeData.getInstance().getCharacter().getPos()[1] = RuntimeData.getInstance().getMap()[x][y].getyPos();
-				}
-			}
-		}
-		new LevelEntrance(new int[]{RuntimeData.getInstance().getCharacter().getPos()[0]-200, RuntimeData.getInstance().getCharacter().getPos()[1]});
 		// Textures
 		toDraw = new ArrayList<>();
 		// Camera
@@ -123,7 +111,10 @@ public class Gameplay extends GameplayOverlay{
 	@Override
 	public void update(float stateTime) {
 		RuntimeData.getInstance().updateEntities(stateTime);
-		gui.update(stateTime);
-		manageControls(stateTime);
+
+		if(FloorManager.getInstane().allowEntityUpdate()) {
+			gui.update(stateTime);
+			manageControls(stateTime);
+		}
 	}
 }

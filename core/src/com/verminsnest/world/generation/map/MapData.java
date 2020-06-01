@@ -1,4 +1,4 @@
-package com.verminsnest.generation.map;
+package com.verminsnest.world.generation.map;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -249,5 +249,25 @@ public class MapData {
 	}
 	public void setLayout( Room[][] layout){
 		this.layout = layout;
+	}
+	
+	public boolean[] getWalkableDirs(int[] pos) {
+		boolean[] dirs = new boolean[5];
+		if(numericMap[pos[0]][pos[1]+1] == 0) {
+			dirs[0] = true;
+		}
+		if(numericMap[pos[0]+1][pos[1]] == 0) {
+			dirs[1] = true;
+		}
+		if(numericMap[pos[0]][pos[1]-1] == 0) {
+			dirs[2] = true;
+		}
+		if(numericMap[pos[0]-1][pos[1]] == 0) {
+			dirs[3] = true;
+		}
+		if(numericMap[pos[0]][pos[1]] == 0) {
+			dirs[4] = true;
+		}
+		return dirs;
 	}
 }

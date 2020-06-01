@@ -7,10 +7,10 @@ import com.badlogic.gdx.Input;
 import com.verminsnest.core.Indentifiers;
 import com.verminsnest.core.VerminsNest;
 import com.verminsnest.core.singletons.RuntimeData;
-import com.verminsnest.generation.map.World;
-import com.verminsnest.generation.spawning.EnemySpawner;
 import com.verminsnest.misc.gui.ButtonManager;
 import com.verminsnest.screens.VNScreen;
+import com.verminsnest.world.generation.map.World;
+import com.verminsnest.world.generation.spawning.EnemySpawner;
 
 public class MainMenu extends VNScreen {
 
@@ -118,9 +118,9 @@ public class MainMenu extends VNScreen {
 					// World generation
 					RuntimeData.getInstance().loadTextures(Indentifiers.ASSETMANAGER_GAMEPLAY);
 					World gen = new World(game);
-					gen.setData(7, 20, 20, 10,
+					gen.setData(1, 20, 20, 10,
 							(RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Mountain-Sheet.png")));
-					new EnemySpawner(3);
+					new EnemySpawner(1);
 					game.showScreen(VerminsNest.LOADGAME);
 					break;
 				case SETTINGS:

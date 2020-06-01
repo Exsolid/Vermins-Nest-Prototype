@@ -49,7 +49,7 @@ public class Configurator {
 	public int[] getResolution(){
 		int[] reso = new int[2];
 		reso[0] = prefs.getInteger("resolutionX", 1920);
-		reso[1] = prefs.getInteger("resolutionY", 1080);
+		reso[1] = prefs.getInteger("resolutionY", 1055);
 		return reso;
 	}
 	

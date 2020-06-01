@@ -65,6 +65,7 @@ public abstract class Entity {
 	public TextureRegion getCurrentFrame(float stateTime) {
 		return currentAni.getKeyFrame(stateTime, true);
 	}
+	
 	public void dispose(){
 		if(textureID != -1){
 			RuntimeData.getInstance().disposeTextures(textureID);

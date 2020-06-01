@@ -1,0 +1,50 @@
+package com.verminsnest.entities.util;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.verminsnest.core.singletons.RuntimeData;
+
+public class CloudAnimation extends UtilEntity{
+
+	private float internalStateTime;
+	public CloudAnimation(int[] pos) {
+		//Textures are loaded initially
+		super(pos, -1);
+		internalStateTime = 0;
+		this.setSize(128, 128);
+		isObstacle = false;
+	}
+
+	@Override
+	public void init() {
+		Texture sheet = RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Dirt-Cloud.png");
+		TextureRegion[][] temp = TextureRegion.split(sheet, 128, 128);
+		TextureRegion[] frames = new TextureRegion[temp[0].length];
+		
+		for(int i = 0; i< temp[0].length; i++){
+			frames[i] = temp[0][i];
+		}
+		currentAni = new Animation<TextureRegion>(0.15f,frames);
+	}
+
+	@Override
+	public void setCurrentAni(int animationKey) {
+		//Not needed
+	}
+
+	@Override
+	public void update(float stateTime) {
+		internalStateTime += Gdx.graphics.getDeltaTime();
+		if(currentAni.isAnimationFinished(internalStateTime)){
+			RuntimeData.getInstance().removeEntity(this);
+		}
+	}
+	
+	
+	@Override
+	public TextureRegion getCurrentFrame(float stateTime) {
+		return currentAni.getKeyFrame(internalStateTime, false);
+	}
+}

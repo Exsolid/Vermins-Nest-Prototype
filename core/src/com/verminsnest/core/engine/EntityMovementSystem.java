@@ -4,7 +4,7 @@ package com.verminsnest.core.engine;
 import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.projectiles.Projectile;
-import com.verminsnest.generation.map.MapCell;
+import com.verminsnest.world.generation.map.MapCell;
 
 public class EntityMovementSystem {
 	

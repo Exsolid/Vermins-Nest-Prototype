@@ -177,7 +177,7 @@ public class SettingsMenu extends VNScreen {
 					case GRAPHICS:
 						if(currentMenuManager.getCurrent() != currentMenuManager.getButtons().get(currentMenuManager.getButtons().size()-1)){
 							currentMenuManager.getCurrent().nextOption();
-							if(currentMenuManager.getCurrent().getText().equals(game.getConfig().getMessage("GraphicsMenu_Resolution"))&&currentMenuManager.getButtons().get(1).getOption().equals("Fullscreen")){
+							if(currentMenuManager.getCurrent().getText().getText().equals(game.getConfig().getMessage("GraphicsMenu_Resolution"))&&currentMenuManager.getButtons().get(1).getOption().getText().equals(game.getConfig().getMessage("GraphicsMenu_Mode_Fullscreen"))){
 								currentMenuManager.getButtons().get(1).nextOption();
 							}
 							movementBlocked = true;
@@ -205,7 +205,8 @@ public class SettingsMenu extends VNScreen {
 					case GRAPHICS:
 						if(currentMenuManager.getCurrent() != currentMenuManager.getButtons().get(currentMenuManager.getButtons().size()-1)){
 							currentMenuManager.getCurrent().prevOption();
-							if(currentMenuManager.getCurrent().getText().equals(game.getConfig().getMessage("GraphicsMenu_Resolution"))&&currentMenuManager.getButtons().get(1).getOption().equals("Fullscreen")){
+							//TODO CHeck the if?
+							if(currentMenuManager.getCurrent().getText().getText().equals(game.getConfig().getMessage("GraphicsMenu_Resolution"))&&currentMenuManager.getButtons().get(1).getOption().getText().equals("Fullscreen")){
 								currentMenuManager.getButtons().get(1).nextOption();
 							}
 							movementBlocked = true;
@@ -265,7 +266,7 @@ public class SettingsMenu extends VNScreen {
 						
 						String resolution = game.getConfig().getResolution()[0] + "x"
 								+ game.getConfig().getResolution()[1];
-						if (!resolution.equals(currentMenuManager.getButtons().get(0).getOption()) && !game.getConfig().isFullscreen()) {
+						if (!resolution.equals(currentMenuManager.getButtons().get(0).getOption().getText()) && !game.getConfig().isFullscreen()) {
 							resize = true;
 							if (currentMenuManager.getButtons().get(0).getOption().getText().equals("1920x1080")) {
 								newRes[0] = 1920;

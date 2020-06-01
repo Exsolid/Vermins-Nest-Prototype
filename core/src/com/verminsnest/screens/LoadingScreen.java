@@ -6,6 +6,7 @@ import com.verminsnest.core.VerminsNest;
 import com.verminsnest.core.singletons.LoadingModules;
 import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.misc.gui.FontText;
+import com.verminsnest.world.management.FloorManager;
 
 public class LoadingScreen implements Screen{
 	
@@ -25,6 +26,8 @@ public class LoadingScreen implements Screen{
 	
 	@Override
 	public void show() {
+		game.getCamera().position.set(game.getConfig().getResolution()[0] / 2, game.getConfig().getResolution()[1] / 2,
+				0);
 		loadingText = new FontText("...",65, false);
 		loadingText.setMidOfBounds(new int[]{(int) game.getCamera().position.x-RuntimeData.getInstance().getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png").getWidth()/2,(int) game.getCamera().position.y-RuntimeData.getInstance().getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png").getHeight()/2}, new int[]{RuntimeData.getInstance().getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png").getWidth(), RuntimeData.getInstance().getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png").getHeight()});
 	}
@@ -55,6 +58,7 @@ public class LoadingScreen implements Screen{
 			switch (nextScreenID) {
 			case GAMEMANAGER:
 				RuntimeData.getInstance().initEnemies();
+				FloorManager.getInstane().setEntityUpdate(true);
 				game.showScreen(VerminsNest.GAMEPLAY);
 				this.dispose();
 				break;

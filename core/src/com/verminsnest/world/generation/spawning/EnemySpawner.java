@@ -1,12 +1,12 @@
-package com.verminsnest.generation.spawning;
+package com.verminsnest.world.generation.spawning;
 
 import java.util.Random;
 
 import com.verminsnest.core.Indentifiers;
 import com.verminsnest.core.LoadingModule;
 import com.verminsnest.core.singletons.RuntimeData;
-import com.verminsnest.generation.map.MapData;
-import com.verminsnest.generation.map.Room;
+import com.verminsnest.world.generation.map.MapData;
+import com.verminsnest.world.generation.map.Room;
 
 public class EnemySpawner extends LoadingModule{
 	private MapData mapData;

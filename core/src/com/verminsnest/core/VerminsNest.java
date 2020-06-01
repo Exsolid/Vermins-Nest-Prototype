@@ -37,7 +37,7 @@ public class VerminsNest extends Game {
 	public static final int CREDITSMENU = 1;
 	public static final int SETTINGSMENU = 2;
 	public static final int GAMEPLAY = 3;
-	public static final int LOADGAME = 5;
+	public static final int LOADGAME = 4;
 	
 	@Override
 	public void create () {
@@ -70,7 +70,6 @@ public class VerminsNest extends Game {
 		Gdx.graphics.setCursor(cursor);
 		pixmap.dispose();
 		
-		RuntimeData.getInstance().loadTextures(Indentifiers.ASSETMANAGER_MENU);
 		this.showScreen(MAINMENU);
 	}
 	
@@ -138,9 +137,6 @@ public class VerminsNest extends Game {
 			if(!gameMan.isDisposed()){
 				gameMan.dispose();
 			}
-			if(RuntimeData.getInstance().areAssetsLoaded(Indentifiers.ASSETMANAGER_MENU)){
-				RuntimeData.getInstance().loadTextures(Indentifiers.ASSETMANAGER_MENU);
-			}
 			if(mainMenu.isDisposed()){
 				initMenus();
 			}
@@ -165,7 +161,9 @@ public class VerminsNest extends Game {
 			this.setScreen(creditsMenu);
 			break;
 		case LOADGAME:
-			disposeMenus();
+			if(this.getScreen() instanceof MainMenu) {
+				disposeMenus();
+			}
 			loadingScreen = new LoadingScreen(this, LoadingScreen.GAMEMANAGER);
 			this.setScreen(loadingScreen);
 			break;
@@ -173,7 +171,6 @@ public class VerminsNest extends Game {
 			gameMan.init();
 			this.setScreen(gameMan);
 			
-			RuntimeData.getInstance().disposeTextures(Indentifiers.ASSETMANAGER_MENU);
 			loadingScreen = null;
 			r.gc();
 			break;

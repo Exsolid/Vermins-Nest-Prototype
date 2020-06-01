@@ -30,7 +30,6 @@ public class Indentifiers {
 	public static final int ENEMY_TINKER = 0;
 	
 	//Assetmanager stuff
-	public final static int ASSETMANAGER_MENU = 0;
 	public final static int ASSETMANAGER_GAMEPLAY = 1;
 	public final static int ASSETMANAGER_INIT = 8;
 	

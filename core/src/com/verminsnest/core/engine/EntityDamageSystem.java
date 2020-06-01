@@ -45,9 +45,21 @@ public class EntityDamageSystem {
 					Random rand = new Random();
 					for(int i = 0; i < rand.nextInt(4)+3; i++){
 						new Gore(new int[]{hit.getPos()[0], hit.getPos()[1]});
-					} 
-					RuntimeData.getInstance().getCharacter().updateKills();
-					RuntimeData.getInstance().removeEntity(hit);       
+					}
+					
+					boolean isLast = true;
+					for(Entity ent: RuntimeData.getInstance().getEntities()) {
+						if(ent instanceof Enemy && !ent.equals(hit)) {
+							isLast = false;
+							break;
+						}
+					}
+					if(isLast) {
+						RuntimeData.getInstance().setLastDeath(hit);
+					}else {
+						RuntimeData.getInstance().getCharacter().updateKills();
+						RuntimeData.getInstance().removeEntity(hit);  
+					}     
 				}
 			}
 			if(hit instanceof Playable && !source.isFriendly()){
