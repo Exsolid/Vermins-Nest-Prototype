@@ -1,9 +1,13 @@
 package com.verminsnest.core.engine;
 
 
+import java.util.ArrayList;
+
+import com.verminsnest.core.Indentifiers;
 import com.verminsnest.core.singletons.RuntimeData;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.projectiles.Projectile;
+import com.verminsnest.world.generation.map.AStarMapNode;
 import com.verminsnest.world.generation.map.MapCell;
 
 public class EntityMovementSystem {
@@ -11,18 +15,25 @@ public class EntityMovementSystem {
 	private MapCell[][] map;
 	private EntityDamageSystem entDmgSys;
 	
+	private ArrayList<AStarMapNode> openNodes;
+	private ArrayList<AStarMapNode> closedNodes;
+	private AStarMapNode[][] nodeMap;
+	
 	public EntityMovementSystem(MapCell[][] map){
 		this.map = map;
 		entDmgSys = new EntityDamageSystem();
+		this.openNodes = new ArrayList<>();
+		this.closedNodes = new ArrayList<>();
 	}
 	
-	public boolean moveTop(Entity entity, int speed){
+	public boolean moveTop(Entity entity, int speed, int[] goalPos){
 		int mapPosXStart = (int) Math.floor(entity.getPos()[0]/128);
 		int mapPosXEnd = (int) Math.floor((entity.getPos()[0]+entity.getSize()[0])/128);
 		for(int i = 1; i<=speed; i++){
 			int refMapPosYEnd = (int) Math.floor((entity.getPos()[1]+entity.getSize()[1]+1)/128);
 			if(!map[mapPosXStart][refMapPosYEnd].isWalkable() || !map[mapPosXEnd][refMapPosYEnd].isWalkable()){
-				return false;
+				if(goalPos == null)return false;
+				else return searchAlternativ(entity, goalPos, speed);
 			}else{
 				int y = entity.getPos()[1]+entity.getSize()[1]+1;
 				for(Entity refEnt: RuntimeData.getInstance().getEntities()){
@@ -44,13 +55,14 @@ public class EntityMovementSystem {
 		return true;
 	}
 	
-	public boolean moveDown(Entity entity, int speed){
+	public boolean moveDown(Entity entity, int speed, int[] goalPos){
 		int mapPosXStart = (int) Math.floor(entity.getPos()[0]/128);
 		int mapPosXEnd = (int) Math.floor((entity.getPos()[0]+entity.getSize()[0])/128);
 		for(int i = 1; i<=speed; i++){
 			int refMapPosYStart = (int) Math.floor((entity.getPos()[1]-i)/128);
 			if(!map[mapPosXStart][refMapPosYStart].isWalkable() || !map[mapPosXEnd][refMapPosYStart].isWalkable()){
-				return false;
+				if(goalPos == null)return false;
+				else return searchAlternativ(entity, goalPos, speed);
 			}else{
 				int y = entity.getPos()[1]-1;
 				for(Entity refEnt: RuntimeData.getInstance().getEntities()){
@@ -72,13 +84,14 @@ public class EntityMovementSystem {
 		return true;
 	}
 	
-	public boolean moveLeft(Entity entity, int speed){
+	public boolean moveLeft(Entity entity, int speed, int[] goalPos){
 		int mapPosYStart = (int) Math.floor(entity.getPos()[1]/128);
 		int mapPosYEnd = (int) Math.floor((entity.getPos()[1]+entity.getSize()[1])/128);
 		for(int i = 1; i<=speed; i++){
 			int refMapPosXStart = (int) Math.floor((entity.getPos()[0]-i)/128);
 			if(!map[refMapPosXStart][mapPosYStart].isWalkable() || !map[refMapPosXStart][mapPosYEnd].isWalkable()){
-				return false;
+				if(goalPos == null)return false;
+				else return searchAlternativ(entity, goalPos, speed);
 			}else{
 				int x = entity.getPos()[0]-1;
 				for(Entity refEnt: RuntimeData.getInstance().getEntities()){
@@ -100,13 +113,14 @@ public class EntityMovementSystem {
 		return true;
 	}
 	
-	public boolean moveRight(Entity entity, int speed){
+	public boolean moveRight(Entity entity, int speed, int[] goalPos){
 		int mapPosYStart = (int) Math.floor(entity.getPos()[1]/128);
 		int mapPosYEnd = (int) Math.floor((entity.getPos()[1]+entity.getSize()[1])/128);
 		for(int i = 1; i<=speed; i++){
 			int refMapPosXEnd = (int) Math.floor((entity.getPos()[0]+entity.getSize()[0]+i)/128);
 			if(!map[refMapPosXEnd][mapPosYStart].isWalkable() || !map[refMapPosXEnd][mapPosYEnd].isWalkable()){
-				return false;
+				if(goalPos == null)return false;
+				else return searchAlternativ(entity, goalPos, speed);
 			}else{
 				int x = entity.getPos()[0]+entity.getSize()[0]+1;
 				for(Entity refEnt: RuntimeData.getInstance().getEntities()){
@@ -186,5 +200,223 @@ public class EntityMovementSystem {
 			}
 		}
 		return true;
+	}
+	
+	private int findPathing(Entity source, int[] goalPos) {
+		//Positions and AStar mapping
+		goalPos[0] = (goalPos[0]-goalPos[0]%128)/128;
+		goalPos[1] = (goalPos[1]-goalPos[1]%128)/128;
+		
+		int[] sourcePos = new int[] {(source.getPos()[0]-source.getPos()[0]%128)/128,(source.getPos()[1]-source.getPos()[1]%128)/128};
+		nodeMap = RuntimeData.getInstance().getMapData().getAStarMap(goalPos, sourcePos);
+		
+		int[] currentPos = new int[] {sourcePos[0]-nodeMap[0][0].getMapPos()[0],sourcePos[1]-nodeMap[0][0].getMapPos()[1]};		
+		openNodes.add(nodeMap[currentPos[0]][currentPos[1]]);
+		
+		//Calculate the best direction
+		int defDir = calculatePathing();
+		int[] currentShiftedPos = null;
+		
+		//If the entity is not on a single tile, check both tiles
+		switch(defDir) {
+		case Indentifiers.DIRECTION_EAST:
+		case Indentifiers.DIRECTION_WEST:
+			sourcePos = new int[] {(source.getPos()[0]-source.getPos()[0]%128)/128,(source.getPos()[1]+source.getSize()[1]-((source.getPos()[1]+source.getSize()[1])%128))/128};
+			currentShiftedPos = new int[] {sourcePos[0]-nodeMap[0][0].getMapPos()[0],sourcePos[1]-nodeMap[0][0].getMapPos()[1]};
+			if(currentShiftedPos == currentPos)return defDir;
+			else {
+				nodeMap = RuntimeData.getInstance().getMapData().getAStarMap(goalPos, sourcePos);
+				currentShiftedPos = new int[] {sourcePos[0]-nodeMap[0][0].getMapPos()[0],sourcePos[1]-nodeMap[0][0].getMapPos()[1]};
+				openNodes.add(nodeMap[currentShiftedPos[0]][currentShiftedPos[1]]);
+
+				return calculatePathing();
+			}
+		case Indentifiers.DIRECTION_NORTH:
+		case Indentifiers.DIRECTION_SOUTH:
+			sourcePos = new int[] {(source.getPos()[0]+source.getSize()[0]-((source.getPos()[0]+source.getSize()[0])%128))/128,(source.getPos()[1]-source.getPos()[1]%128)/128};
+			currentShiftedPos = new int[] {sourcePos[0]-nodeMap[0][0].getMapPos()[0],sourcePos[1]-nodeMap[0][0].getMapPos()[1]};
+			if(currentShiftedPos == currentPos)return defDir;
+			else {
+				nodeMap = RuntimeData.getInstance().getMapData().getAStarMap(goalPos, sourcePos);
+				currentShiftedPos = new int[] {sourcePos[0]-nodeMap[0][0].getMapPos()[0],sourcePos[1]-nodeMap[0][0].getMapPos()[1]};
+				openNodes.add(nodeMap[currentShiftedPos[0]][currentShiftedPos[1]]);
+
+				return calculatePathing();
+			}
+		default:
+			//If no solution was found, return -1 (closed room)
+			return -1;
+		}
+	}
+	
+	private int calculatePathing() {
+		MapCell[][] map = RuntimeData.getInstance().getMapData().getData();
+		while(!openNodes.isEmpty()) {
+			//Find best choice
+			AStarMapNode best = null;
+			for(AStarMapNode ref: openNodes) {
+				if(best == null || best.getWeight() > ref.getWeight() || best.getWeight() == ref.getWeight() && best.getDistSource() > ref.getDistSource()) {
+					best = ref;
+				}
+			}
+			//Return source direction if the goal was found
+			if(best.getDistGoal() == 0) {
+				openNodes.clear();
+				closedNodes.clear();
+				return best.getSourceDir();
+			}
+			openNodes.remove(best);
+			closedNodes.add(best);
+			//Evaluate neighbors if not checked before and is walkable
+			//West(Left)
+			if(best.getNodePos()[0]-1 >= 0) {
+				AStarMapNode neighbor = nodeMap[best.getNodePos()[0]-1][best.getNodePos()[1]];
+				if(!closedNodes.contains(neighbor) && map[neighbor.getMapPos()[0]][neighbor.getMapPos()[1]].isWalkable()) {
+					//Set new 'walked' distance
+					int refDist = best.getDistSource() +1;
+					
+					if(openNodes.contains(neighbor)) {				
+						if(refDist > neighbor.getWeight()) {
+							//Set new data
+							neighbor.setSourceDist(refDist);
+							if(best.getSourceDir() == -1) {
+								//Set source direction to return
+								neighbor.setSourceDir(Indentifiers.DIRECTION_WEST);
+							}else {
+								neighbor.setSourceDir(best.getSourceDir());
+							}
+						}
+					}else {
+						//Add new data
+						neighbor.setSourceDist(refDist);
+						if(best.getSourceDir() == -1) {
+							//Set source direction to return
+							neighbor.setSourceDir(Indentifiers.DIRECTION_WEST);
+						}else {
+							neighbor.setSourceDir(best.getSourceDir());
+						}
+						openNodes.add(neighbor);
+					}
+				}
+			}
+			//East(Right)
+			if(best.getNodePos()[0]+1 < nodeMap.length) {
+				AStarMapNode neighbor = nodeMap[best.getNodePos()[0]+1][best.getNodePos()[1]];
+				if(!closedNodes.contains(neighbor) && map[neighbor.getMapPos()[0]][neighbor.getMapPos()[1]].isWalkable()) {
+					//Set new 'walked' distance
+					int refDist = best.getDistSource() +1;
+
+					if(openNodes.contains(neighbor)) {				
+						if(refDist > neighbor.getWeight()) {
+							//Set new data
+							neighbor.setSourceDist(refDist);
+							if(best.getSourceDir() == -1) {
+								//Set source direction to return
+								neighbor.setSourceDir(Indentifiers.DIRECTION_EAST);
+							}else {
+								neighbor.setSourceDir(best.getSourceDir());
+							}
+						}
+					}else {
+						//Add new data
+						neighbor.setSourceDist(refDist);
+						if(best.getSourceDir() == -1) {
+							//Set source direction to return
+							neighbor.setSourceDir(Indentifiers.DIRECTION_EAST);
+						}else {
+							neighbor.setSourceDir(best.getSourceDir());
+						}
+						openNodes.add(neighbor);
+					}
+				}
+			}
+			//North(Top)
+			if(best.getNodePos()[1]+1 < nodeMap[0].length) {
+				AStarMapNode neighbor = nodeMap[best.getNodePos()[0]][best.getNodePos()[1]+1];
+				if(!closedNodes.contains(neighbor) && map[neighbor.getMapPos()[0]][neighbor.getMapPos()[1]].isWalkable()) {
+					//Set new 'walked' distance
+					int refDist = best.getDistSource() +1;
+					
+					if(openNodes.contains(neighbor)) {				
+						if(refDist > neighbor.getWeight()) {
+							//Set new data
+							neighbor.setSourceDist(refDist);
+							if(best.getSourceDir() == -1) {
+								//Set source direction to return
+								neighbor.setSourceDir(Indentifiers.DIRECTION_NORTH);
+							}else {
+								neighbor.setSourceDir(best.getSourceDir());
+							}
+						}
+					}else {
+						//Add new data
+						neighbor.setSourceDist(refDist);
+						if(best.getSourceDir() == -1) {
+							//Set source direction to return
+							neighbor.setSourceDir(Indentifiers.DIRECTION_NORTH);
+						}else {
+							neighbor.setSourceDir(best.getSourceDir());
+						}
+						openNodes.add(neighbor);
+					}
+				}
+			}
+			//South(Down)
+			if(best.getNodePos()[1]-1 >= 0) {
+				AStarMapNode neighbor = nodeMap[best.getNodePos()[0]][best.getNodePos()[1]-1];
+				if(!closedNodes.contains(neighbor) && map[neighbor.getMapPos()[0]][neighbor.getMapPos()[1]].isWalkable()) {
+					//Set new 'walked' distance
+					int refDist = best.getDistSource() +1;
+					
+					if(openNodes.contains(neighbor)) {				
+						if(refDist > neighbor.getWeight()) {
+							//Set new data
+							neighbor.setSourceDist(refDist);
+							if(best.getSourceDir() == -1) {
+								//Set source direction to return
+								neighbor.setSourceDir(Indentifiers.DIRECTION_SOUTH);
+							}else {
+								neighbor.setSourceDir(best.getSourceDir());
+							}
+						}
+					}else {
+						//Add new data
+						neighbor.setSourceDist(refDist);
+						if(best.getSourceDir() == -1) {
+							//Set source direction to return
+							neighbor.setSourceDir(Indentifiers.DIRECTION_SOUTH);
+						}else {
+							neighbor.setSourceDir(best.getSourceDir());
+						}
+						openNodes.add(neighbor);
+					}
+				}
+			}
+		}
+		//If no open nodes  (== no possible way) found return -1 and clear data
+		openNodes.clear();
+		closedNodes.clear();
+		return -1;
+	}
+	
+	private boolean searchAlternativ(Entity source, int[] goalPos, int speed) {
+		
+		switch(findPathing(source,goalPos)) {
+		case -1:
+		default:
+			return false;
+		case Indentifiers.DIRECTION_EAST:
+			source.setCurrentAni(Indentifiers.STATE_WALK_EAST);
+			return this.moveRight(source, speed, null);
+		case Indentifiers.DIRECTION_WEST:
+			source.setCurrentAni(Indentifiers.STATE_WALK_WEST);
+			return this.moveLeft(source, speed, null);
+		case Indentifiers.DIRECTION_NORTH:
+			source.setCurrentAni(Indentifiers.STATE_WALK_NORTH);
+			return this.moveTop(source, speed, null);
+		case Indentifiers.DIRECTION_SOUTH:
+			source.setCurrentAni(Indentifiers.STATE_WALK_SOUTH);
+			return this.moveDown(source, speed, null);
+		}
 	}
 }

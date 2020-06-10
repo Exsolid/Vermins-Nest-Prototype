@@ -104,16 +104,16 @@ public abstract class Projectile extends Entity{
 
 	public void update(float stateTime){
 		if(state == Indentifiers.STATE_FLYING){
-			if(direction == Indentifiers.DIRECTION_EAST && !RuntimeData.getInstance().getMovmentSystem().moveRight(this,speed)){
+			if(direction == Indentifiers.DIRECTION_EAST && !RuntimeData.getInstance().getMovmentSystem().moveRight(this,speed, null)){
 				setCurrentAni(Indentifiers.STATE_HIT);
 			}
-			else if(direction == Indentifiers.DIRECTION_WEST && !RuntimeData.getInstance().getMovmentSystem().moveLeft(this,speed)){
+			else if(direction == Indentifiers.DIRECTION_WEST && !RuntimeData.getInstance().getMovmentSystem().moveLeft(this,speed, null)){
 				setCurrentAni(Indentifiers.STATE_HIT);
 			}
-			else if(direction == Indentifiers.DIRECTION_NORTH && !RuntimeData.getInstance().getMovmentSystem().moveTop(this,speed)){
+			else if(direction == Indentifiers.DIRECTION_NORTH && !RuntimeData.getInstance().getMovmentSystem().moveTop(this,speed, null)){
 				setCurrentAni(Indentifiers.STATE_HIT);
 			}
-			else if(direction == Indentifiers.DIRECTION_SOUTH && !RuntimeData.getInstance().getMovmentSystem().moveDown(this,speed)){
+			else if(direction == Indentifiers.DIRECTION_SOUTH && !RuntimeData.getInstance().getMovmentSystem().moveDown(this,speed, null)){
 				setCurrentAni(Indentifiers.STATE_HIT);
 			}
 		}else if(state == Indentifiers.STATE_HIT){

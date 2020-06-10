@@ -111,7 +111,7 @@ public abstract class Playable extends Entity {
 					currentKey = '-';
 				}
 			}
-			RuntimeData.getInstance().getMovmentSystem().moveTop(this, this.getSpeed());
+			RuntimeData.getInstance().getMovmentSystem().moveTop(this, this.getSpeed(), null);
 			this.setCurrentAni(Indentifiers.STATE_WALK_NORTH);
 			break;
 		case 'D':
@@ -123,7 +123,7 @@ public abstract class Playable extends Entity {
 					currentKey = '-';
 				}
 			}
-			RuntimeData.getInstance().getMovmentSystem().moveRight(this, this.getSpeed());
+			RuntimeData.getInstance().getMovmentSystem().moveRight(this, this.getSpeed(), null);
 			this.setCurrentAni(Indentifiers.STATE_WALK_EAST);
 			break;
 		case 'S':
@@ -135,7 +135,7 @@ public abstract class Playable extends Entity {
 					currentKey = '-';
 				}
 			}
-			RuntimeData.getInstance().getMovmentSystem().moveDown(this, this.getSpeed());
+			RuntimeData.getInstance().getMovmentSystem().moveDown(this, this.getSpeed(), null);
 			this.setCurrentAni(Indentifiers.STATE_WALK_SOUTH);
 			break;
 		case 'A':
@@ -147,7 +147,7 @@ public abstract class Playable extends Entity {
 					currentKey = '-';
 				}
 			}
-			RuntimeData.getInstance().getMovmentSystem().moveLeft(this, this.getSpeed());
+			RuntimeData.getInstance().getMovmentSystem().moveLeft(this, this.getSpeed(), null);
 			this.setCurrentAni(Indentifiers.STATE_WALK_WEST);
 			break;
 		case '-':

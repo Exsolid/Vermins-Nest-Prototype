@@ -31,37 +31,37 @@ public abstract class Slash extends Projectile {
 		switch(direction){
 		case Indentifiers.DIRECTION_NORTH:
 			if(invert){
-				RuntimeData.getInstance().getMovmentSystem().moveLeft(this, this.speed);
+				RuntimeData.getInstance().getMovmentSystem().moveLeft(this, this.speed, null);
 				rotation += rotationSpeed;
 			}else{
-				RuntimeData.getInstance().getMovmentSystem().moveRight(this, this.speed);
+				RuntimeData.getInstance().getMovmentSystem().moveRight(this, this.speed, null);
 				rotation -= rotationSpeed;
 			}
 			break;
 		case Indentifiers.DIRECTION_EAST:
 			if(invert){
-				RuntimeData.getInstance().getMovmentSystem().moveTop(this, this.speed);
+				RuntimeData.getInstance().getMovmentSystem().moveTop(this, this.speed, null);
 				rotation += rotationSpeed;
 			}else{
-				RuntimeData.getInstance().getMovmentSystem().moveDown(this, this.speed);
+				RuntimeData.getInstance().getMovmentSystem().moveDown(this, this.speed, null);
 				rotation -= rotationSpeed;
 			}
 			break;
 		case Indentifiers.DIRECTION_SOUTH:
 			if(invert){
-				RuntimeData.getInstance().getMovmentSystem().moveRight(this, this.speed);
+				RuntimeData.getInstance().getMovmentSystem().moveRight(this, this.speed, null);
 				rotation += rotationSpeed;
 			}else{
 				rotation -= rotationSpeed;
-				RuntimeData.getInstance().getMovmentSystem().moveLeft(this, this.speed);
+				RuntimeData.getInstance().getMovmentSystem().moveLeft(this, this.speed, null);
 			}
 			break;
 		case Indentifiers.DIRECTION_WEST:
 			if(invert){
-				RuntimeData.getInstance().getMovmentSystem().moveDown(this, this.speed);
+				RuntimeData.getInstance().getMovmentSystem().moveDown(this, this.speed, null);
 				rotation += rotationSpeed;
 			}else{
-				RuntimeData.getInstance().getMovmentSystem().moveTop(this, this.speed);
+				RuntimeData.getInstance().getMovmentSystem().moveTop(this, this.speed, null);
 				rotation -= rotationSpeed;
 			}
 			break;
