@@ -39,6 +39,8 @@ public abstract class Playable extends Entity {
 	private Vector2 topRight;
 	private Vector2 bottomRight;
 	
+	private int[] sizeModifier;
+	
 	public Playable(int textureID,int[] position, int speed, int dmg, int agi, int health){
 		super(position,textureID);
 		setSpeed(speed);
@@ -61,13 +63,25 @@ public abstract class Playable extends Entity {
 		this.setCurrentAni(Indentifiers.STATE_IDLE);
 		this.setSize(currentAni.getKeyFrame(0).getRegionWidth(),currentAni.getKeyFrame(0).getRegionHeight());
 		
-		topLeft = new Vector2(RuntimeData.getInstance().getGame().getConfig().getResolution()[0]/2,(RuntimeData.getInstance().getGame().getConfig().getResolution()[1]+25)/2).nor();
+		switch(RuntimeData.getInstance().getGame().getConfig().getResolution()[0]){
+		case 1920:
+			sizeModifier = new int[]{1,1};
+			break;
+		case 1280:
+			sizeModifier = new int[]{1280/1920,720/1080};
+			break;
+		case 852:
+			sizeModifier = new int[]{852/1920,420/1080};
+			break;
+		}
+		
+		topLeft = new Vector2((RuntimeData.getInstance().getGame().getConfig().getResolution()[0]+size[0]*sizeModifier[0])/2,(RuntimeData.getInstance().getGame().getConfig().getResolution()[1]+size[1]*sizeModifier[1])/2).nor();
 		topLeft.setAngle(135);
-		bottomLeft = new Vector2(RuntimeData.getInstance().getGame().getConfig().getResolution()[0]/2,(RuntimeData.getInstance().getGame().getConfig().getResolution()[1]+25)/2).nor();
+		bottomLeft = new Vector2((RuntimeData.getInstance().getGame().getConfig().getResolution()[0]+size[0]*sizeModifier[0])/2,(RuntimeData.getInstance().getGame().getConfig().getResolution()[1]+size[1]*sizeModifier[1])/2).nor();
 		bottomLeft.setAngle(-135);
-		topRight = new Vector2(RuntimeData.getInstance().getGame().getConfig().getResolution()[0]/2,(RuntimeData.getInstance().getGame().getConfig().getResolution()[1]+25)/2).nor();
+		topRight = new Vector2((RuntimeData.getInstance().getGame().getConfig().getResolution()[0]+size[0]*sizeModifier[0])/2,(RuntimeData.getInstance().getGame().getConfig().getResolution()[1]+size[1]*sizeModifier[1])/2).nor();
 		topRight.setAngle(45);
-		bottomRight = new Vector2(RuntimeData.getInstance().getGame().getConfig().getResolution()[0]/2,(RuntimeData.getInstance().getGame().getConfig().getResolution()[1]+25)/2).nor();
+		bottomRight = new Vector2((RuntimeData.getInstance().getGame().getConfig().getResolution()[0]+size[0]*sizeModifier[0])/2,(RuntimeData.getInstance().getGame().getConfig().getResolution()[1]+size[1]*sizeModifier[1])/2).nor();
 		bottomRight.setAngle(-45);
 	}
 	
@@ -158,15 +172,15 @@ public abstract class Playable extends Entity {
 		//Attacking
 		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
 			float mouseX =RuntimeData.getInstance().getMousePosInGameWorld().x;
-			float mouseY =RuntimeData.getInstance().getMousePosInGameWorld().y;
-			Vector2 mouseVector = new Vector2(mouseX-pos[0]+size[0]/2,mouseY-pos[1]+size[1]/2).nor();
-			if(mouseVector.y - bottomLeft.y >= 0 && mouseVector.y - topLeft.y <= 0 && mouseX < pos[0]+size[0]/2){
+			float mouseY =RuntimeData.getInstance().getGame().getConfig().getResolution()[1]-RuntimeData.getInstance().getMousePosInGameWorld().y;
+			Vector2 mouseVector = new Vector2(mouseX-(RuntimeData.getInstance().getGame().getConfig().getResolution()[0]+size[0]*sizeModifier[0])/2,mouseY-(RuntimeData.getInstance().getGame().getConfig().getResolution()[1]+size[1]*sizeModifier[1])/2).nor();
+			if(mouseVector.y - bottomLeft.y >= 0 && mouseVector.y - topLeft.y <= 0 && mouseX < (RuntimeData.getInstance().getGame().getConfig().getResolution()[0]+size[0]*sizeModifier[0])/2){
 				RuntimeData.getInstance().getEntityManager().getCharacter().attack(delta, Indentifiers.DIRECTION_WEST);
-			}else if(mouseVector.y - bottomRight.y >= 0 && mouseVector.y - topRight.y <= 0&& mouseX > pos[0]+size[0]/2){
+			}else if(mouseVector.y - bottomRight.y >= 0 && mouseVector.y - topRight.y <= 0&& mouseX > (RuntimeData.getInstance().getGame().getConfig().getResolution()[0]+size[0]*sizeModifier[0])/2){
 				RuntimeData.getInstance().getEntityManager().getCharacter().attack(delta, Indentifiers.DIRECTION_EAST);
-			}if(mouseVector.x - topRight.x <= 0 && mouseVector.x - topLeft.x >= 0 && mouseY > pos[1]+size[1]/2){
+			}if(mouseVector.x - topRight.x <= 0 && mouseVector.x - topLeft.x >= 0 && mouseY > (RuntimeData.getInstance().getGame().getConfig().getResolution()[1]+size[1]*sizeModifier[1])/2){
 				RuntimeData.getInstance().getEntityManager().getCharacter().attack(delta, Indentifiers.DIRECTION_NORTH);
-			}else if(mouseVector.x - bottomRight.x <= 0 && mouseVector.x - bottomLeft.x >= 0 && mouseY < pos[1]+size[1]/2){
+			}else if(mouseVector.x - bottomRight.x <= 0 && mouseVector.x - bottomLeft.x >= 0 && mouseY < (RuntimeData.getInstance().getGame().getConfig().getResolution()[1]+size[1]*sizeModifier[1])/2){
 				RuntimeData.getInstance().getEntityManager().getCharacter().attack(delta, Indentifiers.DIRECTION_SOUTH);
 			}	
 		}

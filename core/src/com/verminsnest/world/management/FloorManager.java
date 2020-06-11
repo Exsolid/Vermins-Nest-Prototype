@@ -1,6 +1,7 @@
 package com.verminsnest.world.management;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.verminsnest.core.management.data.RuntimeData;
@@ -47,9 +48,9 @@ public class FloorManager {
 			}
 		}
 		//Level connector interaction
-		if(Gdx.input.isButtonJustPressed(Buttons.RIGHT) && levelHolePos != null
-				&& RuntimeData.getInstance().getMousePosInGameWorld().x > levelHolePos[0] && RuntimeData.getInstance().getMousePosInGameWorld().x < levelHolePos[0]+128
-				&& RuntimeData.getInstance().getMousePosInGameWorld().y > levelHolePos[1] && RuntimeData.getInstance().getMousePosInGameWorld().y < levelHolePos[1]+128) {
+		if(Gdx.input.isKeyJustPressed(Input.Keys.E) && levelHolePos != null
+				&& RuntimeData.getInstance().getGame().getCamera().position.x > levelHolePos[0] && RuntimeData.getInstance().getGame().getCamera().position.x < levelHolePos[0]+128
+				&& RuntimeData.getInstance().getGame().getCamera().position.y > levelHolePos[1] && RuntimeData.getInstance().getGame().getCamera().position.y < levelHolePos[1]+128) {
 				
 			allowEntityUpdate = false;
 			levelHolePos = null;

@@ -69,7 +69,7 @@ public class Gameplay extends GameplayOverlay{
 				gui.render(delta);
 	}
 	
-	public void manageControls(float stateTime) {
+	public void manageControls(float delta) {
 		calcToDraw();
 		
 		//Pause
@@ -111,12 +111,12 @@ public class Gameplay extends GameplayOverlay{
 	}
 
 	@Override
-	public void update(float stateTime) {
-		RuntimeData.getInstance().getEntityManager().updateEntities(stateTime);
+	public void update(float delta) {
+		RuntimeData.getInstance().getEntityManager().updateEntities(delta);
 
 		if(FloorManager.getInstane().allowEntityUpdate()) {
-			gui.update(stateTime);
-			manageControls(stateTime);
+			gui.update(delta);
+			manageControls(delta);
 		}
 	}
 }

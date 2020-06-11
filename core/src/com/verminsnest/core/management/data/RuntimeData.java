@@ -69,7 +69,7 @@ public class RuntimeData {
 	}
 	
 	public Vector3 getMousePosInGameWorld() {
-		 return game.getCamera().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+		 return new Vector3(Gdx.input.getX(), Gdx.input.getY(),0);
 	}
 	
 	public VerminsNest getGame(){
