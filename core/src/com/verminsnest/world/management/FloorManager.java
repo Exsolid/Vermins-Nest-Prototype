@@ -2,7 +2,6 @@ package com.verminsnest.world.management;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.enemies.Enemy;

@@ -56,7 +56,6 @@ public class EntityManager {
 				}else if(ent instanceof Gore){
 					gore.add(ent);
 				}else{
-				
 					if(ent.getState() != Indentifiers.STATE_LEFTOVER){
 						entities.add(ent);
 					}else{
@@ -238,5 +237,10 @@ public class EntityManager {
 		entities.add(character);
 
 		RuntimeData.getInstance().getGame().showScreen(VerminsNest.LOADGAME);
+	}
+	
+	public void sortToLeftover(Entity leftOver){
+		leftovers.add(leftOver);
+		entities.remove(leftOver);
 	}
 }
