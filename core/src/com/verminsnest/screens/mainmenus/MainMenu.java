@@ -35,6 +35,8 @@ public class MainMenu extends VNScreen {
 		while(bManager.getIndex() != 0){
 			bManager.prev();
 		}
+		movementBlocked = true;
+		blockTime = blockStartTime = System.currentTimeMillis();
 	}
 
 	@Override
