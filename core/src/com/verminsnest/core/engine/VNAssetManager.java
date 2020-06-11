@@ -2,7 +2,7 @@ package com.verminsnest.core.engine;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
-import com.verminsnest.core.Indentifiers;
+import com.verminsnest.core.management.Indentifiers;
 
 public class VNAssetManager {
 	private AssetManager assetManager;

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.verminsnest.core.VerminsNest;
-import com.verminsnest.core.singletons.RuntimeData;
+import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.misc.gui.ButtonManager;
 import com.verminsnest.misc.gui.FontText;
 import com.verminsnest.screens.VNScreen;
@@ -19,8 +19,8 @@ public class CreditsMenu extends VNScreen {
 	
 	private ButtonManager backButton;
 
-	public CreditsMenu(VerminsNest game) {
-		super(game);
+	public CreditsMenu() {
+		super();
 	}
 
 	@Override
@@ -30,24 +30,24 @@ public class CreditsMenu extends VNScreen {
 
 	@Override
 	public void render(float delta) {
-		game.getBatch().begin();
-		game.getBatch().draw(RuntimeData.getInstance().getAsset("textures/general/Background.png"),
+		RuntimeData.getInstance().getGame().getBatch().begin();
+		RuntimeData.getInstance().getGame().getBatch().draw(RuntimeData.getInstance().getAsset("textures/general/Background.png"),
 				Gdx.graphics.getWidth() / 2
 				- RuntimeData.getInstance().getAsset("textures/general/Background.png").getWidth() / 2,
 		Gdx.graphics.getHeight() / 2
 				- RuntimeData.getInstance().getAsset("textures/general/Background.png").getHeight() / 2);
-		game.getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png"),
+		RuntimeData.getInstance().getGame().getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png"),
 				scrollPos[0], scrollPos[1]);
-		backButton.draw(game.getBatch());
-		title.draw(game.getBatch());
-		credits.draw(game.getBatch());
-		game.getBatch().end();
+		backButton.draw(RuntimeData.getInstance().getGame().getBatch());
+		title.draw(RuntimeData.getInstance().getGame().getBatch());
+		credits.draw(RuntimeData.getInstance().getGame().getBatch());
+		RuntimeData.getInstance().getGame().getBatch().end();
 		manageControls();
 	}
 
 	public void manageControls() {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-			game.showScreen(VerminsNest.MAINMENU);
+			RuntimeData.getInstance().getGame().showScreen(VerminsNest.MAINMENU);
 		}
 	}
 
@@ -88,9 +88,9 @@ public class CreditsMenu extends VNScreen {
 	@Override
 	public void init() {
 		// Misc
-		scrollPos = new int[] { game.getConfig().getResolution()[0] / 2
+		scrollPos = new int[] { RuntimeData.getInstance().getGame().getConfig().getResolution()[0] / 2
 				- RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getWidth() / 2,
-				game.getConfig().getResolution()[1] / 2 - RuntimeData.getInstance()
+				RuntimeData.getInstance().getGame().getConfig().getResolution()[1] / 2 - RuntimeData.getInstance()
 						.getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getHeight() / 2 };
 
 		ArrayList<ArrayList<String>> buttonList = new ArrayList<>();
@@ -105,7 +105,7 @@ public class CreditsMenu extends VNScreen {
 
 		// Text
 		title = new FontText("MainMenu_Credits", 100, true);
-		credits = new FontText(game.getConfig().getMessage("CreditsMenu_Credits"), 35, false);
+		credits = new FontText(RuntimeData.getInstance().getGame().getConfig().getMessage("CreditsMenu_Credits"), 35, false);
 		title.setMidOfBounds(new int[] { scrollPos[0], (int) (scrollPos[1] * 3.5) }, new int[] {
 				RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getWidth(),
 				RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getHeight() });

@@ -3,8 +3,8 @@ package com.verminsnest.entities;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.verminsnest.core.Indentifiers;
-import com.verminsnest.core.singletons.RuntimeData;
+import com.verminsnest.core.management.Indentifiers;
+import com.verminsnest.core.management.data.RuntimeData;
 
 public abstract class Entity {
 	protected int textureID = -1;
@@ -17,22 +17,23 @@ public abstract class Entity {
 	protected boolean isObstacle;
 	protected int state;
 	protected float rotation;
-	
+	protected float internalStateTime;
 	public Entity(int[] pos, int textureID){
 		if(textureID != -1){
 			RuntimeData.getInstance().loadTextures(textureID);
 		}
-		RuntimeData.getInstance().addEntity(this);
+		RuntimeData.getInstance().getEntityManager().addEntity(this);
 		this.textureID = textureID;
 		this.pos = pos;
 		isObstacle = true;
 		this.setId(this.toString());
 		rotation = 0;
+		internalStateTime = 0;
 	}
 	
 	public abstract void init();
 	public abstract void setCurrentAni(int animationKey);
-	public abstract void update(float stateTime);
+	public abstract void update(float delta);
 	
 	public int[] getPos(){
 		return pos;
@@ -62,8 +63,8 @@ public abstract class Entity {
 		return shadow;
 	}
 	
-	public TextureRegion getCurrentFrame(float stateTime) {
-		return currentAni.getKeyFrame(stateTime, true);
+	public TextureRegion getCurrentFrame(float delta) {
+		return currentAni.getKeyFrame(internalStateTime, true);
 	}
 	
 	public void dispose(){

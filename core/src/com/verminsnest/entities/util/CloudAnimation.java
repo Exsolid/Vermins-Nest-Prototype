@@ -4,15 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.verminsnest.core.singletons.RuntimeData;
+import com.verminsnest.core.management.data.RuntimeData;
 
 public class CloudAnimation extends UtilEntity{
-
-	private float internalStateTime;
 	public CloudAnimation(int[] pos) {
 		//Textures are loaded initially
 		super(pos, -1);
-		internalStateTime = 0;
 		this.setSize(128, 128);
 		isObstacle = false;
 	}
@@ -38,7 +35,7 @@ public class CloudAnimation extends UtilEntity{
 	public void update(float stateTime) {
 		internalStateTime += Gdx.graphics.getDeltaTime();
 		if(currentAni.isAnimationFinished(internalStateTime)){
-			RuntimeData.getInstance().removeEntity(this);
+			RuntimeData.getInstance().getEntityManager().removeEntity(this);
 		}
 	}
 	

@@ -1,33 +1,21 @@
-package com.verminsnest.core.singletons;
+package com.verminsnest.core.management.data;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector3;
-import com.verminsnest.config.Configurator;
-import com.verminsnest.core.Indentifiers;
 import com.verminsnest.core.VerminsNest;
-import com.verminsnest.core.engine.EntityMovementSystem;
-import com.verminsnest.core.engine.VNAssetManager;
+import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.Gore;
 import com.verminsnest.entities.eggs.Egg;
 import com.verminsnest.entities.enemies.Tinker;
 import com.verminsnest.entities.playables.Playable;
 import com.verminsnest.entities.projectiles.Projectile;
-import com.verminsnest.world.generation.map.MapCell;
-import com.verminsnest.world.generation.map.MapData;
 import com.verminsnest.world.generation.map.World;
 import com.verminsnest.world.generation.spawning.EnemySpawner;
 import com.verminsnest.world.management.FloorManager;
 
-public class RuntimeData {
-
-	private static RuntimeData instance;
-	private MapData map;
-	
+public class EntityManager {
 	private ArrayList<Entity> removedEntities;
 	private ArrayList<Entity> addedEntities;
 
@@ -41,15 +29,7 @@ public class RuntimeData {
 	private Playable character;
 	private Entity lastDeath;
 	
-	private VNAssetManager assetManager;
-	private EntityMovementSystem enMoSys;
-	private VerminsNest game;
-	
-	
-	private RuntimeData(){
-	}
-	
-	public void init(VerminsNest game){
+	public EntityManager(){
 		removedEntities = new ArrayList<Entity>();
 		entities = new ArrayList<Entity>();
 		leftovers = new ArrayList<Entity>();
@@ -57,22 +37,6 @@ public class RuntimeData {
 		addedEntities = new ArrayList<Entity>();
 		gore = new ArrayList<Entity>();
 		toInitEntities= new ArrayList<>();
-		assetManager = new VNAssetManager();
-		this.game = game;
-	}
-	
-	public static RuntimeData getInstance(){
-		if(instance == null) instance = new RuntimeData();
-		return instance;
-	}
-	
-	public MapCell[][] getMap() {
-		return map.getData();
-	}
-
-	public void setMap(MapData map) {
-		this.map = map;
-		enMoSys = new EntityMovementSystem(this.map.getData());
 	}
 	
 	public void addEntity(Entity ent){
@@ -82,11 +46,6 @@ public class RuntimeData {
 	public void removeEntity(Entity ent){
 		removedEntities.add(ent);
 	}
-	
-	public MapData getMapData(){
-		return map;
-	}
-	
 	public void updateEntities(float stateTime){
 
 		FloorManager.getInstane().update();
@@ -158,11 +117,6 @@ public class RuntimeData {
 		return removedEntities;
 	}
 	
-	public void sortToLeftovers(Entity ent){
-		removedEntities.add(ent);
-		leftovers.add(ent);
-	}
-	
 	public void clearData(){
 		for(Entity ent: entities){
 			ent.dispose();
@@ -182,8 +136,7 @@ public class RuntimeData {
 		for(Entity ent: removedEntities){
 			ent.dispose();
 		}
-		map.getData()[0][0].getLayers().get(0).getTexture().dispose();
-		map = null;
+		RuntimeData.getInstance().getMapData().getData()[0][0].getLayers().get(0).getTexture().dispose();
 		addedEntities.clear();
 		removedEntities.clear();
 		
@@ -204,42 +157,6 @@ public class RuntimeData {
 		temp.addAll(entities);
 		temp.addAll(projectiles);
 		return temp;
-	}
-	
-	public EntityMovementSystem getMovmentSystem(){
-		return enMoSys;
-	}
-	
-	public Texture getAsset(String path){
-		return assetManager.getAsset(path);
-	}
-	
-	public void loadTextures(int id){
-		assetManager.loadTextures(id);
-	}
-	
-	public void disposeTextures(int id){
-		assetManager.disposeTextures(id);
-	}
-	public void dispose(){
-		assetManager.dispose();
-		instance = null;
-	}
-
-	public Playable getCharacter() {
-		return character;
-	}
-
-	public void setCharacter(Playable character) {
-		this.character = character;
-	}
-	
-	public Configurator getConfig(){
-		return game.getConfig();
-	}
-	
-	public boolean areAssetsLoaded(int id){
-		return assetManager.areAssetsLoaded(id);
 	}
 	
 	public void initEnemies(){
@@ -269,20 +186,24 @@ public class RuntimeData {
 	public ArrayList<int[]> getEnemyInits(){
 		return toInitEntities;
 	}
-	
-	public Vector3 getMousePosInGameWorld() {
-		 return game.getCamera().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+	public Playable getCharacter() {
+		return character;
+	}
+
+	public void setCharacter(Playable character) {
+		this.character = character;
 	}
 	
 	public Entity getLastDeath() {
 		return lastDeath;
 	}
+	
 	public void setLastDeath(Entity ent) {
 		lastDeath =ent;
 	}
 	
 	public void notifyNewLevel() {
-		World gen = new World(game);
+		World gen = new World(RuntimeData.getInstance().getGame());
 		gen.setData(1, 20, 20, 10,
 				(RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Mountain-Sheet.png")));
 		new EnemySpawner(1);
@@ -304,7 +225,6 @@ public class RuntimeData {
 		for(Entity ent: removedEntities){
 			ent.dispose();
 		}
-		map = null;
 		lastDeath = null;
 		
 		addedEntities.clear();
@@ -317,6 +237,6 @@ public class RuntimeData {
 		
 		entities.add(character);
 
-		game.showScreen(VerminsNest.LOADGAME);
+		RuntimeData.getInstance().getGame().showScreen(VerminsNest.LOADGAME);
 	}
 }

@@ -1,14 +1,11 @@
 package com.verminsnest.screens;
 
 import com.badlogic.gdx.Screen;
-import com.verminsnest.core.VerminsNest;
 
 public abstract class VNScreen implements Screen{
-	protected VerminsNest game;
 	protected boolean isDisposed;
 	
-	public VNScreen(VerminsNest game) {
-		this.game = game;
+	public VNScreen() {
 		isDisposed = true;
 	}
 	

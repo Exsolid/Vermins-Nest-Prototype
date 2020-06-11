@@ -1,6 +1,4 @@
-package com.verminsnest.core;
-
-import com.verminsnest.core.singletons.LoadingModules;
+package com.verminsnest.core.management;
 
 public abstract class LoadingModule{
 	private String description;

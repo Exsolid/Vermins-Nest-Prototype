@@ -2,12 +2,11 @@ package com.verminsnest.entities.enemies;
 
 import java.util.Random;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.verminsnest.core.Indentifiers;
-import com.verminsnest.core.singletons.RuntimeData;
+import com.verminsnest.core.management.Indentifiers;
+import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.playables.Playable;
 import com.verminsnest.entities.projectiles.Projectile;
@@ -37,7 +36,7 @@ public abstract class Enemy extends Entity {
 	protected boolean movedLeftOf;
 	protected boolean movedRightOf;
 	
-	protected float lastAttack;
+	protected float attackCooldown;
 	
 	private boolean isLastDeath;
 	private boolean isReadyToDig;
@@ -62,7 +61,7 @@ public abstract class Enemy extends Entity {
  
 	}
 	
-	public void update(float stateTime){
+	public void update(float delta){
 		if(isLastDeath) {
 			int[] thisMapPos = new int[2];
 			int[] playerMapPos = new int[2];
@@ -71,8 +70,8 @@ public abstract class Enemy extends Entity {
 			thisMapPos[0] = (this.getPos()[0]-this.getPos()[0]%128)/128;
 			thisMapPos[1] = (this.getPos()[1]-this.getPos()[1]%128)/128;
 			
-			playerMapPos[0] = (RuntimeData.getInstance().getCharacter().getPos()[0]-RuntimeData.getInstance().getCharacter().getPos()[0]%128)/128;
-			playerMapPos[1] = (RuntimeData.getInstance().getCharacter().getPos()[1]-RuntimeData.getInstance().getCharacter().getPos()[1]%128)/128;
+			playerMapPos[0] = (RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[0]-RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[0]%128)/128;
+			playerMapPos[1] = (RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[1]-RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[1]%128)/128;
 			
 			goalPos[0] = this.getPos()[0]-this.getPos()[0]%128+128/2-size[0]/2;
 			goalPos[1] = this.getPos()[1]-this.getPos()[1]%128+128/2-size[1]/2;
@@ -120,15 +119,17 @@ public abstract class Enemy extends Entity {
 			
 		}else {
 			updateVision();
-			updateAction(stateTime);
+			updateAction(delta);
 		}
-		timer += Gdx.graphics.getDeltaTime();
+		timer += delta;
+		attackCooldown += delta;
+		internalStateTime += delta;
 	}
 	protected abstract void chooseAvoidAction(int xDistance, int yDistance, float stateTime);
 	protected abstract void chooseAgressiveAction(int xDistance, int yDistance, float stateTime);
 	protected abstract void attack(float stateTime);
 	
-	private void updateAction(float stateTime){
+	private void updateAction(float delta){
 		if(alerted != null && alerted instanceof Playable){
 			if(timer < 3){
 				int xDis = 0;
@@ -172,7 +173,7 @@ public abstract class Enemy extends Entity {
 					}
 					break;
 				}
-				chooseAgressiveAction(xDis,yDis,stateTime);
+				chooseAgressiveAction(xDis,yDis,delta);
 			}else{
 				playerAlerted = null;
 				alerted = null;
@@ -199,7 +200,7 @@ public abstract class Enemy extends Entity {
 					yDis = alerted.getPos()[1]+alerted.getSize()[1]/2- this.pos[1]+alerted.getSize()[1]/2;
 					break;
 				}
-				chooseAvoidAction(xDis,yDis,stateTime);
+				chooseAvoidAction(xDis,yDis,delta);
 			}else{
 				if(playerAlerted != null){
 					alerted = playerAlerted;
@@ -222,7 +223,7 @@ public abstract class Enemy extends Entity {
 			int yLeft = 0; 
 			int yMax = 0; 
 			int xMax = 0; 
-			for(Entity ent: RuntimeData.getInstance().getEntities()){
+			for(Entity ent: RuntimeData.getInstance().getEntityManager().getEntities()){
 				switch(state){
 				case Indentifiers.STATE_IDLE:
 				case Indentifiers.STATE_WALK_SOUTH:
@@ -598,7 +599,7 @@ public abstract class Enemy extends Entity {
 		this.health = health;
 	}
 	
-	public void setIsLastDeath(boolean isLast) {
+	public void setToLastDeath(boolean isLast) {
 		this.isLastDeath = isLast;
 		timer = 0; 
 		alerted = null;

@@ -1,8 +1,6 @@
-package com.verminsnest.core.singletons;
+package com.verminsnest.core.management;
 
 import java.util.ArrayList;
-
-import com.verminsnest.core.LoadingModule;
 
 public class LoadingModules {
 	private static LoadingModules instance;

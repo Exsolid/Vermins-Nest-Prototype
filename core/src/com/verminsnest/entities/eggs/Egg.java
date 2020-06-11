@@ -2,12 +2,11 @@ package com.verminsnest.entities.eggs;
 
 import java.util.Random;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.verminsnest.core.Indentifiers;
-import com.verminsnest.core.singletons.RuntimeData;
+import com.verminsnest.core.management.Indentifiers;
+import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.Gore;
 import com.verminsnest.entities.enemies.Tinker;
@@ -20,8 +19,6 @@ public class Egg extends Entity {
 	
 	protected int enemyID;
 	protected boolean hatched;
-	
-	protected float internalStateTime;
 	protected float hatchTime;
 	
 	public Egg(int[] pos, int enemyID) {
@@ -38,7 +35,6 @@ public class Egg extends Entity {
 
 	@Override
 	public void init() {
-		internalStateTime = 0;
 		hatched = false;
 		
 		shadow = RuntimeData.getInstance().getAsset("textures/characters/Character-Shadow.png");
@@ -84,8 +80,8 @@ public class Egg extends Entity {
 	}
 
 	@Override
-	public void update(float stateTime) {
-		internalStateTime += Gdx.graphics.getDeltaTime();
+	public void update(float delta) {
+		internalStateTime += delta;
 		switch (state) {
 		case Indentifiers.STATE_IDLE:
 			if (internalStateTime > hatchTime) {
@@ -105,7 +101,7 @@ public class Egg extends Entity {
 				for(int i = 0; i < rand.nextInt(3)+2; i++){
 					new Gore(new int[]{this.pos[0], this.pos[1]});
 				}
-				RuntimeData.getInstance().sortToLeftovers(this);
+				RuntimeData.getInstance().getEntityManager().addEntity(this);
 			}
 			if (currentAni.isAnimationFinished(internalStateTime)) {
 				setCurrentAni(Indentifiers.STATE_LEFTOVER);

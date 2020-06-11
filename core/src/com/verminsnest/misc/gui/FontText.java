@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
-import com.verminsnest.core.singletons.RuntimeData;
+import com.verminsnest.core.management.data.RuntimeData;
 
 public class FontText {
 	private int[] sizes;
@@ -42,8 +42,8 @@ public class FontText {
 			this.setText(text);
 		}else{
 			qualifier = text;
-			allChars = RuntimeData.getInstance().getConfig().getMessage(text);
-			this.setText(RuntimeData.getInstance().getConfig().getMessage(text));
+			allChars = RuntimeData.getInstance().getGame().getConfig().getMessage(text);
+			this.setText(RuntimeData.getInstance().getGame().getConfig().getMessage(text));
 		}
 		
 		blinkStartTime = -1;	
@@ -52,7 +52,7 @@ public class FontText {
 	
 	public void reload(){
 		if(qualifier == null) return;
-		this.setText(RuntimeData.getInstance().getConfig().getMessage(qualifier));
+		this.setText(RuntimeData.getInstance().getGame().getConfig().getMessage(qualifier));
 	}
 	
 	public void setText(String text){

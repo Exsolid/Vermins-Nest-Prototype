@@ -4,8 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.verminsnest.core.VerminsNest;
-import com.verminsnest.core.singletons.RuntimeData;
+import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.misc.gui.ButtonManager;
 import com.verminsnest.misc.gui.FontText;
 import com.verminsnest.screens.gameplay.GameManager;
@@ -30,12 +29,12 @@ public class LevelMenu extends GameplayOverlay {
 	private int usedPointsAgility;
 	private int usedPointsSpeed;
 	
-	public LevelMenu(VerminsNest game, GameManager gameMan) {
-		super(game, gameMan);
+	public LevelMenu(GameManager gameMan) {
+		super(gameMan);
 	}
 
 	public void init(){
-		skillPoints = RuntimeData.getInstance().getCharacter().getSkillPoints();
+		skillPoints = RuntimeData.getInstance().getEntityManager().getCharacter().getSkillPoints();
 		usedPointsHealth = 0;
 		usedPointsStrength = 0;
 		usedPointsAgility = 0;
@@ -44,19 +43,19 @@ public class LevelMenu extends GameplayOverlay {
 		
 		ArrayList<String> health = new ArrayList<>();
 		health.add("Gameplay_LevelType_Health");
-		health.add(RuntimeData.getInstance().getCharacter().getMaxHealth()+"");
+		health.add(RuntimeData.getInstance().getEntityManager().getCharacter().getMaxHealth()+"");
 		
 		ArrayList<String> strength = new ArrayList<>();
 		strength.add("Gameplay_LevelType_Strength");
-		strength.add(RuntimeData.getInstance().getCharacter().getStrength()+"");
+		strength.add(RuntimeData.getInstance().getEntityManager().getCharacter().getStrength()+"");
 		
 		ArrayList<String> agility = new ArrayList<>();
 		agility.add("Gameplay_LevelType_Agility");
-		agility.add(RuntimeData.getInstance().getCharacter().getAgility()+"");
+		agility.add(RuntimeData.getInstance().getEntityManager().getCharacter().getAgility()+"");
 		
 		ArrayList<String> speed = new ArrayList<>();
 		speed.add("Gameplay_LevelType_Speed");
-		speed.add(RuntimeData.getInstance().getCharacter().getSpeed()+"");
+		speed.add(RuntimeData.getInstance().getEntityManager().getCharacter().getSpeed()+"");
 		
 		ArrayList<String> back = new ArrayList<>();
 		back.add("SettingsMenu_Back");
@@ -69,15 +68,15 @@ public class LevelMenu extends GameplayOverlay {
 		buttonList.add(back);
 		
 		levelType = new ButtonManager(buttonList, 80, false, "-","+", false);
-		title = new FontText(game.getConfig().getMessage("Gameplay_LevelMenu_Title"),100, false);
-		points = new FontText(game.getConfig().getMessage("Gameplay_LevelMenu_Points")+": "+Integer.toString(skillPoints),80, false);
+		title = new FontText(RuntimeData.getInstance().getGame().getConfig().getMessage("Gameplay_LevelMenu_Title"),100, false);
+		points = new FontText(RuntimeData.getInstance().getGame().getConfig().getMessage("Gameplay_LevelMenu_Points")+": "+Integer.toString(skillPoints),80, false);
 		
 		points
 		.setMidOfBounds(
 				new int[] {
-						(int) (game.getCamera().position.x - RuntimeData.getInstance()
+						(int) (RuntimeData.getInstance().getGame().getCamera().position.x - RuntimeData.getInstance()
 								.getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getWidth() / 2),
-						(int) (game.getCamera().position.y - RuntimeData.getInstance()
+						(int) (RuntimeData.getInstance().getGame().getCamera().position.y - RuntimeData.getInstance()
 								.getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getHeight() / 2) },
 				new int[] {
 						RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png")
@@ -88,9 +87,9 @@ public class LevelMenu extends GameplayOverlay {
 		title
 		.setMidOfBounds(
 				new int[] {
-						(int) (game.getCamera().position.x - RuntimeData.getInstance()
+						(int) (RuntimeData.getInstance().getGame().getCamera().position.x - RuntimeData.getInstance()
 								.getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getWidth() / 2),
-						(int) (game.getCamera().position.y - RuntimeData.getInstance()
+						(int) (RuntimeData.getInstance().getGame().getCamera().position.y - RuntimeData.getInstance()
 								.getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getHeight() / 2) },
 				new int[] {
 						RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png")
@@ -106,9 +105,9 @@ public class LevelMenu extends GameplayOverlay {
 								RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png")
 										.getHeight() },
 						new int[] {
-								(int) (game.getCamera().position.x - RuntimeData.getInstance()
+								(int) (RuntimeData.getInstance().getGame().getCamera().position.x - RuntimeData.getInstance()
 										.getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getWidth() / 2),
-								(int) (game.getCamera().position.y - RuntimeData.getInstance()
+								(int) (RuntimeData.getInstance().getGame().getCamera().position.y - RuntimeData.getInstance()
 										.getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getHeight() / 2) });
 		
 		title.getPos()[1] += 325;
@@ -116,16 +115,16 @@ public class LevelMenu extends GameplayOverlay {
 	}
 	
 	@Override
-	public void render(float stateTime) {
-		game.getBatch()
+	public void render(float delta) {
+		RuntimeData.getInstance().getGame().getBatch()
 				.draw(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png"),
-						game.getCamera().position.x - RuntimeData.getInstance()
+						RuntimeData.getInstance().getGame().getCamera().position.x - RuntimeData.getInstance()
 								.getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getWidth() / 2,
-						game.getCamera().position.y - RuntimeData.getInstance()
+						RuntimeData.getInstance().getGame().getCamera().position.y - RuntimeData.getInstance()
 								.getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getHeight() / 2);
-		levelType.draw(game.getBatch());
-		title.draw(game.getBatch());
-		points.draw(game.getBatch());
+		levelType.draw(RuntimeData.getInstance().getGame().getBatch());
+		title.draw(RuntimeData.getInstance().getGame().getBatch());
+		points.draw(RuntimeData.getInstance().getGame().getBatch());
 	}
 
 	@Override
@@ -229,18 +228,18 @@ public class LevelMenu extends GameplayOverlay {
 		
 		if(Gdx.input.isKeyPressed(Input.Keys.ENTER) && !gameMan.isControlBlocked()){
 			if(levelType.getIndex() == BACK){
-				RuntimeData.getInstance().getCharacter().setMaxHealth(Integer.parseInt(levelType.getButtons().get(HEALTH).getOption().getText()));
-				RuntimeData.getInstance().getCharacter().setAgility(Integer.parseInt(levelType.getButtons().get(AGILITY).getOption().getText()));
-				RuntimeData.getInstance().getCharacter().setSpeed(Integer.parseInt(levelType.getButtons().get(SPEED).getOption().getText()));
-				RuntimeData.getInstance().getCharacter().setStrength(Integer.parseInt(levelType.getButtons().get(STRENGTH).getOption().getText()));
-				RuntimeData.getInstance().getCharacter().setSkilPoints(skillPoints);
+				RuntimeData.getInstance().getEntityManager().getCharacter().setMaxHealth(Integer.parseInt(levelType.getButtons().get(HEALTH).getOption().getText()));
+				RuntimeData.getInstance().getEntityManager().getCharacter().setAgility(Integer.parseInt(levelType.getButtons().get(AGILITY).getOption().getText()));
+				RuntimeData.getInstance().getEntityManager().getCharacter().setSpeed(Integer.parseInt(levelType.getButtons().get(SPEED).getOption().getText()));
+				RuntimeData.getInstance().getEntityManager().getCharacter().setStrength(Integer.parseInt(levelType.getButtons().get(STRENGTH).getOption().getText()));
+				RuntimeData.getInstance().getEntityManager().getCharacter().setSkilPoints(skillPoints);
 				gameMan.setState(GameManager.RUNNING);
 			}
 		}
 	}
 
 	private void updateTextPos(){
-		points.setText(game.getConfig().getMessage("Gameplay_LevelMenu_Points")+": "+Integer.toString(skillPoints));
+		points.setText(RuntimeData.getInstance().getGame().getConfig().getMessage("Gameplay_LevelMenu_Points")+": "+Integer.toString(skillPoints));
 		levelType
 		.setMidOfBounds(
 				new int[] {
@@ -249,16 +248,16 @@ public class LevelMenu extends GameplayOverlay {
 						RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png")
 								.getHeight() },
 				new int[] {
-						(int) (game.getCamera().position.x - RuntimeData.getInstance()
+						(int) (RuntimeData.getInstance().getGame().getCamera().position.x - RuntimeData.getInstance()
 								.getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getWidth() / 2),
-						(int) (game.getCamera().position.y - RuntimeData.getInstance()
+						(int) (RuntimeData.getInstance().getGame().getCamera().position.y - RuntimeData.getInstance()
 								.getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getHeight() / 2) });
 		points
 		.setMidOfBounds(
 				new int[] {
-						(int) (game.getCamera().position.x - RuntimeData.getInstance()
+						(int) (RuntimeData.getInstance().getGame().getCamera().position.x - RuntimeData.getInstance()
 								.getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getWidth() / 2),
-						(int) (game.getCamera().position.y - RuntimeData.getInstance()
+						(int) (RuntimeData.getInstance().getGame().getCamera().position.y - RuntimeData.getInstance()
 								.getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getHeight() / 2) },
 				new int[] {
 						RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png")
@@ -269,8 +268,8 @@ public class LevelMenu extends GameplayOverlay {
 	}
 	
 	@Override
-	public void update(float stateTime) {
-		manageControls(stateTime);
+	public void update(float delta) {
+		manageControls(delta);
 
 	}
 

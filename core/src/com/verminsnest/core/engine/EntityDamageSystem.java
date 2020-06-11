@@ -3,8 +3,8 @@ package com.verminsnest.core.engine;
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.verminsnest.core.Indentifiers;
-import com.verminsnest.core.singletons.RuntimeData;
+import com.verminsnest.core.management.Indentifiers;
+import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.Gore;
 import com.verminsnest.entities.enemies.Enemy;
@@ -30,7 +30,7 @@ public class EntityDamageSystem {
 			found.add(hit);
 			if(hit instanceof Enemy && source.isFriendly()){
 				((Enemy)hit).setHealth(((Enemy)hit).getHealth()-source.getDamage());
-				if(((Enemy)hit).getHealth()<0)RuntimeData.getInstance().removeEntity(hit);
+				if(((Enemy)hit).getHealth()<0)RuntimeData.getInstance().getEntityManager().removeEntity(hit);
 			}
 			if(hit instanceof Playable && !source.isFriendly()){
 				((Playable)hit).setHealth(((Playable)hit).getHealth()-source.getDamage());
@@ -48,17 +48,17 @@ public class EntityDamageSystem {
 					}
 					
 					boolean isLast = true;
-					for(Entity ent: RuntimeData.getInstance().getEntities()) {
+					for(Entity ent: RuntimeData.getInstance().getEntityManager().getEntities()) {
 						if(ent instanceof Enemy && !ent.equals(hit)) {
 							isLast = false;
 							break;
 						}
 					}
 					if(isLast) {
-						RuntimeData.getInstance().setLastDeath(hit);
+						RuntimeData.getInstance().getEntityManager().setLastDeath(hit);
 					}else {
-						RuntimeData.getInstance().getCharacter().updateKills();
-						RuntimeData.getInstance().removeEntity(hit);  
+						RuntimeData.getInstance().getEntityManager().getCharacter().updateKills();
+						RuntimeData.getInstance().getEntityManager().removeEntity(hit);  
 					}     
 				}
 			}

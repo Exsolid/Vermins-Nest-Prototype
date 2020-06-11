@@ -3,9 +3,8 @@ package com.verminsnest.screens.gameplay.menus;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.verminsnest.core.Indentifiers;
-import com.verminsnest.core.VerminsNest;
-import com.verminsnest.core.singletons.RuntimeData;
+import com.verminsnest.core.management.Indentifiers;
+import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.misc.gui.FontText;
 import com.verminsnest.screens.gameplay.GameManager;
 import com.verminsnest.screens.gameplay.GameplayOverlay;
@@ -25,8 +24,8 @@ public class GameplayMenu extends GameplayOverlay {
 	private FontText level;
 	private FontText killCounter;
 
-	public GameplayMenu(VerminsNest game, GameManager gameMan) {
-		super(game, gameMan);
+	public GameplayMenu(GameManager gameMan) {
+		super(gameMan);
 		rooms = new ArrayList<>();
 		
 		hp = new FontText("0", 50, false);
@@ -37,9 +36,9 @@ public class GameplayMenu extends GameplayOverlay {
 		abilityDataPos = new int[] { 0, 0 };
 		mapPos = new int[] { 0, 0 };
 		dataScrollPos = new int[] {
-				(int) (game.getCamera().position.x - RuntimeData.getInstance()
+				(int) (RuntimeData.getInstance().getGame().getCamera().position.x - RuntimeData.getInstance()
 						.getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png").getWidth() / 2),
-				(int) (game.getCamera().position.y - game.getConfig().getResolution()[1] / 2) };
+				(int) (RuntimeData.getInstance().getGame().getCamera().position.y - RuntimeData.getInstance().getGame().getConfig().getResolution()[1] / 2) };
 		attackCooldown = TextureRegion.split(
 				RuntimeData.getInstance().getAsset("textures/menus/frames/AbilityFrameBackground.png"),
 				RuntimeData.getInstance().getAsset("textures/menus/frames/AbilityFrameBackground.png").getWidth(),
@@ -51,37 +50,37 @@ public class GameplayMenu extends GameplayOverlay {
 	@Override
 	public void render(float stateTime) {
 		// Draw background stuff
-		game.getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/frames/StatusFrame.png"),
+		RuntimeData.getInstance().getGame().getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/frames/StatusFrame.png"),
 				dataScrollPos[0], dataScrollPos[1]);
-		game.getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/frames/MapFrame.png"), mapPos[0],
+		RuntimeData.getInstance().getGame().getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/frames/MapFrame.png"), mapPos[0],
 				mapPos[1]);
 		// Draw cooldown bars
 		for (int i = 0; i < attackData; i++) {
-			game.getBatch().draw(attackCooldown[i][0], attackDataPos[0],
+			RuntimeData.getInstance().getGame().getBatch().draw(attackCooldown[i][0], attackDataPos[0],
 					attackDataPos[1] + 8 + attackCooldown[0][0].getRegionHeight() * i);
 		}
 		// Draw frames
-		game.getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/frames/AbilityFrame.png"),
+		RuntimeData.getInstance().getGame().getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/frames/AbilityFrame.png"),
 				abilityDataPos[0], abilityDataPos[1]);
-		game.getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/frames/AbilityFrame.png"),
+		RuntimeData.getInstance().getGame().getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/frames/AbilityFrame.png"),
 				attackDataPos[0], attackDataPos[1]);
 		// Draw attack icon
-		game.getBatch().draw(
-				RuntimeData.getInstance().getAsset(RuntimeData.getInstance().getCharacter().getAttackIcon()),
+		RuntimeData.getInstance().getGame().getBatch().draw(
+				RuntimeData.getInstance().getAsset(RuntimeData.getInstance().getEntityManager().getCharacter().getAttackIcon()),
 				attackDataPos[0]
 						+ RuntimeData.getInstance().getAsset("textures/menus/frames/AbilityFrame.png").getWidth() / 2
-						- RuntimeData.getInstance().getAsset(RuntimeData.getInstance().getCharacter().getAttackIcon())
+						- RuntimeData.getInstance().getAsset(RuntimeData.getInstance().getEntityManager().getCharacter().getAttackIcon())
 								.getWidth() / 2
 						- 4,
 				attackDataPos[1]
 						+ RuntimeData.getInstance().getAsset("textures/menus/frames/AbilityFrame.png").getHeight() / 2
-						- RuntimeData.getInstance().getAsset(RuntimeData.getInstance().getCharacter().getAttackIcon())
+						- RuntimeData.getInstance().getAsset(RuntimeData.getInstance().getEntityManager().getCharacter().getAttackIcon())
 								.getHeight() / 2
 						+ 4);
 		// Draw character data
-		hp.draw(game.getBatch());
-		level.draw(game.getBatch());
-		killCounter.draw(game.getBatch());
+		hp.draw(RuntimeData.getInstance().getGame().getBatch());
+		level.draw(RuntimeData.getInstance().getGame().getBatch());
+		killCounter.draw(RuntimeData.getInstance().getGame().getBatch());
 
 		// Draw map
 		for (MinimapRoom room : rooms) {
@@ -96,14 +95,14 @@ public class GameplayMenu extends GameplayOverlay {
 									+ RuntimeData.getInstance().getAsset("textures/menus/frames/MapFrame.png")
 											.getHeight() 
 							&& room.toDraw) {
-						game.getBatch().draw(room.roomTextures[x][y],
+						RuntimeData.getInstance().getGame().getBatch().draw(room.roomTextures[x][y],
 								room.position[0] + room.roomTextures[x][y].getRegionWidth() * x,
 								room.position[1] + room.roomTextures[x][y].getRegionHeight() * y);
 					}
 				}
 			}
 		}
-		game.getBatch().draw(RuntimeData.getInstance().getAsset("textures/misc/Minimap-Pointer.png"),
+		RuntimeData.getInstance().getGame().getBatch().draw(RuntimeData.getInstance().getAsset("textures/misc/Minimap-Pointer.png"),
 				mapPos[0] + RuntimeData.getInstance().getAsset("textures/menus/frames/MapFrame.png").getWidth() / 2
 						- RuntimeData.getInstance().getAsset("textures/misc/Minimap-Pointer.png").getWidth() / 2,
 				mapPos[1] + RuntimeData.getInstance().getAsset("textures/menus/frames/MapFrame.png").getHeight() / 2
@@ -116,28 +115,28 @@ public class GameplayMenu extends GameplayOverlay {
 	}
 
 	@Override
-	public void update(float stateTime) {
+	public void update(float delta) {
 		// Update background stuff position
-		dataScrollPos[0] = (int) (RuntimeData.getInstance().getCharacter().getPos()[0]
+		dataScrollPos[0] = (int) (RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[0]
 				- RuntimeData.getInstance().getAsset("textures/menus/frames/StatusFrame.png").getWidth() / 2);
-		dataScrollPos[1] = (int) (RuntimeData.getInstance().getCharacter().getPos()[1] - 525 + 5);
-		mapPos[0] = (int) (RuntimeData.getInstance().getCharacter().getPos()[0] + 960
+		dataScrollPos[1] = (int) (RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[1] - 525 + 5);
+		mapPos[0] = (int) (RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[0] + 960
 				- RuntimeData.getInstance().getAsset("textures/menus/frames/MapFrame.png").getWidth() - 5);
-		mapPos[1] = (int) (RuntimeData.getInstance().getCharacter().getPos()[1] + 525
+		mapPos[1] = (int) (RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[1] + 525
 				- RuntimeData.getInstance().getAsset("textures/menus/frames/MapFrame.png").getHeight() - 5);
 		// Update hp text position
-		hp.setText("HP: " + Integer.toString(RuntimeData.getInstance().getCharacter().getHealth()) + "/"
-				+ Integer.toString(RuntimeData.getInstance().getCharacter().getMaxHealth()));
+		hp.setText("HP: " + Integer.toString(RuntimeData.getInstance().getEntityManager().getCharacter().getHealth()) + "/"
+				+ Integer.toString(RuntimeData.getInstance().getEntityManager().getCharacter().getMaxHealth()));
 		hp.setMidOfBounds(dataScrollPos,
 				new int[] { RuntimeData.getInstance().getAsset("textures/menus/frames/StatusFrame.png").getWidth(),
 						RuntimeData.getInstance().getAsset("textures/menus/frames/StatusFrame.png").getHeight() });
 		hp.getPos()[0] += RuntimeData.getInstance().getAsset("textures/menus/frames/StatusFrame.png").getWidth() / 4;
 		hp.getPos()[1] += 10;
 		//Update kills and levels
-		if(RuntimeData.getInstance().getCharacter().getSkillPoints() != 0){
-			level.setText("Level: " + Integer.toString(RuntimeData.getInstance().getCharacter().getLevelData()[0])+ "(+)");
+		if(RuntimeData.getInstance().getEntityManager().getCharacter().getSkillPoints() != 0){
+			level.setText("Level: " + Integer.toString(RuntimeData.getInstance().getEntityManager().getCharacter().getLevelData()[0])+ "(+)");
 		}else{
-			level.setText("Level: " + Integer.toString(RuntimeData.getInstance().getCharacter().getLevelData()[0]));
+			level.setText("Level: " + Integer.toString(RuntimeData.getInstance().getEntityManager().getCharacter().getLevelData()[0]));
 		}
 		level.setMidOfBounds(dataScrollPos,
 				new int[] { RuntimeData.getInstance().getAsset("textures/menus/frames/StatusFrame.png").getWidth(),
@@ -145,8 +144,8 @@ public class GameplayMenu extends GameplayOverlay {
 		level.getPos()[1] += 10;
 		
 		// Update hp text position
-		killCounter.setText(Integer.toString(RuntimeData.getInstance().getCharacter().getLevelData()[1]) + "/"
-				+ Integer.toString(RuntimeData.getInstance().getCharacter().getLevelData()[2]));
+		killCounter.setText(Integer.toString(RuntimeData.getInstance().getEntityManager().getCharacter().getLevelData()[1]) + "/"
+				+ Integer.toString(RuntimeData.getInstance().getEntityManager().getCharacter().getLevelData()[2]));
 		killCounter.setMidOfBounds(dataScrollPos,
 				new int[] { RuntimeData.getInstance().getAsset("textures/menus/frames/StatusFrame.png").getWidth(),
 						RuntimeData.getInstance().getAsset("textures/menus/frames/StatusFrame.png").getHeight()});
@@ -162,18 +161,18 @@ public class GameplayMenu extends GameplayOverlay {
 				+ RuntimeData.getInstance().getAsset("textures/menus/frames/StatusFrame.png").getHeight() / 2
 				- RuntimeData.getInstance().getAsset("textures/menus/frames/AbilityFrame.png").getWidth() / 2 - 5;
 
-		if (RuntimeData.getInstance().getCharacter().getAttackDetails(stateTime)[0] <= 0) {
+		if (RuntimeData.getInstance().getEntityManager().getCharacter().getAttackDetails()[0] <= 0) {
 			attackData = 59;
 		} else {
-			attackData = 50 - (int) ((RuntimeData.getInstance().getCharacter().getAttackDetails(stateTime)[0]
-					/ RuntimeData.getInstance().getCharacter().getAttackDetails(stateTime)[1]) * 50);
+			attackData = (int) ((RuntimeData.getInstance().getEntityManager().getCharacter().getAttackDetails()[0]
+					/ RuntimeData.getInstance().getEntityManager().getCharacter().getAttackDetails()[1]) * 59);
 		}
 		calculateMiniMap();
 	}
 
 	private void calculateMiniMap() {
 		rooms.clear();
-		int[] charPos = RuntimeData.getInstance().getCharacter().getPos();
+		int[] charPos = RuntimeData.getInstance().getEntityManager().getCharacter().getPos();
 		int[] roomSize = RuntimeData.getInstance().getMapData().getRoomSize();
 		int[] roomNum = new int[] { (10 + (charPos[0] / 128)) / roomSize[0] - 1,
 				(10 + (charPos[1] / 128)) / roomSize[1] - 1 };

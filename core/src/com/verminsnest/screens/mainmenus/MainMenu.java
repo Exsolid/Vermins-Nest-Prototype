@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.verminsnest.core.Indentifiers;
 import com.verminsnest.core.VerminsNest;
-import com.verminsnest.core.singletons.RuntimeData;
+import com.verminsnest.core.management.Indentifiers;
+import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.misc.gui.ButtonManager;
 import com.verminsnest.screens.VNScreen;
 import com.verminsnest.world.generation.map.World;
@@ -24,13 +24,13 @@ public class MainMenu extends VNScreen {
 	private static final int CREDITS = 2;
 	private static final int QUIT = 3;
 
-	public MainMenu(VerminsNest game) {
-		super(game);
+	public MainMenu() {
+		super();
 	}
 
 	@Override
 	public void show() {
-		game.getCamera().position.set(game.getConfig().getResolution()[0] / 2, game.getConfig().getResolution()[1] / 2,
+		RuntimeData.getInstance().getGame().getCamera().position.set(RuntimeData.getInstance().getGame().getConfig().getResolution()[0] / 2, RuntimeData.getInstance().getGame().getConfig().getResolution()[1] / 2,
 				0);
 		while(bManager.getIndex() != 0){
 			bManager.prev();
@@ -41,20 +41,20 @@ public class MainMenu extends VNScreen {
 
 	@Override
 	public void render(float delta) {
-		game.setPro();
-		game.getBatch().begin();
-		game.getBatch().draw(RuntimeData.getInstance().getAsset("textures/general/Background.png"),
+		RuntimeData.getInstance().getGame().setPro();
+		RuntimeData.getInstance().getGame().getBatch().begin();
+		RuntimeData.getInstance().getGame().getBatch().draw(RuntimeData.getInstance().getAsset("textures/general/Background.png"),
 				Gdx.graphics.getWidth() / 2
 						- RuntimeData.getInstance().getAsset("textures/general/Background.png").getWidth() / 2,
 				Gdx.graphics.getHeight() / 2
 						- RuntimeData.getInstance().getAsset("textures/general/Background.png").getHeight() / 2);
-		game.getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png"),
-				game.getConfig().getResolution()[0] / 2 - RuntimeData.getInstance()
+		RuntimeData.getInstance().getGame().getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png"),
+				RuntimeData.getInstance().getGame().getConfig().getResolution()[0] / 2 - RuntimeData.getInstance()
 						.getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth() / 2,
-				game.getConfig().getResolution()[1] / 2 - RuntimeData.getInstance()
+				RuntimeData.getInstance().getGame().getConfig().getResolution()[1] / 2 - RuntimeData.getInstance()
 						.getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2);
-		bManager.draw(game.getBatch());
-		game.getBatch().end();
+		bManager.draw(RuntimeData.getInstance().getGame().getBatch());
+		RuntimeData.getInstance().getGame().getBatch().end();
 		this.mangageControls();
 	}
 
@@ -67,9 +67,9 @@ public class MainMenu extends VNScreen {
 						RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png")
 								.getHeight() },
 				new int[] {
-						game.getConfig().getResolution()[0] / 2 - RuntimeData.getInstance()
+						RuntimeData.getInstance().getGame().getConfig().getResolution()[0] / 2 - RuntimeData.getInstance()
 								.getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth() / 2,
-						game.getConfig().getResolution()[1] / 2 - RuntimeData.getInstance()
+						RuntimeData.getInstance().getGame().getConfig().getResolution()[1] / 2 - RuntimeData.getInstance()
 								.getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2 });
 	}
 
@@ -119,21 +119,20 @@ public class MainMenu extends VNScreen {
 				case START:
 					// World generation
 					RuntimeData.getInstance().loadTextures(Indentifiers.ASSETMANAGER_GAMEPLAY);
-					World gen = new World(game);
+					World gen = new World(RuntimeData.getInstance().getGame());
 					gen.setData(1, 20, 20, 10,
 							(RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Mountain-Sheet.png")));
 					new EnemySpawner(1);
-					game.showScreen(VerminsNest.LOADGAME);
+					RuntimeData.getInstance().getGame().showScreen(VerminsNest.LOADGAME);
 					break;
 				case SETTINGS:
-					game.showScreen(VerminsNest.SETTINGSMENU);
+					RuntimeData.getInstance().getGame().showScreen(VerminsNest.SETTINGSMENU);
 					break;
 				case CREDITS:
-					game.showScreen(VerminsNest.CREDITSMENU);
+					RuntimeData.getInstance().getGame().showScreen(VerminsNest.CREDITSMENU);
 					break;
 				case QUIT:
 					RuntimeData.getInstance().dispose();
-					game.dispose();
 					break;
 				}
 				movementBlocked = true;
@@ -171,9 +170,9 @@ public class MainMenu extends VNScreen {
 						RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png")
 								.getHeight() },
 				new int[] {
-						game.getConfig().getResolution()[0] / 2 - RuntimeData.getInstance()
+						RuntimeData.getInstance().getGame().getConfig().getResolution()[0] / 2 - RuntimeData.getInstance()
 								.getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth() / 2,
-						game.getConfig().getResolution()[1] / 2 - RuntimeData.getInstance()
+						RuntimeData.getInstance().getGame().getConfig().getResolution()[1] / 2 - RuntimeData.getInstance()
 								.getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2 });
 		isDisposed = false;
 	}

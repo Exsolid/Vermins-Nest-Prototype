@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.verminsnest.core.VerminsNest;
-import com.verminsnest.core.singletons.RuntimeData;
+import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.misc.gui.ButtonManager;
 import com.verminsnest.screens.VNScreen;
 
@@ -40,8 +40,8 @@ public class SettingsMenu extends VNScreen {
 	private int menuIndex;
 	private ButtonManager currentMenuManager;
 
-	public SettingsMenu(VerminsNest game) {
-		super(game);	
+	public SettingsMenu() {
+		super();	
 	}
 
 	@Override
@@ -67,17 +67,17 @@ public class SettingsMenu extends VNScreen {
 
 	@Override
 	public void render(float delta) {
-		game.setPro();
-		game.getBatch().begin();
-		game.getBatch().draw(RuntimeData.getInstance().getAsset("textures/general/Background.png"), Gdx.graphics.getWidth() / 2 - RuntimeData.getInstance().getAsset("textures/general/Background.png").getWidth() / 2,
+		RuntimeData.getInstance().getGame().setPro();
+		RuntimeData.getInstance().getGame().getBatch().begin();
+		RuntimeData.getInstance().getGame().getBatch().draw(RuntimeData.getInstance().getAsset("textures/general/Background.png"), Gdx.graphics.getWidth() / 2 - RuntimeData.getInstance().getAsset("textures/general/Background.png").getWidth() / 2,
 				Gdx.graphics.getHeight() / 2 - RuntimeData.getInstance().getAsset("textures/general/Background.png").getHeight() / 2);
-		game.getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png"), menuScrollPos[0], menuScrollPos[1]);
-		game.getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png"), settingsScrollPos[0], settingsScrollPos[1]);
-		settingsMenuManager.draw(game.getBatch());
+		RuntimeData.getInstance().getGame().getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png"), menuScrollPos[0], menuScrollPos[1]);
+		RuntimeData.getInstance().getGame().getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png"), settingsScrollPos[0], settingsScrollPos[1]);
+		settingsMenuManager.draw(RuntimeData.getInstance().getGame().getBatch());
 		if (currentMenuManager != null) {
-			currentMenuManager.draw(game.getBatch());
+			currentMenuManager.draw(RuntimeData.getInstance().getGame().getBatch());
 		}
-		game.getBatch().end();
+		RuntimeData.getInstance().getGame().getBatch().end();
 		this.mangageControls();
 
 	}
@@ -177,7 +177,7 @@ public class SettingsMenu extends VNScreen {
 					case GRAPHICS:
 						if(currentMenuManager.getCurrent() != currentMenuManager.getButtons().get(currentMenuManager.getButtons().size()-1)){
 							currentMenuManager.getCurrent().nextOption();
-							if(currentMenuManager.getCurrent().getText().getText().equals(game.getConfig().getMessage("GraphicsMenu_Resolution"))&&currentMenuManager.getButtons().get(1).getOption().getText().equals(game.getConfig().getMessage("GraphicsMenu_Mode_Fullscreen"))){
+							if(currentMenuManager.getCurrent().getText().getText().equals(RuntimeData.getInstance().getGame().getConfig().getMessage("GraphicsMenu_Resolution"))&&currentMenuManager.getButtons().get(1).getOption().getText().equals(RuntimeData.getInstance().getGame().getConfig().getMessage("GraphicsMenu_Mode_Fullscreen"))){
 								currentMenuManager.getButtons().get(1).nextOption();
 							}
 							movementBlocked = true;
@@ -205,8 +205,7 @@ public class SettingsMenu extends VNScreen {
 					case GRAPHICS:
 						if(currentMenuManager.getCurrent() != currentMenuManager.getButtons().get(currentMenuManager.getButtons().size()-1)){
 							currentMenuManager.getCurrent().prevOption();
-							//TODO CHeck the if?
-							if(currentMenuManager.getCurrent().getText().getText().equals(game.getConfig().getMessage("GraphicsMenu_Resolution"))&&currentMenuManager.getButtons().get(1).getOption().getText().equals("Fullscreen")){
+							if(currentMenuManager.getCurrent().getText().getText().equals(RuntimeData.getInstance().getGame().getConfig().getMessage("GraphicsMenu_Resolution"))&&currentMenuManager.getButtons().get(1).getOption().getText().equals(RuntimeData.getInstance().getGame().getConfig().getMessage("GraphicsMenu_Mode_Fullscreen"))){
 								currentMenuManager.getButtons().get(1).nextOption();
 							}
 							movementBlocked = true;
@@ -231,11 +230,11 @@ public class SettingsMenu extends VNScreen {
 					switch (settingsMenuManager.getIndex()) {
 					case GRAPHICS:
 						while (!videoMenuManager.getButtons().get(0).getOption().getText().equals(
-								game.getConfig().getResolution()[0] + "x" + (game.getConfig().getResolution()[1]+25))) {
+								RuntimeData.getInstance().getGame().getConfig().getResolution()[0] + "x" + (RuntimeData.getInstance().getGame().getConfig().getResolution()[1]+25))) {
 							videoMenuManager.getButtons().get(0).nextOption();
 						}
-						if(!game.getConfig().isFullscreen() && videoMenuManager.getButtons().get(1).getOption().getText().equals(game.getConfig().getMessage("GraphicsMenu_Mode_Fullscreen"))) videoMenuManager.getButtons().get(1).nextOption();
-						if(!game.getConfig().getLanguage().equals("en")&& videoMenuManager.getButtons().get(2).getOption().getText().equals(game.getConfig().getMessage("GraphicsMenu_Language_English")))videoMenuManager.getButtons().get(2).nextOption();
+						if(!RuntimeData.getInstance().getGame().getConfig().isFullscreen() && videoMenuManager.getButtons().get(1).getOption().getText().equals(RuntimeData.getInstance().getGame().getConfig().getMessage("GraphicsMenu_Mode_Fullscreen"))) videoMenuManager.getButtons().get(1).nextOption();
+						if(!RuntimeData.getInstance().getGame().getConfig().getLanguage().equals("en")&& videoMenuManager.getButtons().get(2).getOption().getText().equals(RuntimeData.getInstance().getGame().getConfig().getMessage("GraphicsMenu_Language_English")))videoMenuManager.getButtons().get(2).nextOption();
 						currentMenuManager = videoMenuManager;
 						menuIndex = 0;
 						break;
@@ -246,7 +245,7 @@ public class SettingsMenu extends VNScreen {
 					case CONTROLS:
 						break;
 					case BACK:
-						game.showScreen(VerminsNest.MAINMENU);
+						RuntimeData.getInstance().getGame().showScreen(VerminsNest.MAINMENU);
 						break;
 					}
 					break;
@@ -264,68 +263,68 @@ public class SettingsMenu extends VNScreen {
 						String currentLang = "";
 						Boolean reload = false;
 						
-						String resolution = game.getConfig().getResolution()[0] + "x"
-								+ game.getConfig().getResolution()[1];
-						if (!resolution.equals(currentMenuManager.getButtons().get(0).getOption().getText()) && !game.getConfig().isFullscreen()) {
+						String resolution = RuntimeData.getInstance().getGame().getConfig().getResolution()[0] + "x"
+								+ RuntimeData.getInstance().getGame().getConfig().getResolution()[1];
+						if (!resolution.equals(currentMenuManager.getButtons().get(0).getOption().getText()) && !RuntimeData.getInstance().getGame().getConfig().isFullscreen()) {
 							resize = true;
 							if (currentMenuManager.getButtons().get(0).getOption().getText().equals("1920x1080")) {
 								newRes[0] = 1920;
 								newRes[1] = 1055;
-								game.getConfig().setResolution(newRes);
+								RuntimeData.getInstance().getGame().getConfig().setResolution(newRes);
 							}
 							if (currentMenuManager.getButtons().get(0).getOption().getText().equals("1280x720")) {
 								newRes[0] = 1280;
 								newRes[1] = 695;
-								game.getConfig().setResolution(newRes);
+								RuntimeData.getInstance().getGame().getConfig().setResolution(newRes);
 							}
 							if (currentMenuManager.getButtons().get(0).getOption().getText().equals("852x480")) {
 								newRes[0] = 852;
 								newRes[1] = 455;
-								game.getConfig().setResolution(newRes);
+								RuntimeData.getInstance().getGame().getConfig().setResolution(newRes);
 							}
 						}
-						if(currentMenuManager.getButtons().get(1).getOption().getText().equals(game.getConfig().getMessage("GraphicsMenu_Mode_Fullscreen"))&& !Gdx.graphics.isFullscreen()){
+						if(currentMenuManager.getButtons().get(1).getOption().getText().equals(RuntimeData.getInstance().getGame().getConfig().getMessage("GraphicsMenu_Mode_Fullscreen"))&& !Gdx.graphics.isFullscreen()){
 							resize = false;
 							newRes[0] = 1920;
 							newRes[1] = 1055;
-							game.getConfig().setResolution(newRes);
-							game.getConfig().setFullscreen(true);
-							game.resize(0, 0);
-						}else if(currentMenuManager.getButtons().get(1).getOption().getText().equals(game.getConfig().getMessage("GraphicsMenu_Mode_Window"))&& Gdx.graphics.isFullscreen()){
+							RuntimeData.getInstance().getGame().getConfig().setResolution(newRes);
+							RuntimeData.getInstance().getGame().getConfig().setFullscreen(true);
+							RuntimeData.getInstance().getGame().resize(0, 0);
+						}else if(currentMenuManager.getButtons().get(1).getOption().getText().equals(RuntimeData.getInstance().getGame().getConfig().getMessage("GraphicsMenu_Mode_Window"))&& Gdx.graphics.isFullscreen()){
 							resize = true;
 							if (currentMenuManager.getButtons().get(0).getOption().getText().equals("1920x1080")) {
 								newRes[0] = 1920;
 								newRes[1] = 1055;
-								game.getConfig().setResolution(newRes);
+								RuntimeData.getInstance().getGame().getConfig().setResolution(newRes);
 							}
 							if (currentMenuManager.getButtons().get(0).getOption().getText().equals("1280x720")) {
 								newRes[0] = 1280;
 								newRes[1] = 695;
-								game.getConfig().setResolution(newRes);
+								RuntimeData.getInstance().getGame().getConfig().setResolution(newRes);
 							}
 							if (currentMenuManager.getButtons().get(0).getOption().getText().equals("852x480")) {
 								newRes[0] = 852;
 								newRes[1] = 455;
-								game.getConfig().setResolution(newRes);
+								RuntimeData.getInstance().getGame().getConfig().setResolution(newRes);
 							}
 						}
 						
 						if (resize) {
-							game.getConfig().setFullscreen(false);
-							game.resize(0, 0);
+							RuntimeData.getInstance().getGame().getConfig().setFullscreen(false);
+							RuntimeData.getInstance().getGame().resize(0, 0);
 						}
-						if(currentMenuManager.getButtons().get(2).getOption().getText().equals(game.getConfig().getMessage("GraphicsMenu_Language_German"))) currentLang = "de";
-						else if(currentMenuManager.getButtons().get(2).getOption().getText().equals(game.getConfig().getMessage("GraphicsMenu_Language_English"))) currentLang = "en";
-						if(!currentLang.equals(game.getConfig().getLanguage())){
+						if(currentMenuManager.getButtons().get(2).getOption().getText().equals(RuntimeData.getInstance().getGame().getConfig().getMessage("GraphicsMenu_Language_German"))) currentLang = "de";
+						else if(currentMenuManager.getButtons().get(2).getOption().getText().equals(RuntimeData.getInstance().getGame().getConfig().getMessage("GraphicsMenu_Language_English"))) currentLang = "en";
+						if(!currentLang.equals(RuntimeData.getInstance().getGame().getConfig().getLanguage())){
 							try {
-								game.getConfig().setLanguage(currentLang);
+								RuntimeData.getInstance().getGame().getConfig().setLanguage(currentLang);
 								reload = true;
 							} catch (MalformedURLException e) {
 								e.printStackTrace();
 							}
 						}
 						if(reload){
-							game.reload();
+							RuntimeData.getInstance().getGame().reload();
 						}
 						menuIndex = -1;
 						currentMenuManager = null;

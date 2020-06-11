@@ -5,12 +5,10 @@ import java.util.Random;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.verminsnest.core.Indentifiers;
-import com.verminsnest.core.singletons.RuntimeData;
+import com.verminsnest.core.management.Indentifiers;
+import com.verminsnest.core.management.data.RuntimeData;
 
 public class Gore extends Entity {
-	
-	private float internalStateTime;
 	private Texture texture;
 	private int goreID;
 	private int[] movement;
@@ -28,7 +26,6 @@ public class Gore extends Entity {
 
 	@Override
 	public void init() {
-		internalStateTime = 0;
 		int randomizer = rand.nextInt(4);
 		switch(randomizer){
 		case 0:

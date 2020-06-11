@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.verminsnest.core.Indentifiers;
 import com.verminsnest.core.VerminsNest;
-import com.verminsnest.core.singletons.RuntimeData;
+import com.verminsnest.core.management.Indentifiers;
+import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.misc.gui.ButtonManager;
 import com.verminsnest.screens.gameplay.GameManager;
 import com.verminsnest.screens.gameplay.GameplayOverlay;
@@ -17,8 +17,8 @@ public class PauseMenu extends GameplayOverlay{
 	private final static int BACK = 0;
 	private final static int QUIT = 1;
 	
-	public PauseMenu(VerminsNest game, GameManager gameMan){
-		super(game,gameMan);
+	public PauseMenu(GameManager gameMan){
+		super(gameMan);
 		ArrayList<String> backButton = new ArrayList<>();
 		backButton.add("SettingsMenu_Back");
 		ArrayList<String> quitButton = new ArrayList<>();
@@ -31,18 +31,18 @@ public class PauseMenu extends GameplayOverlay{
 	}
 	
 	public void init(){
-		game.getCamera().update();
-		game.setPro();
-			bManager.setMidOfBounds(new int[]{RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth(), RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight()}, new int[]{(int)(game.getCamera().position.x - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth() / 2),
-					(int) (game.getCamera().position.y - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2)});
+		RuntimeData.getInstance().getGame().getCamera().update();
+		RuntimeData.getInstance().getGame().setPro();
+			bManager.setMidOfBounds(new int[]{RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth(), RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight()}, new int[]{(int)(RuntimeData.getInstance().getGame().getCamera().position.x - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth() / 2),
+					(int) (RuntimeData.getInstance().getGame().getCamera().position.y - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2)});
 	}
 	public void render(float stateTime) {
-		game.getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png"), game.getCamera().position.x - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth() / 2,
-				game.getCamera().position.y - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2);
-		bManager.draw(game.getBatch());
+		RuntimeData.getInstance().getGame().getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png"), RuntimeData.getInstance().getGame().getCamera().position.x - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth() / 2,
+				RuntimeData.getInstance().getGame().getCamera().position.y - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2);
+		bManager.draw(RuntimeData.getInstance().getGame().getBatch());
 	}
 	@Override
-	public void manageControls(float stateTime) {
+	public void manageControls(float delta) {
 		if(Gdx.input.isKeyPressed(Input.Keys.W) && !gameMan.isControlBlocked()){
 			bManager.prev();
 			gameMan.resetBlocked();
@@ -57,7 +57,7 @@ public class PauseMenu extends GameplayOverlay{
 				gameMan.setState(GameManager.RUNNING);
 				break;
 			case QUIT:
-				game.showScreen(VerminsNest.MAINMENU);
+				RuntimeData.getInstance().getGame().showScreen(VerminsNest.MAINMENU);
 				break;
 			}
 			gameMan.resetBlocked();
@@ -73,12 +73,12 @@ public class PauseMenu extends GameplayOverlay{
 	public void dispose() {
 		bManager.dispose();
 		RuntimeData.getInstance().disposeTextures(Indentifiers.ASSETMANAGER_GAMEPLAY);;
-		RuntimeData.getInstance().clearData();
+		RuntimeData.getInstance().getEntityManager().clearData();
 	}
 
 	@Override
-	public void update(float stateTime) {
-		this.manageControls(stateTime);
+	public void update(float delta) {
+		this.manageControls(delta);
 	}
 
 }

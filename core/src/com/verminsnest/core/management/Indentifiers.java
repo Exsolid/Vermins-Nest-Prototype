@@ -1,4 +1,4 @@
-package com.verminsnest.core;
+package com.verminsnest.core.management;
 
 public class Indentifiers {
 	//Direction IDs

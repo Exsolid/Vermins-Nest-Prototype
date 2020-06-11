@@ -8,7 +8,8 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.verminsnest.config.Configurator;
-import com.verminsnest.core.singletons.RuntimeData;
+import com.verminsnest.core.management.Indentifiers;
+import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.screens.LoadingScreen;
 import com.verminsnest.screens.gameplay.GameManager;
 import com.verminsnest.screens.mainmenus.CreditsMenu;
@@ -55,10 +56,10 @@ public class VerminsNest extends Game {
 		
 		r = Runtime.getRuntime();
 		
-		mainMenu = new MainMenu(this);
-		settingsMenu = new SettingsMenu(this);
-		creditsMenu = new CreditsMenu(this);
-		gameMan = new GameManager(this);
+		mainMenu = new MainMenu();
+		settingsMenu = new SettingsMenu();
+		creditsMenu = new CreditsMenu();
+		gameMan = new GameManager();
 		
 		RuntimeData.getInstance().init(this);
 		RuntimeData.getInstance().loadTextures(Indentifiers.ASSETMANAGER_INIT);

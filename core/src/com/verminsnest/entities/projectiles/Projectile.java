@@ -2,8 +2,8 @@ package com.verminsnest.entities.projectiles;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.verminsnest.core.Indentifiers;
-import com.verminsnest.core.singletons.RuntimeData;
+import com.verminsnest.core.management.Indentifiers;
+import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.Entity;
 
 public abstract class Projectile extends Entity{
@@ -16,15 +16,13 @@ public abstract class Projectile extends Entity{
 	protected int damage;
 	protected int speed;
 	
-	protected float internalStateTime;
-	protected float lastStateTime;
 	protected boolean toReset;
 	
 	public static String iconPath;
 	
 	private boolean isFriendly;
 	
-	public Projectile(int textureID, int direction, int agility,int damage, int[] position, float stateTime){
+	public Projectile(int textureID, int direction, int agility,int damage, int[] position){
 		super(position, textureID);
 		
 		//Data
@@ -45,7 +43,6 @@ public abstract class Projectile extends Entity{
 			break;
 		}
 		internalStateTime = 0;
-		lastStateTime = stateTime;
 		init();
 		this.setCurrentAni(Indentifiers.STATE_CAST);
 		this.setSize(currentAni.getKeyFrame(0).getRegionWidth(),currentAni.getKeyFrame(0).getRegionHeight());
@@ -53,12 +50,12 @@ public abstract class Projectile extends Entity{
 	
 	public abstract void init();
 	
-	protected void updateStateTime(float stateTime){
+	protected void updateStateTime(float delta){
 		if(toReset){
-			lastStateTime=stateTime;
+			internalStateTime = 0;
 			toReset = false;
 		}
-		internalStateTime = stateTime -lastStateTime;
+		internalStateTime += delta;
 	}
 	
 	public TextureRegion getCurrentFrame(float stateTime) {
@@ -127,7 +124,7 @@ public abstract class Projectile extends Entity{
 				pos[1] += speed;
 			}
 		}else if(state == Indentifiers.STATE_TODELETE){
-			RuntimeData.getInstance().removeEntity(this);
+			RuntimeData.getInstance().getEntityManager().removeEntity(this);
 		}
 	}
 

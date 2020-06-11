@@ -1,8 +1,8 @@
 package com.verminsnest.entities.projectiles.slashes;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.verminsnest.core.Indentifiers;
-import com.verminsnest.core.singletons.RuntimeData;
+import com.verminsnest.core.management.Indentifiers;
+import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.projectiles.Projectile;
 
 public abstract class Slash extends Projectile {
@@ -11,22 +11,22 @@ public abstract class Slash extends Projectile {
 	protected float rotationSpeed;
 	private boolean invert;
 	
-	public Slash(int textureID, int direction, int agility, int damage, int[] position, float stateTime, boolean invert) {
-		super(textureID, direction, agility, damage, position, stateTime);
+	public Slash(int textureID, int direction, int agility, int damage, int[] position, boolean invert) {
+		super(textureID, direction, agility, damage, position);
 		this.invert = invert;
 		setCurrentAni(Indentifiers.STATE_FLYING);
 	}
 	
 	@Override
-	public TextureRegion getCurrentFrame(float stateTime) {
+	public TextureRegion getCurrentFrame(float delta) {
 		return flyingAni.getKeyFrame(internalStateTime,false);
 	}
 	
 	@Override
-	public void update(float stateTime){
-		updateStateTime(stateTime);
+	public void update(float delta){
+		updateStateTime(delta);
 		if(internalStateTime > flyTime){
-			RuntimeData.getInstance().removeEntity(this);
+			RuntimeData.getInstance().getEntityManager().removeEntity(this);
 		}
 		switch(direction){
 		case Indentifiers.DIRECTION_NORTH:

@@ -5,8 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.verminsnest.core.Indentifiers;
-import com.verminsnest.core.singletons.RuntimeData;
+import com.verminsnest.core.management.Indentifiers;
+import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.Entity;
 
 public abstract class Playable extends Entity {
@@ -61,26 +61,26 @@ public abstract class Playable extends Entity {
 		this.setCurrentAni(Indentifiers.STATE_IDLE);
 		this.setSize(currentAni.getKeyFrame(0).getRegionWidth(),currentAni.getKeyFrame(0).getRegionHeight());
 		
-		topLeft = new Vector2(RuntimeData.getInstance().getConfig().getResolution()[0]/2,(RuntimeData.getInstance().getConfig().getResolution()[1]+25)/2).nor();
+		topLeft = new Vector2(RuntimeData.getInstance().getGame().getConfig().getResolution()[0]/2,(RuntimeData.getInstance().getGame().getConfig().getResolution()[1]+25)/2).nor();
 		topLeft.setAngle(135);
-		bottomLeft = new Vector2(RuntimeData.getInstance().getConfig().getResolution()[0]/2,(RuntimeData.getInstance().getConfig().getResolution()[1]+25)/2).nor();
+		bottomLeft = new Vector2(RuntimeData.getInstance().getGame().getConfig().getResolution()[0]/2,(RuntimeData.getInstance().getGame().getConfig().getResolution()[1]+25)/2).nor();
 		bottomLeft.setAngle(-135);
-		topRight = new Vector2(RuntimeData.getInstance().getConfig().getResolution()[0]/2,(RuntimeData.getInstance().getConfig().getResolution()[1]+25)/2).nor();
+		topRight = new Vector2(RuntimeData.getInstance().getGame().getConfig().getResolution()[0]/2,(RuntimeData.getInstance().getGame().getConfig().getResolution()[1]+25)/2).nor();
 		topRight.setAngle(45);
-		bottomRight = new Vector2(RuntimeData.getInstance().getConfig().getResolution()[0]/2,(RuntimeData.getInstance().getConfig().getResolution()[1]+25)/2).nor();
+		bottomRight = new Vector2(RuntimeData.getInstance().getGame().getConfig().getResolution()[0]/2,(RuntimeData.getInstance().getGame().getConfig().getResolution()[1]+25)/2).nor();
 		bottomRight.setAngle(-45);
 	}
 	
-	public void attack(float stateTime, int direction){
-		if (attackCooldown < stateTime - 1/(agility*0.2)) {
-			attackAction(stateTime, direction);
+	public void attack(float delta, int direction){
+		if (attackCooldown > 1/(agility*0.2)) {
+			attackAction(delta, direction);
 		}
 	}
 	
 	public abstract void init();
-	public abstract void attackAction(float stateTime, int direction);
+	public abstract void attackAction(float delta, int direction);
 
-	public void update(float stateTime){
+	public void update(float delta){
 		if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
 			prevKey = currentKey;
 			currentKey = 'S';
@@ -161,15 +161,17 @@ public abstract class Playable extends Entity {
 			float mouseY =RuntimeData.getInstance().getMousePosInGameWorld().y;
 			Vector2 mouseVector = new Vector2(mouseX-pos[0]+size[0]/2,mouseY-pos[1]+size[1]/2).nor();
 			if(mouseVector.y - bottomLeft.y >= 0 && mouseVector.y - topLeft.y <= 0 && mouseX < pos[0]+size[0]/2){
-				RuntimeData.getInstance().getCharacter().attack(stateTime, Indentifiers.DIRECTION_WEST);
+				RuntimeData.getInstance().getEntityManager().getCharacter().attack(delta, Indentifiers.DIRECTION_WEST);
 			}else if(mouseVector.y - bottomRight.y >= 0 && mouseVector.y - topRight.y <= 0&& mouseX > pos[0]+size[0]/2){
-				RuntimeData.getInstance().getCharacter().attack(stateTime, Indentifiers.DIRECTION_EAST);
+				RuntimeData.getInstance().getEntityManager().getCharacter().attack(delta, Indentifiers.DIRECTION_EAST);
 			}if(mouseVector.x - topRight.x <= 0 && mouseVector.x - topLeft.x >= 0 && mouseY > pos[1]+size[1]/2){
-				RuntimeData.getInstance().getCharacter().attack(stateTime, Indentifiers.DIRECTION_NORTH);
+				RuntimeData.getInstance().getEntityManager().getCharacter().attack(delta, Indentifiers.DIRECTION_NORTH);
 			}else if(mouseVector.x - bottomRight.x <= 0 && mouseVector.x - bottomLeft.x >= 0 && mouseY < pos[1]+size[1]/2){
-				RuntimeData.getInstance().getCharacter().attack(stateTime, Indentifiers.DIRECTION_SOUTH);
+				RuntimeData.getInstance().getEntityManager().getCharacter().attack(delta, Indentifiers.DIRECTION_SOUTH);
 			}	
 		}
+		attackCooldown += delta;
+		internalStateTime += delta;
 	}
 	
 	public int getSpeed() {
@@ -234,10 +236,9 @@ public abstract class Playable extends Entity {
 		return attackIconPath;
 	}
 	
-	public float[] getAttackDetails(float stateTime){
-		float cd = (float) (attackCooldown+1/(agility*0.2)-stateTime);
-		if(cd <0) cd = 0;
-		return new float[]{cd ,(float) (1/(agility*0.2))};
+	public float[] getAttackDetails(){
+		if(attackCooldown >1/(agility*0.2))return new float[]{(float) (1/(agility*0.2)) ,(float) (1/(agility*0.2))};
+		else return new float[]{attackCooldown ,(float) (1/(agility*0.2))};
 	}
 
 	public int getMaxHealth() {

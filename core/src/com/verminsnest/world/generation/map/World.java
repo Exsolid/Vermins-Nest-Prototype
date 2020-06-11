@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.verminsnest.core.Indentifiers;
-import com.verminsnest.core.LoadingModule;
 import com.verminsnest.core.VerminsNest;
-import com.verminsnest.core.singletons.RuntimeData;
+import com.verminsnest.core.management.Indentifiers;
+import com.verminsnest.core.management.LoadingModule;
+import com.verminsnest.core.management.data.RuntimeData;
 
 public class World extends LoadingModule{
 
@@ -75,7 +75,6 @@ public class World extends LoadingModule{
 	}
 	
 	private boolean genPathing(int randDir, int randRoom, int currentRoom){
-		//TODO implement layout
 		//Gen pathing
 		if(currentRoom == 0){
 			//Gen room

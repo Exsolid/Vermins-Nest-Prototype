@@ -3,7 +3,8 @@ package com.verminsnest.world.generation.map;
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.verminsnest.core.Indentifiers;
+import com.verminsnest.core.management.Indentifiers;
+
 
 public class Room {
 	private Room[] connected;

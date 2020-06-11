@@ -1,8 +1,7 @@
 package com.verminsnest.screens.gameplay;
 
 import com.badlogic.gdx.Gdx;
-import com.verminsnest.core.VerminsNest;
-import com.verminsnest.core.singletons.RuntimeData;
+import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.playables.Mage;
 import com.verminsnest.screens.VNScreen;
 import com.verminsnest.screens.gameplay.menus.LevelMenu;
@@ -13,7 +12,6 @@ public class GameManager extends VNScreen {
 	// Rendering
 	private float timeSinceRender = 0;
 	private float updateStep = 1 / 120f;
-	private float stateTime;
 
 	//Control blocking
 	private long blockTime;
@@ -29,8 +27,8 @@ public class GameManager extends VNScreen {
 	private PauseMenu pauseMenu;
 	private LevelMenu levelMenu;
 	
-	public GameManager( VerminsNest game) {
-		super(game);
+	public GameManager() {
+		super();
 	}
 
 	@Override
@@ -42,26 +40,25 @@ public class GameManager extends VNScreen {
 			timeSinceRender += Gdx.graphics.getDeltaTime();
 			//Cap out rendering cycle to 120 frames/second
 			if (timeSinceRender >= updateStep) {
-				stateTime += delta;
 				timeSinceRender -= updateStep;
-				game.getBatch().begin();
+				RuntimeData.getInstance().getGame().getBatch().begin();
 				switch(state){
 				case RUNNING:
-					gameplay.update(stateTime);
-					gameplay.render(stateTime);
+					gameplay.update(delta);
+					gameplay.render(delta);
 					break;
 				case PAUSEMENU:
-					gameplay.render(stateTime);
-					pauseMenu.render(stateTime);
-					pauseMenu.update(stateTime);
+					gameplay.render(delta);
+					pauseMenu.render(delta);
+					pauseMenu.update(delta);
 					break;
 				case LEVELMENU:
-					gameplay.render(stateTime);
-					levelMenu.render(stateTime);
-					levelMenu.update(stateTime);
+					gameplay.render(delta);
+					levelMenu.render(delta);
+					levelMenu.update(delta);
 					break;
 				}
-				game.getBatch().end();
+				RuntimeData.getInstance().getGame().getBatch().end();
 				blockTime = System.currentTimeMillis() - blockStartTime;
 				if (blockTime > 225) {
 					controlBlocked = false;
@@ -123,28 +120,28 @@ public class GameManager extends VNScreen {
 	@Override
 	public void init() {
 		
-		if(RuntimeData.getInstance().getCharacter() == null) {
-			RuntimeData.getInstance().setCharacter(new Mage(new int[] { 0, 0 }));
-			for (int x = 0; x < RuntimeData.getInstance().getMap().length; x++) {
-				for (int y = 0; y < RuntimeData.getInstance().getMap()[0].length; y++) {
-					if (RuntimeData.getInstance().getMap()[x][y].isWalkable()) {
-						RuntimeData.getInstance().getCharacter().getPos()[0] = RuntimeData.getInstance().getMap()[x][y].getxPos();
-						RuntimeData.getInstance().getCharacter().getPos()[1] = RuntimeData.getInstance().getMap()[x][y].getyPos();
+		if(RuntimeData.getInstance().getEntityManager().getCharacter() == null) {
+			RuntimeData.getInstance().getEntityManager().setCharacter(new Mage(new int[] { 0, 0 }));
+			for (int x = 0; x < RuntimeData.getInstance().getMapData().getData().length; x++) {
+				for (int y = 0; y < RuntimeData.getInstance().getMapData().getData()[0].length; y++) {
+					if (RuntimeData.getInstance().getMapData().getData()[x][y].isWalkable()) {
+						RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[0] = RuntimeData.getInstance().getMapData().getData()[x][y].getxPos();
+						RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[1] = RuntimeData.getInstance().getMapData().getData()[x][y].getyPos();
 					}
 				}
 			}
 			
-			gameplay = new Gameplay(game, this);
-			pauseMenu = new PauseMenu(game, this);
-			levelMenu = new LevelMenu(game, this);
+			gameplay = new Gameplay(this);
+			pauseMenu = new PauseMenu(this);
+			levelMenu = new LevelMenu(this);
 			pauseMenu.init();
 			levelMenu.init();
 		}else {
-			for (int x = 0; x < RuntimeData.getInstance().getMap().length; x++) {
-				for (int y = 0; y < RuntimeData.getInstance().getMap()[0].length; y++) {
-					if (RuntimeData.getInstance().getMap()[x][y].isWalkable()) {
-						RuntimeData.getInstance().getCharacter().getPos()[0] = RuntimeData.getInstance().getMap()[x][y].getxPos();
-						RuntimeData.getInstance().getCharacter().getPos()[1] = RuntimeData.getInstance().getMap()[x][y].getyPos();
+			for (int x = 0; x < RuntimeData.getInstance().getMapData().getData().length; x++) {
+				for (int y = 0; y < RuntimeData.getInstance().getMapData().getData()[0].length; y++) {
+					if (RuntimeData.getInstance().getMapData().getData()[x][y].isWalkable()) {
+						RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[0] = RuntimeData.getInstance().getMapData().getData()[x][y].getxPos();
+						RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[1] = RuntimeData.getInstance().getMapData().getData()[x][y].getyPos();
 					}
 				}
 			}
@@ -162,7 +159,5 @@ public class GameManager extends VNScreen {
 
 	@Override
 	public void reload() {
-		// TODO Auto-generated method stub
-		
 	}
 }

@@ -3,8 +3,8 @@ package com.verminsnest.core.engine;
 
 import java.util.ArrayList;
 
-import com.verminsnest.core.Indentifiers;
-import com.verminsnest.core.singletons.RuntimeData;
+import com.verminsnest.core.management.Indentifiers;
+import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.projectiles.Projectile;
 import com.verminsnest.world.generation.map.AStarMapNode;
@@ -36,7 +36,7 @@ public class EntityMovementSystem {
 				else return searchAlternativ(entity, goalPos, speed);
 			}else{
 				int y = entity.getPos()[1]+entity.getSize()[1]+1;
-				for(Entity refEnt: RuntimeData.getInstance().getEntities()){
+				for(Entity refEnt: RuntimeData.getInstance().getEntityManager().getEntities()){
 					if(!entity.equals(refEnt) && refEnt.isObstacle()){
 						for(int x = entity.getPos()[0]; x <= entity.getPos()[0]+entity.getSize()[0]; x++){
 							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
@@ -65,7 +65,7 @@ public class EntityMovementSystem {
 				else return searchAlternativ(entity, goalPos, speed);
 			}else{
 				int y = entity.getPos()[1]-1;
-				for(Entity refEnt: RuntimeData.getInstance().getEntities()){
+				for(Entity refEnt: RuntimeData.getInstance().getEntityManager().getEntities()){
 					if(!entity.equals(refEnt) && refEnt.isObstacle()){
 						for(int x = entity.getPos()[0]; x <= entity.getPos()[0]+entity.getSize()[0]; x++){
 							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
@@ -94,7 +94,7 @@ public class EntityMovementSystem {
 				else return searchAlternativ(entity, goalPos, speed);
 			}else{
 				int x = entity.getPos()[0]-1;
-				for(Entity refEnt: RuntimeData.getInstance().getEntities()){
+				for(Entity refEnt: RuntimeData.getInstance().getEntityManager().getEntities()){
 					if(!entity.equals(refEnt) && refEnt.isObstacle()){
 						for(int y = entity.getPos()[1]; y <= entity.getPos()[1]+entity.getSize()[1]; y++){
 							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
@@ -123,7 +123,7 @@ public class EntityMovementSystem {
 				else return searchAlternativ(entity, goalPos, speed);
 			}else{
 				int x = entity.getPos()[0]+entity.getSize()[0]+1;
-				for(Entity refEnt: RuntimeData.getInstance().getEntities()){
+				for(Entity refEnt: RuntimeData.getInstance().getEntityManager().getEntities()){
 					if(!entity.equals(refEnt) && refEnt.isObstacle()){
 						for(int y = entity.getPos()[1]; y <= entity.getPos()[1]+entity.getSize()[1]; y++){
 							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
@@ -151,7 +151,7 @@ public class EntityMovementSystem {
 				return false;
 			}else{
 				int x = entity.getPos()[0]+entity.getSize()[0]+1;
-				for(Entity refEnt: RuntimeData.getInstance().getEntities()){
+				for(Entity refEnt: RuntimeData.getInstance().getEntityManager().getEntities()){
 					if(!entity.equals(refEnt) && refEnt.isObstacle()){
 						for(int y = entity.getPos()[1]; y <= entity.getPos()[1]+entity.getSize()[1]; y++){
 							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
@@ -179,7 +179,7 @@ public class EntityMovementSystem {
 				return false;
 			}else{
 				int y = entity.getPos()[1]-1;
-				for(Entity refEnt: RuntimeData.getInstance().getEntities()){
+				for(Entity refEnt: RuntimeData.getInstance().getEntityManager().getEntities()){
 					if(!entity.equals(refEnt) && refEnt.isObstacle()){
 						for(int x = entity.getPos()[0]; x <= entity.getPos()[0]+entity.getSize()[0]; x++){
 							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){

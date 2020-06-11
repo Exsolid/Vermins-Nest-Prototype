@@ -3,8 +3,8 @@ package com.verminsnest.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.verminsnest.core.VerminsNest;
-import com.verminsnest.core.singletons.LoadingModules;
-import com.verminsnest.core.singletons.RuntimeData;
+import com.verminsnest.core.management.LoadingModules;
+import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.misc.gui.FontText;
 import com.verminsnest.world.management.FloorManager;
 
@@ -57,7 +57,7 @@ public class LoadingScreen implements Screen{
 		} else if (LoadingModules.getInstance().getModules().isEmpty()) {
 			switch (nextScreenID) {
 			case GAMEMANAGER:
-				RuntimeData.getInstance().initEnemies();
+				RuntimeData.getInstance().getEntityManager().initEnemies();
 				FloorManager.getInstane().setEntityUpdate(true);
 				game.showScreen(VerminsNest.GAMEPLAY);
 				this.dispose();
@@ -70,26 +70,18 @@ public class LoadingScreen implements Screen{
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
