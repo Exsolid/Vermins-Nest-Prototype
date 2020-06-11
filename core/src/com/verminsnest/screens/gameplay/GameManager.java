@@ -1,6 +1,8 @@
 package com.verminsnest.screens.gameplay;
 
 import com.badlogic.gdx.Gdx;
+import com.verminsnest.core.VerminsNest;
+import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.playables.Mage;
 import com.verminsnest.screens.VNScreen;
@@ -41,27 +43,33 @@ public class GameManager extends VNScreen {
 			//Cap out rendering cycle to 120 frames/second
 			if (timeSinceRender >= updateStep) {
 				timeSinceRender -= updateStep;
-				RuntimeData.getInstance().getGame().getBatch().begin();
-				switch(state){
-				case RUNNING:
-					gameplay.update(delta);
-					gameplay.render(delta);
-					break;
-				case PAUSEMENU:
-					gameplay.render(delta);
-					pauseMenu.render(delta);
-					pauseMenu.update(delta);
-					break;
-				case LEVELMENU:
-					gameplay.render(delta);
-					levelMenu.render(delta);
-					levelMenu.update(delta);
-					break;
-				}
-				RuntimeData.getInstance().getGame().getBatch().end();
+
 				blockTime = System.currentTimeMillis() - blockStartTime;
 				if (blockTime > 225) {
 					controlBlocked = false;
+				}
+				
+				if(!RuntimeData.getInstance().isGameOver()){
+					RuntimeData.getInstance().getGame().getBatch().begin();
+					switch(state){
+					case RUNNING:
+						gameplay.update(delta);
+						gameplay.render(delta);
+						break;
+					case PAUSEMENU:
+						gameplay.render(delta);
+						pauseMenu.render(delta);
+						pauseMenu.update(delta);
+						break;
+					case LEVELMENU:
+						gameplay.render(delta);
+						levelMenu.render(delta);
+						levelMenu.update(delta);
+						break;
+					}
+					RuntimeData.getInstance().getGame().getBatch().end();
+				}else{
+					RuntimeData.getInstance().getGame().showScreen(VerminsNest.MAINMENU);
 				}
 		}
 	}
@@ -114,6 +122,10 @@ public class GameManager extends VNScreen {
 		gameplay.dispose();
 		levelMenu.dispose();
 		pauseMenu.dispose();
+
+		RuntimeData.getInstance().disposeTextures(Indentifiers.ASSETMANAGER_GAMEPLAY);
+		RuntimeData.getInstance().getEntityManager().clearData();
+		
 		isDisposed = true;
 	}
 

@@ -113,7 +113,7 @@ public class Gameplay extends GameplayOverlay{
 	@Override
 	public void update(float delta) {
 		RuntimeData.getInstance().getEntityManager().updateEntities(delta);
-
+		
 		if(FloorManager.getInstane().allowEntityUpdate()) {
 			gui.update(delta);
 			manageControls(delta);

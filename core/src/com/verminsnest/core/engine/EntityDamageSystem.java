@@ -64,6 +64,9 @@ public class EntityDamageSystem {
 			}
 			if(hit instanceof Playable && !source.isFriendly()){
 				((Playable)hit).setHealth(((Playable)hit).getHealth()-source.getDamage());
+				if(((Playable) hit).getHealth() <= 0){
+					RuntimeData.getInstance().setGameOver(true);
+				}
 			}
 			source.setCurrentAni(Indentifiers.STATE_HIT);
 		}

@@ -18,6 +18,7 @@ public class RuntimeData {
 	private EntityManager enMan;
 	private VerminsNest game;
 	
+	private boolean gameOver;
 	
 	private RuntimeData(){
 	}
@@ -26,6 +27,7 @@ public class RuntimeData {
 		assetManager = new VNAssetManager();
 		enMan = new EntityManager();
 		this.game = game;
+		setGameOver(false);
 	}
 	
 	public static RuntimeData getInstance(){
@@ -78,5 +80,13 @@ public class RuntimeData {
 	
 	public EntityManager getEntityManager(){
 		return enMan;
+	}
+
+	public boolean isGameOver() {
+		return gameOver;
+	}
+
+	public void setGameOver(boolean gameOver) {
+		this.gameOver = gameOver;
 	}
 }

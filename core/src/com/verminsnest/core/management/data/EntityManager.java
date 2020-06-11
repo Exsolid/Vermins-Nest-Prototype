@@ -47,7 +47,6 @@ public class EntityManager {
 		removedEntities.add(ent);
 	}
 	public void updateEntities(float stateTime){
-
 		FloorManager.getInstane().update();
 		if(FloorManager.getInstane().allowEntityUpdate()) {
 			for(Entity ent: addedEntities){
