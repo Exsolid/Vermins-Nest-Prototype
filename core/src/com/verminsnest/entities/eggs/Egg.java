@@ -101,10 +101,10 @@ public class Egg extends Entity {
 				for(int i = 0; i < rand.nextInt(3)+2; i++){
 					new Gore(new int[]{this.pos[0], this.pos[1]});
 				}
-				RuntimeData.getInstance().getEntityManager().sortToLeftover(this);
 			}
 			if (currentAni.isAnimationFinished(internalStateTime)) {
 				setCurrentAni(Indentifiers.STATE_LEFTOVER);
+				RuntimeData.getInstance().getEntityManager().sortToLeftover(this);
 			}
 			break;
 		case Indentifiers.STATE_LEFTOVER:

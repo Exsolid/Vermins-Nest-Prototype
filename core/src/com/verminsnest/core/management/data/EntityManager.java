@@ -49,20 +49,7 @@ public class EntityManager {
 	public void updateEntities(float stateTime){
 		FloorManager.getInstane().update();
 		if(FloorManager.getInstane().allowEntityUpdate()) {
-			for(Entity ent: addedEntities){
-				if(ent instanceof Projectile){
-					projectiles.add(ent);
-				}else if(ent instanceof Gore){
-					gore.add(ent);
-				}else{
-					if(ent.getState() != Indentifiers.STATE_LEFTOVER){
-						entities.add(ent);
-					}else{
-						leftovers.add(ent);
-					}
-				}
-			}
-			addedEntities.clear();
+			
 			boolean found = false;
 			for(Entity ent: removedEntities){
 				for(Entity refEnt: entities){
@@ -86,6 +73,21 @@ public class EntityManager {
 				}
 			}
 			removedEntities.clear();
+			
+			for(Entity ent: addedEntities){
+				if(ent instanceof Projectile){
+					projectiles.add(ent);
+				}else if(ent instanceof Gore){
+					gore.add(ent);
+				}else{
+					if(ent.getState() != Indentifiers.STATE_LEFTOVER){
+						entities.add(ent);
+					}else{
+						leftovers.add(ent);
+					}
+				}
+			}
+			addedEntities.clear();
 
 			for(Entity ent: entities){
 				if(ent.getPos()[0] > character.getPos()[0]-1000 && ent.getPos()[0] < character.getPos()[0]+1000
@@ -202,9 +204,9 @@ public class EntityManager {
 	
 	public void notifyNewLevel() {
 		World gen = new World(RuntimeData.getInstance().getGame());
-		gen.setData(1, 20, 20, 10,
+		gen.setData(3, 20, 20, 10,
 				(RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Mountain-Sheet.png")));
-		new EnemySpawner(1);
+		new EnemySpawner(3);
 		//Clear data
 		for(Entity ent: entities){
 			if(!(ent instanceof Playable)) {
@@ -239,7 +241,7 @@ public class EntityManager {
 	}
 	
 	public void sortToLeftover(Entity leftOver){
-		leftovers.add(leftOver);
-		entities.remove(leftOver);
+		addedEntities.add(leftOver);
+		removedEntities.remove(leftOver);
 	}
 }

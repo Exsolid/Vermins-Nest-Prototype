@@ -125,8 +125,9 @@ public abstract class Enemy extends Entity {
 		attackCooldown += delta;
 		internalStateTime += delta;
 	}
-	protected abstract void chooseAvoidAction(int xDistance, int yDistance, float stateTime);
-	protected abstract void chooseAgressiveAction(int xDistance, int yDistance, float stateTime);
+	protected abstract void chooseAvoidAction(int xDistance, int yDistance, float delta);
+	protected abstract void chooseIdleAction(float delta);
+	protected abstract void chooseAgressiveAction(int xDistance, int yDistance, float delta);
 	protected abstract void attack(float stateTime);
 	
 	private void updateAction(float delta){
@@ -210,6 +211,8 @@ public abstract class Enemy extends Entity {
 				lastDirCount = -1;
 				setCurrentAni(Indentifiers.STATE_IDLE);
 			}
+		}else{
+			chooseIdleAction(delta);
 		}
 	}
 	

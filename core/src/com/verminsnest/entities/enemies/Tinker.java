@@ -1,5 +1,7 @@
 package com.verminsnest.entities.enemies;
 
+import java.util.Random;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -10,6 +12,8 @@ import com.verminsnest.entities.projectiles.slashes.SlashLeftSmall;
 import com.verminsnest.entities.projectiles.slashes.SlashRightSmall;
 
 public class Tinker extends Enemy {
+
+	private int[] patrolPos;
 	
 	public Tinker(int[] pos) {
 		super(pos, Indentifiers.ASSETMANAGER_TINKER,7,6,5,25);
@@ -157,5 +161,21 @@ public class Tinker extends Enemy {
 				break;
 			}
 		}
+	}
+
+	@Override
+	protected void chooseIdleAction(float delta) {
+		//Get room
+		int[] roomSize = RuntimeData.getInstance().getMapData().getRoomSize();
+		int[] roomNum = new int[] { (10 + (pos[0] / 128)) / roomSize[0] - 1,
+				(10 + (pos[1] / 128)) / roomSize[1] - 1 };
+		Random rand = new Random();
+		
+		//Get random position in room
+		while(patrolPos == null || !RuntimeData.getInstance().getMapData().getData()[patrolPos[0]][patrolPos[1]].isWalkable()){
+			patrolPos = new int[]{(roomNum[0]+1)*rand.nextInt(roomSize[0])+10,(roomNum[1]+1)*rand.nextInt(roomSize[1])+10};
+		}
+		//Walk to position
+		if(!RuntimeData.getInstance().getMovmentSystem().goToPos(this, new int[]{patrolPos[0]*128, patrolPos[1]*128}, (int) (speed*0.6)))patrolPos = null;
 	}
 }

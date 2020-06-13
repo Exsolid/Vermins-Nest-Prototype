@@ -33,7 +33,7 @@ public class EntityMovementSystem {
 			int refMapPosYEnd = (int) Math.floor((entity.getPos()[1]+entity.getSize()[1]+1)/128);
 			if(!map[mapPosXStart][refMapPosYEnd].isWalkable() || !map[mapPosXEnd][refMapPosYEnd].isWalkable()){
 				if(goalPos == null)return false;
-				else return searchAlternativ(entity, goalPos, speed);
+				else return goToPos(entity, goalPos, speed);
 			}else{
 				int y = entity.getPos()[1]+entity.getSize()[1]+1;
 				for(Entity refEnt: RuntimeData.getInstance().getEntityManager().getEntities()){
@@ -62,7 +62,7 @@ public class EntityMovementSystem {
 			int refMapPosYStart = (int) Math.floor((entity.getPos()[1]-i)/128);
 			if(!map[mapPosXStart][refMapPosYStart].isWalkable() || !map[mapPosXEnd][refMapPosYStart].isWalkable()){
 				if(goalPos == null)return false;
-				else return searchAlternativ(entity, goalPos, speed);
+				else return goToPos(entity, goalPos, speed);
 			}else{
 				int y = entity.getPos()[1]-1;
 				for(Entity refEnt: RuntimeData.getInstance().getEntityManager().getEntities()){
@@ -91,7 +91,7 @@ public class EntityMovementSystem {
 			int refMapPosXStart = (int) Math.floor((entity.getPos()[0]-i)/128);
 			if(!map[refMapPosXStart][mapPosYStart].isWalkable() || !map[refMapPosXStart][mapPosYEnd].isWalkable()){
 				if(goalPos == null)return false;
-				else return searchAlternativ(entity, goalPos, speed);
+				else return goToPos(entity, goalPos, speed);
 			}else{
 				int x = entity.getPos()[0]-1;
 				for(Entity refEnt: RuntimeData.getInstance().getEntityManager().getEntities()){
@@ -120,7 +120,7 @@ public class EntityMovementSystem {
 			int refMapPosXEnd = (int) Math.floor((entity.getPos()[0]+entity.getSize()[0]+i)/128);
 			if(!map[refMapPosXEnd][mapPosYStart].isWalkable() || !map[refMapPosXEnd][mapPosYEnd].isWalkable()){
 				if(goalPos == null)return false;
-				else return searchAlternativ(entity, goalPos, speed);
+				else return goToPos(entity, goalPos, speed);
 			}else{
 				int x = entity.getPos()[0]+entity.getSize()[0]+1;
 				for(Entity refEnt: RuntimeData.getInstance().getEntityManager().getEntities()){
@@ -399,7 +399,7 @@ public class EntityMovementSystem {
 		return -1;
 	}
 	
-	private boolean searchAlternativ(Entity source, int[] goalPos, int speed) {
+	public boolean goToPos(Entity source, int[] goalPos, int speed) {
 		
 		switch(findPathing(source,goalPos)) {
 		case -1:
