@@ -41,6 +41,7 @@ public class EntityDamageSystem {
 			hitProjectiles.add(found);
 			if(hit instanceof Enemy && source.isFriendly()){
 				((Enemy)hit).setHealth(((Enemy)hit).getHealth()-source.getDamage());
+				((Enemy)hit).setAlerted(RuntimeData.getInstance().getEntityManager().getCharacter());
 				if(((Enemy)hit).getHealth()<0){					
 					Random rand = new Random();
 					for(int i = 0; i < rand.nextInt(4)+3; i++){
@@ -55,6 +56,7 @@ public class EntityDamageSystem {
 						}
 					}
 					if(isLast) {
+						RuntimeData.getInstance().getEntityManager().getCharacter().updateKills();
 						RuntimeData.getInstance().getEntityManager().setLastDeath(hit);
 					}else {
 						RuntimeData.getInstance().getEntityManager().getCharacter().updateKills();

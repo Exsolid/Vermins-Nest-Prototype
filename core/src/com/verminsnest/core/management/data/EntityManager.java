@@ -46,7 +46,7 @@ public class EntityManager {
 	public void removeEntity(Entity ent){
 		removedEntities.add(ent);
 	}
-	public void updateEntities(float stateTime){
+	public void updateEntities(float delta){
 		FloorManager.getInstane().update();
 		if(FloorManager.getInstane().allowEntityUpdate()) {
 			
@@ -65,9 +65,7 @@ public class EntityManager {
 				}else if(ent instanceof Gore){
 					gore.remove(ent);
 				}else{
-					if(ent.getState() != Indentifiers.STATE_LEFTOVER){
-						entities.remove(ent);
-					}else{
+					if(!entities.remove(ent)) {
 						leftovers.remove(ent);
 					}
 				}
@@ -88,27 +86,34 @@ public class EntityManager {
 				}
 			}
 			addedEntities.clear();
-
+			int updateXRange = 1000;
+			int updateYRange = 1000;
 			for(Entity ent: entities){
-				if(ent.getPos()[0] > character.getPos()[0]-1000 && ent.getPos()[0] < character.getPos()[0]+1000
-						&& ent.getPos()[1] > character.getPos()[1]-700 && ent.getPos()[1] < character.getPos()[1]+700){
-					ent.update(stateTime);
+				if(ent.getPos()[0] > character.getPos()[0]-updateXRange && ent.getPos()[0] < character.getPos()[0]+updateXRange
+						&& ent.getPos()[1] > character.getPos()[1]-updateYRange && ent.getPos()[1] < character.getPos()[1]+updateYRange){
+					ent.update(delta);
 				}
 			}
+			
 			for(Entity ent: projectiles){
-				ent.update(stateTime);
+				ent.update(delta);
 			}
+			
 			for(Entity ent: leftovers){
-				if(ent.getPos()[0] > character.getPos()[0]-1000 && ent.getPos()[0] < character.getPos()[0]+1000
-						&& ent.getPos()[1] > character.getPos()[1]-700 && ent.getPos()[1] < character.getPos()[1]+700){
-					ent.update(stateTime);
+				if(ent.getPos()[0] > character.getPos()[0]-updateXRange && ent.getPos()[0] < character.getPos()[0]+updateXRange
+						&& ent.getPos()[1] > character.getPos()[1]-updateYRange && ent.getPos()[1] < character.getPos()[1]+updateYRange){
+					ent.update(delta);
 				}
 			}
 			for(Entity ent: gore){
-				if(ent.getPos()[0] > character.getPos()[0]-1000 && ent.getPos()[0] < character.getPos()[0]+1000
-						&& ent.getPos()[1] > character.getPos()[1]-700 && ent.getPos()[1] < character.getPos()[1]+700){
-					ent.update(stateTime);
+				if(ent.getPos()[0] > character.getPos()[0]-updateXRange && ent.getPos()[0] < character.getPos()[0]+updateXRange
+						&& ent.getPos()[1] > character.getPos()[1]-updateYRange && ent.getPos()[1] < character.getPos()[1]+updateYRange){
+					ent.update(delta);
 				}
+			}
+			if(lastDeath != null && lastDeath.getPos()[0] > character.getPos()[0]-updateXRange && lastDeath.getPos()[0] < character.getPos()[0]+updateXRange
+					&& lastDeath.getPos()[1] > character.getPos()[1]-updateYRange && lastDeath.getPos()[1] < character.getPos()[1]+updateYRange) {
+				lastDeath.update(delta);
 			}
 		}
 	}
@@ -204,7 +209,7 @@ public class EntityManager {
 	
 	public void notifyNewLevel() {
 		World gen = new World(RuntimeData.getInstance().getGame());
-		gen.setData(3, 20, 20, 10,
+		gen.setData(3, 15, 15, 10,
 				(RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Mountain-Sheet.png")));
 		new EnemySpawner(3);
 		//Clear data
@@ -242,6 +247,6 @@ public class EntityManager {
 	
 	public void sortToLeftover(Entity leftOver){
 		addedEntities.add(leftOver);
-		removedEntities.remove(leftOver);
+		removedEntities.add(leftOver);
 	}
 }

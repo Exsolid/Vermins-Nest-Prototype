@@ -70,6 +70,7 @@ public class GameManager extends VNScreen {
 					RuntimeData.getInstance().getGame().getBatch().end();
 				}else{
 					RuntimeData.getInstance().getGame().showScreen(VerminsNest.MAINMENU);
+					RuntimeData.getInstance().setGameOver(false);
 				}
 		}
 	}

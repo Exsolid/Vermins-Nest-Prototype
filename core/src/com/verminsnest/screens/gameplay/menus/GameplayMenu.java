@@ -174,8 +174,8 @@ public class GameplayMenu extends GameplayOverlay {
 		rooms.clear();
 		int[] charPos = RuntimeData.getInstance().getEntityManager().getCharacter().getPos();
 		int[] roomSize = RuntimeData.getInstance().getMapData().getRoomSize();
-		int[] roomNum = new int[] { (10 + (charPos[0] / 128)) / roomSize[0] - 1,
-				(10 + (charPos[1] / 128)) / roomSize[1] - 1 };
+		int[] roomNum = new int[] { ((charPos[0]-10*128) / 128) / roomSize[0],
+				((charPos[1]-10*128)/ 128) / roomSize[1]};
 		int[] posZero = new int[] {
 				mapPos[0] + RuntimeData.getInstance().getAsset("textures/menus/frames/MapFrame.png").getWidth() / 2
 						- RuntimeData.getInstance().getAsset("textures/menus/frames/RoomFrame.png").getWidth() / 2,

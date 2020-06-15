@@ -120,9 +120,9 @@ public class MainMenu extends VNScreen {
 					// World generation
 					RuntimeData.getInstance().loadTextures(Indentifiers.ASSETMANAGER_GAMEPLAY);
 					World gen = new World(RuntimeData.getInstance().getGame());
-					gen.setData(3, 20, 20, 10,
+					gen.setData(1,15, 15, 10,
 							(RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Mountain-Sheet.png")));
-					new EnemySpawner(3);
+					new EnemySpawner(2);
 					RuntimeData.getInstance().getGame().showScreen(VerminsNest.LOADGAME);
 					break;
 				case SETTINGS:
