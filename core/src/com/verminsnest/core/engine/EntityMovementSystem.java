@@ -210,13 +210,7 @@ public class EntityMovementSystem {
 		int[] sourcePos = new int[] {(source.getPos()[0]-source.getPos()[0]%128)/128,(source.getPos()[1]-source.getPos()[1]%128)/128};
 		nodeMap = RuntimeData.getInstance().getMapData().getAStarMap(goalPos, sourcePos);
 		
-		int[] currentPos = new int[] {sourcePos[0]-nodeMap[0][0].getMapPos()[0],sourcePos[1]-nodeMap[0][0].getMapPos()[1]};		
-		if((currentPos[0] | currentPos[1])<0) {
-			nodeMap = RuntimeData.getInstance().getMapData().getAStarMap(goalPos, sourcePos);
-			
-			currentPos = new int[] {sourcePos[0]-nodeMap[0][0].getMapPos()[0],sourcePos[1]-nodeMap[0][0].getMapPos()[1]};		
-			
-		}
+		int[] currentPos = new int[] {sourcePos[0]-nodeMap[0][0].getMapPos()[0],sourcePos[1]-nodeMap[0][0].getMapPos()[1]};
 		openNodes.add(nodeMap[currentPos[0]][currentPos[1]]);
 		
 		//Calculate the best direction
