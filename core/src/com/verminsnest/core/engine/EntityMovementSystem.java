@@ -251,141 +251,146 @@ public class EntityMovementSystem {
 	
 	private int calculatePathing() {
 		MapCell[][] map = RuntimeData.getInstance().getMapData().getData();
-		while(!openNodes.isEmpty()) {
-			//Find best choice
+		while (!openNodes.isEmpty()) {
+			// Find best choice
 			AStarMapNode best = null;
-			for(AStarMapNode ref: openNodes) {
-				if(best == null || best.getWeight() > ref.getWeight() || best.getWeight() == ref.getWeight() && best.getDistSource() > ref.getDistSource()) {
+			for (AStarMapNode ref : openNodes) {
+				if (best == null || best.getWeight() > ref.getWeight()
+						|| best.getWeight() == ref.getWeight() && best.getDistSource() > ref.getDistSource()) {
 					best = ref;
 				}
 			}
-			//Return source direction if the goal was found
-			if(best.getDistGoal() == 0) {
+			// Return source direction if the goal was found
+			if (best.getDistGoal() == 0) {
 				openNodes.clear();
 				closedNodes.clear();
 				return best.getSourceDir();
 			}
 			openNodes.remove(best);
 			closedNodes.add(best);
-			//Evaluate neighbors if not checked before and is walkable
-			//West(Left)
-			if(best.getNodePos()[0]-1 >= 0) {
-				AStarMapNode neighbor = nodeMap[best.getNodePos()[0]-1][best.getNodePos()[1]];
-				if(!closedNodes.contains(neighbor) && map[neighbor.getMapPos()[0]][neighbor.getMapPos()[1]].isWalkable()) {
-					//Set new 'walked' distance
-					int refDist = best.getDistSource() +1;
-					
-					if(openNodes.contains(neighbor)) {				
-						if(refDist > neighbor.getWeight()) {
-							//Set new data
-							neighbor.setSourceDist(refDist);
-							if(best.getSourceDir() == -1) {
-								//Set source direction to return
-								neighbor.setSourceDir(Indentifiers.DIRECTION_WEST);
-							}else {
-								neighbor.setSourceDir(best.getSourceDir());
-							}
-						}
-					}else {
-						//Add new data
-						neighbor.setSourceDist(refDist);
-						if(best.getSourceDir() == -1) {
-							//Set source direction to return
-							neighbor.setSourceDir(Indentifiers.DIRECTION_WEST);
-						}else {
-							neighbor.setSourceDir(best.getSourceDir());
-						}
-						openNodes.add(neighbor);
-					}
-				}
-			}
-			//East(Right)
-			if(best.getNodePos()[0]+1 < nodeMap.length) {
-				AStarMapNode neighbor = nodeMap[best.getNodePos()[0]+1][best.getNodePos()[1]];
-				if(!closedNodes.contains(neighbor) && map[neighbor.getMapPos()[0]][neighbor.getMapPos()[1]].isWalkable()) {
-					//Set new 'walked' distance
-					int refDist = best.getDistSource() +1;
+			// Evaluate neighbors if not checked before and is walkable
+			// West(Left)
+			if (best.getNodePos()[0] - 1 >= 0) {
+				AStarMapNode neighbor = nodeMap[best.getNodePos()[0] - 1][best.getNodePos()[1]];
+				if (!closedNodes.contains(neighbor)
+						&& map[neighbor.getMapPos()[0]][neighbor.getMapPos()[1]].isWalkable()) {
+					// Set new 'walked' distance
+					int refDist = best.getDistSource() + 1;
 
-					if(openNodes.contains(neighbor)) {				
-						if(refDist > neighbor.getWeight()) {
-							//Set new data
+					if (openNodes.contains(neighbor)) {
+						if (refDist > neighbor.getWeight()) {
+							// Set new data
 							neighbor.setSourceDist(refDist);
-							if(best.getSourceDir() == -1) {
-								//Set source direction to return
+							if (best.getSourceDir() == -1) {
+								// Set source direction to return
+								neighbor.setSourceDir(Indentifiers.DIRECTION_WEST);
+							} else {
+								neighbor.setSourceDir(best.getSourceDir());
+							}
+						}
+					} else {
+						// Add new data
+						neighbor.setSourceDist(refDist);
+						if (best.getSourceDir() == -1) {
+							// Set source direction to return
+							neighbor.setSourceDir(Indentifiers.DIRECTION_WEST);
+						} else {
+							neighbor.setSourceDir(best.getSourceDir());
+						}
+						openNodes.add(neighbor);
+					}
+				}
+			}
+			// East(Right)
+			if (best.getNodePos()[0] + 1 < nodeMap.length) {
+				AStarMapNode neighbor = nodeMap[best.getNodePos()[0] + 1][best.getNodePos()[1]];
+				if (!closedNodes.contains(neighbor)
+						&& map[neighbor.getMapPos()[0]][neighbor.getMapPos()[1]].isWalkable()) {
+					// Set new 'walked' distance
+					int refDist = best.getDistSource() + 1;
+
+					if (openNodes.contains(neighbor)) {
+						if (refDist > neighbor.getWeight()) {
+							// Set new data
+							neighbor.setSourceDist(refDist);
+							if (best.getSourceDir() == -1) {
+								// Set source direction to return
 								neighbor.setSourceDir(Indentifiers.DIRECTION_EAST);
-							}else {
+							} else {
 								neighbor.setSourceDir(best.getSourceDir());
 							}
 						}
-					}else {
-						//Add new data
+					} else {
+						// Add new data
 						neighbor.setSourceDist(refDist);
-						if(best.getSourceDir() == -1) {
-							//Set source direction to return
+						if (best.getSourceDir() == -1) {
+							// Set source direction to return
 							neighbor.setSourceDir(Indentifiers.DIRECTION_EAST);
-						}else {
+						} else {
 							neighbor.setSourceDir(best.getSourceDir());
 						}
 						openNodes.add(neighbor);
 					}
 				}
 			}
-			//North(Top)
-			if(best.getNodePos()[1]+1 < nodeMap[0].length) {
-				AStarMapNode neighbor = nodeMap[best.getNodePos()[0]][best.getNodePos()[1]+1];
-				if(!closedNodes.contains(neighbor) && map[neighbor.getMapPos()[0]][neighbor.getMapPos()[1]].isWalkable()) {
-					//Set new 'walked' distance
-					int refDist = best.getDistSource() +1;
-					
-					if(openNodes.contains(neighbor)) {				
-						if(refDist > neighbor.getWeight()) {
-							//Set new data
+			// North(Top)
+			if (best.getNodePos()[1] + 1 < nodeMap[0].length) {
+				AStarMapNode neighbor = nodeMap[best.getNodePos()[0]][best.getNodePos()[1] + 1];
+				if (!closedNodes.contains(neighbor)
+						&& map[neighbor.getMapPos()[0]][neighbor.getMapPos()[1]].isWalkable()) {
+					// Set new 'walked' distance
+					int refDist = best.getDistSource() + 1;
+
+					if (openNodes.contains(neighbor)) {
+						if (refDist > neighbor.getWeight()) {
+							// Set new data
 							neighbor.setSourceDist(refDist);
-							if(best.getSourceDir() == -1) {
-								//Set source direction to return
+							if (best.getSourceDir() == -1) {
+								// Set source direction to return
 								neighbor.setSourceDir(Indentifiers.DIRECTION_NORTH);
-							}else {
+							} else {
 								neighbor.setSourceDir(best.getSourceDir());
 							}
 						}
-					}else {
-						//Add new data
+					} else {
+						// Add new data
 						neighbor.setSourceDist(refDist);
-						if(best.getSourceDir() == -1) {
-							//Set source direction to return
+						if (best.getSourceDir() == -1) {
+							// Set source direction to return
 							neighbor.setSourceDir(Indentifiers.DIRECTION_NORTH);
-						}else {
+						} else {
 							neighbor.setSourceDir(best.getSourceDir());
 						}
 						openNodes.add(neighbor);
 					}
 				}
 			}
-			//South(Down)
-			if(best.getNodePos()[1]-1 >= 0) {
-				AStarMapNode neighbor = nodeMap[best.getNodePos()[0]][best.getNodePos()[1]-1];
-				if(!closedNodes.contains(neighbor) && map[neighbor.getMapPos()[0]][neighbor.getMapPos()[1]].isWalkable()) {
-					//Set new 'walked' distance
-					int refDist = best.getDistSource() +1;
-					
-					if(openNodes.contains(neighbor)) {				
-						if(refDist > neighbor.getWeight()) {
-							//Set new data
+			// South(Down)
+			if (best.getNodePos()[1] - 1 >= 0) {
+				AStarMapNode neighbor = nodeMap[best.getNodePos()[0]][best.getNodePos()[1] - 1];
+				if (!closedNodes.contains(neighbor)
+						&& map[neighbor.getMapPos()[0]][neighbor.getMapPos()[1]].isWalkable()) {
+					// Set new 'walked' distance
+					int refDist = best.getDistSource() + 1;
+
+					if (openNodes.contains(neighbor)) {
+						if (refDist > neighbor.getWeight()) {
+							// Set new data
 							neighbor.setSourceDist(refDist);
-							if(best.getSourceDir() == -1) {
-								//Set source direction to return
+							if (best.getSourceDir() == -1) {
+								// Set source direction to return
 								neighbor.setSourceDir(Indentifiers.DIRECTION_SOUTH);
-							}else {
+							} else {
 								neighbor.setSourceDir(best.getSourceDir());
 							}
 						}
-					}else {
-						//Add new data
+					} else {
+						// Add new data
 						neighbor.setSourceDist(refDist);
-						if(best.getSourceDir() == -1) {
-							//Set source direction to return
+						if (best.getSourceDir() == -1) {
+							// Set source direction to return
 							neighbor.setSourceDir(Indentifiers.DIRECTION_SOUTH);
-						}else {
+						} else {
 							neighbor.setSourceDir(best.getSourceDir());
 						}
 						openNodes.add(neighbor);
@@ -393,7 +398,7 @@ public class EntityMovementSystem {
 				}
 			}
 		}
-		//If no open nodes  (== no possible way) found return -1 and clear data
+		// If no open nodes (== no possible way) found return -1 and clear data
 		openNodes.clear();
 		closedNodes.clear();
 		return -1;

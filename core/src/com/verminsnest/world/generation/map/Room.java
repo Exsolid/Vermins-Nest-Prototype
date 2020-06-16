@@ -14,8 +14,13 @@ public class Room {
 	private boolean found;
 	
 	private ArrayList<Socket> sockets;
-	
-	public Room(int[][] data, int minSize,int[]  layoutPos){
+	/**
+	 * Creates a new room which fills an int[][] with 0's and 1's (0 = is a walkable tile; 1 = is a unwalkable tile)
+	 * @param data the empty array
+	 * @param minSize the minimum size which the room has to have. Must be smaller than length*width of data
+	 * @param layoutPos the position of the room in the layout of the map
+	 */
+	public Room(int[][] data, int minSize,int[] layoutPos){
 		found = false;
 		rand = new Random();
 		connected = new Room[4];
@@ -27,20 +32,26 @@ public class Room {
 		
 		boolean accepted = false;
 		while(!accepted){
+			//Fills the int[][] with 1's and 0's with certain percentage for it to be 0
 			fillRandom(55);
+			//Replaces each cell with 1 or 0 depending on how its neighbors are set with an iteration of 2
 			smoothRoom(2);
 			int size = 0;
+			//Get the count of walkable cells
 			for (int x = 0; x < data.length; x++) {
 				for (int y = 0; y < data[0].length; y++) {
 					if(data[x][y] == 0)size++;
 				}
 			}
+			//Accepts rooms if size requirements are met
 			if(size >= minSize){
 				accepted = true;
 			}
 		}
 		
+		//Search for any sockets which isn't connected to the main part
 		searchSockets();
+		//If sockets are found, connect them
 		doPaths();
 	}
 	
@@ -155,6 +166,7 @@ public class Room {
 						};
 					}
 					if(!found){
+						//If a cut of cells was found, add all the connected cells and create a new socket
 						addToSocket(temp, null);
 					}
 				}
