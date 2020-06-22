@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
 import com.verminsnest.core.VerminsNest;
 import com.verminsnest.core.engine.EntityMovementSystem;
-import com.verminsnest.core.engine.VNAssetManager;
 import com.verminsnest.world.generation.map.MapData;
 
 public class RuntimeData {

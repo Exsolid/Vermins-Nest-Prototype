@@ -570,6 +570,11 @@ public abstract class Enemy extends Entity {
 		}
 	}
 	
+	public void setAlerted(Entity ent) {
+		timer = 0;
+		alerted = ent;
+	}
+	
 	public int getSpeed() {
 		return speed;
 	}

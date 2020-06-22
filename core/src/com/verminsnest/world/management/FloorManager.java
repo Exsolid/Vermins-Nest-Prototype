@@ -30,7 +30,6 @@ public class FloorManager {
 			if(levelHolePos == null) {
 				((Enemy)RuntimeData.getInstance().getEntityManager().getLastDeath()).setHealth(999);
 				((Enemy)RuntimeData.getInstance().getEntityManager().getLastDeath()).setToLastDeath(true);
-				RuntimeData.getInstance().getEntityManager().addEntity(RuntimeData.getInstance().getEntityManager().getLastDeath());
 				
 				if(((Enemy)RuntimeData.getInstance().getEntityManager().getLastDeath()).isReadyToDig()) {
 					levelHolePos = new int[2];
@@ -40,10 +39,9 @@ public class FloorManager {
 					
 					new CloudAnimation(levelHolePos);
 					RuntimeData.getInstance().getEntityManager().removeEntity(RuntimeData.getInstance().getEntityManager().getLastDeath());
+					RuntimeData.getInstance().getEntityManager().setLastDeath(null);
 					RuntimeData.getInstance().getMapData().getData()[levelHolePos[0]/128][levelHolePos[1]/128].addLayer(TextureRegion.split(RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Mountain-Hole.png"), RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Mountain-Hole.png").getWidth(),  RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Mountain-Hole.png").getHeight())[0][0]);
-				}
-				RuntimeData.getInstance().getEntityManager().removeEntity(RuntimeData.getInstance().getEntityManager().getLastDeath());
-				
+				}				
 			}
 		}
 		//Level connector interaction

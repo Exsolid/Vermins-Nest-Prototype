@@ -167,8 +167,8 @@ public class Tinker extends Enemy {
 	protected void chooseIdleAction(float delta) {
 		//Get room
 		int[] roomSize = RuntimeData.getInstance().getMapData().getRoomSize();
-		int[] roomNum = new int[] { (10 + (pos[0] / 128)) / roomSize[0] - 1,
-				(10 + (pos[1] / 128)) / roomSize[1] - 1 };
+		int[] roomNum =new int[] { ((pos[0]-10*128) / 128) / roomSize[0],
+				((pos[1]-10*128)/ 128) / roomSize[1]};
 		Random rand = new Random();
 		
 		//Get random position in room

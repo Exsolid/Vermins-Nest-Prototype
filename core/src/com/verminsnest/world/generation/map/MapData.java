@@ -275,19 +275,35 @@ public class MapData {
 		AStarMapNode[][] nodeMap = new AStarMapNode[Math.abs(goalPos[0]-sourcePos[0])+10][Math.abs(goalPos[1]-sourcePos[1])+10];
 		
 		if(goalPos[0] < sourcePos[0]) {
-			for(int y = -5; y < nodeMap[0].length-5; y++) {
-				for(int x = -5; x < nodeMap.length-5; x++) {
-					nodeMap[x+5][y+5] = new AStarMapNode(new int[] {goalPos[0]+x,goalPos[1]+y}, goalPos, new int[] {x+5,y+5});
+			if(goalPos[1] > sourcePos[1] ) {
+				for(int y = -(Math.abs(goalPos[1]-sourcePos[1])+5); y < 5; y++) {
+					for(int x = -5; x < nodeMap.length-5; x++) {
+						nodeMap[x+5][y+Math.abs(goalPos[1]-sourcePos[1])+5] = new AStarMapNode(new int[] {goalPos[0]+x,goalPos[1]+y}, goalPos, new int[] {x+5,y+Math.abs(goalPos[1]-sourcePos[1])+5});
+					}
 				}
-			}	
+			}else {
+				for(int y = -5; y < nodeMap[0].length-5; y++) {
+					for(int x = -5; x < nodeMap.length-5; x++) {
+						nodeMap[x+5][y+5] = new AStarMapNode(new int[] {goalPos[0]+x,goalPos[1]+y}, goalPos, new int[] {x+5,y+5});
+					}
+				}
+			}
+				
 		}else {
-			for(int y = -5; y < nodeMap[0].length-5; y++) {
-				for(int x = -5; x < nodeMap.length-5; x++) {
-					nodeMap[x+5][y+5] = new AStarMapNode(new int[] {sourcePos[0]+x,sourcePos[1]+y}, goalPos, new int[] {x+5,y+5});
+			if(goalPos[1] < sourcePos[1] ) {
+				for(int y = -(Math.abs(goalPos[1]-sourcePos[1])+5); y < 5; y++) {
+					for(int x = -5; x < nodeMap.length-5; x++) {
+						nodeMap[x+5][y+Math.abs(goalPos[1]-sourcePos[1])+5] = new AStarMapNode(new int[] {sourcePos[0]+x,sourcePos[1]+y}, goalPos, new int[] {x+5,y+Math.abs(goalPos[1]-sourcePos[1])+5});
+					}
+				}
+			}else {
+				for(int y = -5; y < nodeMap[0].length-5; y++) {
+					for(int x = -5; x < nodeMap.length-5; x++) {
+						nodeMap[x+5][y+5] = new AStarMapNode(new int[] {sourcePos[0]+x,sourcePos[1]+y}, goalPos, new int[] {x+5,y+5});
+					}
 				}
 			}
 		}
 		return nodeMap;
 	}
-	
 }
