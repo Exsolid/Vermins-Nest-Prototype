@@ -7,6 +7,7 @@ import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.Gore;
+import com.verminsnest.entities.eggs.Egg;
 import com.verminsnest.entities.enemies.Enemy;
 import com.verminsnest.entities.playables.Playable;
 import com.verminsnest.entities.projectiles.Projectile;
@@ -50,7 +51,7 @@ public class EntityDamageSystem {
 					
 					boolean isLast = true;
 					for(Entity ent: RuntimeData.getInstance().getEntityManager().getEntities()) {
-						if(ent instanceof Enemy && !ent.equals(hit)) {
+						if((ent instanceof Enemy | (ent instanceof Egg && ent.getState() != Indentifiers.STATE_LEFTOVER)) && !ent.equals(hit)) {
 							isLast = false;
 							break;
 						}
