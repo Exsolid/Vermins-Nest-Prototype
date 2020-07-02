@@ -21,6 +21,7 @@ public class Tinker extends Enemy {
 
 	@Override
 	public void init() {
+		shadow = RuntimeData.getInstance().getAsset("textures/enemies/tinker/Shadow.png");
 		Texture wFrontSheet = RuntimeData.getInstance().getAsset("textures/enemies/tinker/Tinker-W-Front.png");
 		TextureRegion[][] temp = TextureRegion.split(wFrontSheet, 64, 64);
 		TextureRegion[] frames = new TextureRegion[temp[0].length];
@@ -95,24 +96,24 @@ public class Tinker extends Enemy {
 	}
 
 	@Override
-	protected void chooseAvoidAction(int xDistance, int yDistance, float delta) {
-		walkRightOf();
-		walkLeftOf();
+	protected void chooseAvoidAction(int dist, float delta) {
+		dodgeRightOf();
+		dodgeLeftOf();
 		if(!movedLeftOf && !movedRightOf){
 			if(playerAlerted == null){
 				playerAlerted = RuntimeData.getInstance().getEntityManager().getCharacter();
 			}
 			alerted = playerAlerted;
-			chooseAgressiveAction(xDistance,yDistance, delta);
+			chooseAgressiveAction(dist, delta);
 		}
 	}
 
 	@Override
-	protected void chooseAgressiveAction(int xDistance, int yDistance, float delta) {
-		if(Math.abs(xDistance)<10 &&Math.abs(yDistance)<10){
+	protected void chooseAgressiveAction(int dist, float delta) {
+		if(dist<25){
 			attack(delta);
 		}else{
-			walkTowards();
+			walkTowards(new int[]{alerted.getPos()[0],alerted.getPos()[1]});
 		}
 	}
 

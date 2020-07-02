@@ -1,5 +1,6 @@
 package com.verminsnest.world.generation.spawning;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import com.verminsnest.core.management.Indentifiers;
@@ -38,7 +39,8 @@ public class EnemySpawner extends LoadingModule{
 						}
 					}
 				}
-				RuntimeData.getInstance().getEntityManager().addEnemiesInit(pixlePos[0], pixlePos[1], Indentifiers.ENEMY_TINKER);
+				ArrayList<Integer> ids = Indentifiers.getAllEnemyIDs();
+				RuntimeData.getInstance().getEntityManager().addEnemiesInit(pixlePos[0], pixlePos[1], ids.get(rand.nextInt(ids.size())));
 			}
 		}
 		this.setDone();

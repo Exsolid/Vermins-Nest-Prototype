@@ -9,6 +9,7 @@ import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.Gore;
+import com.verminsnest.entities.enemies.Flunk;
 import com.verminsnest.entities.enemies.Tinker;
 
 public class Egg extends Entity {
@@ -24,6 +25,7 @@ public class Egg extends Entity {
 	public Egg(int[] pos, int enemyID) {
 		super(pos, Indentifiers.ASSETMANAGER_EGG);
 		state = Indentifiers.STATE_IDLE;
+		this.enemyID = enemyID;
 		
 		init();
 		yShadowOffset = -10;
@@ -94,6 +96,11 @@ public class Egg extends Entity {
 				switch (enemyID) {
 				case Indentifiers.ENEMY_TINKER:
 					new Tinker(new int[] { this.pos[0] - 8, this.pos[1] + 13 });
+					break;
+				case Indentifiers.ENEMY_FLUNK:
+					new Flunk(new int[] { this.pos[0] - 8, this.pos[1] + 5 });
+					new Flunk(new int[] { this.pos[0] + 20, this.pos[1] + 5 });
+					new Flunk(new int[] { this.pos[0] + 12, this.pos[1] + 25 });
 					break;
 				}
 				hatched = true;

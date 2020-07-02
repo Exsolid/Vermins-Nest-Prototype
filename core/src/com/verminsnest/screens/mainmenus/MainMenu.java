@@ -93,7 +93,6 @@ public class MainMenu extends VNScreen {
 
 	// TODO Change to preferences later
 	private void mangageControls() {
-
 		blockTime = System.currentTimeMillis() - blockStartTime;
 		if (blockTime > 225) {
 			movementBlocked = false;
@@ -120,7 +119,7 @@ public class MainMenu extends VNScreen {
 					// World generation
 					RuntimeData.getInstance().loadTextures(Indentifiers.ASSETMANAGER_GAMEPLAY);
 					World gen = new World(RuntimeData.getInstance().getGame());
-					gen.setData(2, 20, 20, 10,
+					gen.setData(3, 20, 20, 10,
 							(RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Mountain-Sheet.png")));
 					new EnemySpawner(3);
 					RuntimeData.getInstance().getGame().showScreen(VerminsNest.LOADGAME);

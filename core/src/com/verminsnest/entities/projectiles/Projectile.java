@@ -59,7 +59,6 @@ public abstract class Projectile extends Entity{
 	}
 	
 	public TextureRegion getCurrentFrame(float stateTime) {
-		updateStateTime(stateTime);
 		if(state == Indentifiers.STATE_CAST){
 			if(currentAni.isAnimationFinished(internalStateTime)){
 				setCurrentAni(Indentifiers.STATE_FLYING);
@@ -100,6 +99,7 @@ public abstract class Projectile extends Entity{
 	}
 
 	public void update(float stateTime){
+		updateStateTime(stateTime);
 		if(state == Indentifiers.STATE_FLYING){
 			if(direction == Indentifiers.DIRECTION_EAST && !RuntimeData.getInstance().getMovmentSystem().moveRight(this,speed, null)){
 				setCurrentAni(Indentifiers.STATE_HIT);

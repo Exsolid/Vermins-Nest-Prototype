@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.Entity;
+import com.verminsnest.entities.explosions.Explosion;
 import com.verminsnest.entities.projectiles.Projectile;
 import com.verminsnest.world.generation.map.AStarMapNode;
 import com.verminsnest.world.generation.map.MapCell;
@@ -13,7 +14,6 @@ import com.verminsnest.world.generation.map.MapCell;
 public class EntityMovementSystem {
 	
 	private MapCell[][] map;
-	private EntityDamageSystem entDmgSys;
 	
 	private ArrayList<AStarMapNode> openNodes;
 	private ArrayList<AStarMapNode> closedNodes;
@@ -21,7 +21,6 @@ public class EntityMovementSystem {
 	
 	public EntityMovementSystem(MapCell[][] map){
 		this.map = map;
-		entDmgSys = new EntityDamageSystem();
 		this.openNodes = new ArrayList<>();
 		this.closedNodes = new ArrayList<>();
 	}
@@ -40,8 +39,8 @@ public class EntityMovementSystem {
 					if(!entity.equals(refEnt) && refEnt.isObstacle()){
 						for(int x = entity.getPos()[0]; x <= entity.getPos()[0]+entity.getSize()[0]; x++){
 							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
-								if(entity instanceof Projectile){
-									entDmgSys.addHit((Projectile)entity, refEnt);
+								if(entity instanceof Projectile|| entity instanceof Explosion){
+									RuntimeData.getInstance().getEntityDamageSystem().addHit(entity, refEnt);
 								}else{
 									return false;
 								}
@@ -69,8 +68,8 @@ public class EntityMovementSystem {
 					if(!entity.equals(refEnt) && refEnt.isObstacle()){
 						for(int x = entity.getPos()[0]; x <= entity.getPos()[0]+entity.getSize()[0]; x++){
 							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
-								if(entity instanceof Projectile){
-									entDmgSys.addHit((Projectile)entity, refEnt);
+								if(entity instanceof Projectile|| entity instanceof Explosion){
+									RuntimeData.getInstance().getEntityDamageSystem().addHit(entity, refEnt);
 								}else{
 									return false;
 								}
@@ -98,8 +97,8 @@ public class EntityMovementSystem {
 					if(!entity.equals(refEnt) && refEnt.isObstacle()){
 						for(int y = entity.getPos()[1]; y <= entity.getPos()[1]+entity.getSize()[1]; y++){
 							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
-								if(entity instanceof Projectile){
-									entDmgSys.addHit((Projectile)entity, refEnt);
+								if(entity instanceof Projectile|| entity instanceof Explosion){
+									RuntimeData.getInstance().getEntityDamageSystem().addHit(entity, refEnt);
 								}else{
 									return false;
 								}
@@ -127,8 +126,8 @@ public class EntityMovementSystem {
 					if(!entity.equals(refEnt) && refEnt.isObstacle()){
 						for(int y = entity.getPos()[1]; y <= entity.getPos()[1]+entity.getSize()[1]; y++){
 							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
-								if(entity instanceof Projectile){
-									entDmgSys.addHit((Projectile)entity, refEnt);
+								if(entity instanceof Projectile|| entity instanceof Explosion){
+									RuntimeData.getInstance().getEntityDamageSystem().addHit(entity, refEnt);
 								}else{
 									return false;
 								}
@@ -155,8 +154,8 @@ public class EntityMovementSystem {
 					if(!entity.equals(refEnt) && refEnt.isObstacle()){
 						for(int y = entity.getPos()[1]; y <= entity.getPos()[1]+entity.getSize()[1]; y++){
 							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
-								if(entity instanceof Projectile){
-									entDmgSys.addHit((Projectile)entity, refEnt);
+								if(entity instanceof Projectile|| entity instanceof Explosion){
+									RuntimeData.getInstance().getEntityDamageSystem().addHit(entity, refEnt);
 								}else{
 									return false;
 								}
@@ -183,8 +182,8 @@ public class EntityMovementSystem {
 					if(!entity.equals(refEnt) && refEnt.isObstacle()){
 						for(int x = entity.getPos()[0]; x <= entity.getPos()[0]+entity.getSize()[0]; x++){
 							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
-								if(entity instanceof Projectile){
-									entDmgSys.addHit((Projectile)entity, refEnt);
+								if(entity instanceof Projectile || entity instanceof Explosion){
+									RuntimeData.getInstance().getEntityDamageSystem().addHit(entity, refEnt);
 								}else{
 									return false;
 								}

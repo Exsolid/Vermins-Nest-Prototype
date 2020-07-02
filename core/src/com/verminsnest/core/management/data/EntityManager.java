@@ -8,7 +8,9 @@ import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.Gore;
 import com.verminsnest.entities.eggs.Egg;
+import com.verminsnest.entities.enemies.Flunk;
 import com.verminsnest.entities.enemies.Tinker;
+import com.verminsnest.entities.explosions.Explosion;
 import com.verminsnest.entities.playables.Playable;
 import com.verminsnest.entities.projectiles.Projectile;
 import com.verminsnest.world.generation.map.World;
@@ -22,7 +24,7 @@ public class EntityManager {
 	private ArrayList<Entity> entities;
 	private ArrayList<Entity> leftovers;
 	private ArrayList<Entity> gore;
-	private ArrayList<Entity> projectiles;
+	private ArrayList<Entity> damage;
 	
 	private ArrayList<int[]> toInitEntities;
 	
@@ -33,7 +35,7 @@ public class EntityManager {
 		removedEntities = new ArrayList<Entity>();
 		entities = new ArrayList<Entity>();
 		leftovers = new ArrayList<Entity>();
-		projectiles = new ArrayList<Entity>();
+		damage = new ArrayList<Entity>();
 		addedEntities = new ArrayList<Entity>();
 		gore = new ArrayList<Entity>();
 		toInitEntities= new ArrayList<>();
@@ -60,8 +62,8 @@ public class EntityManager {
 				if(!found){
 					ent.dispose();
 				}
-				if(ent instanceof Projectile){
-					projectiles.remove(ent);
+				if(ent instanceof Projectile || ent instanceof Explosion){
+					damage.remove(ent);
 				}else if(ent instanceof Gore){
 					gore.remove(ent);
 				}else{
@@ -73,8 +75,8 @@ public class EntityManager {
 			removedEntities.clear();
 			
 			for(Entity ent: addedEntities){
-				if(ent instanceof Projectile){
-					projectiles.add(ent);
+				if(ent instanceof Projectile || ent instanceof Explosion){
+					damage.add(ent);
 				}else if(ent instanceof Gore){
 					gore.add(ent);
 				}else{
@@ -86,7 +88,7 @@ public class EntityManager {
 				}
 			}
 			addedEntities.clear();
-			int updateXRange = 1000;
+			int updateXRange = 1500;
 			int updateYRange = 1000;
 			for(Entity ent: entities){
 				if(ent.getPos()[0] > character.getPos()[0]-updateXRange && ent.getPos()[0] < character.getPos()[0]+updateXRange
@@ -95,7 +97,7 @@ public class EntityManager {
 				}
 			}
 			
-			for(Entity ent: projectiles){
+			for(Entity ent: damage){
 				ent.update(delta);
 			}
 			
@@ -132,7 +134,7 @@ public class EntityManager {
 		for(Entity ent: gore){
 			ent.dispose();
 		}
-		for(Entity ent: projectiles){
+		for(Entity ent: damage){
 			ent.dispose();
 		}
 		for(Entity ent: addedEntities){
@@ -149,7 +151,7 @@ public class EntityManager {
 		lastDeath = null;
 		
 		entities.clear();
-		projectiles.clear();
+		damage.clear();
 		gore.clear();
 		leftovers.clear();
 		FloorManager.getInstane().reset();
@@ -160,7 +162,7 @@ public class EntityManager {
 		temp.addAll(gore);
 		temp.addAll(leftovers);
 		temp.addAll(entities);
-		temp.addAll(projectiles);
+		temp.addAll(damage);
 		return temp;
 	}
 	
@@ -176,6 +178,9 @@ public class EntityManager {
 				switch(data[2]){
 				case Indentifiers.ENEMY_TINKER:
 					new Tinker(new int[]{data[0], data[1]});
+					break;
+				case Indentifiers.ENEMY_FLUNK:
+					new Flunk(new int[]{data[0], data[1]});
 					break;
 				}
 				break;
@@ -221,7 +226,7 @@ public class EntityManager {
 		for(Entity ent: leftovers){
 			ent.dispose();
 		}
-		for(Entity ent: projectiles){
+		for(Entity ent: damage){
 			ent.dispose();
 		}
 		for(Entity ent: addedEntities){
@@ -236,7 +241,7 @@ public class EntityManager {
 		removedEntities.clear();
 		
 		entities.clear();
-		projectiles.clear();
+		damage.clear();
 		gore.clear();
 		leftovers.clear();
 		

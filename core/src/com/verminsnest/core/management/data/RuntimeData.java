@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
 import com.verminsnest.core.VerminsNest;
+import com.verminsnest.core.engine.EntityDamageSystem;
 import com.verminsnest.core.engine.EntityMovementSystem;
 import com.verminsnest.world.generation.map.MapData;
 
@@ -14,6 +15,7 @@ public class RuntimeData {
 	
 	private VNAssetManager assetManager;
 	private EntityMovementSystem enMoSys;
+	private EntityDamageSystem entDmgSys;
 	private EntityManager enMan;
 	private VerminsNest game;
 	
@@ -27,6 +29,8 @@ public class RuntimeData {
 		enMan = new EntityManager();
 		this.game = game;
 		setGameOver(false);
+
+		entDmgSys = new EntityDamageSystem();
 	}
 	
 	public static RuntimeData getInstance(){
@@ -79,6 +83,10 @@ public class RuntimeData {
 	
 	public EntityManager getEntityManager(){
 		return enMan;
+	}
+
+	public EntityDamageSystem getEntityDamageSystem(){
+		return entDmgSys;
 	}
 
 	public boolean isGameOver() {
