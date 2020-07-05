@@ -110,7 +110,7 @@ public class Tinker extends Enemy {
 
 	@Override
 	protected void chooseAgressiveAction(int dist, float delta) {
-		if(dist<25){
+		if(dist<20){
 			attack(delta);
 		}else{
 			walkTowards(new int[]{alerted.getPos()[0],alerted.getPos()[1]});

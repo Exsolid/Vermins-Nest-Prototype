@@ -470,7 +470,7 @@ public abstract class Enemy extends Entity {
 					setCurrentAni(Indentifiers.STATE_WALK_SOUTH);
 				}
 			}
-			lastDirCount = 0.75f;
+			lastDirCount = 0.25f;
 		} else {
 			switch (state) {
 			case Indentifiers.STATE_IDLE:
