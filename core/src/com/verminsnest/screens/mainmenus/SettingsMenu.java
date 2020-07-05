@@ -225,6 +225,8 @@ public class SettingsMenu extends VNScreen {
 		// Enter pressed
 		if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
 			if (!movementBlocked) {
+				movementBlocked = true;
+				blockStartTime = System.currentTimeMillis();
 				switch (menuIndex) {
 				case -1:
 					switch (settingsMenuManager.getIndex()) {
@@ -352,8 +354,6 @@ public class SettingsMenu extends VNScreen {
 				case CONTROLS:
 					break;
 				}
-				movementBlocked = true;
-				blockStartTime = System.currentTimeMillis();
 			}
 		}
 	}
