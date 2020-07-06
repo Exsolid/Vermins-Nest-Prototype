@@ -2,6 +2,8 @@ package com.verminsnest.core;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Window;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -25,8 +27,6 @@ public class VerminsNest extends Game {
 	private SettingsMenu settingsMenu;
 	private LoadingScreen loadingScreen;
 	
-	private boolean reload;
-	
 	private SpriteBatch batch;
 	private Runtime r;
 	private Configurator config;
@@ -46,7 +46,6 @@ public class VerminsNest extends Game {
 		setConfig(new Configurator());
 		this.setBatch(new SpriteBatch());	
 		
-		reload = false;
 		camera = new OrthographicCamera();
 		camera.position.set(1920/2, 1055/2, 0);
 		camera.update();
@@ -70,7 +69,6 @@ public class VerminsNest extends Game {
 		Cursor cursor = Gdx.graphics.newCursor(pixmap, xHotspot, yHotspot);
 		Gdx.graphics.setCursor(cursor);
 		pixmap.dispose();
-		
 		this.showScreen(MAINMENU);
 	}
 	
@@ -80,9 +78,13 @@ public class VerminsNest extends Game {
 			height = config.getResolution()[1];
 			if(!config.isFullscreen()){
 				Gdx.graphics.setWindowedMode(width,height);
+				
+				Lwjgl3Graphics g = (Lwjgl3Graphics) Gdx.graphics;
+			    Lwjgl3Window window = g.getWindow();
+			    window.setPosition(Gdx.graphics.getMonitors()[config.getCurrentMonitor()].virtualX,Gdx.graphics.getMonitors()[config.getCurrentMonitor()].virtualY+25);
 			}else{
 				height += 25;
-				Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+				Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode(Gdx.graphics.getMonitors()[config.getCurrentMonitor()]));
 			}
 			vport.update(width,height, false);
 			if(!(gameMan != null && this.getScreen() == gameMan)){
@@ -146,12 +148,6 @@ public class VerminsNest extends Game {
 		case SETTINGSMENU:
 			if(settingsMenu.isDisposed()){
 				initMenus();
-			}
-			if(reload){
-				settingsMenu.dispose();
-				settingsMenu.init();
-				reload = false;
-				r.gc();
 			}
 			this.setScreen(settingsMenu);
 			break;

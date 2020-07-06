@@ -67,4 +67,13 @@ public class Configurator {
 		prefs.putBoolean("isFullscreen", mode);
 		prefs.flush();
 	}
+	
+	public void setCurrentMonitor(int id){
+		prefs.putInteger("monitorID", id);
+		prefs.flush();
+	}
+	
+	public int getCurrentMonitor(){
+		return prefs.getInteger("monitorID", 0);
+	}
 }

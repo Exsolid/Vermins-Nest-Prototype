@@ -35,7 +35,9 @@ public class SettingsMenu extends VNScreen {
 	// Graphics settings menu
 	private final static int MODE = 0;
 	private final static int RESOLUTION = 1;
-	private final static int LANGUAGE = 2;
+	private final static int MONITOR = 2;
+	private final static int LANGUAGE = 3;
+	private final static int GRAPHICS_BACK = 4;
 
 	private int menuIndex;
 	private ButtonManager currentMenuManager;
@@ -235,8 +237,13 @@ public class SettingsMenu extends VNScreen {
 								RuntimeData.getInstance().getGame().getConfig().getResolution()[0] + "x" + (RuntimeData.getInstance().getGame().getConfig().getResolution()[1]+25))) {
 							videoMenuManager.getButtons().get(0).nextOption();
 						}
+						int monitorID = RuntimeData.getInstance().getGame().getConfig().getCurrentMonitor();
+						for(int i = 0; i < monitorID; i++){
+							videoMenuManager.getButtons().get(2).nextOption();
+						}
 						if(!RuntimeData.getInstance().getGame().getConfig().isFullscreen() && videoMenuManager.getButtons().get(1).getOption().getText().equals(RuntimeData.getInstance().getGame().getConfig().getMessage("GraphicsMenu_Mode_Fullscreen"))) videoMenuManager.getButtons().get(1).nextOption();
-						if(!RuntimeData.getInstance().getGame().getConfig().getLanguage().equals("en")&& videoMenuManager.getButtons().get(2).getOption().getText().equals(RuntimeData.getInstance().getGame().getConfig().getMessage("GraphicsMenu_Language_English")))videoMenuManager.getButtons().get(2).nextOption();
+						if(!RuntimeData.getInstance().getGame().getConfig().getLanguage().equals("en")&& videoMenuManager.getButtons().get(2).getOption().getText().equals(RuntimeData.getInstance().getGame().getConfig().getMessage("GraphicsMenu_Language_English")))videoMenuManager.getButtons().get(3).nextOption();
+						
 						currentMenuManager = videoMenuManager;
 						menuIndex = 0;
 						break;
@@ -257,42 +264,29 @@ public class SettingsMenu extends VNScreen {
 						break;
 					case MODE:
 						break;
+					case MONITOR:
+						break;
 					case LANGUAGE:
 						break;
-					case BACK:
+					case GRAPHICS_BACK:
 						Boolean resize = false;
 						int[] newRes = new int[2];
 						String currentLang = "";
 						Boolean reload = false;
-						
+						//Get current resolution
 						String resolution = RuntimeData.getInstance().getGame().getConfig().getResolution()[0] + "x"
 								+ RuntimeData.getInstance().getGame().getConfig().getResolution()[1];
-						if (!resolution.equals(currentMenuManager.getButtons().get(0).getOption().getText()) && !RuntimeData.getInstance().getGame().getConfig().isFullscreen()) {
-							resize = true;
-							if (currentMenuManager.getButtons().get(0).getOption().getText().equals("1920x1080")) {
-								newRes[0] = 1920;
-								newRes[1] = 1055;
-								RuntimeData.getInstance().getGame().getConfig().setResolution(newRes);
-							}
-							if (currentMenuManager.getButtons().get(0).getOption().getText().equals("1280x720")) {
-								newRes[0] = 1280;
-								newRes[1] = 695;
-								RuntimeData.getInstance().getGame().getConfig().setResolution(newRes);
-							}
-							if (currentMenuManager.getButtons().get(0).getOption().getText().equals("852x480")) {
-								newRes[0] = 852;
-								newRes[1] = 455;
-								RuntimeData.getInstance().getGame().getConfig().setResolution(newRes);
-							}
-						}
+						//Set fullscreen
 						if(currentMenuManager.getButtons().get(1).getOption().getText().equals(RuntimeData.getInstance().getGame().getConfig().getMessage("GraphicsMenu_Mode_Fullscreen"))&& !Gdx.graphics.isFullscreen()){
-							resize = false;
+							resize = true;
 							newRes[0] = 1920;
 							newRes[1] = 1055;
 							RuntimeData.getInstance().getGame().getConfig().setResolution(newRes);
 							RuntimeData.getInstance().getGame().getConfig().setFullscreen(true);
 							RuntimeData.getInstance().getGame().resize(0, 0);
-						}else if(currentMenuManager.getButtons().get(1).getOption().getText().equals(RuntimeData.getInstance().getGame().getConfig().getMessage("GraphicsMenu_Mode_Window"))&& Gdx.graphics.isFullscreen()){
+						}else if(currentMenuManager.getButtons().get(1).getOption().getText().equals(RuntimeData.getInstance().getGame().getConfig().getMessage("GraphicsMenu_Mode_Window"))&& Gdx.graphics.isFullscreen()
+								|| !resolution.equals(currentMenuManager.getButtons().get(0).getOption().getText()) && !RuntimeData.getInstance().getGame().getConfig().isFullscreen()){
+							//Set resolution, if switched from fullscreen
 							resize = true;
 							if (currentMenuManager.getButtons().get(0).getOption().getText().equals("1920x1080")) {
 								newRes[0] = 1920;
@@ -309,14 +303,29 @@ public class SettingsMenu extends VNScreen {
 								newRes[1] = 455;
 								RuntimeData.getInstance().getGame().getConfig().setResolution(newRes);
 							}
-						}
-						
-						if (resize) {
+
 							RuntimeData.getInstance().getGame().getConfig().setFullscreen(false);
+						}
+						//Monitor
+						if(currentMenuManager.getButtons().get(2).getOption().getText().equals(RuntimeData.getInstance().getGame().getConfig().getMessage("GraphicsMenu_Monitor_1"))){
+							if(RuntimeData.getInstance().getGame().getConfig().getCurrentMonitor() != 1)resize = true;
+							RuntimeData.getInstance().getGame().getConfig().setCurrentMonitor(0);
+						}
+						else if(currentMenuManager.getButtons().get(2).getOption().getText().equals(RuntimeData.getInstance().getGame().getConfig().getMessage("GraphicsMenu_Monitor_2"))){
+							if(RuntimeData.getInstance().getGame().getConfig().getCurrentMonitor() != 1)resize = true;
+							RuntimeData.getInstance().getGame().getConfig().setCurrentMonitor(1);
+						}
+						else if(currentMenuManager.getButtons().get(2).getOption().getText().equals(RuntimeData.getInstance().getGame().getConfig().getMessage("GraphicsMenu_Monitor_3"))){
+							if(RuntimeData.getInstance().getGame().getConfig().getCurrentMonitor() != 1)resize = true;
+							RuntimeData.getInstance().getGame().getConfig().setCurrentMonitor(2);
+						}
+						//Update screen settings
+						if (resize) {
 							RuntimeData.getInstance().getGame().resize(0, 0);
 						}
-						if(currentMenuManager.getButtons().get(2).getOption().getText().equals(RuntimeData.getInstance().getGame().getConfig().getMessage("GraphicsMenu_Language_German"))) currentLang = "de";
-						else if(currentMenuManager.getButtons().get(2).getOption().getText().equals(RuntimeData.getInstance().getGame().getConfig().getMessage("GraphicsMenu_Language_English"))) currentLang = "en";
+						//Language
+						if(currentMenuManager.getButtons().get(3).getOption().getText().equals(RuntimeData.getInstance().getGame().getConfig().getMessage("GraphicsMenu_Language_German"))) currentLang = "de";
+						else if(currentMenuManager.getButtons().get(3).getOption().getText().equals(RuntimeData.getInstance().getGame().getConfig().getMessage("GraphicsMenu_Language_English"))) currentLang = "en";
 						if(!currentLang.equals(RuntimeData.getInstance().getGame().getConfig().getLanguage())){
 							try {
 								RuntimeData.getInstance().getGame().getConfig().setLanguage(currentLang);
@@ -325,6 +334,7 @@ public class SettingsMenu extends VNScreen {
 								e.printStackTrace();
 							}
 						}
+						//Update language settings
 						if(reload){
 							RuntimeData.getInstance().getGame().reload();
 						}
@@ -373,6 +383,14 @@ public class SettingsMenu extends VNScreen {
 		mode.add("GraphicsMenu_Mode_Fullscreen");
 		mode.add("GraphicsMenu_Mode_Window");
 		buttonList.add(mode);
+		
+		ArrayList<String> monitor = new ArrayList<String>();
+		monitor.add("GraphicsMenu_Monitor_Caps");
+		int cap = Gdx.graphics.getMonitors().length > 3 ? 3 : Gdx.graphics.getMonitors().length;
+		for(int i = 0; i < cap; i++){
+			monitor.add("GraphicsMenu_Monitor_"+(i+1));
+		}
+		buttonList.add(monitor);
 		
 		ArrayList<String> lang = new ArrayList<String>();
 		lang.add("GraphicsMenu_Language");
