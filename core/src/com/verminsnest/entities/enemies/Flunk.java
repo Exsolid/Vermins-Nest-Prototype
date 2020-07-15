@@ -83,6 +83,6 @@ public class Flunk extends Enemy {
 			frames[i] = temp[0][i];
 		}
 		currentAni = new Animation<TextureRegion>(0.5f / this.speed,frames);
-		shadow = RuntimeData.getInstance().getAsset("textures/enemies/flunk/Shadow.png");
+		shadow = RuntimeData.getInstance().getAsset("textures/shadows/Shadow-XS.png");
 	}
 }

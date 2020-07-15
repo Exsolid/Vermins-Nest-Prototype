@@ -24,6 +24,7 @@ public class Indentifiers {
 	public static final int STATE_FLYING = 10;
 	public static final int STATE_HIT = 11;
 	public static final int STATE_TODELETE = 12;
+	public static final int STATE_BREAK = 13;
 	
 	public static final int STATE_SPAWNING = 13;
 	public static final int STATE_LEFTOVER = 14;
@@ -42,6 +43,8 @@ public class Indentifiers {
 	public static final int ASSETMANAGER_FLUNK = 9;
 	public final static int ASSETMANAGER_EGG = 6;
 	public final static int ASSETMANAGER_GORE = 7;
+	
+	public final static int ASSETMANAGER_BARRIER_BLUE = 11;
 
 	//Enemy IDs
 	public static final int ENEMY_TINKER = 0;

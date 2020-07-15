@@ -39,7 +39,7 @@ public class Egg extends Entity {
 	public void init() {
 		hatched = false;
 		
-		shadow = RuntimeData.getInstance().getAsset("textures/characters/Character-Shadow.png");
+		shadow = RuntimeData.getInstance().getAsset("textures/shadows/Shadow-M.png");
 		
 		Texture idleSheet = RuntimeData.getInstance().getAsset("textures/enemies/eggs/Egg-Idle.png");
 		TextureRegion[][] temp = TextureRegion.split(idleSheet, 50, 80);

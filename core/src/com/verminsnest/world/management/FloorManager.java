@@ -48,7 +48,7 @@ public class FloorManager {
 		if(Gdx.input.isKeyJustPressed(Input.Keys.E) && levelHolePos != null
 				&& RuntimeData.getInstance().getGame().getCamera().position.x > levelHolePos[0] && RuntimeData.getInstance().getGame().getCamera().position.x < levelHolePos[0]+128
 				&& RuntimeData.getInstance().getGame().getCamera().position.y > levelHolePos[1] && RuntimeData.getInstance().getGame().getCamera().position.y < levelHolePos[1]+128) {
-				
+				//TODO cancel on item e
 			allowEntityUpdate = false;
 			levelHolePos = null;
 			

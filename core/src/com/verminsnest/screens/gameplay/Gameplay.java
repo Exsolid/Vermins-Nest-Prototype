@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.Entity;
+import com.verminsnest.entities.items.Item;
 import com.verminsnest.screens.gameplay.menus.GameplayMenu;
 import com.verminsnest.world.generation.map.MapCell;
 import com.verminsnest.world.management.FloorManager;
@@ -51,20 +52,38 @@ public class Gameplay extends GameplayOverlay{
 					
 				}
 				//Draw shadows
-				for(Entity ent: RuntimeData.getInstance().getEntityManager().getEntities()){
-					if(ent.getShadow() != null){
+				for(Entity ent: RuntimeData.getInstance().getEntityManager().getAllEntities()){
+					if(ent instanceof Item && ((Item)ent).getPos() != null && ((Item)ent).getKeeper() == null && ent.getShadow() != null){
+						RuntimeData.getInstance().getGame().getBatch().draw(ent.getShadow(),ent.getPos()[0],ent.getPos()[1]+ent.getYShadowOffset());	
+					}
+					else if(!(ent instanceof Item) && ent.getShadow() != null){
 						RuntimeData.getInstance().getGame().getBatch().draw(ent.getShadow(),ent.getPos()[0],ent.getPos()[1]+ent.getYShadowOffset());	
 					}
 				}
+				
 				//Draw walls
 				for (MapCell cell : toDraw) {
 					if (cell.getLayers().size() > 1 && !cell.isWalkable()) {
 						RuntimeData.getInstance().getGame().getBatch().draw(cell.getLayers().get(1), cell.getxPos(), cell.getyPos());
 					}
 				}
+				
+				//Draw ground items
+				for(Entity ent: RuntimeData.getInstance().getEntityManager().getItems()){
+					if(((Item)ent).getPos() != null && ((Item)ent).getKeeper() == null){
+						RuntimeData.getInstance().getGame().getBatch().draw(ent.getCurrentFrame(delta), ent.getPos()[0],ent.getPos()[1], ent.getSize()[0]/2, ent.getSize()[1]/2, ent.getSize()[0], ent.getSize()[1], 1, 1, ent.getRotation());
+					}
+				}
+				
 				//Draw entities
-				for(Entity ent: RuntimeData.getInstance().getEntityManager().getEntities()){
+				for(Entity ent: RuntimeData.getInstance().getEntityManager().getAllBioEntities()){
 					RuntimeData.getInstance().getGame().getBatch().draw(ent.getCurrentFrame(delta), ent.getPos()[0],ent.getPos()[1], ent.getSize()[0]/2, ent.getSize()[1]/2, ent.getSize()[0], ent.getSize()[1], 1, 1, ent.getRotation());
+				}
+				//Draw kept items
+				for(Entity ent: RuntimeData.getInstance().getEntityManager().getItems()){
+					if(((Item)ent).getPos() != null && ((Item)ent).getKeeper() != null){
+						RuntimeData.getInstance().getGame().getBatch().draw(ent.getCurrentFrame(delta), ent.getPos()[0],ent.getPos()[1], ent.getSize()[0]/2, ent.getSize()[1]/2, ent.getSize()[0], ent.getSize()[1], 1, 1, ent.getRotation());
+					}
 				}
 				gui.render(delta);
 	}

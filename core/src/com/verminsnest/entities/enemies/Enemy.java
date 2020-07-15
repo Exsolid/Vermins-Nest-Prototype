@@ -139,16 +139,10 @@ public abstract class Enemy extends Entity {
 
 	protected abstract void attack(float delta);
 
-	private void updateAction(float delta) {
+	private void updateAction(float delta) {			//TODO check distance
 		if (alerted != null && alerted instanceof Playable) {
 			if (timer < 3) {
-				int dist = (int) (Math.sqrt(
-						Math.pow((alerted.getPos()[0]+alerted.getSize()[0]/2)-(pos[0]+size[0]/2), 2)
-						+Math.pow((alerted.getPos()[1]+alerted.getSize()[1]/2)-(pos[1]+size[1]/2), 2))
-						-Math.sqrt(
-								Math.pow((alerted.getPos()[0]+alerted.getSize()[0]/2)-alerted.getPos()[0], 2)
-								+Math.pow((alerted.getPos()[1]+alerted.getSize()[1]/2)-alerted.getPos()[1], 2)
-								)*1.2);
+				int dist = RuntimeData.getInstance().getEntityManager().getDistanceBetween(this, alerted);
 				chooseAgressiveAction(dist, delta);
 			} else {
 				playerAlerted = null;
@@ -158,13 +152,7 @@ public abstract class Enemy extends Entity {
 			}
 		} else if (alerted != null && (alerted instanceof Projectile || alerted instanceof Enemy)) {
 			if (timer < 1) {
-				int dist = (int) (Math.sqrt(
-						Math.pow((alerted.getPos()[0]+alerted.getSize()[0]/2)-(pos[0]+size[0]/2), 2)
-						+Math.pow((alerted.getPos()[1]+alerted.getSize()[1]/2)-(pos[1]+size[1]/2), 2))
-						-Math.sqrt(
-								Math.pow((alerted.getPos()[0]+alerted.getSize()[0]/2)-alerted.getPos()[0], 2)
-								+Math.pow((alerted.getPos()[1]+alerted.getSize()[1]/2)-alerted.getPos()[1], 2)
-								)*1.2);
+				int dist = RuntimeData.getInstance().getEntityManager().getDistanceBetween(this, alerted);
 				chooseAvoidAction(dist, delta);
 			} else {
 				if (playerAlerted != null) {
@@ -190,7 +178,7 @@ public abstract class Enemy extends Entity {
 			int yLeft = 0;
 			int yMax = 0;
 			int xMax = 0;
-			for (Entity ent : RuntimeData.getInstance().getEntityManager().getEntities()) {
+			for (Entity ent : RuntimeData.getInstance().getEntityManager().getAllBioEntities()) {
 				switch (state) {
 				case Indentifiers.STATE_IDLE:
 				case Indentifiers.STATE_WALK_SOUTH:

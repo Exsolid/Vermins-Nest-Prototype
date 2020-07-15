@@ -3,6 +3,7 @@ package com.verminsnest.core.management.data;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.badlogic.gdx.math.Vector2;
 import com.verminsnest.core.VerminsNest;
 import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.entities.Entity;
@@ -11,6 +12,7 @@ import com.verminsnest.entities.eggs.Egg;
 import com.verminsnest.entities.enemies.Flunk;
 import com.verminsnest.entities.enemies.Tinker;
 import com.verminsnest.entities.explosions.Explosion;
+import com.verminsnest.entities.items.Item;
 import com.verminsnest.entities.playables.Playable;
 import com.verminsnest.entities.projectiles.Projectile;
 import com.verminsnest.world.generation.map.World;
@@ -25,6 +27,7 @@ public class EntityManager {
 	private ArrayList<Entity> leftovers;
 	private ArrayList<Entity> gore;
 	private ArrayList<Entity> damage;
+	private ArrayList<Entity> items;
 	
 	private ArrayList<int[]> toInitEntities;
 	
@@ -33,12 +36,15 @@ public class EntityManager {
 	
 	public EntityManager(){
 		removedEntities = new ArrayList<Entity>();
+		toInitEntities= new ArrayList<>();
+		addedEntities = new ArrayList<Entity>();
 		entities = new ArrayList<Entity>();
+		
+		items = new ArrayList<Entity>();
+		
 		leftovers = new ArrayList<Entity>();
 		damage = new ArrayList<Entity>();
-		addedEntities = new ArrayList<Entity>();
 		gore = new ArrayList<Entity>();
-		toInitEntities= new ArrayList<>();
 	}
 	
 	public void addEntity(Entity ent){
@@ -66,6 +72,8 @@ public class EntityManager {
 					damage.remove(ent);
 				}else if(ent instanceof Gore){
 					gore.remove(ent);
+				}else if(ent instanceof Item){
+					items.remove(ent);
 				}else{
 					if(!entities.remove(ent)) {
 						leftovers.remove(ent);
@@ -79,6 +87,8 @@ public class EntityManager {
 					damage.add(ent);
 				}else if(ent instanceof Gore){
 					gore.add(ent);
+				}else if(ent instanceof Item){
+					items.add(ent);
 				}else{
 					if(ent.getState() != Indentifiers.STATE_LEFTOVER){
 						entities.add(ent);
@@ -100,7 +110,6 @@ public class EntityManager {
 			for(Entity ent: damage){
 				ent.update(delta);
 			}
-			
 			for(Entity ent: leftovers){
 				if(ent.getPos()[0] > character.getPos()[0]-updateXRange && ent.getPos()[0] < character.getPos()[0]+updateXRange
 						&& ent.getPos()[1] > character.getPos()[1]-updateYRange && ent.getPos()[1] < character.getPos()[1]+updateYRange){
@@ -116,6 +125,12 @@ public class EntityManager {
 			if(lastDeath != null && lastDeath.getPos()[0] > character.getPos()[0]-updateXRange && lastDeath.getPos()[0] < character.getPos()[0]+updateXRange
 					&& lastDeath.getPos()[1] > character.getPos()[1]-updateYRange && lastDeath.getPos()[1] < character.getPos()[1]+updateYRange) {
 				lastDeath.update(delta);
+			}
+			for(Entity ent: items){
+				if(ent.getPos() != null && ent.getPos()[0] > character.getPos()[0]-updateXRange && ent.getPos()[0] < character.getPos()[0]+updateXRange
+						&& ent.getPos()[1] > character.getPos()[1]-updateYRange && ent.getPos()[1] < character.getPos()[1]+updateYRange){
+					ent.update(delta);
+				}
 			}
 		}
 	}
@@ -137,6 +152,9 @@ public class EntityManager {
 		for(Entity ent: damage){
 			ent.dispose();
 		}
+		for(Entity ent: items){
+			ent.dispose();
+		}
 		for(Entity ent: addedEntities){
 			ent.dispose();
 		}
@@ -154,15 +172,52 @@ public class EntityManager {
 		damage.clear();
 		gore.clear();
 		leftovers.clear();
+		items.clear();
 		FloorManager.getInstane().reset();
 	}
 
-	public ArrayList<Entity> getEntities() {
+	public ArrayList<Entity> getAllBioEntities() {
 		ArrayList<Entity> temp = new ArrayList<>();
 		temp.addAll(gore);
 		temp.addAll(leftovers);
 		temp.addAll(entities);
 		temp.addAll(damage);
+		return temp;
+	}
+	
+	public ArrayList<Entity> getAllEntities() {
+		ArrayList<Entity> temp = new ArrayList<>();
+		temp.addAll(gore);
+		temp.addAll(leftovers);
+		temp.addAll(entities);
+		temp.addAll(damage);
+		temp.addAll(items);
+		return temp;
+	}
+	
+	public ArrayList<Entity> getAllObstacleEntities() {
+		ArrayList<Entity> temp = new ArrayList<>();
+		temp.addAll(entities);
+		temp.addAll(damage);
+		for(Entity ent: items){
+			if(ent.isObstacle())temp.add(ent);
+		}
+		return temp;
+	}
+	
+	public ArrayList<Entity> getInteractables() {
+		ArrayList<Entity> temp = new ArrayList<>();
+		for(Entity ent: items){
+			if(((Item)ent).getKeeper() == null){
+				temp.add(ent);
+			}
+		}
+		return temp;
+	}
+	
+	public ArrayList<Entity> getItems(){
+		ArrayList<Entity> temp = new ArrayList<>();
+		temp.addAll(items);
 		return temp;
 	}
 	
@@ -223,6 +278,9 @@ public class EntityManager {
 				ent.dispose();
 			}
 		}
+		for(Entity ent: items){
+			if(!(((Item)ent).getKeeper() instanceof Playable))ent.dispose();
+		}
 		for(Entity ent: leftovers){
 			ent.dispose();
 		}
@@ -244,7 +302,9 @@ public class EntityManager {
 		damage.clear();
 		gore.clear();
 		leftovers.clear();
+		items.clear();
 		
+		items.add(character.getItem());
 		entities.add(character);
 
 		RuntimeData.getInstance().getGame().showScreen(VerminsNest.LOADGAME);
@@ -253,5 +313,156 @@ public class EntityManager {
 	public void sortToLeftover(Entity leftOver){
 		addedEntities.add(leftOver);
 		removedEntities.add(leftOver);
+	}
+	
+	/**
+	 *
+	 * @param ent1 ; The first entity
+	 * @param ent2 ; The second entity
+	 * @returns the distance between ent1 and ent2
+	 */
+	public int getDistanceBetween(Entity ent1, Entity ent2){
+		int distance = 0;
+		
+		//Create vector grid
+		Vector2 topLeft = new Vector2(ent1.getPos()[0]+ent1.getSize()[0]/2,ent1.getPos()[1]+ent1.getSize()[1]/2).nor();
+		topLeft.setAngle(135);
+		Vector2 bottomLeft = new Vector2(ent1.getPos()[0]+ent1.getSize()[0]/2,ent1.getPos()[1]+ent1.getSize()[1]/2).nor();
+		bottomLeft.setAngle(-135);
+		Vector2 topRight = new Vector2(ent1.getPos()[0]+ent1.getSize()[0]/2,ent1.getPos()[1]+ent1.getSize()[1]/2).nor();
+		topRight.setAngle(45);
+		Vector2 bottomRight = new Vector2(ent1.getPos()[0]+ent1.getSize()[0]/2,ent1.getPos()[1]+ent1.getSize()[1]/2).nor();
+		bottomRight.setAngle(-45);
+		
+		Vector2 ent2Vector = new Vector2((ent2.getPos()[0]+ent2.getSize()[0]/2)-(ent1.getPos()[0]+ent1.getSize()[0]/2),(ent2.getPos()[1]+ent2.getSize()[1]/2)-(ent1.getPos()[1]+ent1.getSize()[1]/2)).nor();
+		if(ent2Vector.y - bottomLeft.y >= 0 && ent2Vector.y - topLeft.y <= 0 && (ent2.getPos()[0]+ent2.getSize()[0]/2) < (ent1.getPos()[0]+ent1.getSize()[0]/2)){
+			//Ent1 looking west
+			distance = Math.abs((ent1.getPos()[0])-(ent2.getPos()[0]+ent2.getSize()[0]));
+		}else if(ent2Vector.y - bottomRight.y >= 0 && ent2Vector.y - topRight.y <= 0&& (ent2.getPos()[0]+ent2.getSize()[0]/2) > (ent1.getPos()[0]+ent1.getSize()[0]/2)){
+			//Ent1 looking east
+			distance = Math.abs((ent1.getPos()[0]+ent1.getSize()[0])-(ent2.getPos()[0]));
+		}if(ent2Vector.x - topRight.x <= 0 && ent2Vector.x - topLeft.x >= 0 && (ent2.getPos()[1]+ent2.getSize()[1]/2) > (ent1.getPos()[1]+ent1.getSize()[1]/2)){
+			//Ent1 looking north
+			distance = Math.abs((ent1.getPos()[1]+ent1.getSize()[1])-(ent2.getPos()[1]));
+		}else if(ent2Vector.x - bottomRight.x <= 0 && ent2Vector.x - bottomLeft.x >= 0 && (ent2.getPos()[1]+ent2.getSize()[1]/2) < (ent1.getPos()[1]+ent1.getSize()[1]/2)){
+			//Ent1 looking south
+			distance = Math.abs((ent1.getPos()[1])-(ent2.getPos()[1]+ent2.getSize()[1]));
+		}
+		
+		return distance;
+	}
+	/**
+	 * 
+	 * @param ent1 ; The first entity
+	 * @param ent2 ; The second entity
+	 * @returns a int[] which stores the direction in which ent1 will line up with ent2 at [0], and the distance to it in [1]
+	 */
+	public int[] getDirToLineUp(Entity ent1, Entity ent2){
+		
+		int xDistance = (ent1.getPos()[0]+ent1.getSize()[0]/2)-(ent2.getPos()[0]+ent2.getSize()[0]/2);
+		int yDistance = (ent1.getPos()[1]+ent1.getSize()[1]/2)-(ent2.getPos()[1]+ent2.getSize()[1]/2);
+		
+		int[] result = new int[2];
+		if(Math.abs(yDistance) > Math.abs(xDistance)){
+			//Take x axis
+			result[1] = (int) Math.abs(xDistance);
+			if(xDistance < 0){
+				result[0] = Indentifiers.DIRECTION_EAST;
+			}else{
+				result[0] = Indentifiers.DIRECTION_WEST;
+			}
+		}else{
+			//Take y axis
+			result[1] = (int) Math.abs(yDistance);
+			if(yDistance < 0){
+				result[0] = Indentifiers.DIRECTION_NORTH;
+			}else{
+				result[0] = Indentifiers.DIRECTION_SOUTH;
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * Places the entity "toPlace" on the preferred or close to the preferred position. If "preferredPos" it will choose a random position.
+	 * @param mapPos ; The tile on which the placement should occur
+	 * @param preferredPos ; The preferred position for the placement
+	 * @param toPlace ; The entity to place
+	 * @returns true or false depending on if the placement was successful
+	 */
+	public boolean placeOnTile(int[] mapPos, int[] preferredPos, Entity toPlace){
+		//Get all entities within the same tile
+		if(!RuntimeData.getInstance().getMapData().getData()[mapPos[0]][mapPos[1]].isWalkable())return false;
+		ArrayList<Entity> allEnts = RuntimeData.getInstance().getEntityManager().getAllObstacleEntities();
+		ArrayList<Entity> relevantEnts = new ArrayList<>();
+		for(Entity ent: allEnts){
+			for(int[] pos: ent.getMapPos()){
+				if(pos[0] == mapPos[0] && pos[0] == mapPos[0]){
+					if(!relevantEnts.contains(ent))relevantEnts.add(ent);
+				}
+			}
+		}
+		//If no one is there place
+		if(relevantEnts.isEmpty() && preferredPos != null){
+			if(toPlace instanceof Item){
+				((Item)toPlace).putItem(new int[]{preferredPos[0],preferredPos[1]});
+			}else{
+				toPlace.getPos()[0] = preferredPos[0];
+				toPlace.getPos()[1] = preferredPos[1];
+			}
+			return true;
+		}
+		//Get all available places
+		ArrayList<Integer[]> availablePos = new ArrayList<>();
+		int[] size = null;
+		if(toPlace instanceof Item){
+			size = ((Item)toPlace).getDroppedSize();
+		}else{
+			size = toPlace.getSize();
+		}
+		for(int y = 1; y <= Math.floor(128/size[1]) ; y++){
+			for(int x = 1; x <= Math.floor(128/size[0]) ; x++){
+				Integer[] temp = new Integer[2];
+				temp[0] = x*size[0]+mapPos[0]*128;
+				temp[1] = y*size[1]+mapPos[1]*128;
+				ArrayList<Integer[]> allCorners = new ArrayList<>();
+				
+				allCorners.add(temp);
+				allCorners.add(new Integer[]{x*size[0]+mapPos[0]*128+size[0],y*size[1]+mapPos[1]*128});
+				allCorners.add(new Integer[]{x*size[0]+mapPos[0]*128,y*size[1]+mapPos[1]*128+size[1]});
+				allCorners.add(new Integer[]{x*size[0]+mapPos[0]*128+size[0],y*size[1]+mapPos[1]*128+size[1]});
+				for(Entity ent: relevantEnts){
+					for(Integer[] pos: allCorners){
+						if(pos[0] <= ent.getPos()[0]+ent.getSize()[0] && pos[0]>= ent.getPos()[0]
+								&& pos[1] <= ent.getPos()[1]+ent.getSize()[1] && pos[1]>= ent.getPos()[1]){
+							temp = null;
+						}
+					}
+				}
+				if(temp != null)availablePos.add(temp);
+			}
+		}
+		if(availablePos.isEmpty())return false;
+		//Chose random or closest to preferred position
+		Integer[] placedPos = new Integer[]{0,0};
+		if(preferredPos != null){
+			for(Integer[] pos: availablePos){
+				if(Math.abs(placedPos[0]-preferredPos[0]) > Math.abs(pos[0]-preferredPos[0])
+						&& Math.abs(placedPos[1]-preferredPos[1]) > Math.abs(pos[1]-preferredPos[1])){
+					placedPos =pos;
+				}
+			}
+		}else{
+			Random rand = new Random();
+			placedPos = availablePos.get(rand.nextInt(availablePos.size()));
+		}
+		//Place
+		if(toPlace instanceof Item){
+			((Item)toPlace).putItem(new int[]{placedPos[0],placedPos[1]});
+		}else{
+			toPlace.getPos()[0] = placedPos[0];
+			toPlace.getPos()[1] = placedPos[1];
+		}
+		return true;
 	}
 }

@@ -1,5 +1,7 @@
 package com.verminsnest.entities.playables;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -8,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.Entity;
+import com.verminsnest.entities.items.Item;
 
 public abstract class Playable extends Entity {
 	
@@ -21,6 +24,7 @@ public abstract class Playable extends Entity {
 	protected int killCount;
 	protected int killLimit;
 	protected int skillPoints;
+	protected Item item;
 	
 	protected int speed;
 	protected int agility;
@@ -29,6 +33,7 @@ public abstract class Playable extends Entity {
 	protected int maxHealth;
 	
 	protected float attackCooldown;
+	protected float itemCooldown;
 	protected String attackIconPath;
 	
 	private char currentKey;
@@ -57,7 +62,7 @@ public abstract class Playable extends Entity {
 		prevKey = '-';
 		currentKey = '-';
 		
-		shadow = RuntimeData.getInstance().getAsset("textures/characters/Character-Shadow.png");
+		shadow = RuntimeData.getInstance().getAsset("textures/shadows/Shadow-M.png");
 		
 		init();
 		this.setCurrentAni(Indentifiers.STATE_IDLE);
@@ -175,16 +180,62 @@ public abstract class Playable extends Entity {
 			float mouseY =RuntimeData.getInstance().getGame().getConfig().getResolution()[1]-RuntimeData.getInstance().getMousePosInGameWorld().y;
 			Vector2 mouseVector = new Vector2(mouseX-(RuntimeData.getInstance().getGame().getConfig().getResolution()[0]+size[0]*sizeModifier[0])/2,mouseY-(RuntimeData.getInstance().getGame().getConfig().getResolution()[1]+size[1]*sizeModifier[1])/2).nor();
 			if(mouseVector.y - bottomLeft.y >= 0 && mouseVector.y - topLeft.y <= 0 && mouseX < (RuntimeData.getInstance().getGame().getConfig().getResolution()[0]+size[0]*sizeModifier[0])/2){
-				RuntimeData.getInstance().getEntityManager().getCharacter().attack(delta, Indentifiers.DIRECTION_WEST);
+				this.attack(delta, Indentifiers.DIRECTION_WEST);
 			}else if(mouseVector.y - bottomRight.y >= 0 && mouseVector.y - topRight.y <= 0&& mouseX > (RuntimeData.getInstance().getGame().getConfig().getResolution()[0]+size[0]*sizeModifier[0])/2){
-				RuntimeData.getInstance().getEntityManager().getCharacter().attack(delta, Indentifiers.DIRECTION_EAST);
+				this.attack(delta, Indentifiers.DIRECTION_EAST);
 			}if(mouseVector.x - topRight.x <= 0 && mouseVector.x - topLeft.x >= 0 && mouseY > (RuntimeData.getInstance().getGame().getConfig().getResolution()[1]+size[1]*sizeModifier[1])/2){
-				RuntimeData.getInstance().getEntityManager().getCharacter().attack(delta, Indentifiers.DIRECTION_NORTH);
+				this.attack(delta, Indentifiers.DIRECTION_NORTH);
 			}else if(mouseVector.x - bottomRight.x <= 0 && mouseVector.x - bottomLeft.x >= 0 && mouseY < (RuntimeData.getInstance().getGame().getConfig().getResolution()[1]+size[1]*sizeModifier[1])/2){
-				RuntimeData.getInstance().getEntityManager().getCharacter().attack(delta, Indentifiers.DIRECTION_SOUTH);
+				this.attack(delta, Indentifiers.DIRECTION_SOUTH);
 			}	
 		}
+		//Item activation
+		if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT)){
+			if(item != null && !item.isPassiv()
+					&& itemCooldown > item.getBaseCooldown()*1/(agility*0.15)){
+				item.activate();
+				itemCooldown = 0;
+			}
+		}
+		//Entity interaction
+		if(Gdx.input.isKeyJustPressed(Input.Keys.E)){
+			int distance = 0;
+			Entity interactable = null;
+			for(Entity ent: RuntimeData.getInstance().getEntityManager().getInteractables()){
+				int dist = RuntimeData.getInstance().getEntityManager().getDistanceBetween(this, ent);
+				if(dist >= distance){
+					distance = dist;
+					interactable = ent;
+				}
+			}
+			if(distance < 15 && interactable != null && interactable instanceof Item){
+				((Item)interactable).takeItem(this);
+				itemCooldown = 0;
+			}
+		}
+		
+		//Item drop
+		if(Gdx.input.isKeyJustPressed(Input.Keys.Q)){
+			if(item != null){
+				ArrayList<int[]> allCorners = new ArrayList<>();
+				boolean dropped = false;
+				allCorners.add(pos);
+				allCorners.add(new int[]{pos[0]+size[0],pos[1]});
+				allCorners.add(new int[]{pos[0],pos[1]+size[1]});
+				allCorners.add(new int[]{pos[0]+size[0],pos[1]+size[1]});
+				ArrayList<int[]> allMapCorners = this.getMapPos();
+				for(int i = 0; i < allCorners.size(); i++){
+					if(RuntimeData.getInstance().getEntityManager().placeOnTile(allMapCorners.get(i), allCorners.get(i), item)){
+						dropped = true;
+						break;
+					};
+				}
+				//TODO dropped == false
+			}
+		}
+		
 		attackCooldown += delta;
+		itemCooldown += delta;
 		internalStateTime += delta;
 	}
 	
@@ -255,6 +306,11 @@ public abstract class Playable extends Entity {
 		else return new float[]{attackCooldown ,(float) (1/(agility*0.2))};
 	}
 
+	public float[] getItemDetails(){
+		if(item == null) return null;
+		return new float[]{itemCooldown,(float) (item.getBaseCooldown()*1/(agility*0.15))};
+	}
+	
 	public int getMaxHealth() {
 		return maxHealth;
 	}
@@ -284,5 +340,13 @@ public abstract class Playable extends Entity {
 	
 	public int[] getLevelData(){
 		return new int[]{level, killCount, killLimit};
+	}
+	
+	public void setItem(Item item) {
+		this.item = item;
+	}
+	
+	public Item getItem(){
+		return item;
 	}
 }

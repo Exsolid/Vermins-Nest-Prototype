@@ -21,7 +21,7 @@ public class Tinker extends Enemy {
 
 	@Override
 	public void init() {
-		shadow = RuntimeData.getInstance().getAsset("textures/enemies/tinker/Shadow.png");
+		shadow = RuntimeData.getInstance().getAsset("textures/shadows/Shadow-L.png");
 		Texture wFrontSheet = RuntimeData.getInstance().getAsset("textures/enemies/tinker/Tinker-W-Front.png");
 		TextureRegion[][] temp = TextureRegion.split(wFrontSheet, 64, 64);
 		TextureRegion[] frames = new TextureRegion[temp[0].length];
@@ -110,8 +110,38 @@ public class Tinker extends Enemy {
 
 	@Override
 	protected void chooseAgressiveAction(int dist, float delta) {
-		if(dist<20){
-			attack(delta);
+		if(dist<15){
+			int[] lineUpData = RuntimeData.getInstance().getEntityManager().getDirToLineUp(this, alerted);
+			switch(lineUpData[0]){
+			case Indentifiers.DIRECTION_EAST:
+				if(lineUpData[1] > this.size[0]/2){
+					walkTowards(new int[]{this.pos[0]+this.size[0]/2+lineUpData[0],alerted.getPos()[1]});
+				}else{
+					attack(delta);
+				}
+				break;
+			case Indentifiers.DIRECTION_WEST:
+				if(lineUpData[1] > this.size[0]/2){
+					walkTowards(new int[]{this.pos[0]+this.size[0]/2-lineUpData[0],alerted.getPos()[1]});
+				}else{
+					attack(delta);
+				}
+				break;
+			case Indentifiers.DIRECTION_NORTH:
+				if(lineUpData[1] > this.size[1]/2){
+					walkTowards(new int[]{alerted.getPos()[0],this.pos[1]+this.size[1]/2+lineUpData[0]});
+				}else{
+					attack(delta);
+				}
+				break;
+			case Indentifiers.DIRECTION_SOUTH:
+				if(lineUpData[1] > this.size[1]/2){
+					walkTowards(new int[]{alerted.getPos()[0],this.pos[1]+this.size[1]/2-lineUpData[0]});
+				}else{
+					attack(delta);
+				}
+				break;
+			}
 		}else{
 			walkTowards(new int[]{alerted.getPos()[0],alerted.getPos()[1]});
 		}

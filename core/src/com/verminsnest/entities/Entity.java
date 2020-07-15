@@ -1,5 +1,7 @@
 package com.verminsnest.entities;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -90,5 +92,22 @@ public abstract class Entity {
 		}else{
 			return 0;
 		}
+	}
+	
+	public ArrayList<int[]> getMapPos(){
+		ArrayList<int[]> tiles = new ArrayList<>();
+		//Left pos
+		tiles.add(new int[]{(this.getPos()[0]- this.getPos()[0] % 128) / 128,
+				(this.getPos()[1]- this.getPos()[1] % 128) / 128});
+		//Right pos
+		tiles.add(new int[]{((this.getPos()[0]+size[0])- (this.getPos()[0]+size[0]) % 128) / 128,
+				(this.getPos()[1]- this.getPos()[1] % 128) / 128});
+		//Left top pos
+		tiles.add(new int[]{(this.getPos()[0]- this.getPos()[0] % 128) / 128,
+				((this.getPos()[1]+size[1])- (this.getPos()[1]+size[1]) % 128) / 128});
+		//Right top pos
+		tiles.add(new int[]{((this.getPos()[0]+size[0])- (this.getPos()[0]+size[0]) % 128) / 128,
+				((this.getPos()[1]+size[1])- (this.getPos()[1]+size[1]) % 128) / 128});
+		return tiles;
 	}
 }

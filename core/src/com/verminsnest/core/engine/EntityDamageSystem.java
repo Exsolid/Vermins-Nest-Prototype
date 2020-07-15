@@ -38,7 +38,7 @@ public class EntityDamageSystem {
 	 * @param hit ; The damage receiver
 	 */
 	public void calculateHit(Entity source){
-		for(Entity hit: RuntimeData.getInstance().getEntityManager().getEntities()){
+		for(Entity hit: RuntimeData.getInstance().getEntityManager().getAllBioEntities()){
 			if(hit instanceof Playable || hit instanceof Enemy){
 				for(int x = source.getPos()[0]; x <= source.getPos()[0]+source.getSize()[0]; x++){
 					for(int y = source.getPos()[1]; y <= source.getPos()[1]+source.getSize()[1]; y++){
@@ -161,7 +161,7 @@ public class EntityDamageSystem {
 	
 	public boolean isLast(Entity hit){
 		boolean isLast = true;
-		for(Entity ent: RuntimeData.getInstance().getEntityManager().getEntities()) {
+		for(Entity ent: RuntimeData.getInstance().getEntityManager().getAllBioEntities()) {
 			if((ent instanceof Enemy | (ent instanceof Egg && ent.getState() != Indentifiers.STATE_LEFTOVER)) && !ent.equals(hit)) {
 				isLast = false;
 				break;
