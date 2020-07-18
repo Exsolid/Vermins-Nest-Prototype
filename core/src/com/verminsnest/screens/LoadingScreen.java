@@ -8,35 +8,56 @@ import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.misc.gui.FontText;
 import com.verminsnest.world.management.FloorManager;
 
-public class LoadingScreen implements Screen{
-	
-	//Game
+public class LoadingScreen implements Screen {
+
+	// Game
 	private VerminsNest game;
 	private int nextScreenID;
-	//Text
+	// Text
 	private FontText loadingText;
-	
-	//IDs
+
+	// IDs
 	public final static int GAMEMANAGER = 0;
-	
-	public LoadingScreen(VerminsNest game, int nextScreenID){
+
+	public LoadingScreen(VerminsNest game, int nextScreenID) {
 		this.game = game;
 		this.nextScreenID = nextScreenID;
 	}
-	
+
 	@Override
 	public void show() {
 		game.getCamera().position.set(game.getConfig().getResolution()[0] / 2, game.getConfig().getResolution()[1] / 2,
 				0);
-		loadingText = new FontText("...",65, false);
-		loadingText.setMidOfBounds(new int[]{(int) game.getCamera().position.x-RuntimeData.getInstance().getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png").getWidth()/2,(int) game.getCamera().position.y-RuntimeData.getInstance().getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png").getHeight()/2}, new int[]{RuntimeData.getInstance().getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png").getWidth(), RuntimeData.getInstance().getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png").getHeight()});
+		loadingText = new FontText("...", 65, false);
+		loadingText.setMidOfBounds(
+				new int[] {
+						(int) game.getCamera().position.x - RuntimeData.getInstance()
+								.getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png").getWidth() / 2,
+						(int) game.getCamera().position.y - RuntimeData.getInstance()
+								.getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png").getHeight() / 2 },
+				new int[] {
+						RuntimeData.getInstance().getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png")
+								.getWidth(),
+						RuntimeData.getInstance().getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png")
+								.getHeight() });
 	}
 
 	@Override
 	public void render(float delta) {
-		if(!LoadingModules.getInstance().getModules().isEmpty() && !LoadingModules.getInstance().getModules().get(0).isRunning()){
+		if (!LoadingModules.getInstance().getModules().isEmpty()
+				&& !LoadingModules.getInstance().getModules().get(0).isRunning()) {
 			loadingText.setText(LoadingModules.getInstance().getModules().get(0).getDescription());
-			loadingText.setMidOfBounds(new int[]{(int) game.getCamera().position.x-RuntimeData.getInstance().getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png").getWidth()/2,(int) game.getCamera().position.y-RuntimeData.getInstance().getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png").getHeight()/2}, new int[]{RuntimeData.getInstance().getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png").getWidth(), RuntimeData.getInstance().getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png").getHeight()+60});
+			loadingText.setMidOfBounds(
+					new int[] {
+							(int) game.getCamera().position.x - RuntimeData.getInstance()
+									.getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png").getWidth() / 2,
+							(int) game.getCamera().position.y - RuntimeData.getInstance()
+									.getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png").getHeight() / 2 },
+					new int[] {
+							RuntimeData.getInstance().getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png")
+									.getWidth(),
+							RuntimeData.getInstance().getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png")
+									.getHeight() + 60 });
 		}
 		game.getBatch().begin();
 		game.getBatch().draw(RuntimeData.getInstance().getAsset("textures/general/Background.png"),

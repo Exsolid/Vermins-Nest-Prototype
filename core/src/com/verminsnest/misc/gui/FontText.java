@@ -110,7 +110,12 @@ public class FontText {
 	
 	public void draw(SpriteBatch batch){
 		int step = (int) (sizes[1]/text.size()*2);
-		int currentHeight = pos[1];
+		int currentHeight;
+		if(text.size() > 1){
+			currentHeight = pos[1]+sizes[1];
+		}else{
+			currentHeight = pos[1];
+		}
 		for(String str: text){
 			font.draw(batch, str,pos[0],currentHeight);
 			currentHeight -= step;

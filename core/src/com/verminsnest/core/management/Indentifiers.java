@@ -3,6 +3,7 @@ package com.verminsnest.core.management;
 import java.util.ArrayList;
 
 public class Indentifiers {
+	
 	//Direction IDs
 	public static final int DIRECTION_NORTH = 0;
 	public static final int DIRECTION_EAST = 1;
@@ -28,6 +29,12 @@ public class Indentifiers {
 	
 	public static final int STATE_SPAWNING = 13;
 	public static final int STATE_LEFTOVER = 14;
+	
+	//Dialog IDs
+	public static final int DIALOG_OPEN = 0;
+	public static final int DIALOG_CANCEL = 1;
+	public static final int DIALOG_OKAY = 2;
+	public static final int ITEMDIALOG = 3;
 	
 	//Assetmanager stuff
 	public final static int ASSETMANAGER_GAMEPLAY = 1;

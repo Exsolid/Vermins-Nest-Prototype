@@ -6,6 +6,7 @@ import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.items.barriers.BarrierActiv;
 import com.verminsnest.entities.playables.Mage;
+import com.verminsnest.misc.gui.ChoiceDialog;
 import com.verminsnest.screens.VNScreen;
 import com.verminsnest.screens.gameplay.menus.LevelMenu;
 import com.verminsnest.screens.gameplay.menus.PauseMenu;
@@ -24,12 +25,14 @@ public class GameManager extends VNScreen {
 	public static final int RUNNING = 0;
 	public static final int PAUSEMENU = 1;
 	public static final int LEVELMENU = 2;
+	public static final int DIALOG = 3;
 	private int state;
 
 	private Gameplay gameplay;
 	private PauseMenu pauseMenu;
 	private LevelMenu levelMenu;
-
+	private ChoiceDialog dialog;
+	
 	public GameManager() {
 		super();
 	}
@@ -54,6 +57,10 @@ public class GameManager extends VNScreen {
 			case LEVELMENU:
 				gameplay.render(delta);
 				levelMenu.render(delta);
+				break;
+			case DIALOG:
+				gameplay.render(delta);
+				dialog.render(delta);
 				break;
 			}
 			RuntimeData.getInstance().getGame().getBatch().end();
@@ -80,6 +87,12 @@ public class GameManager extends VNScreen {
 				case LEVELMENU:
 					levelMenu.update(delta);
 					break;
+				case DIALOG:
+					dialog.update(delta);
+					if(dialog.getState() != Indentifiers.DIALOG_OPEN){
+						setState(RUNNING);
+					}
+					break;
 				}
 			} else {
 				RuntimeData.getInstance().getGame().showScreen(VerminsNest.MAINMENU);
@@ -100,6 +113,9 @@ public class GameManager extends VNScreen {
 		case LEVELMENU:
 			levelMenu.init();
 			this.state = LEVELMENU;
+			break;
+		case DIALOG:
+			this.state = DIALOG;
 			break;
 		}
 		this.resetBlocked();
@@ -190,5 +206,18 @@ public class GameManager extends VNScreen {
 
 	@Override
 	public void reload() {
+	}
+	
+	public void setDialog(ChoiceDialog dia){
+		if(dia == null){
+			dialog.dispose();
+			setState(RUNNING);
+		}
+		else setState(DIALOG);
+		dialog = dia;
+	}
+	
+	public ChoiceDialog getDialog(){
+		return dialog;
 	}
 }

@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.items.Item;
+import com.verminsnest.misc.gui.ChoiceDialog;
 import com.verminsnest.screens.gameplay.menus.GameplayMenu;
 import com.verminsnest.world.generation.map.MapCell;
 import com.verminsnest.world.management.FloorManager;
@@ -17,6 +19,9 @@ public class Gameplay extends GameplayOverlay{
 	
 	//Gui
 	private GameplayMenu gui;
+	
+	//Entities
+	private Entity interactable;
 	
 	public Gameplay(GameManager gameMan) {
 		super(gameMan);
@@ -102,6 +107,23 @@ public class Gameplay extends GameplayOverlay{
 			gameMan.resetBlocked();
 		}
 		
+		//Entity interaction
+		if(Gdx.input.isKeyJustPressed(Input.Keys.E)){
+			int distance = 0;
+			Entity interactable = null;
+			for(Entity ent: RuntimeData.getInstance().getEntityManager().getInteractables()){
+				int dist = RuntimeData.getInstance().getEntityManager().getDistanceBetween(RuntimeData.getInstance().getEntityManager().getCharacter(), ent);
+				if(dist >= distance){
+					distance = dist;
+					interactable = ent;
+				}
+			}
+			if(distance < 15 && interactable != null && interactable instanceof Item){
+				gameMan.setDialog(new ChoiceDialog("Gameplay_Dialog_Accept","Gameplay_Dialog_Cancel","Gameplay_Dialog_Description_Item",((Item)interactable).getIconPath(),new int[]{RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[0]-ChoiceDialog.getSize()[0]/2,RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[1]+ChoiceDialog.getSize()[1]}, Indentifiers.ITEMDIALOG));
+				this.interactable = interactable;
+			}
+		}
+		
 		RuntimeData.getInstance().getGame().getCamera().position.x = RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[0];
 		RuntimeData.getInstance().getGame().getCamera().position.y = RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[1];
 		RuntimeData.getInstance().getGame().setPro();
@@ -136,6 +158,18 @@ public class Gameplay extends GameplayOverlay{
 		if(FloorManager.getInstane().allowEntityUpdate()) {
 			gui.update(delta);
 			manageControls(delta);
+		}
+		
+		if(gameMan.getDialog() != null && gameMan.getDialog().getState() == Indentifiers.DIALOG_OKAY){
+			switch(gameMan.getDialog().getID()){
+			case Indentifiers.ITEMDIALOG:
+				((Item)interactable).takeItem(RuntimeData.getInstance().getEntityManager().getCharacter());
+				break;
+			}
+			gameMan.setDialog(null);
+			interactable = null;
+		}else if(gameMan.getDialog() != null && gameMan.getDialog().getState() == Indentifiers.DIALOG_CANCEL){
+			gameMan.setDialog(null);
 		}
 	}
 }

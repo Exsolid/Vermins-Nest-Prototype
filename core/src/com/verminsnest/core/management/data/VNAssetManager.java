@@ -24,6 +24,7 @@ public class VNAssetManager {
 			assetManager.load("textures/menus/scrolls/VerticalScroll_Small.png", Texture.class);
 			assetManager.load("textures/menus/scrolls/HorizontalScroll_Minimum.png", Texture.class);
 			assetManager.load("textures/menus/scrolls/VerticalScroll_Big.png", Texture.class);
+			assetManager.load("textures/menus/scrolls/HorizontalScroll_Medium.png", Texture.class);
 
 			assetManager.load("textures/menus/frames/HealthFrame.png", Texture.class);
 			assetManager.load("textures/menus/frames/AbilityFrame.png", Texture.class);
@@ -114,6 +115,7 @@ public class VNAssetManager {
 			this.unload("textures/menus/scrolls/VerticalScroll_Small.png");
 			this.unload("textures/menus/scrolls/VerticalScroll_Big.png");
 			this.unload("textures/menus/scrolls/HorizontalScroll_Minimum.png");
+			this.unload("textures/menus/scrolls/HorizontalScroll_Medium.png");
 
 			this.unload("textures/menus/frames/HealthFrame.png");
 			this.unload("textures/menus/frames/AbilityFrame.png");

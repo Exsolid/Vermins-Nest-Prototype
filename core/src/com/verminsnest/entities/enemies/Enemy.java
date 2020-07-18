@@ -139,7 +139,7 @@ public abstract class Enemy extends Entity {
 
 	protected abstract void attack(float delta);
 
-	private void updateAction(float delta) {			//TODO check distance
+	private void updateAction(float delta) {
 		if (alerted != null && alerted instanceof Playable) {
 			if (timer < 3) {
 				int dist = RuntimeData.getInstance().getEntityManager().getDistanceBetween(this, alerted);

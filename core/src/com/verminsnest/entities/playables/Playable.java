@@ -197,28 +197,12 @@ public abstract class Playable extends Entity {
 				itemCooldown = 0;
 			}
 		}
-		//Entity interaction
-		if(Gdx.input.isKeyJustPressed(Input.Keys.E)){
-			int distance = 0;
-			Entity interactable = null;
-			for(Entity ent: RuntimeData.getInstance().getEntityManager().getInteractables()){
-				int dist = RuntimeData.getInstance().getEntityManager().getDistanceBetween(this, ent);
-				if(dist >= distance){
-					distance = dist;
-					interactable = ent;
-				}
-			}
-			if(distance < 15 && interactable != null && interactable instanceof Item){
-				((Item)interactable).takeItem(this);
-				itemCooldown = 0;
-			}
-		}
 		
 		//Item drop
 		if(Gdx.input.isKeyJustPressed(Input.Keys.Q)){
 			if(item != null){
 				ArrayList<int[]> allCorners = new ArrayList<>();
-				boolean dropped = false;
+				//boolean dropped = false;
 				allCorners.add(pos);
 				allCorners.add(new int[]{pos[0]+size[0],pos[1]});
 				allCorners.add(new int[]{pos[0],pos[1]+size[1]});
@@ -226,7 +210,7 @@ public abstract class Playable extends Entity {
 				ArrayList<int[]> allMapCorners = this.getMapPos();
 				for(int i = 0; i < allCorners.size(); i++){
 					if(RuntimeData.getInstance().getEntityManager().placeOnTile(allMapCorners.get(i), allCorners.get(i), item)){
-						dropped = true;
+						//dropped = true;
 						break;
 					};
 				}
@@ -344,6 +328,7 @@ public abstract class Playable extends Entity {
 	
 	public void setItem(Item item) {
 		this.item = item;
+		itemCooldown = 0;
 	}
 	
 	public Item getItem(){
