@@ -9,12 +9,14 @@ import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.Gore;
 import com.verminsnest.entities.eggs.Egg;
+import com.verminsnest.entities.enemies.Enemy;
 import com.verminsnest.entities.enemies.Flunk;
 import com.verminsnest.entities.enemies.Tinker;
 import com.verminsnest.entities.explosions.Explosion;
 import com.verminsnest.entities.items.Item;
 import com.verminsnest.entities.playables.Playable;
 import com.verminsnest.entities.projectiles.Projectile;
+import com.verminsnest.misc.entities.Death;
 import com.verminsnest.world.generation.map.World;
 import com.verminsnest.world.generation.spawning.EnemySpawner;
 import com.verminsnest.world.management.FloorManager;
@@ -32,7 +34,9 @@ public class EntityManager {
 	private ArrayList<int[]> toInitEntities;
 	
 	private Playable character;
+	
 	private Entity lastDeath;
+	private ArrayList<Death> deaths;
 	
 	public EntityManager(){
 		removedEntities = new ArrayList<Entity>();
@@ -45,15 +49,21 @@ public class EntityManager {
 		leftovers = new ArrayList<Entity>();
 		damage = new ArrayList<Entity>();
 		gore = new ArrayList<Entity>();
+		deaths= new ArrayList<>();
 	}
 	
 	public void addEntity(Entity ent){
 		addedEntities.add(ent);
 	}
 	
+	public void addDeath(Death killed) {
+		deaths.add(killed);
+	}
+	
 	public void removeEntity(Entity ent){
 		removedEntities.add(ent);
 	}
+	
 	public void updateEntities(float delta){
 		FloorManager.getInstane().update();
 		if(FloorManager.getInstane().allowEntityUpdate()) {
@@ -132,6 +142,11 @@ public class EntityManager {
 					ent.update(delta);
 				}
 			}
+			
+			for(Death killed: deaths) {
+				killed.execute();
+			}
+			deaths.clear();
 		}
 	}
 
@@ -173,6 +188,7 @@ public class EntityManager {
 		gore.clear();
 		leftovers.clear();
 		items.clear();
+		deaths.clear();
 		FloorManager.getInstane().reset();
 	}
 
@@ -308,6 +324,17 @@ public class EntityManager {
 		entities.add(character);
 
 		RuntimeData.getInstance().getGame().showScreen(VerminsNest.LOADGAME);
+	}
+	
+	public boolean isLast(Entity hit){
+		boolean isLast = true;
+		for(Entity ent: RuntimeData.getInstance().getEntityManager().getAllBioEntities()) {
+			if((ent instanceof Enemy | (ent instanceof Egg && ent.getState() != Indentifiers.STATE_LEFTOVER)) && !ent.equals(hit)) {
+				isLast = false;
+				break;
+			}
+		}
+		return isLast;
 	}
 	
 	public void sortToLeftover(Entity leftOver){

@@ -7,11 +7,11 @@ import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.Gore;
-import com.verminsnest.entities.eggs.Egg;
 import com.verminsnest.entities.enemies.Enemy;
 import com.verminsnest.entities.explosions.Explosion;
 import com.verminsnest.entities.playables.Playable;
 import com.verminsnest.entities.projectiles.Projectile;
+import com.verminsnest.misc.entities.Death;
 
 public class EntityDamageSystem {
 
@@ -87,13 +87,7 @@ public class EntityDamageSystem {
 						new Gore(new int[]{hit.getPos()[0], hit.getPos()[1]});
 					}
 					
-					if(isLast(hit)) {
-						RuntimeData.getInstance().getEntityManager().getCharacter().updateKills();
-						RuntimeData.getInstance().getEntityManager().setLastDeath(hit);
-					}else {
-						RuntimeData.getInstance().getEntityManager().getCharacter().updateKills();
-						RuntimeData.getInstance().getEntityManager().removeEntity(hit);  
-					}     
+					new Death(hit);     
 				}
 			}
 			if(hit instanceof Playable && !source.isFriendly()){
@@ -141,13 +135,7 @@ public class EntityDamageSystem {
 						new Gore(new int[]{hit.getPos()[0], hit.getPos()[1]});
 					}
 					
-					if(isLast(hit)) {
-						RuntimeData.getInstance().getEntityManager().getCharacter().updateKills();
-						RuntimeData.getInstance().getEntityManager().setLastDeath(hit);
-					}else {
-						RuntimeData.getInstance().getEntityManager().getCharacter().updateKills();
-						RuntimeData.getInstance().getEntityManager().removeEntity(hit);  
-					}     
+					new Death(hit);  
 				}
 			}
 			if(hit instanceof Playable){
@@ -157,16 +145,5 @@ public class EntityDamageSystem {
 				}
 			}
 		}
-	}
-	
-	public boolean isLast(Entity hit){
-		boolean isLast = true;
-		for(Entity ent: RuntimeData.getInstance().getEntityManager().getAllBioEntities()) {
-			if((ent instanceof Enemy | (ent instanceof Egg && ent.getState() != Indentifiers.STATE_LEFTOVER)) && !ent.equals(hit)) {
-				isLast = false;
-				break;
-			}
-		}
-		return isLast;
 	}
 }

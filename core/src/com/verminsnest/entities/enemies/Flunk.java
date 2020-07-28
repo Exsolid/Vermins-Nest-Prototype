@@ -9,6 +9,7 @@ import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.explosions.ExplosionSmall;
 import com.verminsnest.entities.playables.Playable;
+import com.verminsnest.misc.entities.Death;
 
 public class Flunk extends Enemy {
 
@@ -63,13 +64,9 @@ public class Flunk extends Enemy {
 
 	@Override
 	protected void attack(float stateTime) {
-
-		RuntimeData.getInstance().getEntityManager().removeEntity(this);
-		if(RuntimeData.getInstance().getEntityDamageSystem().isLast(this)){
-			isLastDeath = true;
-			isReadyToDig = true;
-			RuntimeData.getInstance().getEntityManager().setLastDeath(this);
-		}
+		isLastDeath = true;
+		isReadyToDig = true;
+		new Death(this);
 		new ExplosionSmall(new int[]{pos[0]-10,pos[1]-10}, strength);
 	}
 
