@@ -89,6 +89,10 @@ public class FontText {
 		this.pos[1] = pos[1]+size[1]/2-sizes[1]/2;
 	}
 	
+	public void setPos(int[] pos){
+		this.pos = new int[] {pos[0],pos[1]};
+	}
+	
 	public int[] getPos(){
 		return pos;
 	}

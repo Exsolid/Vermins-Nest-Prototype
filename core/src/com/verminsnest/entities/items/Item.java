@@ -64,14 +64,14 @@ public abstract class Item extends Entity {
 	public void takeItem(Entity keeper){
 		setKeeper(keeper);
 		pos = null; 
-		if(keeper instanceof Playable)((Playable)keeper).setItem(this);
+		if(keeper instanceof Playable)((Playable)keeper).getInventory().setItem(this);
 		setCurrentAni(Indentifiers.STATE_CAST);
 		updateSize();
 	}
 	
 	public void putItem(int[] pos){
 		this.pos = pos;
-		if(this.keeper instanceof Playable)((Playable)this.keeper).setItem(null);
+		if(this.keeper instanceof Playable)((Playable)this.keeper).getInventory().setItem(null);
 		setKeeper(null);
 		setCurrentAni(Indentifiers.STATE_IDLE);
 		updateSize();

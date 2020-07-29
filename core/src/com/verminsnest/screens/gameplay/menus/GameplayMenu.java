@@ -15,6 +15,7 @@ public class GameplayMenu extends GameplayOverlay {
 	private int[] mapPos;
 	private int[] attackDataPos;
 	private int[] itemDataPos;
+	private int[] foodDataPos;
 
 	private ArrayList<MinimapRoom> rooms;
 
@@ -23,6 +24,7 @@ public class GameplayMenu extends GameplayOverlay {
 	private int attackData;
 	private int itemData;
 	private FontText hp;
+	private FontText foodCounter;
 	private FontText level;
 	private FontText killCounter;
 
@@ -30,12 +32,14 @@ public class GameplayMenu extends GameplayOverlay {
 		super(gameMan);
 		rooms = new ArrayList<>();
 		
-		hp = new FontText("0", 50, false);
+		hp = new FontText("0", 40, false);
+		foodCounter = new FontText("0", 40, false);
 		level = new FontText("0", 50, false);
-		killCounter = new FontText("0", 40, false);
+		killCounter = new FontText("0", 35, false);
 		
 		attackDataPos = new int[] { 0, 0 };
 		itemDataPos = new int[] { 0, 0 };
+		foodDataPos = new int[] { 0, 0 };
 		mapPos = new int[] { 0, 0 };
 		dataScrollPos = new int[] {
 				(int) (RuntimeData.getInstance().getGame().getCamera().position.x - RuntimeData.getInstance()
@@ -91,17 +95,17 @@ public class GameplayMenu extends GameplayOverlay {
 								.getHeight() / 2
 						+ 4);
 		//Draw item icon
-		if(RuntimeData.getInstance().getEntityManager().getCharacter().getItem() != null){
+		if(RuntimeData.getInstance().getEntityManager().getCharacter().getInventory().getItem() != null){
 			RuntimeData.getInstance().getGame().getBatch().draw(
-					RuntimeData.getInstance().getAsset(RuntimeData.getInstance().getEntityManager().getCharacter().getItem().getIconPath()),
+					RuntimeData.getInstance().getAsset(RuntimeData.getInstance().getEntityManager().getCharacter().getInventory().getItem().getIconPath()),
 					itemDataPos[0]
 							+ RuntimeData.getInstance().getAsset("textures/menus/frames/AbilityFrame.png").getWidth() / 2
-							- RuntimeData.getInstance().getAsset(RuntimeData.getInstance().getEntityManager().getCharacter().getItem().getIconPath())
+							- RuntimeData.getInstance().getAsset(RuntimeData.getInstance().getEntityManager().getCharacter().getInventory().getItem().getIconPath())
 									.getWidth() / 2
 							- 4,
 					itemDataPos[1]
 							+ RuntimeData.getInstance().getAsset("textures/menus/frames/AbilityFrame.png").getHeight() / 2
-							- RuntimeData.getInstance().getAsset(RuntimeData.getInstance().getEntityManager().getCharacter().getItem().getIconPath())
+							- RuntimeData.getInstance().getAsset(RuntimeData.getInstance().getEntityManager().getCharacter().getInventory().getItem().getIconPath())
 									.getHeight() / 2
 							+ 4);
 
@@ -110,7 +114,9 @@ public class GameplayMenu extends GameplayOverlay {
 		hp.draw(RuntimeData.getInstance().getGame().getBatch());
 		level.draw(RuntimeData.getInstance().getGame().getBatch());
 		killCounter.draw(RuntimeData.getInstance().getGame().getBatch());
-
+		foodCounter.draw(RuntimeData.getInstance().getGame().getBatch());
+		//Draw food icon
+		RuntimeData.getInstance().getGame().getBatch().draw(RuntimeData.getInstance().getAsset("textures/items/Food.png"),foodDataPos[0],foodDataPos[1]);
 		// Draw map
 		for (MinimapRoom room : rooms) {
 			for (int y = 0; y < room.roomTextures[0].length; y++) {
@@ -161,6 +167,10 @@ public class GameplayMenu extends GameplayOverlay {
 						RuntimeData.getInstance().getAsset("textures/menus/frames/StatusFrame.png").getHeight() });
 		hp.getPos()[0] += RuntimeData.getInstance().getAsset("textures/menus/frames/StatusFrame.png").getWidth() / 4;
 		hp.getPos()[1] += 10;
+		//Update food data position
+		foodDataPos = new int[] {hp.getPos()[0]+hp.getBounds()[0]+20,hp.getPos()[1]-RuntimeData.getInstance().getAsset("textures/items/Food.png").getHeight()/2};
+		foodCounter.setText("x "+RuntimeData.getInstance().getEntityManager().getCharacter().getInventory().getFoodCount());
+		foodCounter.setPos(new int[] {(int) (foodDataPos[0]+RuntimeData.getInstance().getAsset("textures/items/Food.png").getWidth()),hp.getPos()[1]});
 		//Update kills and levels
 		if(RuntimeData.getInstance().getEntityManager().getCharacter().getSkillPoints() != 0){
 			level.setText("Level: " + Integer.toString(RuntimeData.getInstance().getEntityManager().getCharacter().getLevelData()[0])+ "(+)");
@@ -197,7 +207,7 @@ public class GameplayMenu extends GameplayOverlay {
 			attackData = (int) ((RuntimeData.getInstance().getEntityManager().getCharacter().getAttackDetails()[0]
 					/ RuntimeData.getInstance().getEntityManager().getCharacter().getAttackDetails()[1]) * 59);
 		}
-		if(RuntimeData.getInstance().getEntityManager().getCharacter().getItem() == null){
+		if(RuntimeData.getInstance().getEntityManager().getCharacter().getInventory().getItem() == null){
 			itemData = 59;
 		} else if (RuntimeData.getInstance().getEntityManager().getCharacter().getItemDetails()[0] <= 0|| RuntimeData.getInstance().getEntityManager().getCharacter().getItemDetails()[0]
 				> RuntimeData.getInstance().getEntityManager().getCharacter().getItemDetails()[1]) {
@@ -274,6 +284,7 @@ public class GameplayMenu extends GameplayOverlay {
 		hp.dispose();
 		level.dispose();
 		killCounter.dispose();
+		foodCounter.dispose();
 	}
 
 	private class MinimapRoom {

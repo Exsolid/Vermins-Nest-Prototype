@@ -7,6 +7,8 @@ import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.explosions.Explosion;
+import com.verminsnest.entities.items.Food;
+import com.verminsnest.entities.playables.Playable;
 import com.verminsnest.entities.projectiles.Projectile;
 import com.verminsnest.world.generation.map.AStarMapNode;
 import com.verminsnest.world.generation.map.MapCell;
@@ -41,6 +43,12 @@ public class EntityMovementSystem {
 							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
 								if(entity instanceof Projectile|| entity instanceof Explosion){
 									RuntimeData.getInstance().getEntityDamageSystem().addHit(entity, refEnt);
+								}else if(refEnt instanceof Food && !((Food)refEnt).isPicked()) {
+									if(entity instanceof Playable) {
+										((Food)refEnt).setPicked(true);
+										((Playable)entity).getInventory().setFoodCount(((Playable)entity).getInventory().getFoodCount()+1);
+										RuntimeData.getInstance().getEntityManager().removeEntity(refEnt);
+									}
 								}else{
 									return false;
 								}
@@ -70,6 +78,12 @@ public class EntityMovementSystem {
 							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
 								if(entity instanceof Projectile|| entity instanceof Explosion){
 									RuntimeData.getInstance().getEntityDamageSystem().addHit(entity, refEnt);
+								}else if(refEnt instanceof Food && !((Food)refEnt).isPicked()) {
+									if(entity instanceof Playable) {
+										((Food)refEnt).setPicked(true);
+										((Playable)entity).getInventory().setFoodCount(((Playable)entity).getInventory().getFoodCount()+1);
+										RuntimeData.getInstance().getEntityManager().removeEntity(refEnt);
+									}
 								}else{
 									return false;
 								}
@@ -99,6 +113,12 @@ public class EntityMovementSystem {
 							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
 								if(entity instanceof Projectile|| entity instanceof Explosion){
 									RuntimeData.getInstance().getEntityDamageSystem().addHit(entity, refEnt);
+								}else if(refEnt instanceof Food && !((Food)refEnt).isPicked()) {
+									if(entity instanceof Playable) {
+										((Food)refEnt).setPicked(true);
+										((Playable)entity).getInventory().setFoodCount(((Playable)entity).getInventory().getFoodCount()+1);
+										RuntimeData.getInstance().getEntityManager().removeEntity(refEnt);
+									}
 								}else{
 									return false;
 								}
@@ -128,6 +148,12 @@ public class EntityMovementSystem {
 							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
 								if(entity instanceof Projectile|| entity instanceof Explosion){
 									RuntimeData.getInstance().getEntityDamageSystem().addHit(entity, refEnt);
+								}else if(refEnt instanceof Food && !((Food)refEnt).isPicked()) {
+									if(entity instanceof Playable) {
+										((Food)refEnt).setPicked(true);
+										((Playable)entity).getInventory().setFoodCount(((Playable)entity).getInventory().getFoodCount()+1);
+										RuntimeData.getInstance().getEntityManager().removeEntity(refEnt);
+									}
 								}else{
 									return false;
 								}
@@ -156,6 +182,12 @@ public class EntityMovementSystem {
 							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
 								if(entity instanceof Projectile|| entity instanceof Explosion){
 									RuntimeData.getInstance().getEntityDamageSystem().addHit(entity, refEnt);
+								}else if(refEnt instanceof Food && !((Food)refEnt).isPicked()) {
+									if(entity instanceof Playable) {
+										((Food)refEnt).setPicked(true);
+										((Playable)entity).getInventory().setFoodCount(((Playable)entity).getInventory().getFoodCount()+1);
+										RuntimeData.getInstance().getEntityManager().removeEntity(refEnt);
+									}
 								}else{
 									return false;
 								}

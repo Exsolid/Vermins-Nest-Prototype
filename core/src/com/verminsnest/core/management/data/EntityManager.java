@@ -13,6 +13,7 @@ import com.verminsnest.entities.enemies.Enemy;
 import com.verminsnest.entities.enemies.Flunk;
 import com.verminsnest.entities.enemies.Tinker;
 import com.verminsnest.entities.explosions.Explosion;
+import com.verminsnest.entities.items.Food;
 import com.verminsnest.entities.items.Item;
 import com.verminsnest.entities.playables.Playable;
 import com.verminsnest.entities.projectiles.Projectile;
@@ -30,6 +31,7 @@ public class EntityManager {
 	private ArrayList<Entity> gore;
 	private ArrayList<Entity> damage;
 	private ArrayList<Entity> items;
+	private ArrayList<Entity> food;
 	
 	private ArrayList<int[]> toInitEntities;
 	
@@ -45,6 +47,7 @@ public class EntityManager {
 		entities = new ArrayList<Entity>();
 		
 		items = new ArrayList<Entity>();
+		food = new ArrayList<Entity>();
 		
 		leftovers = new ArrayList<Entity>();
 		damage = new ArrayList<Entity>();
@@ -82,8 +85,10 @@ public class EntityManager {
 					damage.remove(ent);
 				}else if(ent instanceof Gore){
 					gore.remove(ent);
-				}else if(ent instanceof Item){
+				}else if(ent instanceof Item ){
 					items.remove(ent);
+				}else if(ent instanceof Food){
+					food.remove(ent);
 				}else{
 					if(!entities.remove(ent)) {
 						leftovers.remove(ent);
@@ -99,6 +104,8 @@ public class EntityManager {
 					gore.add(ent);
 				}else if(ent instanceof Item){
 					items.add(ent);
+				}else if(ent instanceof Food){
+					food.add(ent);
 				}else{
 					if(ent.getState() != Indentifiers.STATE_LEFTOVER){
 						entities.add(ent);
@@ -170,6 +177,9 @@ public class EntityManager {
 		for(Entity ent: items){
 			ent.dispose();
 		}
+		for(Entity ent: food){
+			ent.dispose();
+		}
 		for(Entity ent: addedEntities){
 			ent.dispose();
 		}
@@ -184,6 +194,7 @@ public class EntityManager {
 		lastDeath = null;
 		
 		entities.clear();
+		food.clear();
 		damage.clear();
 		gore.clear();
 		leftovers.clear();
@@ -196,6 +207,7 @@ public class EntityManager {
 		ArrayList<Entity> temp = new ArrayList<>();
 		temp.addAll(gore);
 		temp.addAll(leftovers);
+		temp.addAll(food);
 		temp.addAll(entities);
 		temp.addAll(damage);
 		return temp;
@@ -205,9 +217,10 @@ public class EntityManager {
 		ArrayList<Entity> temp = new ArrayList<>();
 		temp.addAll(gore);
 		temp.addAll(leftovers);
+		temp.addAll(items);
+		temp.addAll(food);
 		temp.addAll(entities);
 		temp.addAll(damage);
-		temp.addAll(items);
 		return temp;
 	}
 	
@@ -297,6 +310,9 @@ public class EntityManager {
 		for(Entity ent: items){
 			if(!(((Item)ent).getKeeper() instanceof Playable))ent.dispose();
 		}
+		for(Entity ent: food){
+			ent.dispose();
+		}
 		for(Entity ent: leftovers){
 			ent.dispose();
 		}
@@ -319,8 +335,9 @@ public class EntityManager {
 		gore.clear();
 		leftovers.clear();
 		items.clear();
+		food.clear();
 		
-		items.add(character.getItem());
+		items.add(character.getInventory().getItem());
 		entities.add(character);
 
 		RuntimeData.getInstance().getGame().showScreen(VerminsNest.LOADGAME);

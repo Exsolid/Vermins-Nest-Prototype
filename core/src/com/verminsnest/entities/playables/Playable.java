@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.Entity;
-import com.verminsnest.entities.items.Item;
+import com.verminsnest.misc.entities.Inventory;
 
 public abstract class Playable extends Entity {
 	
@@ -24,7 +24,7 @@ public abstract class Playable extends Entity {
 	protected int killCount;
 	protected int killLimit;
 	protected int skillPoints;
-	protected Item item;
+	protected Inventory inv;
 	
 	protected int speed;
 	protected int agility;
@@ -33,7 +33,6 @@ public abstract class Playable extends Entity {
 	protected int maxHealth;
 	
 	protected float attackCooldown;
-	protected float itemCooldown;
 	protected String attackIconPath;
 	
 	private char currentKey;
@@ -53,6 +52,8 @@ public abstract class Playable extends Entity {
 		setMaxHealth(health);
 		setStrength(dmg);
 		setAgility(agi);
+		
+		inv = new Inventory();
 		
 		skillPoints = 2;
 		killCount = 0;
@@ -191,16 +192,16 @@ public abstract class Playable extends Entity {
 		}
 		//Item activation
 		if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT)){
-			if(item != null && !item.isPassiv()
-					&& itemCooldown > item.getBaseCooldown()*1/(agility*0.15)){
-				item.activate();
-				itemCooldown = 0;
+			if(inv.getItem() != null && !inv.getItem().isPassiv()
+					&& inv.getCooldown() > inv.getItem().getBaseCooldown()*1/(agility*0.15)){
+				inv.getItem().activate();
+				inv.setCooldown(0);
 			}
 		}
 		
 		//Item drop
 		if(Gdx.input.isKeyJustPressed(Input.Keys.Q)){
-			if(item != null){
+			if(inv.getItem() != null){
 				ArrayList<int[]> allCorners = new ArrayList<>();
 				//boolean dropped = false;
 				allCorners.add(pos);
@@ -209,7 +210,7 @@ public abstract class Playable extends Entity {
 				allCorners.add(new int[]{pos[0]+size[0],pos[1]+size[1]});
 				ArrayList<int[]> allMapCorners = this.getMapPos();
 				for(int i = 0; i < allCorners.size(); i++){
-					if(RuntimeData.getInstance().getEntityManager().placeOnTile(allMapCorners.get(i), allCorners.get(i), item)){
+					if(RuntimeData.getInstance().getEntityManager().placeOnTile(allMapCorners.get(i), allCorners.get(i), inv.getItem())){
 						//dropped = true;
 						break;
 					};
@@ -217,9 +218,19 @@ public abstract class Playable extends Entity {
 				//TODO dropped == false
 			}
 		}
+		//Eat food (heal)
+		if(Gdx.input.isKeyJustPressed(Input.Keys.F)){
+			if(health < maxHealth && inv.getFoodCount() > 0) {
+				inv.setFoodCount(inv.getFoodCount()-1);
+				this.health += this.maxHealth/10;
+				if(health > maxHealth) {
+					health = maxHealth;
+				}
+			}
+		}
 		
 		attackCooldown += delta;
-		itemCooldown += delta;
+		inv.update(delta);
 		internalStateTime += delta;
 	}
 	
@@ -280,7 +291,10 @@ public abstract class Playable extends Entity {
 	public void setHealth(int health) {
 		this.health = health;
 	}
-
+	
+	public Inventory getInventory() {
+		return inv;
+	}
 	public String getAttackIcon() {
 		return attackIconPath;
 	}
@@ -291,8 +305,8 @@ public abstract class Playable extends Entity {
 	}
 
 	public float[] getItemDetails(){
-		if(item == null) return null;
-		return new float[]{itemCooldown,(float) (item.getBaseCooldown()*1/(agility*0.15))};
+		if(inv.getItem() == null) return null;
+		return new float[]{inv.getCooldown(),(float) (inv.getItem().getBaseCooldown()*1/(agility*0.15))};
 	}
 	
 	public int getMaxHealth() {
@@ -324,14 +338,5 @@ public abstract class Playable extends Entity {
 	
 	public int[] getLevelData(){
 		return new int[]{level, killCount, killLimit};
-	}
-	
-	public void setItem(Item item) {
-		this.item = item;
-		itemCooldown = 0;
-	}
-	
-	public Item getItem(){
-		return item;
 	}
 }

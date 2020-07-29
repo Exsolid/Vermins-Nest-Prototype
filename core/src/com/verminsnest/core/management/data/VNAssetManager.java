@@ -45,6 +45,7 @@ public class VNAssetManager {
 			assetManager.load("textures/misc/Minimap-Pointer.png", Texture.class);
 			assetManager.load("textures/misc/Cursor.png", Texture.class);
 			assetManager.load("textures/items/Item-Bag.png", Texture.class);
+			assetManager.load("textures/items/Food.png", Texture.class);
 			break;
 		case Indentifiers.ASSETMANAGER_FIREBALL:
 			assetManager.load("textures/projectiles/fireball/FireBall-Flying.png", Texture.class);
@@ -96,6 +97,7 @@ public class VNAssetManager {
 			assetManager.load("textures/gore/Gore-3.png", Texture.class);
 			break;
 		}
+		
 		assetManager.finishLoading();
 		assetManager.update();
 	}
@@ -136,6 +138,7 @@ public class VNAssetManager {
 			this.unload("textures/misc/Minimap-Pointer.png");
 			this.unload("textures/misc/Cursor.png");
 			this.unload("textures/items/Item-Bag.png");
+			this.unload("textures/items/Food.png");
 			break;
 		case Indentifiers.ASSETMANAGER_FIREBALL:
 			this.unload("textures/projectiles/fireball/FireBall-Flying.png");
