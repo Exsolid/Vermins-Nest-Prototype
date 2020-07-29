@@ -1,4 +1,4 @@
-package com.verminsnest.world.generation.map;
+package com.verminsnest.world.generation.map.rooms;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -28,8 +28,94 @@ public class Room {
 		this.layoutPos = layoutPos;
 		
 		sockets = new ArrayList<>();
+		initRandom(minSize);
 		
+	}
+	
+	/**
+	 * Creates a new room which fills an int[][] with 0's and 1's (0 = is a walkable tile; 1 = is a unwalkable tile)
+	 * Used for pre-fabricated.
+	 * @param data the empty array
+	 * @param minSize the minimum size which the room has to have. Must be smaller than length*width of data
+	 * @param layoutPos the position of the room in the layout of the map
+	 */
+	protected Room(int[][] data,int[] layoutPos){
+		found = false;
+		rand = new Random();
+		connected = new Room[4];
+		this.data = data;
+		this.layoutPos = layoutPos;
 		
+		sockets = new ArrayList<>();
+	}
+	
+	protected void initRandom(int minSize) {
+		createRandom(minSize);
+		
+		//Search for any sockets which isn't connected to the main part
+		searchSockets();
+		//If sockets are found, connect them
+		doPaths();
+	}
+	
+	protected void initFill() {
+		createFill();
+		
+		//Search for any sockets which isn't connected to the main part
+		searchSockets();
+		//If sockets are found, connect them
+		doPaths();
+	}
+	
+	private void createFill() {
+		int tempWidthPos = 0;
+		int tempHeightPos = 0;
+		int width = 0;
+		int height = 0;
+		boolean xCounter = false;
+		boolean yCounter = false;
+		//Find width and height of given
+		for (int x = 0; x < data.length; x++) {
+			for (int y = 0; y < data[0].length; y++) {
+				if(data[x][y] == 0 && yCounter == false) {
+					yCounter = true;
+					tempHeightPos = y;
+				}else if(data[x][y] == 0) {
+					if(height < y-tempHeightPos)height = y-tempHeightPos;
+				}
+			}
+			yCounter = false;
+		}
+		for (int y = 0; y < data[0].length; y++) {
+			for (int x = 0; x < data.length; x++) {
+				if(data[x][y] == 0 && xCounter == false) {
+					xCounter = true;
+					tempWidthPos = x;
+				}else if(data[x][y] == 0) {
+					if(width < x-tempWidthPos)width = x-tempWidthPos;
+				}
+			}
+			xCounter = false;
+		}
+		int[][] data = new int[this.data.length][this.data[0].length];
+		int xRest =(this.data.length-width)/2;
+		int yRest =(this.data[0].length-height)/2;
+		//Fill walls y
+				for (int y = 0; y < data[0].length; y++) {
+					for (int x = 0; x < data.length; x++) {
+						data[x][y] = 1;
+					}
+				}
+		//Fill old
+		for (int y = yRest; y < data[0].length-yRest+1; y++) {
+			for (int x = xRest; x < data.length-xRest+1; x++) {
+				data[x][y] = this.data[x-xRest][y-yRest];
+			}
+		}
+		this.data = data;
+	}
+	
+	private void createRandom(int minSize) {
 		boolean accepted = false;
 		while(!accepted){
 			//Fills the int[][] with 1's and 0's with certain percentage for it to be 0
@@ -48,12 +134,8 @@ public class Room {
 				accepted = true;
 			}
 		}
-		
-		//Search for any sockets which isn't connected to the main part
-		searchSockets();
-		//If sockets are found, connect them
-		doPaths();
 	}
+	
 	
 	public int[][] getData() {
 		return data;

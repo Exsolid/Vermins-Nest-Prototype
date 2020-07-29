@@ -11,6 +11,7 @@ import com.verminsnest.misc.gui.ButtonManager;
 import com.verminsnest.screens.VNScreen;
 import com.verminsnest.world.generation.map.World;
 import com.verminsnest.world.generation.spawning.EnemySpawner;
+import com.verminsnest.world.generation.spawning.UtilSpawner;
 
 public class MainMenu extends VNScreen {
 
@@ -122,6 +123,7 @@ public class MainMenu extends VNScreen {
 					gen.setData(1, 20, 20, 10,
 							(RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Mountain-Sheet.png")));
 					new EnemySpawner(1);
+					new UtilSpawner();
 					RuntimeData.getInstance().getGame().showScreen(VerminsNest.LOADGAME);
 					break;
 				case SETTINGS:

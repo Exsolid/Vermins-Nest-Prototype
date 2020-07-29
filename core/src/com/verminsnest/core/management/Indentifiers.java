@@ -40,6 +40,7 @@ public class Indentifiers {
 	public final static int ASSETMANAGER_GAMEPLAY = 1;
 	public final static int ASSETMANAGER_INIT = 8;
 	
+	public final static int ASSETMANAGER_SHOPKEEPER = 12;
 	public final static int ASSETMANAGER_MAGE = 2;
 	
 	public final static int ASSETMANAGER_FIREBALL = 3;
@@ -56,7 +57,10 @@ public class Indentifiers {
 	//Enemy IDs
 	public static final int ENEMY_TINKER = 0;
 	public static final int ENEMY_FLUNK = 1;
-		
+	
+	//Util entity IDs
+	public static final int UTIL_SHOPKEEPER = 0;
+	
 	public static ArrayList<Integer> getAllEnemyIDs(){
 		ArrayList<Integer> ids = new ArrayList<>();
 		ids.add(ENEMY_TINKER);

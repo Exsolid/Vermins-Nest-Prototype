@@ -16,6 +16,7 @@ public abstract class Entity {
 	protected Animation<TextureRegion> currentAni;
 	protected Texture shadow;
 	protected int yShadowOffset;
+	protected int xShadowOffset;
 	protected boolean isObstacle;
 	protected int state;
 	protected float rotation;
@@ -47,6 +48,10 @@ public abstract class Entity {
 	
 	public int getYShadowOffset(){
 		return yShadowOffset;
+	}
+	
+	public int getXShadowOffset(){
+		return xShadowOffset;
 	}
 	
 	protected void setSize(int width, int height){

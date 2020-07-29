@@ -15,9 +15,14 @@ public abstract class Item extends Entity {
 	protected float runtime;
 	protected Animation<TextureRegion> itemBagAni;
 	protected String iconPath;
+	
+	protected int price;
+	
 	public Item(int[] pos, int textureID, boolean isPassiv) {
 		super(pos, textureID);
 		isObstacle = false;
+		
+		price = 3;
 		
 		shadow = RuntimeData.getInstance().getAsset("textures/shadows/Shadow-S.png");
 		yShadowOffset = -8;
@@ -63,6 +68,7 @@ public abstract class Item extends Entity {
 	
 	public void takeItem(Entity keeper){
 		setKeeper(keeper);
+		price = 0;
 		pos = null; 
 		if(keeper instanceof Playable)((Playable)keeper).getInventory().setItem(this);
 		setCurrentAni(Indentifiers.STATE_CAST);
@@ -97,5 +103,9 @@ public abstract class Item extends Entity {
 	public void stop(){
 		runtime = 0;
 		setCurrentAni(Indentifiers.STATE_CAST);
+	}
+	
+	public int getPrice() {
+		return price;
 	}
 }

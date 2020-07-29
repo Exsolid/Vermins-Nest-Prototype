@@ -8,7 +8,7 @@ import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.misc.gui.FontText;
 import com.verminsnest.screens.gameplay.GameManager;
 import com.verminsnest.screens.gameplay.GameplayOverlay;
-import com.verminsnest.world.generation.map.Room;
+import com.verminsnest.world.generation.map.rooms.Room;
 
 public class GameplayMenu extends GameplayOverlay {
 	private int[] dataScrollPos;

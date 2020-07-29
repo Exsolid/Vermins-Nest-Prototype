@@ -41,6 +41,7 @@ public class VNAssetManager {
 			assetManager.load("textures/shadows/Shadow-S.png", Texture.class);
 			assetManager.load("textures/shadows/Shadow-M.png", Texture.class);
 			assetManager.load("textures/shadows/Shadow-L.png", Texture.class);
+			assetManager.load("textures/shadows/Shadow-Long-M.png", Texture.class);
 
 			assetManager.load("textures/misc/Minimap-Pointer.png", Texture.class);
 			assetManager.load("textures/misc/Cursor.png", Texture.class);
@@ -57,6 +58,9 @@ public class VNAssetManager {
 			break;
 		case Indentifiers.ASSETMANAGER_EXPLOSION_SMALL:
 			assetManager.load("textures/explosions/Explosion-Small.png", Texture.class);
+			break;
+		case Indentifiers.ASSETMANAGER_SHOPKEEPER:
+			assetManager.load("textures/characters/shopkeeper/Rabbit-Idle.png", Texture.class);
 			break;
 		case Indentifiers.ASSETMANAGER_MAGE:
 			assetManager.load("textures/characters/mage/Mage-W-Front.png", Texture.class);
@@ -134,6 +138,7 @@ public class VNAssetManager {
 			this.unload("textures/shadows/Shadow-S.png");
 			this.unload("textures/shadows/Shadow-M.png");
 			this.unload("textures/shadows/Shadow-L.png");
+			this.unload("textures/shadows/Shadow-Long-M.png");
 			
 			this.unload("textures/misc/Minimap-Pointer.png");
 			this.unload("textures/misc/Cursor.png");
@@ -150,6 +155,9 @@ public class VNAssetManager {
 			break;
 		case Indentifiers.ASSETMANAGER_EXPLOSION_SMALL:
 			this.unload("textures/explosions/Explosion-Small.png");
+			break;
+		case Indentifiers.ASSETMANAGER_SHOPKEEPER:
+			this.unload("textures/characters/shopkeeper/Rabbit-Idle.png");
 			break;
 		case Indentifiers.ASSETMANAGER_MAGE:
 			this.unload("textures/characters/mage/Mage-W-Front.png");
@@ -205,6 +213,8 @@ public class VNAssetManager {
 			return assetManager.isLoaded("textures/projectiles/slash/Slash.png");
 		case Indentifiers.ASSETMANAGER_EXPLOSION_SMALL:
 			return assetManager.isLoaded("textures/explosions/Explosion-Small.png");
+		case Indentifiers.ASSETMANAGER_SHOPKEEPER:
+			return assetManager.isLoaded("textures/characters/shopkeeper/Rabbit-Idle.png");
 		case Indentifiers.ASSETMANAGER_MAGE:
 			return assetManager.isLoaded("textures/characters/mage/Mage-W-Front.png");
 		case Indentifiers.ASSETMANAGER_TINKER:

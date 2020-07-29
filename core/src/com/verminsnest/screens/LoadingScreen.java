@@ -79,6 +79,7 @@ public class LoadingScreen implements Screen {
 			switch (nextScreenID) {
 			case GAMEMANAGER:
 				RuntimeData.getInstance().getEntityManager().initEnemies();
+				RuntimeData.getInstance().getEntityManager().initUtil();
 				FloorManager.getInstane().setEntityUpdate(true);
 				game.showScreen(VerminsNest.GAMEPLAY);
 				this.dispose();

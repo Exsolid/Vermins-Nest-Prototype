@@ -215,7 +215,7 @@ public abstract class Playable extends Entity {
 						break;
 					};
 				}
-				//TODO dropped == false
+				//TODO dropped == false message
 			}
 		}
 		//Eat food (heal)
@@ -227,6 +227,7 @@ public abstract class Playable extends Entity {
 					health = maxHealth;
 				}
 			}
+			//TODO is full life message
 		}
 		
 		attackCooldown += delta;

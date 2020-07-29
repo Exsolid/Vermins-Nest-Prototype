@@ -59,10 +59,10 @@ public class Gameplay extends GameplayOverlay{
 				//Draw shadows
 				for(Entity ent: RuntimeData.getInstance().getEntityManager().getAllEntities()){
 					if(ent instanceof Item && ((Item)ent).getPos() != null && ((Item)ent).getKeeper() == null && ent.getShadow() != null){
-						RuntimeData.getInstance().getGame().getBatch().draw(ent.getShadow(),ent.getPos()[0],ent.getPos()[1]+ent.getYShadowOffset());	
+						RuntimeData.getInstance().getGame().getBatch().draw(ent.getShadow(),ent.getPos()[0]+ent.getXShadowOffset(),ent.getPos()[1]+ent.getYShadowOffset());	
 					}
 					else if(!(ent instanceof Item) && ent.getShadow() != null){
-						RuntimeData.getInstance().getGame().getBatch().draw(ent.getShadow(),ent.getPos()[0],ent.getPos()[1]+ent.getYShadowOffset());	
+						RuntimeData.getInstance().getGame().getBatch().draw(ent.getShadow(),ent.getPos()[0]+ent.getXShadowOffset(),ent.getPos()[1]+ent.getYShadowOffset());	
 					}
 				}
 				
@@ -72,7 +72,10 @@ public class Gameplay extends GameplayOverlay{
 						RuntimeData.getInstance().getGame().getBatch().draw(cell.getLayers().get(1), cell.getxPos(), cell.getyPos());
 					}
 				}
-				
+				//Draw util
+				for(Entity ent: RuntimeData.getInstance().getEntityManager().getUtil()){
+					RuntimeData.getInstance().getGame().getBatch().draw(ent.getCurrentFrame(delta), ent.getPos()[0],ent.getPos()[1], ent.getSize()[0]/2, ent.getSize()[1]/2, ent.getSize()[0], ent.getSize()[1], 1, 1, ent.getRotation());
+				}
 				//Draw ground items
 				for(Entity ent: RuntimeData.getInstance().getEntityManager().getItems()){
 					if(((Item)ent).getPos() != null && ((Item)ent).getKeeper() == null){
@@ -118,7 +121,8 @@ public class Gameplay extends GameplayOverlay{
 				}
 			}
 			if(distance < 15 && interactable != null && interactable instanceof Item){
-				gameMan.setDialog(new ChoiceDialog("Gameplay_Dialog_Accept","Gameplay_Dialog_Cancel","Gameplay_Dialog_Description_Item",((Item)interactable).getIconPath(),new int[]{RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[0]-ChoiceDialog.getSize()[0]/2,RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[1]+ChoiceDialog.getSize()[1]}, Indentifiers.ITEMDIALOG));
+				if(((Item)interactable).getPrice() == 0) gameMan.setDialog(new ChoiceDialog("Gameplay_Dialog_Accept","Gameplay_Dialog_Cancel","Gameplay_Dialog_Description_Item",((Item)interactable).getIconPath(),new int[]{RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[0]-ChoiceDialog.getSize()[0]/2,RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[1]+ChoiceDialog.getSize()[1]}, Indentifiers.ITEMDIALOG));
+				else gameMan.setDialog(new ChoiceDialog("Gameplay_Dialog_Accept","Gameplay_Dialog_Cancel","Gameplay_Dialog_Description_Item_Trade",((Item)interactable).getIconPath(),new int[]{RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[0]-ChoiceDialog.getSize()[0]/2,RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[1]+ChoiceDialog.getSize()[1]}, Indentifiers.ITEMDIALOG));
 				this.interactable = interactable;
 			}
 		}
@@ -162,7 +166,12 @@ public class Gameplay extends GameplayOverlay{
 		if(gameMan.getDialog() != null && gameMan.getDialog().getState() == Indentifiers.DIALOG_OKAY){
 			switch(gameMan.getDialog().getID()){
 			case Indentifiers.ITEMDIALOG:
-				((Item)interactable).takeItem(RuntimeData.getInstance().getEntityManager().getCharacter());
+				if(((Item)interactable).getPrice() > 0 && RuntimeData.getInstance().getEntityManager().getCharacter().getInventory().getFoodCount() >= ((Item)interactable).getPrice()) {
+					RuntimeData.getInstance().getEntityManager().getCharacter().getInventory().setFoodCount(RuntimeData.getInstance().getEntityManager().getCharacter().getInventory().getFoodCount()-((Item)interactable).getPrice());
+					((Item)interactable).takeItem(RuntimeData.getInstance().getEntityManager().getCharacter());
+				}else if(((Item)interactable).getPrice() == 0){
+					((Item)interactable).takeItem(RuntimeData.getInstance().getEntityManager().getCharacter());
+				}
 				break;
 			}
 			gameMan.setDialog(null);

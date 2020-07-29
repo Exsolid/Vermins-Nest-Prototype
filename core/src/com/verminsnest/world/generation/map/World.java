@@ -8,6 +8,8 @@ import com.verminsnest.core.VerminsNest;
 import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.LoadingModule;
 import com.verminsnest.core.management.data.RuntimeData;
+import com.verminsnest.world.generation.map.rooms.Room;
+import com.verminsnest.world.generation.map.rooms.Shop;
 
 public class World extends LoadingModule{
 
@@ -78,7 +80,7 @@ public class World extends LoadingModule{
 		//Gen pathing
 		if(currentRoom == 0){
 			//Gen room
-			map.addRoom(new Room(new int[maxRoomSizeX][maxRoomSizeY],minRoomSize, new int[]{0,0}));
+			map.addRoom(new Shop(new int[maxRoomSizeX][maxRoomSizeY], new int[]{0,0}));
 			map.getLayout()[map.getRooms().get(currentRoom).getLayoutPos()[0]][map.getRooms().get(currentRoom).getLayoutPos()[1]] = map.getRooms().get(currentRoom);
 		}else{
 			int[] pos;
@@ -285,7 +287,7 @@ public class World extends LoadingModule{
 	public void setData(int roomCount, int maxRoomSizeX, int maxRoomSizeY, int minRoomSize, Texture sheet){
 		this.maxRoomSizeX = maxRoomSizeX;
 		this.maxRoomSizeY = maxRoomSizeY;
-		this.roomCount = roomCount;
+		this.roomCount = roomCount+1;
 		this.minRoomSize = minRoomSize;
 		this.sheet = sheet;
 	}

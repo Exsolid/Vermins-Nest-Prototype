@@ -8,7 +8,7 @@ public class Inventory {
 	private float itemCooldown;
 	
 	public Inventory() {
-		
+		foodCount = 3;
 	}
 	
 	public void setItem(Item item) {

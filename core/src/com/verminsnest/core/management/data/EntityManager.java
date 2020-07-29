@@ -17,15 +17,19 @@ import com.verminsnest.entities.items.Food;
 import com.verminsnest.entities.items.Item;
 import com.verminsnest.entities.playables.Playable;
 import com.verminsnest.entities.projectiles.Projectile;
+import com.verminsnest.entities.util.Shopkeeper;
+import com.verminsnest.entities.util.UtilEntity;
 import com.verminsnest.misc.entities.Death;
 import com.verminsnest.world.generation.map.World;
 import com.verminsnest.world.generation.spawning.EnemySpawner;
+import com.verminsnest.world.generation.spawning.UtilSpawner;
 import com.verminsnest.world.management.FloorManager;
 
 public class EntityManager {
 	private ArrayList<Entity> removedEntities;
 	private ArrayList<Entity> addedEntities;
 
+	private ArrayList<Entity> util;
 	private ArrayList<Entity> entities;
 	private ArrayList<Entity> leftovers;
 	private ArrayList<Entity> gore;
@@ -34,6 +38,7 @@ public class EntityManager {
 	private ArrayList<Entity> food;
 	
 	private ArrayList<int[]> toInitEntities;
+	private ArrayList<int[]> toInitUtil;
 	
 	private Playable character;
 	
@@ -41,14 +46,17 @@ public class EntityManager {
 	private ArrayList<Death> deaths;
 	
 	public EntityManager(){
-		removedEntities = new ArrayList<Entity>();
+
 		toInitEntities= new ArrayList<>();
+		toInitUtil= new ArrayList<>();
+		
+		removedEntities = new ArrayList<Entity>();
 		addedEntities = new ArrayList<Entity>();
 		entities = new ArrayList<Entity>();
 		
 		items = new ArrayList<Entity>();
 		food = new ArrayList<Entity>();
-		
+		util= new ArrayList<Entity>();
 		leftovers = new ArrayList<Entity>();
 		damage = new ArrayList<Entity>();
 		gore = new ArrayList<Entity>();
@@ -89,6 +97,8 @@ public class EntityManager {
 					items.remove(ent);
 				}else if(ent instanceof Food){
 					food.remove(ent);
+				}else if(ent instanceof UtilEntity){
+					util.remove(ent);
 				}else{
 					if(!entities.remove(ent)) {
 						leftovers.remove(ent);
@@ -106,6 +116,8 @@ public class EntityManager {
 					items.add(ent);
 				}else if(ent instanceof Food){
 					food.add(ent);
+				}else if(ent instanceof UtilEntity){
+					util.add(ent);
 				}else{
 					if(ent.getState() != Indentifiers.STATE_LEFTOVER){
 						entities.add(ent);
@@ -134,6 +146,12 @@ public class EntityManager {
 				}
 			}
 			for(Entity ent: gore){
+				if(ent.getPos()[0] > character.getPos()[0]-updateXRange && ent.getPos()[0] < character.getPos()[0]+updateXRange
+						&& ent.getPos()[1] > character.getPos()[1]-updateYRange && ent.getPos()[1] < character.getPos()[1]+updateYRange){
+					ent.update(delta);
+				}
+			}
+			for(Entity ent: util){
 				if(ent.getPos()[0] > character.getPos()[0]-updateXRange && ent.getPos()[0] < character.getPos()[0]+updateXRange
 						&& ent.getPos()[1] > character.getPos()[1]-updateYRange && ent.getPos()[1] < character.getPos()[1]+updateYRange){
 					ent.update(delta);
@@ -180,6 +198,9 @@ public class EntityManager {
 		for(Entity ent: food){
 			ent.dispose();
 		}
+		for(Entity ent: util){
+			ent.dispose();
+		}
 		for(Entity ent: addedEntities){
 			ent.dispose();
 		}
@@ -194,6 +215,7 @@ public class EntityManager {
 		lastDeath = null;
 		
 		entities.clear();
+		util.clear();
 		food.clear();
 		damage.clear();
 		gore.clear();
@@ -220,6 +242,7 @@ public class EntityManager {
 		temp.addAll(items);
 		temp.addAll(food);
 		temp.addAll(entities);
+		temp.addAll(util);
 		temp.addAll(damage);
 		return temp;
 	}
@@ -227,6 +250,7 @@ public class EntityManager {
 	public ArrayList<Entity> getAllObstacleEntities() {
 		ArrayList<Entity> temp = new ArrayList<>();
 		temp.addAll(entities);
+		temp.addAll(util);
 		temp.addAll(damage);
 		for(Entity ent: items){
 			if(ent.isObstacle())temp.add(ent);
@@ -247,6 +271,12 @@ public class EntityManager {
 	public ArrayList<Entity> getItems(){
 		ArrayList<Entity> temp = new ArrayList<>();
 		temp.addAll(items);
+		return temp;
+	}
+	
+	public ArrayList<Entity> getUtil(){
+		ArrayList<Entity> temp = new ArrayList<>();
+		temp.addAll(util);
 		return temp;
 	}
 	
@@ -273,6 +303,17 @@ public class EntityManager {
 		toInitEntities.clear();
 	}
 	
+	public void initUtil(){
+		for(int[] data: toInitUtil){
+			switch(data[2]){
+			case Indentifiers.UTIL_SHOPKEEPER:
+				new Shopkeeper(new int[]{data[0], data[1]});
+				break;
+			}
+		}
+		toInitUtil.clear();
+	}
+	
 	public void addEnemiesInit(int xPos, int yPos, int enemyID){
 		toInitEntities.add(new int[]{xPos,yPos,enemyID});
 	}
@@ -280,6 +321,15 @@ public class EntityManager {
 	public ArrayList<int[]> getEnemyInits(){
 		return toInitEntities;
 	}
+	
+	public void addUtilInit(int xPos, int yPos, int enemyID){
+		toInitUtil.add(new int[]{xPos,yPos,enemyID});
+	}
+	
+	public ArrayList<int[]> getUtilInits(){
+		return toInitUtil;
+	}
+	
 	public Playable getCharacter() {
 		return character;
 	}
@@ -301,6 +351,7 @@ public class EntityManager {
 		gen.setData(3, 15, 15, 10,
 				(RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Mountain-Sheet.png")));
 		new EnemySpawner(3);
+		new UtilSpawner();
 		//Clear data
 		for(Entity ent: entities){
 			if(!(ent instanceof Playable)) {
@@ -311,6 +362,9 @@ public class EntityManager {
 			if(!(((Item)ent).getKeeper() instanceof Playable))ent.dispose();
 		}
 		for(Entity ent: food){
+			ent.dispose();
+		}
+		for(Entity ent: util){
 			ent.dispose();
 		}
 		for(Entity ent: leftovers){
@@ -336,6 +390,7 @@ public class EntityManager {
 		leftovers.clear();
 		items.clear();
 		food.clear();
+		util.clear();
 		
 		items.add(character.getInventory().getItem());
 		entities.add(character);
@@ -434,6 +489,7 @@ public class EntityManager {
 	 * @param toPlace ; The entity to place
 	 * @returns true or false depending on if the placement was successful
 	 */
+	//TODO add to enemy spawning
 	public boolean placeOnTile(int[] mapPos, int[] preferredPos, Entity toPlace){
 		//Get all entities within the same tile
 		if(!RuntimeData.getInstance().getMapData().getData()[mapPos[0]][mapPos[1]].isWalkable())return false;
