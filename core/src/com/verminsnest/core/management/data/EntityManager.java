@@ -15,10 +15,12 @@ import com.verminsnest.entities.enemies.Tinker;
 import com.verminsnest.entities.explosions.Explosion;
 import com.verminsnest.entities.items.Food;
 import com.verminsnest.entities.items.Item;
+import com.verminsnest.entities.items.barriers.BarrierActiv;
 import com.verminsnest.entities.playables.Playable;
 import com.verminsnest.entities.projectiles.Projectile;
-import com.verminsnest.entities.util.Shopkeeper;
 import com.verminsnest.entities.util.UtilEntity;
+import com.verminsnest.entities.util.shop.Blanket;
+import com.verminsnest.entities.util.shop.Shopkeeper;
 import com.verminsnest.misc.entities.Death;
 import com.verminsnest.world.generation.map.World;
 import com.verminsnest.world.generation.spawning.EnemySpawner;
@@ -307,7 +309,12 @@ public class EntityManager {
 		for(int[] data: toInitUtil){
 			switch(data[2]){
 			case Indentifiers.UTIL_SHOPKEEPER:
+				new Blanket(new int[]{data[0]-40, data[1]-40});
 				new Shopkeeper(new int[]{data[0], data[1]});
+				break;
+			case Indentifiers.UTIL_ITEM_ACTIVBARRIER:
+				BarrierActiv ba = new BarrierActiv();
+				ba.putItem(new int[]{data[0], data[1]});
 				break;
 			}
 		}

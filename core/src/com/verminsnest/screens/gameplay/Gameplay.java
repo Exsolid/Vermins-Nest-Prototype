@@ -8,6 +8,7 @@ import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.items.Item;
+import com.verminsnest.entities.util.UtilEntity;
 import com.verminsnest.misc.gui.ChoiceDialog;
 import com.verminsnest.screens.gameplay.menus.GameplayMenu;
 import com.verminsnest.world.generation.map.MapCell;
@@ -56,6 +57,12 @@ public class Gameplay extends GameplayOverlay{
 					}
 					
 				}
+				
+				//Draw util (grounded)
+				for(Entity ent: RuntimeData.getInstance().getEntityManager().getUtil()){
+					if(((UtilEntity)ent).isGrounded())RuntimeData.getInstance().getGame().getBatch().draw(ent.getCurrentFrame(delta), ent.getPos()[0],ent.getPos()[1], ent.getSize()[0]/2, ent.getSize()[1]/2, ent.getSize()[0], ent.getSize()[1], 1, 1, ent.getRotation());
+				}
+				
 				//Draw shadows
 				for(Entity ent: RuntimeData.getInstance().getEntityManager().getAllEntities()){
 					if(ent instanceof Item && ((Item)ent).getPos() != null && ((Item)ent).getKeeper() == null && ent.getShadow() != null){
@@ -72,9 +79,9 @@ public class Gameplay extends GameplayOverlay{
 						RuntimeData.getInstance().getGame().getBatch().draw(cell.getLayers().get(1), cell.getxPos(), cell.getyPos());
 					}
 				}
-				//Draw util
+				//Draw util (not grounded)
 				for(Entity ent: RuntimeData.getInstance().getEntityManager().getUtil()){
-					RuntimeData.getInstance().getGame().getBatch().draw(ent.getCurrentFrame(delta), ent.getPos()[0],ent.getPos()[1], ent.getSize()[0]/2, ent.getSize()[1]/2, ent.getSize()[0], ent.getSize()[1], 1, 1, ent.getRotation());
+					if(!((UtilEntity)ent).isGrounded())RuntimeData.getInstance().getGame().getBatch().draw(ent.getCurrentFrame(delta), ent.getPos()[0],ent.getPos()[1], ent.getSize()[0]/2, ent.getSize()[1]/2, ent.getSize()[0], ent.getSize()[1], 1, 1, ent.getRotation());
 				}
 				//Draw ground items
 				for(Entity ent: RuntimeData.getInstance().getEntityManager().getItems()){

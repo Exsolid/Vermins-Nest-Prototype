@@ -61,6 +61,7 @@ public class VNAssetManager {
 			break;
 		case Indentifiers.ASSETMANAGER_SHOPKEEPER:
 			assetManager.load("textures/characters/shopkeeper/Rabbit-Idle.png", Texture.class);
+			assetManager.load("textures/util/Blanket.png", Texture.class);
 			break;
 		case Indentifiers.ASSETMANAGER_MAGE:
 			assetManager.load("textures/characters/mage/Mage-W-Front.png", Texture.class);
@@ -158,6 +159,7 @@ public class VNAssetManager {
 			break;
 		case Indentifiers.ASSETMANAGER_SHOPKEEPER:
 			this.unload("textures/characters/shopkeeper/Rabbit-Idle.png");
+			this.unload("textures/util/Blanket.png");
 			break;
 		case Indentifiers.ASSETMANAGER_MAGE:
 			this.unload("textures/characters/mage/Mage-W-Front.png");

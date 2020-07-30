@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.verminsnest.core.VerminsNest;
 import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
-import com.verminsnest.entities.items.barriers.BarrierActiv;
 import com.verminsnest.entities.playables.Mage;
 import com.verminsnest.misc.gui.ChoiceDialog;
 import com.verminsnest.screens.VNScreen;
@@ -163,7 +162,6 @@ public class GameManager extends VNScreen {
 	public void init() {
 
 		if (RuntimeData.getInstance().getEntityManager().getCharacter() == null) {
-			BarrierActiv ba =new BarrierActiv();
 			RuntimeData.getInstance().getEntityManager().setCharacter(new Mage(new int[] { 0, 0 }));
 			for (int x = 0; x < RuntimeData.getInstance().getMapData().getData().length; x++) {
 				for (int y = 0; y < RuntimeData.getInstance().getMapData().getData()[0].length; y++) {
@@ -176,7 +174,6 @@ public class GameManager extends VNScreen {
 				}
 			}
 
-			ba.putItem(new int[]{RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[0]-60, RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[1]-60});
 			gameplay = new Gameplay(this);
 			pauseMenu = new PauseMenu(this);
 			levelMenu = new LevelMenu(this);

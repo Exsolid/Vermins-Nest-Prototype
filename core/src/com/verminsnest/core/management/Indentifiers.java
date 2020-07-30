@@ -60,11 +60,20 @@ public class Indentifiers {
 	
 	//Util entity IDs
 	public static final int UTIL_SHOPKEEPER = 0;
+	public static final int UTIL_ITEM_ACTIVBARRIER = 1;
+	
+	//Item IDs
 	
 	public static ArrayList<Integer> getAllEnemyIDs(){
 		ArrayList<Integer> ids = new ArrayList<>();
 		ids.add(ENEMY_TINKER);
 		ids.add(ENEMY_FLUNK);
+		return ids;
+	}
+	
+	public static ArrayList<Integer> getItemPoolShop(){
+		ArrayList<Integer> ids = new ArrayList<>();
+		ids.add(UTIL_ITEM_ACTIVBARRIER);
 		return ids;
 	}
 }
