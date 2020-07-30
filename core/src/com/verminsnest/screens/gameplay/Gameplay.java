@@ -118,11 +118,11 @@ public class Gameplay extends GameplayOverlay{
 		
 		//Entity interaction
 		if(Gdx.input.isKeyJustPressed(Input.Keys.E)){
-			int distance = 0;
+			int distance = 999;
 			Entity interactable = null;
 			for(Entity ent: RuntimeData.getInstance().getEntityManager().getInteractables()){
 				int dist = RuntimeData.getInstance().getEntityManager().getDistanceBetween(RuntimeData.getInstance().getEntityManager().getCharacter(), ent);
-				if(dist >= distance){
+				if(dist <= distance){
 					distance = dist;
 					interactable = ent;
 				}
