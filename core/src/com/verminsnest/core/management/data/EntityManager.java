@@ -16,6 +16,7 @@ import com.verminsnest.entities.explosions.Explosion;
 import com.verminsnest.entities.items.Food;
 import com.verminsnest.entities.items.Item;
 import com.verminsnest.entities.items.barriers.BarrierActiv;
+import com.verminsnest.entities.items.turrets.MechaTurret;
 import com.verminsnest.entities.playables.Playable;
 import com.verminsnest.entities.projectiles.Projectile;
 import com.verminsnest.entities.util.UtilEntity;
@@ -270,6 +271,16 @@ public class EntityManager {
 		return temp;
 	}
 	
+	public ArrayList<Entity> getAllEnemies() {
+		ArrayList<Entity> temp = new ArrayList<>();
+		for(Entity ent: entities){
+			if(ent instanceof Enemy){
+				temp.add(ent);
+			}
+		}
+		return temp;
+	}
+	
 	public ArrayList<Entity> getItems(){
 		ArrayList<Entity> temp = new ArrayList<>();
 		temp.addAll(items);
@@ -312,9 +323,13 @@ public class EntityManager {
 				new Blanket(new int[]{data[0]-40, data[1]-40});
 				new Shopkeeper(new int[]{data[0], data[1]});
 				break;
-			case Indentifiers.UTIL_ITEM_ACTIVBARRIER:
+			case Indentifiers.UTIL_ITEM_BARRIER_BLUE:
 				BarrierActiv ba = new BarrierActiv();
 				ba.putItem(new int[]{data[0], data[1]});
+				break;
+			case Indentifiers.UTIL_ITEM_TURRET_MECHA:
+				MechaTurret metu = new MechaTurret();
+				metu.putItem(new int[]{data[0], data[1]});
 				break;
 			}
 		}
@@ -565,7 +580,8 @@ public class EntityManager {
 		}
 		//Place
 		if(toPlace instanceof Item){
-			((Item)toPlace).putItem(new int[]{placedPos[0],placedPos[1]});
+			if(!((Item)toPlace).isGrounded())((Item)toPlace).putItem(new int[]{placedPos[0],placedPos[1]});
+			else ((Item)toPlace).groundItem(new int[]{placedPos[0],placedPos[1]});
 		}else{
 			toPlace.getPos()[0] = placedPos[0];
 			toPlace.getPos()[1] = placedPos[1];

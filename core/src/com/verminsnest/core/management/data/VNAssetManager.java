@@ -48,10 +48,15 @@ public class VNAssetManager {
 			assetManager.load("textures/items/Item-Bag.png", Texture.class);
 			assetManager.load("textures/items/Food.png", Texture.class);
 			break;
+		case Indentifiers.ASSETMANAGER_BULLET_GREEN:
+			assetManager.load("textures/projectiles/bullets/BulletGreen-Flying.png", Texture.class);
+			assetManager.load("textures/projectiles/bullets/BulletGreen-Hit.png", Texture.class);
+			break;
 		case Indentifiers.ASSETMANAGER_FIREBALL:
 			assetManager.load("textures/projectiles/fireball/FireBall-Flying.png", Texture.class);
 			assetManager.load("textures/projectiles/fireball/FireBall-Hit.png", Texture.class);
 			assetManager.load("textures/projectiles/fireball/FireBall-Cast.png", Texture.class);
+			break;
 		case Indentifiers.ASSETMANAGER_SLASH_SMALL:
 			assetManager.load("textures/projectiles/slash/SlashLeft.png", Texture.class);
 			assetManager.load("textures/projectiles/slash/SlashRight.png", Texture.class);
@@ -95,6 +100,14 @@ public class VNAssetManager {
 			assetManager.load("textures/items/barriers/barrier-blue/Barrier-Blue-Idle.png", Texture.class);
 			assetManager.load("textures/items/barriers/barrier-blue/Barrier-Blue-Break.png", Texture.class);
 			assetManager.load("textures/items/barriers/barrier-blue/Barrier-Blue-Icon.png", Texture.class);
+			break;
+		case Indentifiers.ASSETMANAGER_TURRET_MECHA:
+			assetManager.load("textures/items/turrets/mecha-turret/MechaTurret-Idle.png", Texture.class);
+			assetManager.load("textures/items/turrets/mecha-turret/MechaTurret-A-East.png", Texture.class);
+			assetManager.load("textures/items/turrets/mecha-turret/MechaTurret-A-West.png", Texture.class);
+			assetManager.load("textures/items/turrets/mecha-turret/MechaTurret-A-South.png", Texture.class);
+			assetManager.load("textures/items/turrets/mecha-turret/MechaTurret-A-North.png", Texture.class);
+			assetManager.load("textures/items/turrets/mecha-turret/MechaTurret-Icon.png", Texture.class);
 			break;
 		case Indentifiers.ASSETMANAGER_GORE:
 			assetManager.load("textures/gore/Gore-1.png", Texture.class);
@@ -146,6 +159,10 @@ public class VNAssetManager {
 			this.unload("textures/items/Item-Bag.png");
 			this.unload("textures/items/Food.png");
 			break;
+		case Indentifiers.ASSETMANAGER_BULLET_GREEN:
+			this.unload("textures/projectiles/bullets/BulletGreen-Flying.png");
+			this.unload("textures/projectiles/bullets/BulletGreen-Hit.png");
+			break;
 		case Indentifiers.ASSETMANAGER_FIREBALL:
 			this.unload("textures/projectiles/fireball/FireBall-Flying.png");
 			this.unload("textures/projectiles/fireball/FireBall-Hit.png");
@@ -188,6 +205,14 @@ public class VNAssetManager {
 			this.unload("textures/enemies/eggs/Egg-Idle.png");
 			this.unload("textures/enemies/eggs/Egg-Leftover.png");
 			break;
+		case Indentifiers.ASSETMANAGER_TURRET_MECHA:
+			this.unload("textures/items/turrets/mecha-turret/MechaTurret-Idle.png");
+			this.unload("textures/items/turrets/mecha-turret/MechaTurret-A-East.png");
+			this.unload("textures/items/turrets/mecha-turret/MechaTurret-A-West.png");
+			this.unload("textures/items/turrets/mecha-turret/MechaTurret-A-South.png");
+			this.unload("textures/items/turrets/mecha-turret/MechaTurret-A-North.png");
+			this.unload("textures/items/turrets/mecha-turret/MechaTurret-Icon.png");
+			break;
 		case Indentifiers.ASSETMANAGER_BARRIER_BLUE:
 			this.unload("textures/items/barriers/barrier-blue/Barrier-Blue-Cast.png");
 			this.unload("textures/items/barriers/barrier-blue/Barrier-Blue-Idle.png");
@@ -209,8 +234,10 @@ public class VNAssetManager {
 			return assetManager.isLoaded("textures/misc/Cursor.png");
 		case Indentifiers.ASSETMANAGER_GAMEPLAY:
 			return assetManager.isLoaded("textures/menus/scrolls/VerticalScroll_Small.png");
+		case Indentifiers.ASSETMANAGER_BULLET_GREEN:
+			return assetManager.isLoaded("textures/projectiles/bullets/BulletGreen-Flying.png");
 		case Indentifiers.ASSETMANAGER_FIREBALL:
-			this.unload("textures/projectiles/fireball/FireBall-Flying.png");
+			return assetManager.isLoaded("textures/projectiles/fireball/FireBall-Flying.png");
 		case Indentifiers.ASSETMANAGER_SLASH_SMALL:
 			return assetManager.isLoaded("textures/projectiles/slash/Slash.png");
 		case Indentifiers.ASSETMANAGER_EXPLOSION_SMALL:
@@ -225,6 +252,8 @@ public class VNAssetManager {
 			return assetManager.isLoaded("textures/enemies/flunk/Flunk-All.png");
 		case Indentifiers.ASSETMANAGER_EGG:
 			return assetManager.isLoaded("textures/enemies/eggs/Egg-Hatch.png");
+		case Indentifiers.ASSETMANAGER_TURRET_MECHA:
+			return assetManager.isLoaded("textures/items/turrets/mecha-turret/MechaTurret-Idle.png");
 		case Indentifiers.ASSETMANAGER_BARRIER_BLUE:
 			return assetManager.isLoaded("textures/items/barriers/barrier-blue/Barrier-Blue-Cast.png");
 		case Indentifiers.ASSETMANAGER_GORE:

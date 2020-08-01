@@ -65,7 +65,7 @@ public class Gameplay extends GameplayOverlay{
 				
 				//Draw shadows
 				for(Entity ent: RuntimeData.getInstance().getEntityManager().getAllEntities()){
-					if(ent instanceof Item && ((Item)ent).getPos() != null && ((Item)ent).getKeeper() == null && ent.getShadow() != null){
+					if(ent instanceof Item && ((Item)ent).getPos() != null && (((Item)ent).getKeeper() == null || ((Item)ent).isGrounded()) && ent.getShadow() != null){
 						RuntimeData.getInstance().getGame().getBatch().draw(ent.getShadow(),ent.getPos()[0]+ent.getXShadowOffset(),ent.getPos()[1]+ent.getYShadowOffset());	
 					}
 					else if(!(ent instanceof Item) && ent.getShadow() != null){
@@ -127,6 +127,7 @@ public class Gameplay extends GameplayOverlay{
 					interactable = ent;
 				}
 			}
+			//TODO implement separate shop dialog
 			if(distance < 15 && interactable != null && interactable instanceof Item){
 				if(((Item)interactable).getPrice() == 0) gameMan.setDialog(new ChoiceDialog("Gameplay_Dialog_Accept","Gameplay_Dialog_Cancel","Gameplay_Dialog_Description_Item",((Item)interactable).getIconPath(),new int[]{RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[0]-ChoiceDialog.getSize()[0]/2,RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[1]+ChoiceDialog.getSize()[1]}, Indentifiers.ITEMDIALOG));
 				else gameMan.setDialog(new ChoiceDialog("Gameplay_Dialog_Accept","Gameplay_Dialog_Cancel","Gameplay_Dialog_Description_Item_Trade",((Item)interactable).getIconPath(),new int[]{RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[0]-ChoiceDialog.getSize()[0]/2,RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[1]+ChoiceDialog.getSize()[1]}, Indentifiers.ITEMDIALOG));

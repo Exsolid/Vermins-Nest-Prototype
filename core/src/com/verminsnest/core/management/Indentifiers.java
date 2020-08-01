@@ -46,6 +46,7 @@ public class Indentifiers {
 	public final static int ASSETMANAGER_FIREBALL = 3;
 	public final static int ASSETMANAGER_SLASH_SMALL = 4;
 	public final static int ASSETMANAGER_EXPLOSION_SMALL = 10;
+	public final static int ASSETMANAGER_BULLET_GREEN = 13;
 	
 	public final static int ASSETMANAGER_TINKER = 5;
 	public static final int ASSETMANAGER_FLUNK = 9;
@@ -53,6 +54,7 @@ public class Indentifiers {
 	public final static int ASSETMANAGER_GORE = 7;
 	
 	public final static int ASSETMANAGER_BARRIER_BLUE = 11;
+	public final static int ASSETMANAGER_TURRET_MECHA= 14;
 
 	//Enemy IDs
 	public static final int ENEMY_TINKER = 0;
@@ -60,7 +62,8 @@ public class Indentifiers {
 	
 	//Util entity IDs
 	public static final int UTIL_SHOPKEEPER = 0;
-	public static final int UTIL_ITEM_ACTIVBARRIER = 1;
+	public static final int UTIL_ITEM_BARRIER_BLUE = 1;
+	public static final int UTIL_ITEM_TURRET_MECHA = 2;
 	
 	//Item IDs
 	
@@ -73,7 +76,8 @@ public class Indentifiers {
 	
 	public static ArrayList<Integer> getItemPoolShop(){
 		ArrayList<Integer> ids = new ArrayList<>();
-		ids.add(UTIL_ITEM_ACTIVBARRIER);
+		ids.add(UTIL_ITEM_BARRIER_BLUE);
+		ids.add(UTIL_ITEM_TURRET_MECHA);
 		return ids;
 	}
 }

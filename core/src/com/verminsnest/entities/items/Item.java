@@ -15,7 +15,7 @@ public abstract class Item extends Entity {
 	protected float runtime;
 	protected Animation<TextureRegion> itemBagAni;
 	protected String iconPath;
-	
+	protected boolean isGrounded;
 	protected int price;
 	
 	public Item(int[] pos, int textureID, boolean isPassiv) {
@@ -84,6 +84,12 @@ public abstract class Item extends Entity {
 		stop();
 	}
 	
+	public void groundItem(int[] pos) {
+		this.pos = pos;
+		setCurrentAni(Indentifiers.STATE_IDLE);
+		updateSize();
+	}
+	
 	public String getIconPath(){
 		return iconPath;
 	}
@@ -107,5 +113,13 @@ public abstract class Item extends Entity {
 	
 	public int getPrice() {
 		return price;
+	}
+	
+	public float getRuntime() {
+		return runtime;
+	}
+	
+	public boolean isGrounded() {
+		return isGrounded;
 	}
 }

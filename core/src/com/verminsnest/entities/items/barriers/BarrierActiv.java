@@ -12,12 +12,12 @@ public class BarrierActiv extends Barrier {
 	public BarrierActiv() {
 		super(Indentifiers.ASSETMANAGER_BARRIER_BLUE, false);
 		this.setIconPath("textures/items/barriers/barrier-blue/Barrier-Blue-Icon.png");
+		baseCooldown = 20;
 	}
 
 	@Override
 	public void activate() {
 		runtime = 4f;
-		baseCooldown = 20;
 		internalStateTime = 0;
 		if(keeper instanceof Playable)activationHP = ((Playable)keeper).getHealth();
 		this.pos = new int[]{keeper.getPos()[0]-this.size[0]/2+keeper.getSize()[0]/2,keeper.getPos()[1]-this.size[1]/2+keeper.getSize()[1]/2};
