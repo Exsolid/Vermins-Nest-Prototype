@@ -61,7 +61,7 @@ public class Mage extends Playable {
 		}
 		idleAni = new Animation<TextureRegion>(0.5f, frames);
 		yShadowOffset = -15;
-		setHitbox(idleAni.getKeyFrame(0).getRegionWidth(),(int) (idleAni.getKeyFrame(0).getRegionHeight()/2.5));
+		setHitbox(idleAni.getKeyFrame(0).getRegionWidth(),(int) (idleAni.getKeyFrame(0).getRegionHeight()/2));
 	}
 
 	@Override

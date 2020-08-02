@@ -31,6 +31,7 @@ public class Egg extends Entity {
 		yShadowOffset = -10;
 		this.setCurrentAni(Indentifiers.STATE_IDLE);
 		this.setSize(currentAni.getKeyFrame(0).getRegionWidth(),currentAni.getKeyFrame(0).getRegionHeight());
+		this.setHitbox(currentAni.getKeyFrame(0).getRegionWidth(),(int) (currentAni.getKeyFrame(0).getRegionHeight()/2.5));
 		Random rand = new Random();
 		hatchTime = rand.nextInt(6)+5;
 	}
