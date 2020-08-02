@@ -122,10 +122,16 @@ public abstract class Enemy extends Entity {
 			}
 
 		} else {
-			updateVision();
-			updateAction(delta);
+			if(isForced){
+				if(forceTimer < 0)setForced(false,0,0);
+				else RuntimeData.getInstance().getEntityDamageSystem().knockBack(this, forceDirection);
+			}else{
+				updateVision();
+				updateAction(delta);
+			}
 		}
 		timer += delta;
+		forceTimer -= delta;
 		attackCooldown += delta;
 		internalStateTime += delta;
 		lastDirCount-= delta;

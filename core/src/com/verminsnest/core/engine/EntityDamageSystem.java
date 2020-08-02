@@ -40,10 +40,10 @@ public class EntityDamageSystem {
 	public void calculateHit(Entity source){
 		for(Entity hit: RuntimeData.getInstance().getEntityManager().getAllBioEntities()){
 			if(hit instanceof Playable || hit instanceof Enemy){
-				for(int x = source.getPos()[0]; x <= source.getPos()[0]+source.getSize()[0]; x++){
-					for(int y = source.getPos()[1]; y <= source.getPos()[1]+source.getSize()[1]; y++){
-						if(x >= hit.getPos()[0] && x <= hit.getPos()[0]+ hit.getSize()[0]
-								&& y >= hit.getPos()[1] && y <= hit.getPos()[1]+ hit.getSize()[1]){
+				for(int x = source.getPos()[0]; x <= source.getPos()[0]+source.getHitbox()[0]; x++){
+					for(int y = source.getPos()[1]; y <= source.getPos()[1]+source.getHitbox()[1]; y++){
+						if(x >= hit.getPos()[0] && x <= hit.getPos()[0]+ hit.getHitbox()[0]
+								&& y >= hit.getPos()[1] && y <= hit.getPos()[1]+ hit.getHitbox()[1]){
 							addHit(source, hit);
 						}
 					}
@@ -144,6 +144,34 @@ public class EntityDamageSystem {
 					RuntimeData.getInstance().setGameOver(true);
 				}
 			}
+		}
+		if(hit instanceof Playable || hit instanceof Enemy){
+			int x = hit.getPos()[0]+hit.getHitbox()[0]/2-(source.getPos()[0]+source.getHitbox()[0]/2);
+			int y = hit.getPos()[1]+hit.getHitbox()[1]/2-(source.getPos()[1]+source.getHitbox()[1]/2);
+			if(Math.abs(x)<Math.abs(y)){
+				if(x<0)hit.setForced(true, 0.08f, Indentifiers.DIRECTION_WEST);
+				else hit.setForced(true, 0.08f,Indentifiers.DIRECTION_EAST);
+			}else{
+				if(y<0)hit.setForced(true, 0.08f, Indentifiers.DIRECTION_SOUTH);
+				else hit.setForced(true, 0.08f, Indentifiers.DIRECTION_NORTH);
+			}
+		}
+	}
+	
+	public void knockBack(Entity ent, int dir){
+		switch(dir){
+		case Indentifiers.DIRECTION_NORTH:
+			RuntimeData.getInstance().getMovmentSystem().moveTop(ent, 15, null);
+			break;
+		case Indentifiers.DIRECTION_SOUTH:
+			RuntimeData.getInstance().getMovmentSystem().moveDown(ent, 15, null);
+			break;
+		case Indentifiers.DIRECTION_EAST:
+			RuntimeData.getInstance().getMovmentSystem().moveRight(ent, 15, null);
+			break;
+		case Indentifiers.DIRECTION_WEST:
+			RuntimeData.getInstance().getMovmentSystem().moveLeft(ent, 15, null);
+			break;
 		}
 	}
 }

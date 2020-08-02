@@ -29,29 +29,19 @@ public class EntityMovementSystem {
 	
 	public boolean moveTop(Entity entity, int speed, int[] goalPos){
 		int mapPosXStart = (int) Math.floor(entity.getPos()[0]/128);
-		int mapPosXEnd = (int) Math.floor((entity.getPos()[0]+entity.getSize()[0])/128);
+		int mapPosXEnd = (int) Math.floor((entity.getPos()[0]+entity.getHitbox()[0])/128);
 		for(int i = 1; i<=speed; i++){
-			int refMapPosYEnd = (int) Math.floor((entity.getPos()[1]+entity.getSize()[1]+1)/128);
+			int refMapPosYEnd = (int) Math.floor((entity.getPos()[1]+entity.getHitbox()[1]+1)/128);
 			if(!map[mapPosXStart][refMapPosYEnd].isWalkable() || !map[mapPosXEnd][refMapPosYEnd].isWalkable()){
 				if(goalPos == null)return false;
 				else return goToPos(entity, goalPos, speed);
 			}else{
-				int y = entity.getPos()[1]+entity.getSize()[1]+1;
+				int y = entity.getPos()[1]+entity.getHitbox()[1]+1;
 				for(Entity refEnt: RuntimeData.getInstance().getEntityManager().getAllEntities()){
 					if(!entity.equals(refEnt) && refEnt.isObstacle()){
-						for(int x = entity.getPos()[0]; x <= entity.getPos()[0]+entity.getSize()[0]; x++){
-							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
-								if(entity instanceof Projectile|| entity instanceof Explosion){
-									RuntimeData.getInstance().getEntityDamageSystem().addHit(entity, refEnt);
-								}else if(refEnt instanceof Food && !((Food)refEnt).isPicked()) {
-									if(entity instanceof Playable) {
-										((Food)refEnt).setPicked(true);
-										((Playable)entity).getInventory().setFoodCount(((Playable)entity).getInventory().getFoodCount()+1);
-										RuntimeData.getInstance().getEntityManager().removeEntity(refEnt);
-									}
-								}else{
-									return false;
-								}
+						for(int x = entity.getPos()[0]; x <= entity.getPos()[0]+entity.getHitbox()[0]; x++){
+							if(x <= refEnt.getPos()[0]+refEnt.getHitbox()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getHitbox()[1] && y >= refEnt.getPos()[1]){
+								if(!checkEntities(entity,refEnt))return false;
 							}
 						}
 					}
@@ -64,7 +54,7 @@ public class EntityMovementSystem {
 	
 	public boolean moveDown(Entity entity, int speed, int[] goalPos){
 		int mapPosXStart = (int) Math.floor(entity.getPos()[0]/128);
-		int mapPosXEnd = (int) Math.floor((entity.getPos()[0]+entity.getSize()[0])/128);
+		int mapPosXEnd = (int) Math.floor((entity.getPos()[0]+entity.getHitbox()[0])/128);
 		for(int i = 1; i<=speed; i++){
 			int refMapPosYStart = (int) Math.floor((entity.getPos()[1]-i)/128);
 			if(!map[mapPosXStart][refMapPosYStart].isWalkable() || !map[mapPosXEnd][refMapPosYStart].isWalkable()){
@@ -74,19 +64,9 @@ public class EntityMovementSystem {
 				int y = entity.getPos()[1]-1;
 				for(Entity refEnt: RuntimeData.getInstance().getEntityManager().getAllEntities()){
 					if(!entity.equals(refEnt) && refEnt.isObstacle()){
-						for(int x = entity.getPos()[0]; x <= entity.getPos()[0]+entity.getSize()[0]; x++){
-							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
-								if(entity instanceof Projectile|| entity instanceof Explosion){
-									RuntimeData.getInstance().getEntityDamageSystem().addHit(entity, refEnt);
-								}else if(refEnt instanceof Food && !((Food)refEnt).isPicked()) {
-									if(entity instanceof Playable) {
-										((Food)refEnt).setPicked(true);
-										((Playable)entity).getInventory().setFoodCount(((Playable)entity).getInventory().getFoodCount()+1);
-										RuntimeData.getInstance().getEntityManager().removeEntity(refEnt);
-									}
-								}else{
-									return false;
-								}
+						for(int x = entity.getPos()[0]; x <= entity.getPos()[0]+entity.getHitbox()[0]; x++){
+							if(x <= refEnt.getPos()[0]+refEnt.getHitbox()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getHitbox()[1] && y >= refEnt.getPos()[1]){
+								if(!checkEntities(entity,refEnt))return false;
 							}
 						}
 					}
@@ -99,7 +79,7 @@ public class EntityMovementSystem {
 	
 	public boolean moveLeft(Entity entity, int speed, int[] goalPos){
 		int mapPosYStart = (int) Math.floor(entity.getPos()[1]/128);
-		int mapPosYEnd = (int) Math.floor((entity.getPos()[1]+entity.getSize()[1])/128);
+		int mapPosYEnd = (int) Math.floor((entity.getPos()[1]+entity.getHitbox()[1])/128);
 		for(int i = 1; i<=speed; i++){
 			int refMapPosXStart = (int) Math.floor((entity.getPos()[0]-i)/128);
 			if(!map[refMapPosXStart][mapPosYStart].isWalkable() || !map[refMapPosXStart][mapPosYEnd].isWalkable()){
@@ -109,19 +89,9 @@ public class EntityMovementSystem {
 				int x = entity.getPos()[0]-1;
 				for(Entity refEnt: RuntimeData.getInstance().getEntityManager().getAllEntities()){
 					if(!entity.equals(refEnt) && refEnt.isObstacle()){
-						for(int y = entity.getPos()[1]; y <= entity.getPos()[1]+entity.getSize()[1]; y++){
-							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
-								if(entity instanceof Projectile|| entity instanceof Explosion){
-									RuntimeData.getInstance().getEntityDamageSystem().addHit(entity, refEnt);
-								}else if(refEnt instanceof Food && !((Food)refEnt).isPicked()) {
-									if(entity instanceof Playable) {
-										((Food)refEnt).setPicked(true);
-										((Playable)entity).getInventory().setFoodCount(((Playable)entity).getInventory().getFoodCount()+1);
-										RuntimeData.getInstance().getEntityManager().removeEntity(refEnt);
-									}
-								}else{
-									return false;
-								}
+						for(int y = entity.getPos()[1]; y <= entity.getPos()[1]+entity.getHitbox()[1]; y++){
+							if(x <= refEnt.getPos()[0]+refEnt.getHitbox()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getHitbox()[1] && y >= refEnt.getPos()[1]){
+								if(!checkEntities(entity,refEnt))return false;
 							}
 						}
 					}
@@ -134,29 +104,19 @@ public class EntityMovementSystem {
 	
 	public boolean moveRight(Entity entity, int speed, int[] goalPos){
 		int mapPosYStart = (int) Math.floor(entity.getPos()[1]/128);
-		int mapPosYEnd = (int) Math.floor((entity.getPos()[1]+entity.getSize()[1])/128);
+		int mapPosYEnd = (int) Math.floor((entity.getPos()[1]+entity.getHitbox()[1])/128);
 		for(int i = 1; i<=speed; i++){
-			int refMapPosXEnd = (int) Math.floor((entity.getPos()[0]+entity.getSize()[0]+i)/128);
+			int refMapPosXEnd = (int) Math.floor((entity.getPos()[0]+entity.getHitbox()[0]+i)/128);
 			if(!map[refMapPosXEnd][mapPosYStart].isWalkable() || !map[refMapPosXEnd][mapPosYEnd].isWalkable()){
 				if(goalPos == null)return false;
 				else return goToPos(entity, goalPos, speed);
 			}else{
-				int x = entity.getPos()[0]+entity.getSize()[0]+1;
+				int x = entity.getPos()[0]+entity.getHitbox()[0]+1;
 				for(Entity refEnt: RuntimeData.getInstance().getEntityManager().getAllEntities()){
 					if(!entity.equals(refEnt) && refEnt.isObstacle()){
-						for(int y = entity.getPos()[1]; y <= entity.getPos()[1]+entity.getSize()[1]; y++){
-							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
-								if(entity instanceof Projectile|| entity instanceof Explosion){
-									RuntimeData.getInstance().getEntityDamageSystem().addHit(entity, refEnt);
-								}else if(refEnt instanceof Food && !((Food)refEnt).isPicked()) {
-									if(entity instanceof Playable) {
-										((Food)refEnt).setPicked(true);
-										((Playable)entity).getInventory().setFoodCount(((Playable)entity).getInventory().getFoodCount()+1);
-										RuntimeData.getInstance().getEntityManager().removeEntity(refEnt);
-									}
-								}else{
-									return false;
-								}
+						for(int y = entity.getPos()[1]; y <= entity.getPos()[1]+entity.getHitbox()[1]; y++){
+							if(x <= refEnt.getPos()[0]+refEnt.getHitbox()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getHitbox()[1] && y >= refEnt.getPos()[1]){
+								if(!checkEntities(entity,refEnt))return false;
 							}
 						}
 					}
@@ -169,28 +129,18 @@ public class EntityMovementSystem {
 	
 	public boolean move(Entity entity, int[] speed){
 		int mapPosYStart = (int) Math.floor(entity.getPos()[1]/128);
-		int mapPosYEnd = (int) Math.floor((entity.getPos()[1]+entity.getSize()[1])/128);
+		int mapPosYEnd = (int) Math.floor((entity.getPos()[1]+entity.getHitbox()[1])/128);
 		for(int i = 1; i<=Math.abs(speed[0]); i++){
-			int refMapPosXEnd = (int) Math.floor((entity.getPos()[0]+entity.getSize()[0]+i)/128);
+			int refMapPosXEnd = (int) Math.floor((entity.getPos()[0]+entity.getHitbox()[0]+i)/128);
 			if(!map[refMapPosXEnd][mapPosYStart].isWalkable() || !map[refMapPosXEnd][mapPosYEnd].isWalkable()){
 				return false;
 			}else{
-				int x = entity.getPos()[0]+entity.getSize()[0]+1;
+				int x = entity.getPos()[0]+entity.getHitbox()[0]+1;
 				for(Entity refEnt: RuntimeData.getInstance().getEntityManager().getAllEntities()){
 					if(!entity.equals(refEnt) && refEnt.isObstacle()){
-						for(int y = entity.getPos()[1]; y <= entity.getPos()[1]+entity.getSize()[1]; y++){
-							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
-								if(entity instanceof Projectile|| entity instanceof Explosion){
-									RuntimeData.getInstance().getEntityDamageSystem().addHit(entity, refEnt);
-								}else if(refEnt instanceof Food && !((Food)refEnt).isPicked()) {
-									if(entity instanceof Playable) {
-										((Food)refEnt).setPicked(true);
-										((Playable)entity).getInventory().setFoodCount(((Playable)entity).getInventory().getFoodCount()+1);
-										RuntimeData.getInstance().getEntityManager().removeEntity(refEnt);
-									}
-								}else{
-									return false;
-								}
+						for(int y = entity.getPos()[1]; y <= entity.getPos()[1]+entity.getHitbox()[1]; y++){
+							if(x <= refEnt.getPos()[0]+refEnt.getHitbox()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getHitbox()[1] && y >= refEnt.getPos()[1]){
+								if(!checkEntities(entity,refEnt))return false;
 							}
 						}
 					}
@@ -203,7 +153,7 @@ public class EntityMovementSystem {
 			}
 		}
 		int mapPosXStart = (int) Math.floor(entity.getPos()[0]/128);
-		int mapPosXEnd = (int) Math.floor((entity.getPos()[0]+entity.getSize()[0])/128);
+		int mapPosXEnd = (int) Math.floor((entity.getPos()[0]+entity.getHitbox()[0])/128);
 		for(int i = 1; i<=Math.abs(speed[1]); i++){
 			int refMapPosYStart = (int) Math.floor((entity.getPos()[1]-i)/128);
 			if(!map[mapPosXStart][refMapPosYStart].isWalkable() || !map[mapPosXEnd][refMapPosYStart].isWalkable()){
@@ -212,8 +162,8 @@ public class EntityMovementSystem {
 				int y = entity.getPos()[1]-1;
 				for(Entity refEnt: RuntimeData.getInstance().getEntityManager().getAllEntities()){
 					if(!entity.equals(refEnt) && refEnt.isObstacle()){
-						for(int x = entity.getPos()[0]; x <= entity.getPos()[0]+entity.getSize()[0]; x++){
-							if(x <= refEnt.getPos()[0]+refEnt.getSize()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getSize()[1] && y >= refEnt.getPos()[1]){
+						for(int x = entity.getPos()[0]; x <= entity.getPos()[0]+entity.getHitbox()[0]; x++){
+							if(x <= refEnt.getPos()[0]+refEnt.getHitbox()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getHitbox()[1] && y >= refEnt.getPos()[1]){
 								if(entity instanceof Projectile || entity instanceof Explosion){
 									RuntimeData.getInstance().getEntityDamageSystem().addHit(entity, refEnt);
 								}else{
@@ -229,6 +179,26 @@ public class EntityMovementSystem {
 					entity.getPos()[1] -= 1;
 				}
 			}
+		}
+		return true;
+	}
+	
+	private boolean checkEntities(Entity entity, Entity refEnt){
+		if(entity instanceof Projectile || entity instanceof Explosion){
+				if(((Projectile)entity).isFriendly() && !(refEnt instanceof Playable)
+					|| !((Projectile)entity).isFriendly() && refEnt instanceof Playable){
+				RuntimeData.getInstance().getEntityDamageSystem().addHit(entity, refEnt);
+			}else{
+				return true;
+			}
+		}else if(refEnt instanceof Food && !((Food)refEnt).isPicked()) {
+			if(entity instanceof Playable) {
+				((Food)refEnt).setPicked(true);
+				((Playable)entity).getInventory().setFoodCount(((Playable)entity).getInventory().getFoodCount()+1);
+				RuntimeData.getInstance().getEntityManager().removeEntity(refEnt);
+			}
+		}else{
+			return false;
 		}
 		return true;
 	}
@@ -252,7 +222,7 @@ public class EntityMovementSystem {
 		switch(defDir) {
 		case Indentifiers.DIRECTION_EAST:
 		case Indentifiers.DIRECTION_WEST:
-			sourcePos = new int[] {(source.getPos()[0]-source.getPos()[0]%128)/128,(source.getPos()[1]+source.getSize()[1]-((source.getPos()[1]+source.getSize()[1])%128))/128};
+			sourcePos = new int[] {(source.getPos()[0]-source.getPos()[0]%128)/128,(source.getPos()[1]+source.getHitbox()[1]-((source.getPos()[1]+source.getHitbox()[1])%128))/128};
 			currentShiftedPos = new int[] {sourcePos[0]-nodeMap[0][0].getMapPos()[0],sourcePos[1]-nodeMap[0][0].getMapPos()[1]};
 			if(currentShiftedPos == currentPos)return defDir;
 			else {
@@ -264,7 +234,7 @@ public class EntityMovementSystem {
 			}
 		case Indentifiers.DIRECTION_NORTH:
 		case Indentifiers.DIRECTION_SOUTH:
-			sourcePos = new int[] {(source.getPos()[0]+source.getSize()[0]-((source.getPos()[0]+source.getSize()[0])%128))/128,(source.getPos()[1]-source.getPos()[1]%128)/128};
+			sourcePos = new int[] {(source.getPos()[0]+source.getHitbox()[0]-((source.getPos()[0]+source.getHitbox()[0])%128))/128,(source.getPos()[1]-source.getPos()[1]%128)/128};
 			currentShiftedPos = new int[] {sourcePos[0]-nodeMap[0][0].getMapPos()[0],sourcePos[1]-nodeMap[0][0].getMapPos()[1]};
 			if(currentShiftedPos == currentPos)return defDir;
 			else {

@@ -11,6 +11,7 @@ import com.verminsnest.core.management.data.RuntimeData;
 public abstract class Entity {
 	protected int textureID = -1;
 	protected int[] pos;
+	protected int[] hitbox;
 	protected int[] size;
 	private String id;
 	protected Animation<TextureRegion> currentAni;
@@ -21,6 +22,10 @@ public abstract class Entity {
 	protected int state;
 	protected float rotation;
 	protected float internalStateTime;
+	protected boolean isForced;
+	protected float forceTimer;
+	protected int forceDirection;
+	
 	public Entity(int[] pos, int textureID){
 		if(textureID != -1){
 			RuntimeData.getInstance().loadTextures(textureID);
@@ -45,6 +50,19 @@ public abstract class Entity {
 	public int[] getSize(){
 		return size;
 	}
+
+	public int[] getHitbox(){
+		return hitbox;
+	}
+	
+	protected void setSize(int width, int height){
+		size = new int[]{width,height};
+		if(hitbox == null)hitbox= new int[]{width,height};
+	}
+	
+	protected void setHitbox(int width, int height){
+		hitbox = new int[]{width,height};
+	}
 	
 	public int getYShadowOffset(){
 		return yShadowOffset;
@@ -52,10 +70,6 @@ public abstract class Entity {
 	
 	public int getXShadowOffset(){
 		return xShadowOffset;
-	}
-	
-	protected void setSize(int width, int height){
-		size = new int[]{width,height};
 	}
 
 	public String getId() {
@@ -114,5 +128,20 @@ public abstract class Entity {
 		tiles.add(new int[]{((this.getPos()[0]+size[0])- (this.getPos()[0]+size[0]) % 128) / 128,
 				((this.getPos()[1]+size[1])- (this.getPos()[1]+size[1]) % 128) / 128});
 		return tiles;
+	}
+
+	public boolean isForced() {
+		return isForced;
+	}
+
+	public void setForced(boolean isForced, float timer, int forceDirection) {
+		this.isForced = isForced;
+		this.forceDirection = forceDirection;
+		if(isForced)forceTimer = timer;
+		else forceTimer = 0;
+	}
+	
+	public int getForceDirection(){
+		return forceDirection;
 	}
 }

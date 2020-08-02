@@ -414,7 +414,7 @@ public class EntityManager {
 		food.clear();
 		util.clear();
 		
-		items.add(character.getInventory().getItem());
+		if(character.getInventory().getItem() != null)items.add(character.getInventory().getItem());
 		entities.add(character);
 
 		RuntimeData.getInstance().getGame().showScreen(VerminsNest.LOADGAME);
@@ -446,28 +446,28 @@ public class EntityManager {
 		int distance = 0;
 		
 		//Create vector grid
-		Vector2 topLeft = new Vector2(ent1.getPos()[0]+ent1.getSize()[0]/2,ent1.getPos()[1]+ent1.getSize()[1]/2).nor();
+		Vector2 topLeft = new Vector2(ent1.getPos()[0]+ent1.getHitbox()[0]/2,ent1.getPos()[1]+ent1.getHitbox()[1]/2).nor();
 		topLeft.setAngle(135);
-		Vector2 bottomLeft = new Vector2(ent1.getPos()[0]+ent1.getSize()[0]/2,ent1.getPos()[1]+ent1.getSize()[1]/2).nor();
+		Vector2 bottomLeft = new Vector2(ent1.getPos()[0]+ent1.getHitbox()[0]/2,ent1.getPos()[1]+ent1.getHitbox()[1]/2).nor();
 		bottomLeft.setAngle(-135);
-		Vector2 topRight = new Vector2(ent1.getPos()[0]+ent1.getSize()[0]/2,ent1.getPos()[1]+ent1.getSize()[1]/2).nor();
+		Vector2 topRight = new Vector2(ent1.getPos()[0]+ent1.getHitbox()[0]/2,ent1.getPos()[1]+ent1.getHitbox()[1]/2).nor();
 		topRight.setAngle(45);
-		Vector2 bottomRight = new Vector2(ent1.getPos()[0]+ent1.getSize()[0]/2,ent1.getPos()[1]+ent1.getSize()[1]/2).nor();
+		Vector2 bottomRight = new Vector2(ent1.getPos()[0]+ent1.getHitbox()[0]/2,ent1.getPos()[1]+ent1.getHitbox()[1]/2).nor();
 		bottomRight.setAngle(-45);
 		
-		Vector2 ent2Vector = new Vector2((ent2.getPos()[0]+ent2.getSize()[0]/2)-(ent1.getPos()[0]+ent1.getSize()[0]/2),(ent2.getPos()[1]+ent2.getSize()[1]/2)-(ent1.getPos()[1]+ent1.getSize()[1]/2)).nor();
-		if(ent2Vector.y - bottomLeft.y >= 0 && ent2Vector.y - topLeft.y <= 0 && (ent2.getPos()[0]+ent2.getSize()[0]/2) < (ent1.getPos()[0]+ent1.getSize()[0]/2)){
+		Vector2 ent2Vector = new Vector2((ent2.getPos()[0]+ent2.getHitbox()[0]/2)-(ent1.getPos()[0]+ent1.getHitbox()[0]/2),(ent2.getPos()[1]+ent2.getHitbox()[1]/2)-(ent1.getPos()[1]+ent1.getHitbox()[1]/2)).nor();
+		if(ent2Vector.y - bottomLeft.y >= 0 && ent2Vector.y - topLeft.y <= 0 && (ent2.getPos()[0]+ent2.getHitbox()[0]/2) < (ent1.getPos()[0]+ent1.getHitbox()[0]/2)){
 			//Ent1 looking west
-			distance = Math.abs((ent1.getPos()[0])-(ent2.getPos()[0]+ent2.getSize()[0]));
-		}else if(ent2Vector.y - bottomRight.y >= 0 && ent2Vector.y - topRight.y <= 0&& (ent2.getPos()[0]+ent2.getSize()[0]/2) > (ent1.getPos()[0]+ent1.getSize()[0]/2)){
+			distance = Math.abs((ent1.getPos()[0])-(ent2.getPos()[0]+ent2.getHitbox()[0]));
+		}else if(ent2Vector.y - bottomRight.y >= 0 && ent2Vector.y - topRight.y <= 0&& (ent2.getPos()[0]+ent2.getHitbox()[0]/2) > (ent1.getPos()[0]+ent1.getHitbox()[0]/2)){
 			//Ent1 looking east
-			distance = Math.abs((ent1.getPos()[0]+ent1.getSize()[0])-(ent2.getPos()[0]));
-		}if(ent2Vector.x - topRight.x <= 0 && ent2Vector.x - topLeft.x >= 0 && (ent2.getPos()[1]+ent2.getSize()[1]/2) > (ent1.getPos()[1]+ent1.getSize()[1]/2)){
+			distance = Math.abs((ent1.getPos()[0]+ent1.getHitbox()[0])-(ent2.getPos()[0]));
+		}if(ent2Vector.x - topRight.x <= 0 && ent2Vector.x - topLeft.x >= 0 && (ent2.getPos()[1]+ent2.getHitbox()[1]/2) > (ent1.getPos()[1]+ent1.getHitbox()[1]/2)){
 			//Ent1 looking north
-			distance = Math.abs((ent1.getPos()[1]+ent1.getSize()[1])-(ent2.getPos()[1]));
-		}else if(ent2Vector.x - bottomRight.x <= 0 && ent2Vector.x - bottomLeft.x >= 0 && (ent2.getPos()[1]+ent2.getSize()[1]/2) < (ent1.getPos()[1]+ent1.getSize()[1]/2)){
+			distance = Math.abs((ent1.getPos()[1]+ent1.getHitbox()[1])-(ent2.getPos()[1]));
+		}else if(ent2Vector.x - bottomRight.x <= 0 && ent2Vector.x - bottomLeft.x >= 0 && (ent2.getPos()[1]+ent2.getHitbox()[1]/2) < (ent1.getPos()[1]+ent1.getHitbox()[1]/2)){
 			//Ent1 looking south
-			distance = Math.abs((ent1.getPos()[1])-(ent2.getPos()[1]+ent2.getSize()[1]));
+			distance = Math.abs((ent1.getPos()[1])-(ent2.getPos()[1]+ent2.getHitbox()[1]));
 		}
 		
 		return distance;

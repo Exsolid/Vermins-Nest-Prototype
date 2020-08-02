@@ -101,137 +101,143 @@ public abstract class Playable extends Entity {
 	public abstract void attackAction(float delta, int direction);
 
 	public void update(float delta){
-		if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
-			prevKey = currentKey;
-			currentKey = 'S';
-		}
-		// D Pressed
-		if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
-			prevKey = currentKey;
-			currentKey = 'D';
-		}
-		// A Pressed
-		if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-			prevKey = currentKey;
-			currentKey = 'A';
-		}
-		// W Pressed
-		if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
-			prevKey = currentKey;
-			currentKey = 'W';
-		}
-		//Calculates proper movement
-		switch (currentKey) {
-		case 'W':
-			if (!Gdx.input.isKeyPressed(Input.Keys.W)) {
-				if (prevKey != '-') {
-					currentKey = prevKey;
-					prevKey = '-';
-				} else {
-					currentKey = '-';
+		if(isForced){
+			if(forceTimer < 0)setForced(false,0,0);
+			else RuntimeData.getInstance().getEntityDamageSystem().knockBack(this, forceDirection);
+		}else{
+			if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
+				prevKey = currentKey;
+				currentKey = 'S';
+			}
+			// D Pressed
+			if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
+				prevKey = currentKey;
+				currentKey = 'D';
+			}
+			// A Pressed
+			if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
+				prevKey = currentKey;
+				currentKey = 'A';
+			}
+			// W Pressed
+			if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
+				prevKey = currentKey;
+				currentKey = 'W';
+			}
+			//Calculates proper movement
+			switch (currentKey) {
+			case 'W':
+				if (!Gdx.input.isKeyPressed(Input.Keys.W)) {
+					if (prevKey != '-') {
+						currentKey = prevKey;
+						prevKey = '-';
+					} else {
+						currentKey = '-';
+					}
+				}
+				RuntimeData.getInstance().getMovmentSystem().moveTop(this, this.getSpeed(), null);
+				this.setCurrentAni(Indentifiers.STATE_WALK_NORTH);
+				break;
+			case 'D':
+				if (!Gdx.input.isKeyPressed(Input.Keys.D)) {
+					if (prevKey != '-') {
+						currentKey = prevKey;
+						prevKey = '-';
+					} else {
+						currentKey = '-';
+					}
+				}
+				RuntimeData.getInstance().getMovmentSystem().moveRight(this, this.getSpeed(), null);
+				this.setCurrentAni(Indentifiers.STATE_WALK_EAST);
+				break;
+			case 'S':
+				if (!Gdx.input.isKeyPressed(Input.Keys.S)) {
+					if (prevKey != '-') {
+						currentKey = prevKey;
+						prevKey = '-';
+					} else {
+						currentKey = '-';
+					}
+				}
+				RuntimeData.getInstance().getMovmentSystem().moveDown(this, this.getSpeed(), null);
+				this.setCurrentAni(Indentifiers.STATE_WALK_SOUTH);
+				break;
+			case 'A':
+				if (!Gdx.input.isKeyPressed(Input.Keys.A)) {
+					if (prevKey != '-') {
+						currentKey = prevKey;
+						prevKey = '-';
+					} else {
+						currentKey = '-';
+					}
+				}
+				RuntimeData.getInstance().getMovmentSystem().moveLeft(this, this.getSpeed(), null);
+				this.setCurrentAni(Indentifiers.STATE_WALK_WEST);
+				break;
+			case '-':
+				this.setCurrentAni(Indentifiers.STATE_IDLE);
+				prevKey = '-';
+			}		
+			
+			//Attacking
+			if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
+				float mouseX =RuntimeData.getInstance().getMousePosInGameWorld().x;
+				float mouseY =RuntimeData.getInstance().getGame().getConfig().getResolution()[1]-RuntimeData.getInstance().getMousePosInGameWorld().y;
+				Vector2 mouseVector = new Vector2(mouseX-(RuntimeData.getInstance().getGame().getConfig().getResolution()[0]+size[0]*sizeModifier[0])/2,mouseY-(RuntimeData.getInstance().getGame().getConfig().getResolution()[1]+size[1]*sizeModifier[1])/2).nor();
+				if(mouseVector.y - bottomLeft.y >= 0 && mouseVector.y - topLeft.y <= 0 && mouseX < (RuntimeData.getInstance().getGame().getConfig().getResolution()[0]+size[0]*sizeModifier[0])/2){
+					this.attack(delta, Indentifiers.DIRECTION_WEST);
+				}else if(mouseVector.y - bottomRight.y >= 0 && mouseVector.y - topRight.y <= 0&& mouseX > (RuntimeData.getInstance().getGame().getConfig().getResolution()[0]+size[0]*sizeModifier[0])/2){
+					this.attack(delta, Indentifiers.DIRECTION_EAST);
+				}if(mouseVector.x - topRight.x <= 0 && mouseVector.x - topLeft.x >= 0 && mouseY > (RuntimeData.getInstance().getGame().getConfig().getResolution()[1]+size[1]*sizeModifier[1])/2){
+					this.attack(delta, Indentifiers.DIRECTION_NORTH);
+				}else if(mouseVector.x - bottomRight.x <= 0 && mouseVector.x - bottomLeft.x >= 0 && mouseY < (RuntimeData.getInstance().getGame().getConfig().getResolution()[1]+size[1]*sizeModifier[1])/2){
+					this.attack(delta, Indentifiers.DIRECTION_SOUTH);
+				}	
+			}
+			//Item activation
+			if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT)){
+				if(inv.getItem() != null && !inv.getItem().isPassiv()
+						&& inv.getCooldown() > inv.getItem().getBaseCooldown()*1/(agility*0.15)){
+					inv.getItem().activate();
+					inv.setCooldown(0);
 				}
 			}
-			RuntimeData.getInstance().getMovmentSystem().moveTop(this, this.getSpeed(), null);
-			this.setCurrentAni(Indentifiers.STATE_WALK_NORTH);
-			break;
-		case 'D':
-			if (!Gdx.input.isKeyPressed(Input.Keys.D)) {
-				if (prevKey != '-') {
-					currentKey = prevKey;
-					prevKey = '-';
-				} else {
-					currentKey = '-';
+			
+			//Item drop
+			if(Gdx.input.isKeyJustPressed(Input.Keys.Q)){
+				if(inv.getItem() != null){
+					ArrayList<int[]> allCorners = new ArrayList<>();
+					//boolean dropped = false;
+					allCorners.add(pos);
+					allCorners.add(new int[]{pos[0]+size[0],pos[1]});
+					allCorners.add(new int[]{pos[0],pos[1]+size[1]});
+					allCorners.add(new int[]{pos[0]+size[0],pos[1]+size[1]});
+					ArrayList<int[]> allMapCorners = this.getMapPos();
+					for(int i = 0; i < allCorners.size(); i++){
+						if(RuntimeData.getInstance().getEntityManager().placeOnTile(allMapCorners.get(i), allCorners.get(i), inv.getItem())){
+							//dropped = true;
+							break;
+						};
+					}
+					//TODO dropped == false message
 				}
 			}
-			RuntimeData.getInstance().getMovmentSystem().moveRight(this, this.getSpeed(), null);
-			this.setCurrentAni(Indentifiers.STATE_WALK_EAST);
-			break;
-		case 'S':
-			if (!Gdx.input.isKeyPressed(Input.Keys.S)) {
-				if (prevKey != '-') {
-					currentKey = prevKey;
-					prevKey = '-';
-				} else {
-					currentKey = '-';
+			//Eat food (heal)
+			if(Gdx.input.isKeyJustPressed(Input.Keys.F)){
+				if(health < maxHealth && inv.getFoodCount() > 0) {
+					inv.setFoodCount(inv.getFoodCount()-1);
+					this.health += this.maxHealth/10;
+					if(health > maxHealth) {
+						health = maxHealth;
+					}
 				}
+				//TODO is full life message
 			}
-			RuntimeData.getInstance().getMovmentSystem().moveDown(this, this.getSpeed(), null);
-			this.setCurrentAni(Indentifiers.STATE_WALK_SOUTH);
-			break;
-		case 'A':
-			if (!Gdx.input.isKeyPressed(Input.Keys.A)) {
-				if (prevKey != '-') {
-					currentKey = prevKey;
-					prevKey = '-';
-				} else {
-					currentKey = '-';
-				}
-			}
-			RuntimeData.getInstance().getMovmentSystem().moveLeft(this, this.getSpeed(), null);
-			this.setCurrentAni(Indentifiers.STATE_WALK_WEST);
-			break;
-		case '-':
-			this.setCurrentAni(Indentifiers.STATE_IDLE);
-			prevKey = '-';
-		}		
-		
-		//Attacking
-		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
-			float mouseX =RuntimeData.getInstance().getMousePosInGameWorld().x;
-			float mouseY =RuntimeData.getInstance().getGame().getConfig().getResolution()[1]-RuntimeData.getInstance().getMousePosInGameWorld().y;
-			Vector2 mouseVector = new Vector2(mouseX-(RuntimeData.getInstance().getGame().getConfig().getResolution()[0]+size[0]*sizeModifier[0])/2,mouseY-(RuntimeData.getInstance().getGame().getConfig().getResolution()[1]+size[1]*sizeModifier[1])/2).nor();
-			if(mouseVector.y - bottomLeft.y >= 0 && mouseVector.y - topLeft.y <= 0 && mouseX < (RuntimeData.getInstance().getGame().getConfig().getResolution()[0]+size[0]*sizeModifier[0])/2){
-				this.attack(delta, Indentifiers.DIRECTION_WEST);
-			}else if(mouseVector.y - bottomRight.y >= 0 && mouseVector.y - topRight.y <= 0&& mouseX > (RuntimeData.getInstance().getGame().getConfig().getResolution()[0]+size[0]*sizeModifier[0])/2){
-				this.attack(delta, Indentifiers.DIRECTION_EAST);
-			}if(mouseVector.x - topRight.x <= 0 && mouseVector.x - topLeft.x >= 0 && mouseY > (RuntimeData.getInstance().getGame().getConfig().getResolution()[1]+size[1]*sizeModifier[1])/2){
-				this.attack(delta, Indentifiers.DIRECTION_NORTH);
-			}else if(mouseVector.x - bottomRight.x <= 0 && mouseVector.x - bottomLeft.x >= 0 && mouseY < (RuntimeData.getInstance().getGame().getConfig().getResolution()[1]+size[1]*sizeModifier[1])/2){
-				this.attack(delta, Indentifiers.DIRECTION_SOUTH);
-			}	
-		}
-		//Item activation
-		if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT)){
-			if(inv.getItem() != null && !inv.getItem().isPassiv()
-					&& inv.getCooldown() > inv.getItem().getBaseCooldown()*1/(agility*0.15)){
-				inv.getItem().activate();
-				inv.setCooldown(0);
-			}
-		}
-		
-		//Item drop
-		if(Gdx.input.isKeyJustPressed(Input.Keys.Q)){
-			if(inv.getItem() != null){
-				ArrayList<int[]> allCorners = new ArrayList<>();
-				//boolean dropped = false;
-				allCorners.add(pos);
-				allCorners.add(new int[]{pos[0]+size[0],pos[1]});
-				allCorners.add(new int[]{pos[0],pos[1]+size[1]});
-				allCorners.add(new int[]{pos[0]+size[0],pos[1]+size[1]});
-				ArrayList<int[]> allMapCorners = this.getMapPos();
-				for(int i = 0; i < allCorners.size(); i++){
-					if(RuntimeData.getInstance().getEntityManager().placeOnTile(allMapCorners.get(i), allCorners.get(i), inv.getItem())){
-						//dropped = true;
-						break;
-					};
-				}
-				//TODO dropped == false message
-			}
-		}
-		//Eat food (heal)
-		if(Gdx.input.isKeyJustPressed(Input.Keys.F)){
-			if(health < maxHealth && inv.getFoodCount() > 0) {
-				inv.setFoodCount(inv.getFoodCount()-1);
-				this.health += this.maxHealth/10;
-				if(health > maxHealth) {
-					health = maxHealth;
-				}
-			}
-			//TODO is full life message
 		}
 		
 		attackCooldown += delta;
 		inv.update(delta);
+		forceTimer -= delta;
 		internalStateTime += delta;
 	}
 	
