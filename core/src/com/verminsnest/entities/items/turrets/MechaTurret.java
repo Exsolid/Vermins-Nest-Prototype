@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
+import com.verminsnest.entities.particles.Shell;
 import com.verminsnest.entities.playables.Playable;
 import com.verminsnest.entities.projectiles.bullets.GreenBullet;
 
@@ -34,7 +35,8 @@ public class MechaTurret extends Turret {
 			prj2.setFriendly(true);
 			prj3.setFriendly(true);
 			prj4.setFriendly(true);
-			
+			//TODO set this to init on bullet init
+			new Shell(new int[] {pos[0]+size[0]/2, pos[1]+size[1]/2});
 		}
 	}
 

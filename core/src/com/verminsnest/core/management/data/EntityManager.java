@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.verminsnest.core.VerminsNest;
 import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.entities.Entity;
-import com.verminsnest.entities.Gore;
 import com.verminsnest.entities.eggs.Egg;
 import com.verminsnest.entities.enemies.Enemy;
 import com.verminsnest.entities.enemies.Flunk;
@@ -17,6 +16,7 @@ import com.verminsnest.entities.items.Food;
 import com.verminsnest.entities.items.Item;
 import com.verminsnest.entities.items.barriers.BarrierActiv;
 import com.verminsnest.entities.items.turrets.MechaTurret;
+import com.verminsnest.entities.particles.Gore;
 import com.verminsnest.entities.playables.Playable;
 import com.verminsnest.entities.projectiles.Projectile;
 import com.verminsnest.entities.util.UtilEntity;
@@ -35,7 +35,7 @@ public class EntityManager {
 	private ArrayList<Entity> util;
 	private ArrayList<Entity> entities;
 	private ArrayList<Entity> leftovers;
-	private ArrayList<Entity> gore;
+	private ArrayList<Entity> particle;
 	private ArrayList<Entity> damage;
 	private ArrayList<Entity> items;
 	private ArrayList<Entity> food;
@@ -62,7 +62,7 @@ public class EntityManager {
 		util= new ArrayList<Entity>();
 		leftovers = new ArrayList<Entity>();
 		damage = new ArrayList<Entity>();
-		gore = new ArrayList<Entity>();
+		particle = new ArrayList<Entity>();
 		deaths= new ArrayList<>();
 	}
 	
@@ -95,7 +95,7 @@ public class EntityManager {
 				if(ent instanceof Projectile || ent instanceof Explosion){
 					damage.remove(ent);
 				}else if(ent instanceof Gore){
-					gore.remove(ent);
+					particle.remove(ent);
 				}else if(ent instanceof Item ){
 					items.remove(ent);
 				}else if(ent instanceof Food){
@@ -114,7 +114,7 @@ public class EntityManager {
 				if(ent instanceof Projectile || ent instanceof Explosion){
 					damage.add(ent);
 				}else if(ent instanceof Gore){
-					gore.add(ent);
+					particle.add(ent);
 				}else if(ent instanceof Item){
 					items.add(ent);
 				}else if(ent instanceof Food){
@@ -148,7 +148,7 @@ public class EntityManager {
 					ent.update(delta);
 				}
 			}
-			for(Entity ent: gore){
+			for(Entity ent: particle){
 				if(ent.getPos()[0] > character.getPos()[0]-updateXRange && ent.getPos()[0] < character.getPos()[0]+updateXRange
 						&& ent.getPos()[1] > character.getPos()[1]-updateYRange && ent.getPos()[1] < character.getPos()[1]+updateYRange){
 					ent.update(delta);
@@ -189,7 +189,7 @@ public class EntityManager {
 		for(Entity ent: leftovers){
 			ent.dispose();
 		}
-		for(Entity ent: gore){
+		for(Entity ent: particle){
 			ent.dispose();
 		}
 		for(Entity ent: damage){
@@ -221,7 +221,7 @@ public class EntityManager {
 		util.clear();
 		food.clear();
 		damage.clear();
-		gore.clear();
+		particle.clear();
 		leftovers.clear();
 		items.clear();
 		deaths.clear();
@@ -230,7 +230,7 @@ public class EntityManager {
 
 	public ArrayList<Entity> getAllBioEntities() {
 		ArrayList<Entity> temp = new ArrayList<>();
-		temp.addAll(gore);
+		temp.addAll(particle);
 		temp.addAll(leftovers);
 		temp.addAll(food);
 		temp.addAll(entities);
@@ -240,7 +240,7 @@ public class EntityManager {
 	
 	public ArrayList<Entity> getAllEntities() {
 		ArrayList<Entity> temp = new ArrayList<>();
-		temp.addAll(gore);
+		temp.addAll(particle);
 		temp.addAll(leftovers);
 		temp.addAll(items);
 		temp.addAll(food);
@@ -408,7 +408,7 @@ public class EntityManager {
 		
 		entities.clear();
 		damage.clear();
-		gore.clear();
+		particle.clear();
 		leftovers.clear();
 		items.clear();
 		food.clear();

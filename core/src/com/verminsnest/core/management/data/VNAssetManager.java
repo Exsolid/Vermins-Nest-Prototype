@@ -110,9 +110,18 @@ public class VNAssetManager {
 			assetManager.load("textures/items/turrets/mecha-turret/MechaTurret-Icon.png", Texture.class);
 			break;
 		case Indentifiers.ASSETMANAGER_GORE:
-			assetManager.load("textures/gore/Gore-1.png", Texture.class);
-			assetManager.load("textures/gore/Gore-2.png", Texture.class);
-			assetManager.load("textures/gore/Gore-3.png", Texture.class);
+			assetManager.load("textures/particles/gore/Gore-1.png", Texture.class);
+			assetManager.load("textures/particles/gore/Gore-2.png", Texture.class);
+			assetManager.load("textures/particles/gore/Gore-3.png", Texture.class);
+			break;
+		case Indentifiers.ASSETMANAGER_SHELL:
+			assetManager.load("textures/particles/shells/Shell.png", Texture.class);
+			break;
+		case Indentifiers.ASSETMANAGER_PUDDLE_BLOOD:
+			assetManager.load("textures/puddles/bloodpuddles/Bloodpuddle-Small-1.png", Texture.class);
+			assetManager.load("textures/puddles/bloodpuddles/Bloodpuddle-Small-2.png", Texture.class);
+			assetManager.load("textures/puddles/bloodpuddles/Bloodpuddle-Big-1.png", Texture.class);
+			assetManager.load("textures/puddles/bloodpuddles/Bloodpuddle-Big-2.png", Texture.class);
 			break;
 		}
 		
@@ -220,9 +229,18 @@ public class VNAssetManager {
 			this.unload("textures/items/barriers/barrier-blue/Barrier-Blue-Icon.png");
 			break;
 		case Indentifiers.ASSETMANAGER_GORE:
-			this.unload("textures/gore/Gore-1.png");
-			this.unload("textures/gore/Gore-2.png");
-			this.unload("textures/gore/Gore-3.png");
+			this.unload("textures/particles/gore/Gore-1.png");
+			this.unload("textures/particles/gore/Gore-2.png");
+			this.unload("textures/particles/gore/Gore-3.png");
+			break;
+		case Indentifiers.ASSETMANAGER_PUDDLE_BLOOD:
+			this.unload("textures/puddles/bloodpuddles/Bloodpuddle-Small-1.png");
+			this.unload("textures/puddles/bloodpuddles/Bloodpuddle-Small-2.png");
+			this.unload("textures/puddles/bloodpuddles/Bloodpuddle-Big-1.png");
+			this.unload("textures/puddles/bloodpuddles/Bloodpuddle-Big-2.png");
+			break;
+		case Indentifiers.ASSETMANAGER_SHELL:
+			this.unload("textures/particles/shells/Shell.png");
 			break;
 		}
 		assetManager.update();
@@ -257,7 +275,11 @@ public class VNAssetManager {
 		case Indentifiers.ASSETMANAGER_BARRIER_BLUE:
 			return assetManager.isLoaded("textures/items/barriers/barrier-blue/Barrier-Blue-Cast.png");
 		case Indentifiers.ASSETMANAGER_GORE:
-			return assetManager.isLoaded("textures/gore/Gore-1.png");
+			return assetManager.isLoaded("textures/particles/gore/Gore-1.png");
+		case Indentifiers.ASSETMANAGER_SHELL:
+			return assetManager.isLoaded("textures/particles/shells/Shell.png");
+		case Indentifiers.ASSETMANAGER_PUDDLE_BLOOD:
+			return assetManager.isLoaded("textures/puddles/bloodpuddles/Bloodpuddle-Small-1.png");
 		default:
 			//TODO Log this
 			return false;

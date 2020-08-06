@@ -140,7 +140,9 @@ public class EntityMovementSystem {
 					if(!entity.equals(refEnt) && refEnt.isObstacle()){
 						for(int y = entity.getPos()[1]; y <= entity.getPos()[1]+entity.getHitbox()[1]; y++){
 							if(x <= refEnt.getPos()[0]+refEnt.getHitbox()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getHitbox()[1] && y >= refEnt.getPos()[1]){
-								if(!checkEntities(entity,refEnt))return false;
+								if(!checkEntities(entity,refEnt)){
+									return false;
+								}
 							}
 						}
 					}
@@ -159,14 +161,12 @@ public class EntityMovementSystem {
 			if(!map[mapPosXStart][refMapPosYStart].isWalkable() || !map[mapPosXEnd][refMapPosYStart].isWalkable()){
 				return false;
 			}else{
-				int y = entity.getPos()[1]-1;
+				int y = entity.getPos()[1]+entity.getHitbox()[1]+1;
 				for(Entity refEnt: RuntimeData.getInstance().getEntityManager().getAllEntities()){
 					if(!entity.equals(refEnt) && refEnt.isObstacle()){
 						for(int x = entity.getPos()[0]; x <= entity.getPos()[0]+entity.getHitbox()[0]; x++){
 							if(x <= refEnt.getPos()[0]+refEnt.getHitbox()[0] && x >= refEnt.getPos()[0] && y <= refEnt.getPos()[1]+refEnt.getHitbox()[1] && y >= refEnt.getPos()[1]){
-								if(entity instanceof Projectile || entity instanceof Explosion){
-									RuntimeData.getInstance().getEntityDamageSystem().addHit(entity, refEnt);
-								}else{
+								if(!checkEntities(entity,refEnt)){
 									return false;
 								}
 							}
@@ -184,6 +184,7 @@ public class EntityMovementSystem {
 	}
 	
 	private boolean checkEntities(Entity entity, Entity refEnt){
+		if(!refEnt.isObstacle() || !entity.isObstacle())return true;
 		if(entity instanceof Projectile || entity instanceof Explosion){
 				if(((Projectile)entity).isFriendly() && !(refEnt instanceof Playable)
 					|| !((Projectile)entity).isFriendly() && refEnt instanceof Playable){

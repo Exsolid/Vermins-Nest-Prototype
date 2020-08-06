@@ -8,9 +8,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.Entity;
-import com.verminsnest.entities.Gore;
 import com.verminsnest.entities.enemies.Flunk;
 import com.verminsnest.entities.enemies.Tinker;
+import com.verminsnest.entities.particles.Gore;
 
 public class Egg extends Entity {
 	

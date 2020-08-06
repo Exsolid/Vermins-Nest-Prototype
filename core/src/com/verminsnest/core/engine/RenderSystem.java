@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.items.Item;
+import com.verminsnest.entities.particles.Particle;
 import com.verminsnest.entities.util.UtilEntity;
 import com.verminsnest.world.generation.map.MapCell;
 
@@ -24,11 +25,6 @@ public class RenderSystem {
 		//Draw ground
 		for (MapCell cell : toDraw) {
 			RuntimeData.getInstance().getGame().getBatch().draw(cell.getLayers().get(0), cell.getxPos(), cell.getyPos());
-			if (cell.isWalkable()) {
-				for(int i = cell.getLayers().size()-1; i > 0; i--){
-					RuntimeData.getInstance().getGame().getBatch().draw(cell.getLayers().get(i), cell.getxPos(), cell.getyPos());
-				}
-			}
 		}
 		
 		//Sort entities by position
@@ -37,7 +33,9 @@ public class RenderSystem {
 			if(entities.isEmpty()){
 				entities.add(ent);
 			}else{
-				if(ent.getPos() == null || entities.get(0).getPos() == null){
+				if(ent.getPos() == null){
+					continue;
+				}else if(entities.get(0).getPos() == null){
 					entities.remove(0);
 					continue;
 				}
@@ -52,11 +50,15 @@ public class RenderSystem {
 				entities.add(counter, ent);
 			}
 		}
-		
-		//Draw grounded entities
+		//Draw grounded entities and particles
 		if(entities != null){
 			for(Entity ent: entities){
 				if(ent instanceof UtilEntity &&((UtilEntity)ent).isGrounded()){
+					RuntimeData.getInstance().getGame().getBatch().draw(ent.getCurrentFrame(delta), ent.getPos()[0],ent.getPos()[1], ent.getSize()[0]/2, ent.getSize()[1]/2, ent.getSize()[0], ent.getSize()[1], 1, 1, ent.getRotation());
+				}
+			}
+			for(Entity ent: entities){
+				if(ent instanceof Particle){
 					RuntimeData.getInstance().getGame().getBatch().draw(ent.getCurrentFrame(delta), ent.getPos()[0],ent.getPos()[1], ent.getSize()[0]/2, ent.getSize()[1]/2, ent.getSize()[0], ent.getSize()[1], 1, 1, ent.getRotation());
 				}
 			}
@@ -69,6 +71,13 @@ public class RenderSystem {
 			}
 			else if(!(ent instanceof Item) && ent.getShadow() != null){
 				RuntimeData.getInstance().getGame().getBatch().draw(ent.getShadow(),ent.getPos()[0]+ent.getXShadowOffset(),ent.getPos()[1]+ent.getYShadowOffset());	
+			}
+		}
+		for (MapCell cell : toDraw) {
+			if (cell.isWalkable()) {
+				for(int i = cell.getLayers().size()-1; i > 0; i--){
+					RuntimeData.getInstance().getGame().getBatch().draw(cell.getLayers().get(i), cell.getxPos(), cell.getyPos());
+				}
 			}
 		}
 		
@@ -84,11 +93,16 @@ public class RenderSystem {
 				if(ent instanceof Item){
 					if(ent.getPos() != null && ((Item)ent).getKeeper() == null){
 						RuntimeData.getInstance().getGame().getBatch().draw(ent.getCurrentFrame(delta), ent.getPos()[0],ent.getPos()[1], ent.getSize()[0]/2, ent.getSize()[1]/2, ent.getSize()[0], ent.getSize()[1], 1, 1, ent.getRotation());
-					}else if(((Item)ent).getPos() != null && ((Item)ent).getKeeper() != null){
+					}else if(((Item)ent).getPos() != null && ((Item)ent).getKeeper() != null && ((Item)ent).isGrounded()){
 						RuntimeData.getInstance().getGame().getBatch().draw(ent.getCurrentFrame(delta), ent.getPos()[0],ent.getPos()[1], ent.getSize()[0]/2, ent.getSize()[1]/2, ent.getSize()[0], ent.getSize()[1], 1, 1, ent.getRotation());
 					}
 				}else{
-					if(ent instanceof UtilEntity && !((UtilEntity)ent).isGrounded() || !(ent instanceof UtilEntity))
+					if(ent instanceof UtilEntity && !((UtilEntity)ent).isGrounded() || !(ent instanceof UtilEntity) && !(ent instanceof Particle))
+					RuntimeData.getInstance().getGame().getBatch().draw(ent.getCurrentFrame(delta), ent.getPos()[0],ent.getPos()[1], ent.getSize()[0]/2, ent.getSize()[1]/2, ent.getSize()[0], ent.getSize()[1], 1, 1, ent.getRotation());
+				}
+			}
+			for(Entity ent: entities){
+				if(ent instanceof Item && ((Item)ent).getPos() != null && ((Item)ent).getKeeper() != null && !((Item)ent).isGrounded()){
 					RuntimeData.getInstance().getGame().getBatch().draw(ent.getCurrentFrame(delta), ent.getPos()[0],ent.getPos()[1], ent.getSize()[0]/2, ent.getSize()[1]/2, ent.getSize()[0], ent.getSize()[1], 1, 1, ent.getRotation());
 				}
 			}

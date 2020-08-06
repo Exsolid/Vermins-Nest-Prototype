@@ -51,7 +51,11 @@ public class Indentifiers {
 	public final static int ASSETMANAGER_TINKER = 5;
 	public static final int ASSETMANAGER_FLUNK = 9;
 	public final static int ASSETMANAGER_EGG = 6;
+	
 	public final static int ASSETMANAGER_GORE = 7;
+	public final static int ASSETMANAGER_SHELL = 15;
+	
+	public final static int ASSETMANAGER_PUDDLE_BLOOD = 16;
 	
 	public final static int ASSETMANAGER_BARRIER_BLUE = 11;
 	public final static int ASSETMANAGER_TURRET_MECHA= 14;

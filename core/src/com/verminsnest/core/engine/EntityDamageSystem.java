@@ -1,12 +1,10 @@
 package com.verminsnest.core.engine;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.Entity;
-import com.verminsnest.entities.Gore;
 import com.verminsnest.entities.enemies.Enemy;
 import com.verminsnest.entities.explosions.Explosion;
 import com.verminsnest.entities.playables.Playable;
@@ -82,11 +80,6 @@ public class EntityDamageSystem {
 				((Enemy)hit).setHealth(((Enemy)hit).getHealth()-source.getDamage());
 				((Enemy)hit).setAlerted(RuntimeData.getInstance().getEntityManager().getCharacter());
 				if(((Enemy)hit).getHealth()<0){					
-					Random rand = new Random();
-					for(int i = 0; i < rand.nextInt(4)+3; i++){
-						new Gore(new int[]{hit.getPos()[0], hit.getPos()[1]});
-					}
-					
 					new Death(hit);     
 				}
 			}
@@ -129,13 +122,8 @@ public class EntityDamageSystem {
 			if(hit instanceof Enemy){
 				((Enemy)hit).setHealth(((Enemy)hit).getHealth()-source.getDamage());
 				((Enemy)hit).setAlerted(RuntimeData.getInstance().getEntityManager().getCharacter());
-				if(((Enemy)hit).getHealth()<0){					
-					Random rand = new Random();
-					for(int i = 0; i < rand.nextInt(4)+3; i++){
-						new Gore(new int[]{hit.getPos()[0], hit.getPos()[1]});
-					}
-					
-					new Death(hit);  
+				if(((Enemy)hit).getHealth()<0){
+					new Death(hit);
 				}
 			}
 			if(hit instanceof Playable){
