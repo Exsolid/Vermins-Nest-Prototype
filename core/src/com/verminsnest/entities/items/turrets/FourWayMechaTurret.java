@@ -9,9 +9,9 @@ import com.verminsnest.entities.particles.Shell;
 import com.verminsnest.entities.playables.Playable;
 import com.verminsnest.entities.projectiles.bullets.GreenBullet;
 
-public class MechaTurret extends Turret {
+public class FourWayMechaTurret extends Turret {
 	int counter;
-	public MechaTurret() {
+	public FourWayMechaTurret() {
 		super(Indentifiers.ASSETMANAGER_TURRET_MECHA, false);
 		baseCooldown = 15f;
 		counter= 0;
@@ -35,6 +35,7 @@ public class MechaTurret extends Turret {
 			prj2.setFriendly(true);
 			prj3.setFriendly(true);
 			prj4.setFriendly(true);
+			setCurrentAni(Indentifiers.STATE_ATTACK_EAST);
 			//TODO set this to init on bullet init
 			new Shell(new int[] {pos[0]+size[0]/2, pos[1]+size[1]/2});
 		}
@@ -42,7 +43,7 @@ public class MechaTurret extends Turret {
 
 	@Override
 	public void init() {
-		Texture idleSheet = RuntimeData.getInstance().getAsset("textures/items/turrets/mecha-turret/MechaTurret-Idle.png");
+		Texture idleSheet = RuntimeData.getInstance().getAsset("textures/items/turrets/mecha-turret/4-Way-MechaTurret-Idle.png");
 		TextureRegion[][] temp = TextureRegion.split(idleSheet, idleSheet.getHeight(), idleSheet.getHeight());
 		TextureRegion[] frames = new TextureRegion[temp[0].length];
 
@@ -51,44 +52,20 @@ public class MechaTurret extends Turret {
 		}
 		idleAni = new Animation<TextureRegion>(1f, frames);
 
-		Texture aEastSheet = RuntimeData.getInstance().getAsset("textures/items/turrets/mecha-turret/MechaTurret-A-East.png");
-		temp = TextureRegion.split(aEastSheet, aEastSheet.getHeight(), aEastSheet.getHeight());
+		Texture aAllSheet = RuntimeData.getInstance().getAsset("textures/items/turrets/mecha-turret/4-Way-MechaTurret-A-All.png");
+		temp = TextureRegion.split(aAllSheet, aAllSheet.getHeight(), aAllSheet.getHeight());
 		frames = new TextureRegion[temp[0].length];
 
 		for (int i = 0; i < temp[0].length; i++) {
 			frames[i] = temp[0][i];
 		}
-		attackEastAni = new Animation<TextureRegion>(1f, frames);
-		
-		Texture aWestSheet = RuntimeData.getInstance().getAsset("textures/items/turrets/mecha-turret/MechaTurret-A-West.png");
-		temp = TextureRegion.split(aWestSheet, aWestSheet.getHeight(), aWestSheet.getHeight());
-		frames = new TextureRegion[temp[0].length];
-
-		for (int i = 0; i < temp[0].length; i++) {
-			frames[i] = temp[0][i];
-		}
-		attackWestAni = new Animation<TextureRegion>(1f, frames);
-		
-		Texture aNorthSheet = RuntimeData.getInstance().getAsset("textures/items/turrets/mecha-turret/MechaTurret-A-North.png");
-		temp = TextureRegion.split(aNorthSheet, aNorthSheet.getHeight(), aNorthSheet.getHeight());
-		frames = new TextureRegion[temp[0].length];
-
-		for (int i = 0; i < temp[0].length; i++) {
-			frames[i] = temp[0][i];
-		}
-		attackNorthAni = new Animation<TextureRegion>(1f, frames);
-		
-		Texture aSouthSheet = RuntimeData.getInstance().getAsset("textures/items/turrets/mecha-turret/MechaTurret-A-South.png");
-		temp = TextureRegion.split(aSouthSheet, aSouthSheet.getHeight(), aSouthSheet.getHeight());
-		frames = new TextureRegion[temp[0].length];
-
-		for (int i = 0; i < temp[0].length; i++) {
-			frames[i] = temp[0][i];
-		}
-		attackSouthAni = new Animation<TextureRegion>(1f, frames);
+		attackWestAni = new Animation<TextureRegion>(0.02f, frames);
+		attackEastAni = new Animation<TextureRegion>(0.02f, frames);
+		attackNorthAni = new Animation<TextureRegion>(0.02f, frames);
+		attackSouthAni = new Animation<TextureRegion>(0.02f, frames);
 		
 		setCurrentAni(Indentifiers.STATE_IDLE);
-		this.setIconPath("textures/items/turrets/mecha-turret/MechaTurret-Icon.png");
+		this.setIconPath("textures/items/turrets/mecha-turret/4-Way-MechaTurret-Icon.png");
 	}
 
 }

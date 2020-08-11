@@ -11,7 +11,7 @@ public class Gore extends Particle {
 
 	@Override
 	public void init() {
-		textureNum = rand.nextInt(3)+1;
+		textureNum = rand.nextInt(5)+1;
 		switch(textureNum){
 		case 1:
 			texture = RuntimeData.getInstance().getAsset("textures/particles/gore/Gore-1.png");
@@ -21,6 +21,12 @@ public class Gore extends Particle {
 			break;
 		case 3:
 			texture = RuntimeData.getInstance().getAsset("textures/particles/gore/Gore-3.png");
+			break;
+		case 4:
+			texture = RuntimeData.getInstance().getAsset("textures/particles/gore/Gore-4.png");
+			break;
+		case 5:
+			texture = RuntimeData.getInstance().getAsset("textures/particles/gore/Gore-5.png");
 			break;
 		}
 		this.setSize(RuntimeData.getInstance().getAsset("textures/particles/gore/Gore-"+textureNum+".png").getWidth(), RuntimeData.getInstance().getAsset("textures/particles/gore/Gore-"+textureNum+".png").getHeight());

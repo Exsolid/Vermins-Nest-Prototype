@@ -10,7 +10,8 @@ import com.verminsnest.entities.util.CloudAnimation;
 public class FloorManager {
 	
 	private static FloorManager instance;
-	
+	private float timer;
+	private boolean spawnHole;
 	private int[] levelHolePos;
 	
 	private boolean allowEntityUpdate;
@@ -24,10 +25,16 @@ public class FloorManager {
 		return instance;
 	}
 	
-	public void update() {
-		
+	public void update(float delta) {
+		if(spawnHole){
+			timer -= delta;
+			if(timer < 0){
+				RuntimeData.getInstance().getMapData().getData()[levelHolePos[0]/128][levelHolePos[1]/128].addLayer(TextureRegion.split(RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Mountain-Hole.png"), RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Mountain-Hole.png").getWidth(),  RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Mountain-Hole.png").getHeight())[0][0]);
+				spawnHole = false;
+			}
+		}
 		if(RuntimeData.getInstance().getEntityManager().getLastDeath() != null) {
-			if(levelHolePos == null) {
+			if(spawnHole == false && levelHolePos == null) {
 				((Enemy)RuntimeData.getInstance().getEntityManager().getLastDeath()).setHealth(999);
 				((Enemy)RuntimeData.getInstance().getEntityManager().getLastDeath()).setToLastDeath(true);
 				
@@ -35,12 +42,12 @@ public class FloorManager {
 					levelHolePos = new int[2];
 					levelHolePos[0] = RuntimeData.getInstance().getEntityManager().getLastDeath().getPos()[0]-RuntimeData.getInstance().getEntityManager().getLastDeath().getPos()[0]%128;
 					levelHolePos[1] = RuntimeData.getInstance().getEntityManager().getLastDeath().getPos()[1]-RuntimeData.getInstance().getEntityManager().getLastDeath().getPos()[1]%128;
-					
-					
-					new CloudAnimation(levelHolePos);
 					RuntimeData.getInstance().getEntityManager().removeEntity(RuntimeData.getInstance().getEntityManager().getLastDeath());
 					RuntimeData.getInstance().getEntityManager().setLastDeath(null);
-					RuntimeData.getInstance().getMapData().getData()[levelHolePos[0]/128][levelHolePos[1]/128].addLayer(TextureRegion.split(RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Mountain-Hole.png"), RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Mountain-Hole.png").getWidth(),  RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Mountain-Hole.png").getHeight())[0][0]);
+					
+					new CloudAnimation(levelHolePos);
+					timer = 0.15f;
+					spawnHole = true;
 				}				
 			}
 		}

@@ -15,7 +15,7 @@ import com.verminsnest.entities.explosions.Explosion;
 import com.verminsnest.entities.items.Food;
 import com.verminsnest.entities.items.Item;
 import com.verminsnest.entities.items.barriers.BarrierActiv;
-import com.verminsnest.entities.items.turrets.MechaTurret;
+import com.verminsnest.entities.items.turrets.FourWayMechaTurret;
 import com.verminsnest.entities.particles.Gore;
 import com.verminsnest.entities.playables.Playable;
 import com.verminsnest.entities.projectiles.Projectile;
@@ -79,7 +79,7 @@ public class EntityManager {
 	}
 	
 	public void updateEntities(float delta){
-		FloorManager.getInstane().update();
+		FloorManager.getInstane().update(delta);
 		if(FloorManager.getInstane().allowEntityUpdate()) {
 			
 			boolean found = false;
@@ -328,7 +328,7 @@ public class EntityManager {
 				ba.putItem(new int[]{data[0], data[1]});
 				break;
 			case Indentifiers.UTIL_ITEM_TURRET_MECHA:
-				MechaTurret metu = new MechaTurret();
+				FourWayMechaTurret metu = new FourWayMechaTurret();
 				metu.putItem(new int[]{data[0], data[1]});
 				break;
 			}

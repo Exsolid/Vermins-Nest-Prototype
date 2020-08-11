@@ -106,7 +106,7 @@ public class Egg extends Entity {
 				}
 				hatched = true;
 				Random rand = new Random();
-				for(int i = 0; i < rand.nextInt(3)+2; i++){
+				for(int i = 0; i < rand.nextInt(3)+4; i++){
 					new Gore(new int[]{this.pos[0], this.pos[1]});
 				}
 			}

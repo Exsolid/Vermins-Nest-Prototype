@@ -64,6 +64,13 @@ public abstract class Turret extends Item {
 		internalStateTime = 0;
 	}
 
+	public TextureRegion getCurrentFrame(float delta) {
+		if(state == Indentifiers.STATE_IDLE)
+			return currentAni.getKeyFrame(internalStateTime, true);
+		else
+			return currentAni.getKeyFrame(internalStateTime, false);
+	}
+	
 	@Override
 	public void update(float delta) {
 		internalStateTime += delta;
@@ -75,6 +82,7 @@ public abstract class Turret extends Item {
 			isObstacle = false;
 			switchShadow();
 		}else if (keeper != null){
+			if(state != Indentifiers.STATE_IDLE && currentAni.isAnimationFinished(internalStateTime))setCurrentAni(Indentifiers.STATE_IDLE);
 			doStuff();
 		}
 	}

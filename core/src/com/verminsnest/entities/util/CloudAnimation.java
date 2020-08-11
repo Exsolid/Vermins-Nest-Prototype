@@ -23,7 +23,7 @@ public class CloudAnimation extends UtilEntity{
 		for(int i = 0; i< temp[0].length; i++){
 			frames[i] = temp[0][i];
 		}
-		currentAni = new Animation<TextureRegion>(0.15f,frames);
+		currentAni = new Animation<TextureRegion>(0.125f,frames);
 	}
 
 	@Override
