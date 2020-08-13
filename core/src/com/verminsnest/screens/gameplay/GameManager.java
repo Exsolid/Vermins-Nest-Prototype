@@ -5,7 +5,7 @@ import com.verminsnest.core.VerminsNest;
 import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.playables.Mage;
-import com.verminsnest.misc.gui.ChoiceDialog;
+import com.verminsnest.misc.gui.dialogs.ChoiceDialog;
 import com.verminsnest.screens.VNScreen;
 import com.verminsnest.screens.gameplay.menus.LevelMenu;
 import com.verminsnest.screens.gameplay.menus.PauseMenu;

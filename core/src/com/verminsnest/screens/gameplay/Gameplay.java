@@ -7,7 +7,8 @@ import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.items.Item;
-import com.verminsnest.misc.gui.ChoiceDialog;
+import com.verminsnest.misc.gui.dialogs.ChoiceDialog;
+import com.verminsnest.misc.gui.dialogs.TradeDialog;
 import com.verminsnest.screens.gameplay.menus.GameplayMenu;
 import com.verminsnest.world.management.FloorManager;
 
@@ -58,7 +59,7 @@ public class Gameplay extends GameplayOverlay{
 			//TODO implement separate shop dialog
 			if(distance < 15 && interactable != null && interactable instanceof Item){
 				if(((Item)interactable).getPrice() == 0) gameMan.setDialog(new ChoiceDialog("Gameplay_Dialog_Accept","Gameplay_Dialog_Cancel","Gameplay_Dialog_Description_Item",((Item)interactable).getIconPath(),new int[]{RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[0]-ChoiceDialog.getSize()[0]/2,RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[1]+ChoiceDialog.getSize()[1]}, Indentifiers.ITEMDIALOG));
-				else gameMan.setDialog(new ChoiceDialog("Gameplay_Dialog_Accept","Gameplay_Dialog_Cancel","Gameplay_Dialog_Description_Item_Trade",((Item)interactable).getIconPath(),new int[]{RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[0]-ChoiceDialog.getSize()[0]/2,RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[1]+ChoiceDialog.getSize()[1]}, Indentifiers.ITEMDIALOG));
+				else gameMan.setDialog(new TradeDialog(((Item)interactable).getIconPath(),new int[]{RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[0]-ChoiceDialog.getSize()[0]/2,RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[1]+ChoiceDialog.getSize()[1]},((Item)interactable).getPrice()));
 				this.interactable = interactable;
 			}
 		}

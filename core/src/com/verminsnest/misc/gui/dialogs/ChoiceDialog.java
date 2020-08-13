@@ -1,4 +1,4 @@
-package com.verminsnest.misc.gui;
+package com.verminsnest.misc.gui.dialogs;
 
 import java.util.ArrayList;
 
@@ -7,19 +7,21 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
+import com.verminsnest.misc.gui.ButtonManager;
+import com.verminsnest.misc.gui.FontText;
 
 public class ChoiceDialog {
-	private ButtonManager choiceManager;
-	private FontText description;
-	private int[] position;
-	private int state;
+	protected ButtonManager choiceManager;
+	protected FontText description;
+	protected int[] position;
+	protected int state;
 	
-	private Texture icon;
-	private Texture background;
+	protected Texture icon;
+	protected Texture background;
 	
-	private final static int ACCEPT = 0;
-	private final static int CANCLE = 1;
-	private int ID;
+	protected final static int ACCEPT = 0;
+	protected final static int CANCLE = 1;
+	protected int ID;
 	
 	public ChoiceDialog(String accept, String decline, String description, String iconPath, int[] position, int ID){
 		ArrayList<ArrayList<String>> buttons = new ArrayList<>();
@@ -34,6 +36,7 @@ public class ChoiceDialog {
 		background = RuntimeData.getInstance().getAsset("textures/menus/scrolls/HorizontalScroll_Medium.png");
 		this.description = new FontText(description, 50, true);
 		this.description.setMidOfBounds(position, new int[]{background.getWidth(),background.getHeight()});
+		this.description.getPos()[0] -= background.getWidth()/10;
 		this.choiceManager.setMidOfBounds(new int[]{(int) (background.getWidth()*1.75),background.getHeight()}, position);
 		state = Indentifiers.DIALOG_OPEN;
 		this.position = position;
@@ -47,7 +50,7 @@ public class ChoiceDialog {
 	public void render(float delta){
 		RuntimeData.getInstance().getGame().getBatch().draw(background,position[0],position[1]);
 		if(icon != null){
-			RuntimeData.getInstance().getGame().getBatch().draw(icon,position[0]+icon.getWidth()*1.5f,position[1]+background.getHeight()/2-icon.getHeight()/2);
+			RuntimeData.getInstance().getGame().getBatch().draw(icon,(float) (position[0]+background.getWidth()-icon.getWidth()*5),position[1]+background.getHeight()/2-icon.getHeight()/2);
 		}
 		description.draw(RuntimeData.getInstance().getGame().getBatch());
 		choiceManager.draw(RuntimeData.getInstance().getGame().getBatch());
