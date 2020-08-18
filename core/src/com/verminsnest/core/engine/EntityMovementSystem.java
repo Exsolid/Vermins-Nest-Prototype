@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.Entity;
+import com.verminsnest.entities.enemies.Enemy;
 import com.verminsnest.entities.explosions.Explosion;
 import com.verminsnest.entities.items.Food;
 import com.verminsnest.entities.playables.Playable;
@@ -186,7 +187,7 @@ public class EntityMovementSystem {
 	private boolean checkEntities(Entity entity, Entity refEnt){
 		if(!refEnt.isObstacle() || !entity.isObstacle())return true;
 		if(entity instanceof Projectile || entity instanceof Explosion){
-				if(((Projectile)entity).isFriendly() && !(refEnt instanceof Playable)
+				if(((Projectile)entity).isFriendly() && !(refEnt instanceof Playable) && !(refEnt instanceof Food)
 					|| !((Projectile)entity).isFriendly() && refEnt instanceof Playable){
 				RuntimeData.getInstance().getEntityDamageSystem().addHit(entity, refEnt);
 			}else{
@@ -198,7 +199,11 @@ public class EntityMovementSystem {
 				((Playable)entity).getInventory().setFoodCount(((Playable)entity).getInventory().getFoodCount()+1);
 				RuntimeData.getInstance().getEntityManager().removeEntity(refEnt);
 			}
-		}else{
+		}else if(entity instanceof Playable && refEnt instanceof Projectile && ((Projectile)refEnt).isFriendly()
+				|| entity instanceof Enemy && refEnt instanceof Projectile && !((Projectile)refEnt).isFriendly()){
+			return true;
+		}
+		else{
 			return false;
 		}
 		return true;
