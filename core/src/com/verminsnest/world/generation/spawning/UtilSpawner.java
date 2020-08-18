@@ -26,8 +26,8 @@ public class UtilSpawner extends LoadingModule{
 				pos[1] = room.getLayoutPos()[1]+1;
 			}
 		}
-		pos[0] = (pos[0]*RuntimeData.getInstance().getMapData().getRooms().get(0).getData().length-RuntimeData.getInstance().getMapData().getRooms().get(0).getData().length/2+10)*128+64-18;
-		pos[1] = (pos[1]*RuntimeData.getInstance().getMapData().getRooms().get(0).getData()[0].length-RuntimeData.getInstance().getMapData().getRooms().get(0).getData()[0].length/2+10)*128-50;
+		pos[0] = (int) ((pos[0]*RuntimeData.getInstance().getMapData().getRooms().get(0).getData().length-Math.ceil(RuntimeData.getInstance().getMapData().getRooms().get(0).getData().length/2.0)+10)*128+64-18);
+		pos[1] = (int) ((pos[1]*RuntimeData.getInstance().getMapData().getRooms().get(0).getData()[0].length-Math.ceil(RuntimeData.getInstance().getMapData().getRooms().get(0).getData()[0].length/2.0)+10)*128-50);
 		RuntimeData.getInstance().getEntityManager().addUtilInit(pos[0], pos[1], Indentifiers.UTIL_SHOPKEEPER);
 		
 		ArrayList<Integer> itemIDs = Indentifiers.getItemPoolShop();
