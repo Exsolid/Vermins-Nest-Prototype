@@ -87,19 +87,6 @@ public abstract class Turret extends Item {
 		}
 	}
 	
-	public void switchShadow() {
-		if(isGrounded && keeper != null) {
-			shadow = RuntimeData.getInstance().getAsset("textures/shadows/Shadow-M.png");
-			yShadowOffset = -6;
-			xShadowOffset = -3;
-		}else if(keeper == null) {
-			shadow = RuntimeData.getInstance().getAsset("textures/shadows/Shadow-S.png");
-			yShadowOffset = -8;
-			xShadowOffset = 0;
-		}else {
-			shadow = null;
-		}
-	}
 	public abstract void doStuff();
 
 }

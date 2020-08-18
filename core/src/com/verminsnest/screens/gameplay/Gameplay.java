@@ -88,8 +88,14 @@ public class Gameplay extends GameplayOverlay{
 			case Indentifiers.ITEMDIALOG:
 				if(((Item)interactable).getPrice() > 0 && RuntimeData.getInstance().getEntityManager().getCharacter().getInventory().getFoodCount() >= ((Item)interactable).getPrice()) {
 					RuntimeData.getInstance().getEntityManager().getCharacter().getInventory().setFoodCount(RuntimeData.getInstance().getEntityManager().getCharacter().getInventory().getFoodCount()-((Item)interactable).getPrice());
+					if(RuntimeData.getInstance().getEntityManager().getCharacter().getInventory().getItem() != null){
+						RuntimeData.getInstance().getEntityManager().getCharacter().getInventory().getItem().putItem(new int[]{interactable.getPos()[0],interactable.getPos()[1]});
+					}
 					((Item)interactable).takeItem(RuntimeData.getInstance().getEntityManager().getCharacter());
 				}else if(((Item)interactable).getPrice() == 0){
+					if(RuntimeData.getInstance().getEntityManager().getCharacter().getInventory().getItem() != null){
+						RuntimeData.getInstance().getEntityManager().getCharacter().getInventory().getItem().putItem(new int[]{interactable.getPos()[0],interactable.getPos()[1]});
+					}
 					((Item)interactable).takeItem(RuntimeData.getInstance().getEntityManager().getCharacter());
 				}
 				break;
