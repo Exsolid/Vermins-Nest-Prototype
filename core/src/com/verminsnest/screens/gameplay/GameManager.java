@@ -2,6 +2,7 @@ package com.verminsnest.screens.gameplay;
 
 import com.badlogic.gdx.Gdx;
 import com.verminsnest.core.VerminsNest;
+import com.verminsnest.core.engine.shaders.Shader;
 import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.playables.Mage;
@@ -148,13 +149,15 @@ public class GameManager extends VNScreen {
 
 	@Override
 	public void dispose() {
+		Shader.getInstance().dispose();
+		
 		gameplay.dispose();
 		levelMenu.dispose();
 		pauseMenu.dispose();
-
+		
 		RuntimeData.getInstance().disposeTextures(Indentifiers.ASSETMANAGER_GAMEPLAY);
 		RuntimeData.getInstance().getEntityManager().clearData();
-
+		
 		isDisposed = true;
 	}
 

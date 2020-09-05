@@ -7,6 +7,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.verminsnest.core.engine.shaders.Shader;
 import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.Entity;
@@ -235,6 +236,7 @@ public abstract class Playable extends Entity {
 			}
 		}
 		
+		Shader.getInstance().addPosition(this.pos);
 		attackCooldown += delta;
 		inv.update(delta);
 		forceTimer -= delta;

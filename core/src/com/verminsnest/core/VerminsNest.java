@@ -119,6 +119,8 @@ public class VerminsNest extends Game {
 	@Override
 	public void dispose () {
 		onClose = true;
+		if(!gameMan.isDisposed())gameMan.dispose();
+		disposeMenus();
 		super.dispose();
 		Gdx.app.exit();
 	}
@@ -181,9 +183,9 @@ public class VerminsNest extends Game {
 	}
 	
 	private void disposeMenus(){
-		mainMenu.dispose();
-		settingsMenu.dispose();
-		creditsMenu.dispose();
+		if(mainMenu.isDisposed())mainMenu.dispose();
+		if(settingsMenu.isDisposed())settingsMenu.dispose();
+		if(creditsMenu.isDisposed())creditsMenu.dispose();
 		r.gc();
 	}
 	

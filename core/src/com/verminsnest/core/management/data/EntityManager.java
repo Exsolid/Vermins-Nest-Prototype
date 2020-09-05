@@ -5,6 +5,7 @@ import java.util.Random;
 
 import com.badlogic.gdx.math.Vector2;
 import com.verminsnest.core.VerminsNest;
+import com.verminsnest.core.engine.PositionSystem;
 import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.eggs.Egg;
@@ -416,8 +417,9 @@ public class EntityManager {
 		
 		if(character.getInventory().getItem() != null)items.add(character.getInventory().getItem());
 		entities.add(character);
-
+		
 		RuntimeData.getInstance().getGame().showScreen(VerminsNest.LOADGAME);
+		PositionSystem.getInstance().clearData();
 	}
 	
 	public boolean isLast(Entity hit){

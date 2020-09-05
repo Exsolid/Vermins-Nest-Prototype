@@ -2,6 +2,7 @@ package com.verminsnest.core.engine;
 
 import java.util.ArrayList;
 
+import com.verminsnest.core.engine.shaders.Shader;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.items.Item;
@@ -11,6 +12,7 @@ import com.verminsnest.world.generation.map.MapCell;
 
 public class RenderSystem {
 	public static void renderGameplay(float delta){
+		Shader.getInstance().begin();
 		//Draw removed one last time
 		for(Entity ent: RuntimeData.getInstance().getEntityManager().getRemoved()){
 			if(ent.getShadow() != null){
@@ -107,6 +109,7 @@ public class RenderSystem {
 				}
 			}
 		}
+		Shader.getInstance().end();
 	}
 	
 	

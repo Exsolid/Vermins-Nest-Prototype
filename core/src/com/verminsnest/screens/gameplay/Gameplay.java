@@ -3,6 +3,7 @@ package com.verminsnest.screens.gameplay;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.verminsnest.core.engine.RenderSystem;
+import com.verminsnest.core.engine.shaders.FogOfWar;
 import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.entities.Entity;
@@ -22,10 +23,12 @@ public class Gameplay extends GameplayOverlay{
 	public Gameplay(GameManager gameMan) {
 		super(gameMan);
 		gui = new GameplayMenu(gameMan);
+		
 		// Camera
 		RuntimeData.getInstance().getGame().getCamera().position.set(RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[0], RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[1], 0);
 		RuntimeData.getInstance().getGame().getCamera().update();
 		RuntimeData.getInstance().getGame().setPro();
+		new FogOfWar();
 	}
 	
 	public void render(float delta) {
@@ -56,7 +59,7 @@ public class Gameplay extends GameplayOverlay{
 					interactable = ent;
 				}
 			}
-			//TODO implement separate shop dialog
+			
 			if(distance < 15 && interactable != null && interactable instanceof Item){
 				if(((Item)interactable).getPrice() == 0) gameMan.setDialog(new ChoiceDialog("Gameplay_Dialog_Accept","Gameplay_Dialog_Cancel","Gameplay_Dialog_Description_Item",((Item)interactable).getIconPath(),new int[]{RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[0]-ChoiceDialog.getSize()[0]/2,RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[1]+ChoiceDialog.getSize()[1]}, Indentifiers.ITEMDIALOG));
 				else gameMan.setDialog(new TradeDialog(((Item)interactable).getIconPath(),new int[]{RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[0]-ChoiceDialog.getSize()[0]/2,RuntimeData.getInstance().getEntityManager().getCharacter().getPos()[1]+ChoiceDialog.getSize()[1]},((Item)interactable).getPrice()));
