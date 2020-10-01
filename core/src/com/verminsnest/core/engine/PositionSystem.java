@@ -41,7 +41,13 @@ public class PositionSystem {
 	public ArrayList<int[]> getRenderedRevealedPositions(){
 		ArrayList<int[]> temp = new ArrayList<>();	
 		for(int[] chunk : getRenderedChunks()){
-			if(chunks[chunk[0]][chunk[1]] != null && !chunks[chunk[0]][chunk[1]].revealedPositions.isEmpty())temp.addAll(chunks[chunk[0]][chunk[1]].revealedPositions);
+			if(chunks[chunk[0]][chunk[1]] != null && !chunks[chunk[0]][chunk[1]].revealedPositions.isEmpty()){
+				ArrayList<int[]> tempPos = new ArrayList<>();
+				tempPos.addAll(chunks[chunk[0]][chunk[1]].revealedPositions);
+				for(int[] pos: tempPos){
+					if(pos != null)temp.add(pos);
+				}
+			}
 		}
 		return temp;
 	}
