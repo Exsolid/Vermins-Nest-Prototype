@@ -28,7 +28,7 @@ public class Configurator {
 		} catch (MalformedURLException e) {
 			StringWriter err = new StringWriter();
 			e.printStackTrace(new PrintWriter(err));
-			VNLogger.log(err.toString(),this.getClass());
+			VNLogger.logErr(err.toString(),this.getClass());
 		}
 	}
 	

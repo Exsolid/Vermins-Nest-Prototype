@@ -147,7 +147,7 @@ public class VNAssetManager {
 			assetManager.load("textures/puddles/bloodpuddles/Bloodpuddle-Big-2.png", Texture.class);
 			break;
 		default:
-			VNLogger.log("ID was not found: "+id, this.getClass());
+			VNLogger.logErr("ID was not found: "+id, this.getClass());
 			break;
 		}
 		
@@ -291,7 +291,7 @@ public class VNAssetManager {
 			this.unload("textures/particles/shells/Shell.png");
 			break;
 		default:
-			VNLogger.log("ID was not found: "+id, this.getClass());
+			VNLogger.logErr("ID was not found: "+id, this.getClass());
 			break;
 		}
 		assetManager.update();
@@ -339,7 +339,7 @@ public class VNAssetManager {
 		case Indentifiers.ASSETMANAGER_PUDDLE_BLOOD:
 			return assetManager.isLoaded("textures/puddles/bloodpuddles/Bloodpuddle-Small-1.png");
 		default:
-			VNLogger.log("ID was not found: "+id, this.getClass());
+			VNLogger.logErr("ID was not found: "+id, this.getClass());
 			return false;
 		}
 	}
@@ -383,7 +383,7 @@ public class VNAssetManager {
 			assetManager.load("audio/music/Adventure.mp3", Music.class);
 			break;
 		default:
-			VNLogger.log("Audio ID was not found: "+id, this.getClass());
+			VNLogger.logErr("Audio ID was not found: "+id, this.getClass());
 			break;
 		}
 		loadedAudio.add(id);
@@ -427,7 +427,7 @@ public class VNAssetManager {
 			this.unload("audio/music/Adventure.mp3");
 			break;
 		default:
-			VNLogger.log("Audio ID was not found: "+id, this.getClass());
+			VNLogger.logErr("Audio ID was not found: "+id, this.getClass());
 			break;
 		}
 		loadedAudio.remove(Integer.valueOf(id));
@@ -459,7 +459,7 @@ public class VNAssetManager {
 		case Indentifiers.ASSETMANAGER_AUDIO_ADVENTURE:
 			return assetManager.isLoaded("audio/music/Adventure.mp3");
 		default:
-			VNLogger.log("Audio ID was not found: "+id, this.getClass());
+			VNLogger.logErr("Audio ID was not found: "+id, this.getClass());
 			return false;
 		}
 	}

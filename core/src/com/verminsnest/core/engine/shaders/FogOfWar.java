@@ -20,7 +20,11 @@ public class FogOfWar extends Shader{
 		super();
 		ShaderProgram.pedantic = false;
 		shader = new ShaderProgram(Gdx.files.internal("shaders/fow.vsh"),Gdx.files.internal("shaders/fow.fsh"));
-		VNLogger.log(shader.isCompiled() ? "Compiled" : shader.getLog(), this.getClass());
+		if(shader.isCompiled()){
+			VNLogger.log("Compiled", this.getClass());
+		}else{
+			VNLogger.logErr(shader.getLog(), this.getClass());
+		}
 		pixelRadius = 6f;
 		positions = calculateData();
 		running = true;
