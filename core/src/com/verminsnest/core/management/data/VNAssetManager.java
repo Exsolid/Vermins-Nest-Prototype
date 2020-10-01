@@ -1,19 +1,29 @@
 package com.verminsnest.core.management.data;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.verminsnest.core.VNLogger;
 import com.verminsnest.core.management.Indentifiers;
 
 public class VNAssetManager {
 	private AssetManager assetManager;
-
+	private ArrayList<Integer> loadedIDs;
+	private ArrayList<Integer> loadedAudio;
 	public VNAssetManager() {
 		assetManager = new AssetManager();
+		loadedIDs = new ArrayList<>();
+		loadedAudio = new ArrayList<>();
 	}
-
-	public void loadTextures(int id) {
+	
+	/**
+	 * Loads the assets (textures and audio) for the given ID
+	 * @param id
+	 */
+	public void loadAssets(int id) {
 		switch (id) {
 		case (Indentifiers.ASSETMANAGER_INIT):
 			assetManager.load("textures/menus/scrolls/VerticalScroll_Small.png", Texture.class);
@@ -136,17 +146,31 @@ public class VNAssetManager {
 			assetManager.load("textures/puddles/bloodpuddles/Bloodpuddle-Big-1.png", Texture.class);
 			assetManager.load("textures/puddles/bloodpuddles/Bloodpuddle-Big-2.png", Texture.class);
 			break;
+		default:
+			VNLogger.log("ID was not found: "+id, this.getClass());
+			break;
 		}
 		
 		assetManager.finishLoading();
 		assetManager.update();
+		loadedIDs.add(id);
+		VNLogger.log("Loaded assets of ID "+id, this.getClass());
 	}
 
+	/**
+	 * Returns the asset to be found a the given path
+	 * @param path
+	 * @return
+	 */
 	public Object getAsset(String path) {
 		return assetManager.get(path);
 	}
 
-	public void disposeTextures(int id) {
+	/**
+	 * Unloads the assets of the given ID from the asset manager
+	 * @param id
+	 */
+	public void unloadAssets(int id) {
 		switch (id) {
 		case (Indentifiers.ASSETMANAGER_INIT):
 			this.unload("textures/menus/scrolls/VerticalScroll_Small.png");
@@ -266,11 +290,21 @@ public class VNAssetManager {
 		case Indentifiers.ASSETMANAGER_SHELL:
 			this.unload("textures/particles/shells/Shell.png");
 			break;
+		default:
+			VNLogger.log("ID was not found: "+id, this.getClass());
+			break;
 		}
 		assetManager.update();
+		loadedIDs.remove(Integer.valueOf(id));
+		VNLogger.log("Unloaded assets of ID "+id, this.getClass());
 	}
-
-	public boolean areTexturesLoaded(int id) {
+	
+	/**
+	 * Returns true if the assets of given ID are loaded
+	 * @param id
+	 * @return
+	 */
+	public boolean areAssetsLoaded(int id) {
 		switch (id) {
 		case (Indentifiers.ASSETMANAGER_INIT):
 			return assetManager.isLoaded("textures/misc/Cursor.png");
@@ -305,7 +339,7 @@ public class VNAssetManager {
 		case Indentifiers.ASSETMANAGER_PUDDLE_BLOOD:
 			return assetManager.isLoaded("textures/puddles/bloodpuddles/Bloodpuddle-Small-1.png");
 		default:
-			//TODO Log this
+			VNLogger.log("ID was not found: "+id, this.getClass());
 			return false;
 		}
 	}
@@ -348,8 +382,11 @@ public class VNAssetManager {
 		case Indentifiers.ASSETMANAGER_AUDIO_ADVENTURE:
 			assetManager.load("audio/music/Adventure.mp3", Music.class);
 			break;
+		default:
+			VNLogger.log("Audio ID was not found: "+id, this.getClass());
+			break;
 		}
-
+		loadedAudio.add(id);
 		assetManager.finishLoading();
 		assetManager.update();
 	}
@@ -389,8 +426,11 @@ public class VNAssetManager {
 		case Indentifiers.ASSETMANAGER_AUDIO_ADVENTURE:
 			this.unload("audio/music/Adventure.mp3");
 			break;
+		default:
+			VNLogger.log("Audio ID was not found: "+id, this.getClass());
+			break;
 		}
-
+		loadedAudio.remove(Integer.valueOf(id));
 		assetManager.update();
 	}
 	
@@ -419,7 +459,7 @@ public class VNAssetManager {
 		case Indentifiers.ASSETMANAGER_AUDIO_ADVENTURE:
 			return assetManager.isLoaded("audio/music/Adventure.mp3");
 		default:
-			//TODO Log this
+			VNLogger.log("Audio ID was not found: "+id, this.getClass());
 			return false;
 		}
 	}

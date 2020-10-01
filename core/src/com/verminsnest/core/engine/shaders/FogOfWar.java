@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.verminsnest.core.VNLogger;
 import com.verminsnest.core.engine.PositionSystem;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.world.management.FloorManager;
@@ -19,15 +20,13 @@ public class FogOfWar extends Shader{
 		super();
 		ShaderProgram.pedantic = false;
 		shader = new ShaderProgram(Gdx.files.internal("shaders/fow.vsh"),Gdx.files.internal("shaders/fow.fsh"));
-		//TODO log uncompiled shader
-		System.out.println(shader.isCompiled() ? "FogOfWar compiled" : "Error compiling FogOfWar.java: "+ shader.getLog());
+		VNLogger.log(shader.isCompiled() ? "Compiled" : shader.getLog(), this.getClass());
 		pixelRadius = 6f;
 		positions = calculateData();
 		running = true;
 		threadCalculator = new Thread(){
 			public void run(){
 				while(running){
-					//TODO log errors
 					if(FloorManager.getInstane().allowEntityUpdate())
 					positions = calculateData();
 				}
@@ -58,6 +57,7 @@ public class FogOfWar extends Shader{
 		running = false;
 		instance = null;
 		PositionSystem.getInstance().clearData();
+		VNLogger.log("Disposed", this.getClass());
 	}
 	
 	private float[] calculateData(){

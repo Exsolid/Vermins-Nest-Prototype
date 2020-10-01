@@ -66,13 +66,13 @@ public class RuntimeData {
 		return (Music)assetManager.getAsset(path);
 	}
 	public void loadTextures(int id){
-		assetManager.loadTextures(id);
+		assetManager.loadAssets(id);
 	}
 	public void loadAudio(int id){
 		assetManager.loadAudio(id);
 	}
 	public void disposeTextures(int id){
-		assetManager.disposeTextures(id);
+		assetManager.unloadAssets(id);
 	}
 	
 	public void dispose(){
@@ -83,7 +83,7 @@ public class RuntimeData {
 	}
 	
 	public boolean areAssetsLoaded(int id){
-		return assetManager.areTexturesLoaded(id);
+		return assetManager.areAssetsLoaded(id);
 	}
 	
 	public Vector3 getMousePosInGameWorld() {

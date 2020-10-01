@@ -36,7 +36,6 @@ public abstract class Item extends Entity {
 		itemBagAni = new Animation<TextureRegion>(1f, frames);
 		
 		init();
-		//TODO Log pos == null && keeper == null
 	}
 	
 	public abstract void activate();

@@ -1,11 +1,14 @@
 package com.verminsnest.config;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.verminsnest.core.VNLogger;
 public class Configurator {
 
 	private Preferences prefs;
@@ -23,8 +26,9 @@ public class Configurator {
 		try {
 			this.setBundle(language);
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			StringWriter err = new StringWriter();
+			e.printStackTrace(new PrintWriter(err));
+			VNLogger.log(err.toString(),this.getClass());
 		}
 	}
 	
