@@ -27,7 +27,7 @@ public class EntityDamageSystem {
 	 */
 	public void addHit(Entity source, Entity hit){
 		if(source instanceof Projectile)addProjectileHit((Projectile)source, hit);
-		else if(source instanceof Explosion)addExplosionHit((Explosion)source, hit);//TODO Add knockback
+		else if(source instanceof Explosion)addExplosionHit((Explosion)source, hit);
 	}
 	
 	/**

@@ -12,7 +12,6 @@ public class GreenBullet extends Projectile{
 		super(Indentifiers.ASSETMANAGER_BULLET_GREEN, direction, agility, damage, position);
 	}
 	
-	//TODO add break animation, change projectile structure
 	@Override
 	public void init() {
 		Texture flyingSheet = RuntimeData.getInstance().getTexture("textures/projectiles/bullets/BulletGreen-Flying.png");
