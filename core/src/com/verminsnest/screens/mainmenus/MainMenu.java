@@ -44,16 +44,16 @@ public class MainMenu extends VNScreen {
 	public void render(float delta) {
 		RuntimeData.getInstance().getGame().setPro();
 		RuntimeData.getInstance().getGame().getBatch().begin();
-		RuntimeData.getInstance().getGame().getBatch().draw(RuntimeData.getInstance().getAsset("textures/general/Background.png"),
+		RuntimeData.getInstance().getGame().getBatch().draw(RuntimeData.getInstance().getTexture("textures/general/Background.png"),
 				Gdx.graphics.getWidth() / 2
-						- RuntimeData.getInstance().getAsset("textures/general/Background.png").getWidth() / 2,
+						- RuntimeData.getInstance().getTexture("textures/general/Background.png").getWidth() / 2,
 				Gdx.graphics.getHeight() / 2
-						- RuntimeData.getInstance().getAsset("textures/general/Background.png").getHeight() / 2);
-		RuntimeData.getInstance().getGame().getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png"),
+						- RuntimeData.getInstance().getTexture("textures/general/Background.png").getHeight() / 2);
+		RuntimeData.getInstance().getGame().getBatch().draw(RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Small.png"),
 				RuntimeData.getInstance().getGame().getConfig().getResolution()[0] / 2 - RuntimeData.getInstance()
-						.getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth() / 2,
+						.getTexture("textures/menus/scrolls/VerticalScroll_Small.png").getWidth() / 2,
 				RuntimeData.getInstance().getGame().getConfig().getResolution()[1] / 2 - RuntimeData.getInstance()
-						.getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2);
+						.getTexture("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2);
 		bManager.draw(RuntimeData.getInstance().getGame().getBatch());
 		RuntimeData.getInstance().getGame().getBatch().end();
 		this.mangageControls();
@@ -63,15 +63,15 @@ public class MainMenu extends VNScreen {
 	public void resize(int width, int height) {
 		bManager.setMidOfBounds(
 				new int[] {
-						RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png")
+						RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Small.png")
 								.getWidth(),
-						RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png")
+						RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Small.png")
 								.getHeight() },
 				new int[] {
 						RuntimeData.getInstance().getGame().getConfig().getResolution()[0] / 2 - RuntimeData.getInstance()
-								.getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth() / 2,
+								.getTexture("textures/menus/scrolls/VerticalScroll_Small.png").getWidth() / 2,
 						RuntimeData.getInstance().getGame().getConfig().getResolution()[1] / 2 - RuntimeData.getInstance()
-								.getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2 });
+								.getTexture("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2 });
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public class MainMenu extends VNScreen {
 					RuntimeData.getInstance().loadTextures(Indentifiers.ASSETMANAGER_GAMEPLAY);
 					World gen = new World(RuntimeData.getInstance().getGame());
 					gen.setData(1, 20, 20, 10,
-							(RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Mountain-Sheet.png")));
+							(RuntimeData.getInstance().getTexture("textures/level-sheets/cave/Mountain-Sheet.png")));
 					new EnemySpawner(1);
 					new UtilSpawner();
 					RuntimeData.getInstance().getGame().showScreen(VerminsNest.LOADGAME);
@@ -166,16 +166,17 @@ public class MainMenu extends VNScreen {
 		bManager = new ButtonManager(buttonList, 100, true, "", "", true);
 		bManager.setMidOfBounds(
 				new int[] {
-						RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png")
+						RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Small.png")
 								.getWidth(),
-						RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png")
+						RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Small.png")
 								.getHeight() },
 				new int[] {
 						RuntimeData.getInstance().getGame().getConfig().getResolution()[0] / 2 - RuntimeData.getInstance()
-								.getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth() / 2,
+								.getTexture("textures/menus/scrolls/VerticalScroll_Small.png").getWidth() / 2,
 						RuntimeData.getInstance().getGame().getConfig().getResolution()[1] / 2 - RuntimeData.getInstance()
-								.getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2 });
+								.getTexture("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2 });
 		isDisposed = false;
+		RuntimeData.getInstance().getAudioManager().playMusic("audio/music/Adventure.mp3");
 	}
 
 	@Override

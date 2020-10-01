@@ -32,13 +32,13 @@ public class LoadingScreen implements Screen {
 		loadingText.setMidOfBounds(
 				new int[] {
 						(int) game.getCamera().position.x - RuntimeData.getInstance()
-								.getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png").getWidth() / 2,
+								.getTexture("textures/menus/scrolls/HorizontalScroll_Minimum.png").getWidth() / 2,
 						(int) game.getCamera().position.y - RuntimeData.getInstance()
-								.getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png").getHeight() / 2 },
+								.getTexture("textures/menus/scrolls/HorizontalScroll_Minimum.png").getHeight() / 2 },
 				new int[] {
-						RuntimeData.getInstance().getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png")
+						RuntimeData.getInstance().getTexture("textures/menus/scrolls/HorizontalScroll_Minimum.png")
 								.getWidth(),
-						RuntimeData.getInstance().getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png")
+						RuntimeData.getInstance().getTexture("textures/menus/scrolls/HorizontalScroll_Minimum.png")
 								.getHeight() });
 	}
 
@@ -50,26 +50,26 @@ public class LoadingScreen implements Screen {
 			loadingText.setMidOfBounds(
 					new int[] {
 							(int) game.getCamera().position.x - RuntimeData.getInstance()
-									.getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png").getWidth() / 2,
+									.getTexture("textures/menus/scrolls/HorizontalScroll_Minimum.png").getWidth() / 2,
 							(int) game.getCamera().position.y - RuntimeData.getInstance()
-									.getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png").getHeight() / 2 },
+									.getTexture("textures/menus/scrolls/HorizontalScroll_Minimum.png").getHeight() / 2 },
 					new int[] {
-							RuntimeData.getInstance().getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png")
+							RuntimeData.getInstance().getTexture("textures/menus/scrolls/HorizontalScroll_Minimum.png")
 									.getWidth(),
-							RuntimeData.getInstance().getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png")
+							RuntimeData.getInstance().getTexture("textures/menus/scrolls/HorizontalScroll_Minimum.png")
 									.getHeight() + 60 });
 		}
 		game.getBatch().begin();
-		game.getBatch().draw(RuntimeData.getInstance().getAsset("textures/general/Background.png"),
+		game.getBatch().draw(RuntimeData.getInstance().getTexture("textures/general/Background.png"),
 				Gdx.graphics.getWidth() / 2
-						- RuntimeData.getInstance().getAsset("textures/general/Background.png").getWidth() / 2,
+						- RuntimeData.getInstance().getTexture("textures/general/Background.png").getWidth() / 2,
 				Gdx.graphics.getHeight() / 2
-						- RuntimeData.getInstance().getAsset("textures/general/Background.png").getHeight() / 2);
-		game.getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png"),
+						- RuntimeData.getInstance().getTexture("textures/general/Background.png").getHeight() / 2);
+		game.getBatch().draw(RuntimeData.getInstance().getTexture("textures/menus/scrolls/HorizontalScroll_Minimum.png"),
 				game.getCamera().position.x - RuntimeData.getInstance()
-						.getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png").getWidth() / 2,
+						.getTexture("textures/menus/scrolls/HorizontalScroll_Minimum.png").getWidth() / 2,
 				game.getCamera().position.y - RuntimeData.getInstance()
-						.getAsset("textures/menus/scrolls/HorizontalScroll_Minimum.png").getHeight() / 2);
+						.getTexture("textures/menus/scrolls/HorizontalScroll_Minimum.png").getHeight() / 2);
 		loadingText.draw(game.getBatch());
 		game.getBatch().end();
 		if (!LoadingModules.getInstance().getModules().isEmpty()

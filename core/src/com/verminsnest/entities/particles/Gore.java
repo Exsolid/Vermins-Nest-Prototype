@@ -14,21 +14,21 @@ public class Gore extends Particle {
 		textureNum = rand.nextInt(5)+1;
 		switch(textureNum){
 		case 1:
-			texture = RuntimeData.getInstance().getAsset("textures/particles/gore/Gore-1.png");
+			texture = RuntimeData.getInstance().getTexture("textures/particles/gore/Gore-1.png");
 			break;
 		case 2:
-			texture = RuntimeData.getInstance().getAsset("textures/particles/gore/Gore-2.png");
+			texture = RuntimeData.getInstance().getTexture("textures/particles/gore/Gore-2.png");
 			break;
 		case 3:
-			texture = RuntimeData.getInstance().getAsset("textures/particles/gore/Gore-3.png");
+			texture = RuntimeData.getInstance().getTexture("textures/particles/gore/Gore-3.png");
 			break;
 		case 4:
-			texture = RuntimeData.getInstance().getAsset("textures/particles/gore/Gore-4.png");
+			texture = RuntimeData.getInstance().getTexture("textures/particles/gore/Gore-4.png");
 			break;
 		case 5:
-			texture = RuntimeData.getInstance().getAsset("textures/particles/gore/Gore-5.png");
+			texture = RuntimeData.getInstance().getTexture("textures/particles/gore/Gore-5.png");
 			break;
 		}
-		this.setSize(RuntimeData.getInstance().getAsset("textures/particles/gore/Gore-"+textureNum+".png").getWidth(), RuntimeData.getInstance().getAsset("textures/particles/gore/Gore-"+textureNum+".png").getHeight());
+		this.setSize(RuntimeData.getInstance().getTexture("textures/particles/gore/Gore-"+textureNum+".png").getWidth(), RuntimeData.getInstance().getTexture("textures/particles/gore/Gore-"+textureNum+".png").getHeight());
 	}
 }

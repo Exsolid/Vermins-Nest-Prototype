@@ -16,7 +16,7 @@ public class Mage extends Playable {
 
 	@Override
 	public void init() {
-		Texture wFrontSheet = RuntimeData.getInstance().getAsset("textures/characters/mage/Mage-W-Front.png");
+		Texture wFrontSheet = RuntimeData.getInstance().getTexture("textures/characters/mage/Mage-W-Front.png");
 		TextureRegion[][] temp = TextureRegion.split(wFrontSheet, 50, 64);
 		TextureRegion[] frames = new TextureRegion[temp[0].length];
 
@@ -25,7 +25,7 @@ public class Mage extends Playable {
 		}
 		frontWalkAni = new Animation<TextureRegion>(1f / this.speed, frames);
 
-		Texture wBackSheet = RuntimeData.getInstance().getAsset("textures/characters/mage/Mage-W-Back.png");
+		Texture wBackSheet = RuntimeData.getInstance().getTexture("textures/characters/mage/Mage-W-Back.png");
 		temp = TextureRegion.split(wBackSheet, 50, 64);
 		frames = new TextureRegion[temp[0].length];
 
@@ -34,7 +34,7 @@ public class Mage extends Playable {
 		}
 		backWalkAni = new Animation<TextureRegion>(1f / this.speed, frames);
 
-		Texture wRightSheet = RuntimeData.getInstance().getAsset("textures/characters/mage/Mage-W-Right.png");
+		Texture wRightSheet = RuntimeData.getInstance().getTexture("textures/characters/mage/Mage-W-Right.png");
 		temp = TextureRegion.split(wRightSheet, 50, 64);
 		frames = new TextureRegion[temp[0].length];
 
@@ -43,7 +43,7 @@ public class Mage extends Playable {
 		}
 		rightWalkAni = new Animation<TextureRegion>(1f / this.speed, frames);
 
-		Texture wleftSheet = RuntimeData.getInstance().getAsset("textures/characters/mage/Mage-W-Left.png");
+		Texture wleftSheet = RuntimeData.getInstance().getTexture("textures/characters/mage/Mage-W-Left.png");
 		temp = TextureRegion.split(wleftSheet, 50, 64);
 		frames = new TextureRegion[temp[0].length];
 
@@ -52,7 +52,7 @@ public class Mage extends Playable {
 		}
 		leftWalkAni = new Animation<TextureRegion>(1f / this.speed, frames);
 
-		Texture idleSheet = RuntimeData.getInstance().getAsset("textures/characters/mage/Mage-Idle.png");
+		Texture idleSheet = RuntimeData.getInstance().getTexture("textures/characters/mage/Mage-Idle.png");
 		temp = TextureRegion.split(idleSheet, 50, 64);
 		frames = new TextureRegion[temp[0].length];
 

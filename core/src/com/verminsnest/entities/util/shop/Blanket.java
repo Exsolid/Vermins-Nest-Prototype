@@ -15,7 +15,7 @@ public class Blanket extends UtilEntity {
 
 	@Override
 	public void init() {
-		texture =RuntimeData.getInstance().getAsset("textures/util/Blanket.png");
+		texture =RuntimeData.getInstance().getTexture("textures/util/Blanket.png");
 		isObstacle = false;
 		setSize(texture.getWidth(),texture.getHeight());
 	}

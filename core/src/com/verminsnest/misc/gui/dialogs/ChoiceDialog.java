@@ -32,8 +32,8 @@ public class ChoiceDialog {
 		temp.add(decline);
 		buttons.add(temp);
 		choiceManager = new ButtonManager(buttons, 50, false, null, null, true);
-		if(iconPath != null && !iconPath.equals(""))icon = RuntimeData.getInstance().getAsset(iconPath);
-		background = RuntimeData.getInstance().getAsset("textures/menus/scrolls/HorizontalScroll_Medium.png");
+		if(iconPath != null && !iconPath.equals(""))icon = RuntimeData.getInstance().getTexture(iconPath);
+		background = RuntimeData.getInstance().getTexture("textures/menus/scrolls/HorizontalScroll_Medium.png");
 		this.description = new FontText(description, 50, true);
 		this.description.setMidOfBounds(position, new int[]{background.getWidth(),background.getHeight()});
 		this.description.getPos()[0] -= background.getWidth()/10;
@@ -92,6 +92,6 @@ public class ChoiceDialog {
 	}
 	
 	public static int[] getSize(){
-		return new int[]{RuntimeData.getInstance().getAsset("textures/menus/scrolls/HorizontalScroll_Medium.png").getWidth(),RuntimeData.getInstance().getAsset("textures/menus/scrolls/HorizontalScroll_Medium.png").getHeight()};
+		return new int[]{RuntimeData.getInstance().getTexture("textures/menus/scrolls/HorizontalScroll_Medium.png").getWidth(),RuntimeData.getInstance().getTexture("textures/menus/scrolls/HorizontalScroll_Medium.png").getHeight()};
 	}
 }

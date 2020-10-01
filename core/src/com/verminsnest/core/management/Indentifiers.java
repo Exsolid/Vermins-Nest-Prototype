@@ -36,7 +36,7 @@ public class Indentifiers {
 	public static final int DIALOG_OKAY = 2;
 	public static final int ITEMDIALOG = 3;
 	
-	//Assetmanager stuff
+	//Assetmanager textures n stuff
 	public final static int ASSETMANAGER_GAMEPLAY = 1;
 	public final static int ASSETMANAGER_INIT = 8;
 	
@@ -60,6 +60,20 @@ public class Indentifiers {
 	public final static int ASSETMANAGER_BARRIER_BLUE = 11;
 	public final static int ASSETMANAGER_TURRET_MECHA= 14;
 
+	//Assetmanager audio
+	public final static int ASSETMANAGER_AUDIO_INTOTHEUNKOWN = 1;
+	public final static int ASSETMANAGER_AUDIO_CLAW = 2;
+	public final static int ASSETMANAGER_AUDIO_WALKINGONSTONE = 3;
+	public static final int ASSETMANAGER_AUDIO_FIRE1 = 4;
+	public static final int ASSETMANAGER_AUDIO_FIRE2 = 5;
+	public static final int ASSETMANAGER_AUDIO_ITEMPICKDROP = 6;
+	public final static int ASSETMANAGER_AUDIO_WALKINGNEXTLEVEL = 7;
+	public final static int ASSETMANAGER_AUDIO_LEVELUP = 8;
+	public final static int ASSETMANAGER_AUDIO_BULLETSHOOTING = 9;
+	public final static int ASSETMANAGER_AUDIO_BARRIERBUILDUP = 10;
+	public final static int ASSETMANAGER_AUDIO_FOODEATING = 11;
+	public final static int ASSETMANAGER_AUDIO_ADVENTURE = 12;
+	
 	//Enemy IDs
 	public static final int ENEMY_TINKER = 0;
 	public static final int ENEMY_FLUNK = 1;

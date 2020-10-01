@@ -71,10 +71,10 @@ public class SettingsMenu extends VNScreen {
 	public void render(float delta) {
 		RuntimeData.getInstance().getGame().setPro();
 		RuntimeData.getInstance().getGame().getBatch().begin();
-		RuntimeData.getInstance().getGame().getBatch().draw(RuntimeData.getInstance().getAsset("textures/general/Background.png"), Gdx.graphics.getWidth() / 2 - RuntimeData.getInstance().getAsset("textures/general/Background.png").getWidth() / 2,
-				Gdx.graphics.getHeight() / 2 - RuntimeData.getInstance().getAsset("textures/general/Background.png").getHeight() / 2);
-		RuntimeData.getInstance().getGame().getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png"), menuScrollPos[0], menuScrollPos[1]);
-		RuntimeData.getInstance().getGame().getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png"), settingsScrollPos[0], settingsScrollPos[1]);
+		RuntimeData.getInstance().getGame().getBatch().draw(RuntimeData.getInstance().getTexture("textures/general/Background.png"), Gdx.graphics.getWidth() / 2 - RuntimeData.getInstance().getTexture("textures/general/Background.png").getWidth() / 2,
+				Gdx.graphics.getHeight() / 2 - RuntimeData.getInstance().getTexture("textures/general/Background.png").getHeight() / 2);
+		RuntimeData.getInstance().getGame().getBatch().draw(RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Small.png"), menuScrollPos[0], menuScrollPos[1]);
+		RuntimeData.getInstance().getGame().getBatch().draw(RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Big.png"), settingsScrollPos[0], settingsScrollPos[1]);
 		settingsMenuManager.draw(RuntimeData.getInstance().getGame().getBatch());
 		if (currentMenuManager != null) {
 			currentMenuManager.draw(RuntimeData.getInstance().getGame().getBatch());
@@ -87,14 +87,14 @@ public class SettingsMenu extends VNScreen {
 	@Override
 	public void resize(int width, int height) {
 		menuScrollPos = new int[]{
-				Gdx.graphics.getWidth() / 2 - (RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth() + RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getWidth()) / 2,
-				Gdx.graphics.getHeight() / 2 - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2};
+				Gdx.graphics.getWidth() / 2 - (RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Small.png").getWidth() + RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Big.png").getWidth()) / 2,
+				Gdx.graphics.getHeight() / 2 - RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2};
 		settingsScrollPos = new int[]{Gdx.graphics.getWidth() / 2,
-				Gdx.graphics.getHeight() / 2 - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2};
-		settingsMenuManager.setMidOfBounds(new int[]{RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth(), RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight()}, menuScrollPos);
-		videoMenuManager.setMidOfBounds(new int[]{RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getWidth(), RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getHeight()},
+				Gdx.graphics.getHeight() / 2 - RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2};
+		settingsMenuManager.setMidOfBounds(new int[]{RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Small.png").getWidth(), RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Small.png").getHeight()}, menuScrollPos);
+		videoMenuManager.setMidOfBounds(new int[]{RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Big.png").getWidth(), RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Big.png").getHeight()},
 				settingsScrollPos);
-		musicMenuManager.setMidOfBounds(new int[]{RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getWidth(), RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getHeight()},
+		musicMenuManager.setMidOfBounds(new int[]{RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Big.png").getWidth(), RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Big.png").getHeight()},
 				settingsScrollPos);
 	}
 
@@ -169,7 +169,7 @@ public class SettingsMenu extends VNScreen {
 		}
 
 		// D Pressed
-		if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+		if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
 			switch (menuIndex) {
 			case -1:
 				break;
@@ -187,6 +187,8 @@ public class SettingsMenu extends VNScreen {
 						}
 						break;
 					case SOUND:
+						if(!currentMenuManager.getCurrent().getOption().getText().equals("10"))
+							currentMenuManager.getCurrent().getOption().setText(Integer.parseInt(currentMenuManager.getCurrent().getOption().getText())+1+"");							
 						break;
 					case CONTROLS:
 						break;
@@ -197,7 +199,7 @@ public class SettingsMenu extends VNScreen {
 		}
 
 		// A Pressed
-		if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+		if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
 			switch (menuIndex) {
 			case -1:
 				break;
@@ -215,6 +217,8 @@ public class SettingsMenu extends VNScreen {
 						}
 						break;
 					case SOUND:
+						if(!currentMenuManager.getCurrent().getOption().getText().equals("0"))
+						currentMenuManager.getCurrent().getOption().setText(Integer.parseInt(currentMenuManager.getCurrent().getOption().getText())-1+"");
 						break;
 					case CONTROLS:
 						break;
@@ -358,6 +362,9 @@ public class SettingsMenu extends VNScreen {
 						while(musicMenuManager.getIndex() != 0){
 							musicMenuManager.prev();
 						}
+						RuntimeData.getInstance().getGame().getConfig().setMusicVolume(Integer.parseInt(musicMenuManager.getButtons().get(0).getOption().getText()));
+						RuntimeData.getInstance().getGame().getConfig().setSoundVolume(Integer.parseInt(musicMenuManager.getButtons().get(1).getOption().getText()));
+						RuntimeData.getInstance().getAudioManager().reload();
 						break;
 					}
 					break;
@@ -403,29 +410,32 @@ public class SettingsMenu extends VNScreen {
 		buttonList.add(back);
 		
 		videoMenuManager = new ButtonManager(buttonList, 100,true,"<",">", true);
-		videoMenuManager.setMidOfBounds(new int[]{RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getWidth(), RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getHeight()},
+		videoMenuManager.setMidOfBounds(new int[]{RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Big.png").getWidth(), RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Big.png").getHeight()},
 				settingsScrollPos);
 		
 		//initialize sound settings
 		buttonList = new ArrayList<>();
 		ArrayList<String> music = new ArrayList<String>();
 		music.add("SoundMenu_Music");
+		music.add(RuntimeData.getInstance().getGame().getConfig().getMusicVolume()+"");
 		buttonList.add(music);
 		
 		ArrayList<String> effects = new ArrayList<String>();
 		effects.add("SoundMenu_Effects");
+		effects.add(RuntimeData.getInstance().getGame().getConfig().getSoundVolume()+"");
 		buttonList.add(effects);
 		
 		back = new ArrayList<String>();
 		back.add("SettingsMenu_Back");
 		buttonList.add(back);
 		
-		musicMenuManager = new ButtonManager(buttonList, 100,true,"<",">", true);
-		musicMenuManager.setMidOfBounds(new int[]{RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getWidth(), RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getHeight()},
+		musicMenuManager = new ButtonManager(buttonList, 100,true,"-","+", false);
+		musicMenuManager.setMidOfBounds(new int[]{RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Big.png").getWidth(), RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Big.png").getHeight()},
 				settingsScrollPos);
 		
 		//initialize control settings
-		controlsMenuManager = new ButtonManager(buttonList, 100,true,"<",">", true);	
+		
+		controlsMenuManager = new ButtonManager(buttonList, 100,true,"<",">", false);	
 		
 		//initialize main settings
 		buttonList = new ArrayList<>();
@@ -442,17 +452,17 @@ public class SettingsMenu extends VNScreen {
 		back.add("SettingsMenu_Back");
 		buttonList.add(back);
 		settingsMenuManager = new ButtonManager(buttonList, 100,true , "", "", true);
-		settingsMenuManager.setMidOfBounds(new int[]{RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth(), RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight()}, menuScrollPos);
+		settingsMenuManager.setMidOfBounds(new int[]{RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Small.png").getWidth(), RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Small.png").getHeight()}, menuScrollPos);
 	}
 
 	@Override
 	public void init() {
 		// Positions
 		menuScrollPos = new int[]{
-				Gdx.graphics.getWidth() / 2 - (RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth() + RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getWidth()) / 2,
-				Gdx.graphics.getHeight() / 2 - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2};
+				Gdx.graphics.getWidth() / 2 - (RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Small.png").getWidth() + RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Big.png").getWidth()) / 2,
+				Gdx.graphics.getHeight() / 2 - RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2};
 		settingsScrollPos = new int[]{Gdx.graphics.getWidth() / 2,
-				Gdx.graphics.getHeight() / 2 - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2};	
+				Gdx.graphics.getHeight() / 2 - RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2};	
 		initMenus();
 		isDisposed = false;
 	}

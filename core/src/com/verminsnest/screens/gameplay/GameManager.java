@@ -1,5 +1,7 @@
 package com.verminsnest.screens.gameplay;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.verminsnest.core.VerminsNest;
 import com.verminsnest.core.engine.shaders.Shader;
@@ -156,6 +158,7 @@ public class GameManager extends VNScreen {
 		pauseMenu.dispose();
 		
 		RuntimeData.getInstance().disposeTextures(Indentifiers.ASSETMANAGER_GAMEPLAY);
+		RuntimeData.getInstance().getAudioManager().stopMusic();
 		RuntimeData.getInstance().getEntityManager().clearData();
 		
 		isDisposed = true;
@@ -163,8 +166,8 @@ public class GameManager extends VNScreen {
 
 	@Override
 	public void init() {
-
 		if (RuntimeData.getInstance().getEntityManager().getCharacter() == null) {
+			//On game start
 			RuntimeData.getInstance().getEntityManager().setCharacter(new Mage(new int[] { 0, 0 }));
 			for (int x = 0; x < RuntimeData.getInstance().getMapData().getData().length; x++) {
 				for (int y = 0; y < RuntimeData.getInstance().getMapData().getData()[0].length; y++) {
@@ -176,13 +179,17 @@ public class GameManager extends VNScreen {
 					}
 				}
 			}
-
+			
 			gameplay = new Gameplay(this);
 			pauseMenu = new PauseMenu(this);
 			levelMenu = new LevelMenu(this);
 			pauseMenu.init();
 			levelMenu.init();
+			ArrayList<String> temp = new ArrayList<String>();
+			temp.add("audio/music/Into The Unknown.mp3");
+			RuntimeData.getInstance().getAudioManager().playMusicQueue(temp);
 		} else {
+			//On layers
 			for (int x = 0; x < RuntimeData.getInstance().getMapData().getData().length; x++) {
 				for (int y = 0; y < RuntimeData.getInstance().getMapData().getData()[0].length; y++) {
 					if (RuntimeData.getInstance().getMapData().getData()[x][y].isWalkable()) {

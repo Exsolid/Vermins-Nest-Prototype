@@ -33,6 +33,7 @@ public class FogOfWar extends Shader{
 				}
 			}
 		};
+		threadCalculator.setName("FogOfWarCalculator");
 		threadCalculator.start();
 	}
 	

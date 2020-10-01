@@ -372,7 +372,7 @@ public class EntityManager {
 	public void notifyNewLevel() {
 		World gen = new World(RuntimeData.getInstance().getGame());
 		gen.setData(3, 15, 15, 10,
-				(RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Mountain-Sheet.png")));
+				(RuntimeData.getInstance().getTexture("textures/level-sheets/cave/Mountain-Sheet.png")));
 		new EnemySpawner(3);
 		new UtilSpawner();
 		//Clear data

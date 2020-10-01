@@ -11,7 +11,7 @@ public class Shell extends Particle {
 
 	@Override
 	public void init() {
-		texture = RuntimeData.getInstance().getAsset("textures/particles/shells/Shell.png");
+		texture = RuntimeData.getInstance().getTexture("textures/particles/shells/Shell.png");
 		setSize(texture.getWidth(),texture.getHeight());
 	}
 

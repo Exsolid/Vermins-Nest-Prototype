@@ -68,6 +68,24 @@ public class Configurator {
 		prefs.flush();
 	}
 	
+	public void setMusicVolume(int vol){
+		prefs.putInteger("musicVolume", vol);
+		prefs.flush();
+	}
+	
+	public void setSoundVolume(int vol){
+		prefs.putInteger("soundVolume", vol);
+		prefs.flush();
+	}
+	
+	public int getMusicVolume(){
+		return prefs.getInteger("musicVolume",10);
+	}
+	
+	public int getSoundVolume(){
+		return prefs.getInteger("soundVolume",10);
+	}
+	
 	public void setCurrentMonitor(int id){
 		prefs.putInteger("monitorID", id);
 		prefs.flush();

@@ -75,40 +75,40 @@ public class LevelMenu extends GameplayOverlay {
 		.setMidOfBounds(
 				new int[] {
 						(int) (RuntimeData.getInstance().getGame().getCamera().position.x - RuntimeData.getInstance()
-								.getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getWidth() / 2),
+								.getTexture("textures/menus/scrolls/VerticalScroll_Big.png").getWidth() / 2),
 						(int) (RuntimeData.getInstance().getGame().getCamera().position.y - RuntimeData.getInstance()
-								.getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getHeight() / 2) },
+								.getTexture("textures/menus/scrolls/VerticalScroll_Big.png").getHeight() / 2) },
 				new int[] {
-						RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png")
+						RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Big.png")
 								.getWidth(),
-						RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png")
+						RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Big.png")
 								.getHeight() });
 		
 		title
 		.setMidOfBounds(
 				new int[] {
 						(int) (RuntimeData.getInstance().getGame().getCamera().position.x - RuntimeData.getInstance()
-								.getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getWidth() / 2),
+								.getTexture("textures/menus/scrolls/VerticalScroll_Big.png").getWidth() / 2),
 						(int) (RuntimeData.getInstance().getGame().getCamera().position.y - RuntimeData.getInstance()
-								.getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getHeight() / 2) },
+								.getTexture("textures/menus/scrolls/VerticalScroll_Big.png").getHeight() / 2) },
 				new int[] {
-						RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png")
+						RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Big.png")
 								.getWidth(),
-						RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png")
+						RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Big.png")
 								.getHeight() });
 		
 		levelType
 				.setMidOfBounds(
 						new int[] {
-								RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png")
+								RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Big.png")
 										.getWidth(),
-								RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png")
+								RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Big.png")
 										.getHeight() },
 						new int[] {
 								(int) (RuntimeData.getInstance().getGame().getCamera().position.x - RuntimeData.getInstance()
-										.getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getWidth() / 2),
+										.getTexture("textures/menus/scrolls/VerticalScroll_Big.png").getWidth() / 2),
 								(int) (RuntimeData.getInstance().getGame().getCamera().position.y - RuntimeData.getInstance()
-										.getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getHeight() / 2) });
+										.getTexture("textures/menus/scrolls/VerticalScroll_Big.png").getHeight() / 2) });
 		
 		title.getPos()[1] += 325;
 		points.getPos()[1] += 225;
@@ -117,11 +117,11 @@ public class LevelMenu extends GameplayOverlay {
 	@Override
 	public void render(float delta) {
 		RuntimeData.getInstance().getGame().getBatch()
-				.draw(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png"),
+				.draw(RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Big.png"),
 						RuntimeData.getInstance().getGame().getCamera().position.x - RuntimeData.getInstance()
-								.getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getWidth() / 2,
+								.getTexture("textures/menus/scrolls/VerticalScroll_Big.png").getWidth() / 2,
 						RuntimeData.getInstance().getGame().getCamera().position.y - RuntimeData.getInstance()
-								.getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getHeight() / 2);
+								.getTexture("textures/menus/scrolls/VerticalScroll_Big.png").getHeight() / 2);
 		levelType.draw(RuntimeData.getInstance().getGame().getBatch());
 		title.draw(RuntimeData.getInstance().getGame().getBatch());
 		points.draw(RuntimeData.getInstance().getGame().getBatch());
@@ -243,26 +243,26 @@ public class LevelMenu extends GameplayOverlay {
 		levelType
 		.setMidOfBounds(
 				new int[] {
-						RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png")
+						RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Big.png")
 								.getWidth(),
-						RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png")
+						RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Big.png")
 								.getHeight() },
 				new int[] {
 						(int) (RuntimeData.getInstance().getGame().getCamera().position.x - RuntimeData.getInstance()
-								.getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getWidth() / 2),
+								.getTexture("textures/menus/scrolls/VerticalScroll_Big.png").getWidth() / 2),
 						(int) (RuntimeData.getInstance().getGame().getCamera().position.y - RuntimeData.getInstance()
-								.getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getHeight() / 2) });
+								.getTexture("textures/menus/scrolls/VerticalScroll_Big.png").getHeight() / 2) });
 		points
 		.setMidOfBounds(
 				new int[] {
 						(int) (RuntimeData.getInstance().getGame().getCamera().position.x - RuntimeData.getInstance()
-								.getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getWidth() / 2),
+								.getTexture("textures/menus/scrolls/VerticalScroll_Big.png").getWidth() / 2),
 						(int) (RuntimeData.getInstance().getGame().getCamera().position.y - RuntimeData.getInstance()
-								.getAsset("textures/menus/scrolls/VerticalScroll_Big.png").getHeight() / 2) },
+								.getTexture("textures/menus/scrolls/VerticalScroll_Big.png").getHeight() / 2) },
 				new int[] {
-						RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png")
+						RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Big.png")
 								.getWidth(),
-						RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Big.png")
+						RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Big.png")
 								.getHeight() });
 		points.getPos()[1] += 225;
 	}

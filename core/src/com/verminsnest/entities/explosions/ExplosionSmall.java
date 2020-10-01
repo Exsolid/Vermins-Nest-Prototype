@@ -14,7 +14,7 @@ public class ExplosionSmall extends Explosion {
 
 	@Override
 	public void init() {
-		Texture exSheet = RuntimeData.getInstance().getAsset("textures/explosions/Explosion-Small.png");
+		Texture exSheet = RuntimeData.getInstance().getTexture("textures/explosions/Explosion-Small.png");
 		TextureRegion[][] temp = TextureRegion.split(exSheet, exSheet.getHeight(), exSheet.getHeight());
 		TextureRegion[] frames = new TextureRegion[temp[0].length];
 		
@@ -22,5 +22,6 @@ public class ExplosionSmall extends Explosion {
 			frames[i] = temp[0][i];
 		}
 		currentAni = new Animation<TextureRegion>(0.07f,frames);
+		RuntimeData.getInstance().getAudioManager().playSoundEffect("audio/sounds/fire/Fire-2.mp3");
 	}
 }

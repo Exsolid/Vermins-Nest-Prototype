@@ -1,6 +1,8 @@
 package com.verminsnest.core.management.data;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.verminsnest.core.management.Indentifiers;
 
@@ -19,6 +21,7 @@ public class VNAssetManager {
 			assetManager.load("textures/misc/Cursor.png", Texture.class);
 
 			assetManager.load("textures/general/Background.png", Texture.class);
+			this.loadAudio(Indentifiers.ASSETMANAGER_AUDIO_ADVENTURE);
 			break;
 		case Indentifiers.ASSETMANAGER_GAMEPLAY:
 			assetManager.load("textures/menus/scrolls/VerticalScroll_Small.png", Texture.class);
@@ -47,15 +50,23 @@ public class VNAssetManager {
 			assetManager.load("textures/misc/Cursor.png", Texture.class);
 			assetManager.load("textures/items/Item-Bag.png", Texture.class);
 			assetManager.load("textures/items/Food.png", Texture.class);
+			this.loadAudio(Indentifiers.ASSETMANAGER_AUDIO_INTOTHEUNKOWN);
+			this.loadAudio(Indentifiers.ASSETMANAGER_AUDIO_WALKINGONSTONE);
+			this.loadAudio(Indentifiers.ASSETMANAGER_AUDIO_ITEMPICKDROP);
+			this.loadAudio(Indentifiers.ASSETMANAGER_AUDIO_WALKINGNEXTLEVEL);
+			this.loadAudio(Indentifiers.ASSETMANAGER_AUDIO_LEVELUP);
+			this.loadAudio(Indentifiers.ASSETMANAGER_AUDIO_FOODEATING);
 			break;
 		case Indentifiers.ASSETMANAGER_BULLET_GREEN:
 			assetManager.load("textures/projectiles/bullets/BulletGreen-Flying.png", Texture.class);
 			assetManager.load("textures/projectiles/bullets/BulletGreen-Hit.png", Texture.class);
+			this.loadAudio(Indentifiers.ASSETMANAGER_AUDIO_BULLETSHOOTING);
 			break;
 		case Indentifiers.ASSETMANAGER_FIREBALL:
 			assetManager.load("textures/projectiles/fireball/FireBall-Flying.png", Texture.class);
 			assetManager.load("textures/projectiles/fireball/FireBall-Hit.png", Texture.class);
 			assetManager.load("textures/projectiles/fireball/FireBall-Cast.png", Texture.class);
+			this.loadAudio(Indentifiers.ASSETMANAGER_AUDIO_FIRE1);
 			break;
 		case Indentifiers.ASSETMANAGER_SLASH_SMALL:
 			assetManager.load("textures/projectiles/slash/SlashLeft.png", Texture.class);
@@ -63,6 +74,7 @@ public class VNAssetManager {
 			break;
 		case Indentifiers.ASSETMANAGER_EXPLOSION_SMALL:
 			assetManager.load("textures/explosions/Explosion-Small.png", Texture.class);
+			this.loadAudio(Indentifiers.ASSETMANAGER_AUDIO_FIRE2);
 			break;
 		case Indentifiers.ASSETMANAGER_SHOPKEEPER:
 			assetManager.load("textures/characters/shopkeeper/Rabbit-Idle.png", Texture.class);
@@ -86,6 +98,7 @@ public class VNAssetManager {
 			assetManager.load("textures/enemies/tinker/Tinker-W-Left.png", Texture.class);
 			assetManager.load("textures/enemies/tinker/Tinker-W-Right.png", Texture.class);
 			assetManager.load("textures/enemies/tinker/Tinker-Idle.png", Texture.class);
+			this.loadAudio(Indentifiers.ASSETMANAGER_AUDIO_CLAW);
 			break;
 		case Indentifiers.ASSETMANAGER_FLUNK:
 			assetManager.load("textures/enemies/flunk/Flunk-All.png", Texture.class);
@@ -100,6 +113,7 @@ public class VNAssetManager {
 			assetManager.load("textures/items/barriers/barrier-blue/Barrier-Blue-Idle.png", Texture.class);
 			assetManager.load("textures/items/barriers/barrier-blue/Barrier-Blue-Break.png", Texture.class);
 			assetManager.load("textures/items/barriers/barrier-blue/Barrier-Blue-Icon.png", Texture.class);
+			this.loadAudio(Indentifiers.ASSETMANAGER_AUDIO_BARRIERBUILDUP);
 			break;
 		case Indentifiers.ASSETMANAGER_TURRET_MECHA:
 			assetManager.load("textures/items/turrets/mecha-turret/4-Way-MechaTurret-Idle.png", Texture.class);
@@ -128,7 +142,7 @@ public class VNAssetManager {
 		assetManager.update();
 	}
 
-	public Texture getAsset(String path) {
+	public Object getAsset(String path) {
 		return assetManager.get(path);
 	}
 
@@ -138,6 +152,7 @@ public class VNAssetManager {
 			this.unload("textures/menus/scrolls/VerticalScroll_Small.png");
 			this.unload("textures/menus/scrolls/VerticalScroll_Big.png");
 			this.unload("textures/misc/Cursor.png");
+			this.unloadAudio(Indentifiers.ASSETMANAGER_AUDIO_ADVENTURE);
 			break;
 		case Indentifiers.ASSETMANAGER_GAMEPLAY:
 			this.unload("textures/menus/scrolls/VerticalScroll_Small.png");
@@ -166,21 +181,30 @@ public class VNAssetManager {
 			this.unload("textures/misc/Cursor.png");
 			this.unload("textures/items/Item-Bag.png");
 			this.unload("textures/items/Food.png");
+			this.unloadAudio(Indentifiers.ASSETMANAGER_AUDIO_INTOTHEUNKOWN);
+			this.unloadAudio(Indentifiers.ASSETMANAGER_AUDIO_WALKINGONSTONE);
+			this.unloadAudio(Indentifiers.ASSETMANAGER_AUDIO_ITEMPICKDROP);
+			this.unloadAudio(Indentifiers.ASSETMANAGER_AUDIO_WALKINGNEXTLEVEL);
+			this.unloadAudio(Indentifiers.ASSETMANAGER_AUDIO_LEVELUP);
+			this.unloadAudio(Indentifiers.ASSETMANAGER_AUDIO_FOODEATING);
 			break;
 		case Indentifiers.ASSETMANAGER_BULLET_GREEN:
 			this.unload("textures/projectiles/bullets/BulletGreen-Flying.png");
 			this.unload("textures/projectiles/bullets/BulletGreen-Hit.png");
+			this.unloadAudio(Indentifiers.ASSETMANAGER_AUDIO_BULLETSHOOTING);
 			break;
 		case Indentifiers.ASSETMANAGER_FIREBALL:
 			this.unload("textures/projectiles/fireball/FireBall-Flying.png");
 			this.unload("textures/projectiles/fireball/FireBall-Hit.png");
 			this.unload("textures/projectiles/fireball/FireBall-Cast.png");
+			this.unloadAudio(Indentifiers.ASSETMANAGER_AUDIO_FIRE1);
 			break;
 		case Indentifiers.ASSETMANAGER_SLASH_SMALL:
 			this.unload("textures/projectiles/slash/Slash.png");
 			break;
 		case Indentifiers.ASSETMANAGER_EXPLOSION_SMALL:
 			this.unload("textures/explosions/Explosion-Small.png");
+			this.unloadAudio(Indentifiers.ASSETMANAGER_AUDIO_FIRE2);
 			break;
 		case Indentifiers.ASSETMANAGER_SHOPKEEPER:
 			this.unload("textures/characters/shopkeeper/Rabbit-Idle.png");
@@ -204,6 +228,7 @@ public class VNAssetManager {
 			this.unload("textures/enemies/tinker/Tinker-W-Left.png");
 			this.unload("textures/enemies/tinker/Tinker-W-Right.png");
 			this.unload("textures/enemies/tinker/Tinker-Idle.png");
+			this.unloadAudio(Indentifiers.ASSETMANAGER_AUDIO_CLAW);
 			break;
 		case Indentifiers.ASSETMANAGER_FLUNK:
 			this.unload("textures/enemies/flunk/Flunk-All.png");
@@ -223,6 +248,7 @@ public class VNAssetManager {
 			this.unload("textures/items/barriers/barrier-blue/Barrier-Blue-Idle.png");
 			this.unload("textures/items/barriers/barrier-blue/Barrier-Blue-Break.png");
 			this.unload("textures/items/barriers/barrier-blue/Barrier-Blue-Icon.png");
+			this.unloadAudio(Indentifiers.ASSETMANAGER_AUDIO_BARRIERBUILDUP);
 			break;
 		case Indentifiers.ASSETMANAGER_GORE:
 			this.unload("textures/particles/gore/Gore-1.png");
@@ -244,7 +270,7 @@ public class VNAssetManager {
 		assetManager.update();
 	}
 
-	public boolean areAssetsLoaded(int id) {
+	public boolean areTexturesLoaded(int id) {
 		switch (id) {
 		case (Indentifiers.ASSETMANAGER_INIT):
 			return assetManager.isLoaded("textures/misc/Cursor.png");
@@ -283,7 +309,121 @@ public class VNAssetManager {
 			return false;
 		}
 	}
+	
+	public void loadAudio(int id){
+		switch(id){
+		case Indentifiers.ASSETMANAGER_AUDIO_INTOTHEUNKOWN:
+			assetManager.load("audio/music/Into The Unknown.mp3", Music.class);
+			break;
+		case Indentifiers.ASSETMANAGER_AUDIO_CLAW:
+			assetManager.load("audio/sounds/Claw.mp3", Sound.class);
+			break;
+		case Indentifiers.ASSETMANAGER_AUDIO_WALKINGONSTONE:
+			assetManager.load("audio/sounds/walking/Walking-On-Stone.mp3", Sound.class);
+			break;
+		case Indentifiers.ASSETMANAGER_AUDIO_FIRE1:
+			assetManager.load("audio/sounds/fire/Fire-1.mp3", Sound.class);
+			break;
+		case Indentifiers.ASSETMANAGER_AUDIO_FIRE2:
+			assetManager.load("audio/sounds/fire/Fire-2.mp3", Sound.class);
+			break;
+		case Indentifiers.ASSETMANAGER_AUDIO_ITEMPICKDROP:
+			assetManager.load("audio/sounds/items/Item-Pick-Drop.mp3", Sound.class);
+			break;
+		case Indentifiers.ASSETMANAGER_AUDIO_WALKINGNEXTLEVEL:
+			assetManager.load("audio/sounds/walking/Walking-Next-Level.mp3", Sound.class);
+			break;
+		case Indentifiers.ASSETMANAGER_AUDIO_LEVELUP:
+			assetManager.load("audio/sounds/general/Level-Up.mp3", Sound.class);
+			break;
+		case Indentifiers.ASSETMANAGER_AUDIO_BULLETSHOOTING:
+			assetManager.load("audio/sounds/projectiles/Bullet-Shooting.mp3", Sound.class);
+			break;
+		case Indentifiers.ASSETMANAGER_AUDIO_BARRIERBUILDUP:
+			assetManager.load("audio/sounds/items/Barrier-Build-Up.mp3", Sound.class);
+			break;
+		case Indentifiers.ASSETMANAGER_AUDIO_FOODEATING:
+			assetManager.load("audio/sounds/items/Food-Eating.mp3", Sound.class);
+			break;
+		case Indentifiers.ASSETMANAGER_AUDIO_ADVENTURE:
+			assetManager.load("audio/music/Adventure.mp3", Music.class);
+			break;
+		}
 
+		assetManager.finishLoading();
+		assetManager.update();
+	}
+
+	public void unloadAudio(int id){
+		switch (id) {
+		case Indentifiers.ASSETMANAGER_AUDIO_CLAW:
+			this.unload("audio/sounds/Claw.mp3");
+			break;
+		case Indentifiers.ASSETMANAGER_AUDIO_WALKINGONSTONE:
+			this.unload("audio/sounds/walking/Walking-On-Stone.mp3");
+			break;
+		case Indentifiers.ASSETMANAGER_AUDIO_FIRE1:
+			this.unload("audio/sounds/fire/Fire-1.mp3");
+			break;
+		case Indentifiers.ASSETMANAGER_AUDIO_FIRE2:
+			this.unload("audio/sounds/fire/Fire-2.mp3");
+			break;
+		case Indentifiers.ASSETMANAGER_AUDIO_ITEMPICKDROP:
+			this.unload("audio/sounds/items/Item-Pick-Drop.mp3");
+			break;
+		case Indentifiers.ASSETMANAGER_AUDIO_WALKINGNEXTLEVEL:
+			this.unload("audio/sounds/walking/Walking-Next-Level.mp3");
+			break;
+		case Indentifiers.ASSETMANAGER_AUDIO_LEVELUP:
+			this.unload("audio/sounds/general/Level-Up.mp3");
+			break;
+		case Indentifiers.ASSETMANAGER_AUDIO_BULLETSHOOTING:
+			this.unload("audio/sounds/projectiles/Bullet-Shooting.mp3");
+			break;
+		case Indentifiers.ASSETMANAGER_AUDIO_BARRIERBUILDUP:
+			this.unload("audio/sounds/items/Barrier-Build-Up.mp3");
+			break;
+		case Indentifiers.ASSETMANAGER_AUDIO_FOODEATING:
+			this.unload("audio/sounds/items/Food-Eating.mp3");
+			break;
+		case Indentifiers.ASSETMANAGER_AUDIO_ADVENTURE:
+			this.unload("audio/music/Adventure.mp3");
+			break;
+		}
+
+		assetManager.update();
+	}
+	
+	public boolean isAudioLoaded(int id){
+		switch (id) {
+		case Indentifiers.ASSETMANAGER_AUDIO_CLAW:
+			return assetManager.isLoaded("audio/sounds/Claw.mp3");
+		case Indentifiers.ASSETMANAGER_AUDIO_WALKINGONSTONE:
+			return assetManager.isLoaded("audio/sounds/walking/Walking-On-Stone.mp3");
+		case Indentifiers.ASSETMANAGER_AUDIO_FIRE1:
+			return assetManager.isLoaded("audio/sounds/fire/Fire-1.mp3");
+		case Indentifiers.ASSETMANAGER_AUDIO_FIRE2:
+			return assetManager.isLoaded("audio/sounds/fire/Fire-2.mp3");
+		case Indentifiers.ASSETMANAGER_AUDIO_ITEMPICKDROP:
+			return assetManager.isLoaded("audio/sounds/items/Item-Pick-Drop.mp3");
+		case Indentifiers.ASSETMANAGER_AUDIO_WALKINGNEXTLEVEL:
+			return assetManager.isLoaded("audio/sounds/walking/Walking-Next-Level.mp3");
+		case Indentifiers.ASSETMANAGER_AUDIO_LEVELUP:
+			return assetManager.isLoaded("audio/sounds/general/Level-Up.mp3");
+		case Indentifiers.ASSETMANAGER_AUDIO_BULLETSHOOTING:
+			return assetManager.isLoaded("audio/sounds/projectiles/Bullet-Shooting.mp3");
+		case Indentifiers.ASSETMANAGER_AUDIO_BARRIERBUILDUP:
+			return assetManager.isLoaded("audio/sounds/items/Barrier-Build-Up.mp3");
+		case Indentifiers.ASSETMANAGER_AUDIO_FOODEATING:
+			return assetManager.isLoaded("audio/sounds/items/Food-Eating.mp3");
+		case Indentifiers.ASSETMANAGER_AUDIO_ADVENTURE:
+			return assetManager.isLoaded("audio/music/Adventure.mp3");
+		default:
+			//TODO Log this
+			return false;
+		}
+	}
+	
 	private void unload(String path) {
 		if (assetManager.isLoaded(path))
 			assetManager.unload(path);

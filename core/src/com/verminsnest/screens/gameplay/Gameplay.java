@@ -95,11 +95,13 @@ public class Gameplay extends GameplayOverlay{
 						RuntimeData.getInstance().getEntityManager().getCharacter().getInventory().getItem().putItem(new int[]{interactable.getPos()[0],interactable.getPos()[1]});
 					}
 					((Item)interactable).takeItem(RuntimeData.getInstance().getEntityManager().getCharacter());
+					RuntimeData.getInstance().getAudioManager().playSoundEffect("audio/sounds/items/Item-Pick-Drop.mp3");
 				}else if(((Item)interactable).getPrice() == 0){
 					if(RuntimeData.getInstance().getEntityManager().getCharacter().getInventory().getItem() != null){
 						RuntimeData.getInstance().getEntityManager().getCharacter().getInventory().getItem().putItem(new int[]{interactable.getPos()[0],interactable.getPos()[1]});
 					}
 					((Item)interactable).takeItem(RuntimeData.getInstance().getEntityManager().getCharacter());
+					RuntimeData.getInstance().getAudioManager().playSoundEffect("audio/sounds/items/Item-Pick-Drop.mp3");
 				}
 				break;
 			}

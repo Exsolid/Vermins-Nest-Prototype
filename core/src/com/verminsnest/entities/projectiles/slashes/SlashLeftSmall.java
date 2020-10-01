@@ -15,7 +15,7 @@ public class SlashLeftSmall extends Slash{
 	@Override
 	public void init() {
 		//Textures
-		Texture flyingSheet = RuntimeData.getInstance().getAsset("textures/projectiles/slash/SlashLeft.png");
+		Texture flyingSheet = RuntimeData.getInstance().getTexture("textures/projectiles/slash/SlashLeft.png");
 		TextureRegion[][] temp = TextureRegion.split(flyingSheet, flyingSheet.getWidth(), flyingSheet.getHeight());
 		TextureRegion[] frames = new TextureRegion[temp[0].length];
 		

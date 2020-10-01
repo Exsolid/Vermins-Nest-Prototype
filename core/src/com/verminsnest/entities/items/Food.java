@@ -17,8 +17,8 @@ public class Food extends Entity {
 	@Override
 	public void init() {
 		isPicked = false;
-		foodTexture = RuntimeData.getInstance().getAsset("textures/items/Food.png");
-		shadow = RuntimeData.getInstance().getAsset("textures/shadows/Shadow-S.png");
+		foodTexture = RuntimeData.getInstance().getTexture("textures/items/Food.png");
+		shadow = RuntimeData.getInstance().getTexture("textures/shadows/Shadow-S.png");
 		setSize(foodTexture.getWidth(),foodTexture.getHeight());
 		yShadowOffset = -8;
 	}

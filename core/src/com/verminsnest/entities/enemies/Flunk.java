@@ -72,7 +72,7 @@ public class Flunk extends Enemy {
 
 	@Override
 	public void init() {
-		Texture exSheet = RuntimeData.getInstance().getAsset("textures/enemies/flunk/Flunk-All.png");
+		Texture exSheet = RuntimeData.getInstance().getTexture("textures/enemies/flunk/Flunk-All.png");
 		TextureRegion[][] temp = TextureRegion.split(exSheet, exSheet.getHeight(), exSheet.getHeight());
 		TextureRegion[] frames = new TextureRegion[temp[0].length];
 		
@@ -80,6 +80,6 @@ public class Flunk extends Enemy {
 			frames[i] = temp[0][i];
 		}
 		currentAni = new Animation<TextureRegion>(0.5f / this.speed,frames);
-		shadow = RuntimeData.getInstance().getAsset("textures/shadows/Shadow-XS.png");
+		shadow = RuntimeData.getInstance().getTexture("textures/shadows/Shadow-XS.png");
 	}
 }

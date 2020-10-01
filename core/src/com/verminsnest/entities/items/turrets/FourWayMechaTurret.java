@@ -43,7 +43,7 @@ public class FourWayMechaTurret extends Turret {
 
 	@Override
 	public void init() {
-		Texture idleSheet = RuntimeData.getInstance().getAsset("textures/items/turrets/mecha-turret/4-Way-MechaTurret-Idle.png");
+		Texture idleSheet = RuntimeData.getInstance().getTexture("textures/items/turrets/mecha-turret/4-Way-MechaTurret-Idle.png");
 		TextureRegion[][] temp = TextureRegion.split(idleSheet, idleSheet.getHeight(), idleSheet.getHeight());
 		TextureRegion[] frames = new TextureRegion[temp[0].length];
 
@@ -52,7 +52,7 @@ public class FourWayMechaTurret extends Turret {
 		}
 		idleAni = new Animation<TextureRegion>(1f, frames);
 
-		Texture aAllSheet = RuntimeData.getInstance().getAsset("textures/items/turrets/mecha-turret/4-Way-MechaTurret-A-All.png");
+		Texture aAllSheet = RuntimeData.getInstance().getTexture("textures/items/turrets/mecha-turret/4-Way-MechaTurret-A-All.png");
 		temp = TextureRegion.split(aAllSheet, aAllSheet.getHeight(), aAllSheet.getHeight());
 		frames = new TextureRegion[temp[0].length];
 

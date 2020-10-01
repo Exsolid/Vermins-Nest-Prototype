@@ -24,9 +24,9 @@ public abstract class Item extends Entity {
 		
 		price = 3;
 		
-		shadow = RuntimeData.getInstance().getAsset("textures/shadows/Shadow-S.png");
+		shadow = RuntimeData.getInstance().getTexture("textures/shadows/Shadow-S.png");
 		yShadowOffset = -8;
-		Texture bagSheet = RuntimeData.getInstance().getAsset("textures/items/Item-Bag.png");
+		Texture bagSheet = RuntimeData.getInstance().getTexture("textures/items/Item-Bag.png");
 		TextureRegion[][] temp = TextureRegion.split(bagSheet, 32, 32);
 		TextureRegion[] frames = new TextureRegion[temp[0].length];
 
@@ -105,7 +105,7 @@ public abstract class Item extends Entity {
 	}
 	
 	public int[] getDroppedSize(){
-		return new int[]{RuntimeData.getInstance().getAsset("textures/items/Item-Bag.png").getWidth(),RuntimeData.getInstance().getAsset("textures/items/Item-Bag.png").getHeight()};
+		return new int[]{RuntimeData.getInstance().getTexture("textures/items/Item-Bag.png").getWidth(),RuntimeData.getInstance().getTexture("textures/items/Item-Bag.png").getHeight()};
 	}
 	
 	public void stop(){
@@ -127,11 +127,11 @@ public abstract class Item extends Entity {
 	
 	public void switchShadow() {
 		if(isGrounded && keeper != null) {
-			shadow = RuntimeData.getInstance().getAsset("textures/shadows/Shadow-M.png");
+			shadow = RuntimeData.getInstance().getTexture("textures/shadows/Shadow-M.png");
 			yShadowOffset = -6;
 			xShadowOffset = -3;
 		}else if(keeper == null) {
-			shadow = RuntimeData.getInstance().getAsset("textures/shadows/Shadow-S.png");
+			shadow = RuntimeData.getInstance().getTexture("textures/shadows/Shadow-S.png");
 			yShadowOffset = -8;
 			xShadowOffset = 0;
 		}else {

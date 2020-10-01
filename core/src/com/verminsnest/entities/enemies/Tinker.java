@@ -21,8 +21,8 @@ public class Tinker extends Enemy {
 
 	@Override
 	public void init() {
-		shadow = RuntimeData.getInstance().getAsset("textures/shadows/Shadow-L.png");
-		Texture wFrontSheet = RuntimeData.getInstance().getAsset("textures/enemies/tinker/Tinker-W-Front.png");
+		shadow = RuntimeData.getInstance().getTexture("textures/shadows/Shadow-L.png");
+		Texture wFrontSheet = RuntimeData.getInstance().getTexture("textures/enemies/tinker/Tinker-W-Front.png");
 		TextureRegion[][] temp = TextureRegion.split(wFrontSheet, 64, 64);
 		TextureRegion[] frames = new TextureRegion[temp[0].length];
 
@@ -31,7 +31,7 @@ public class Tinker extends Enemy {
 		}
 		frontWalkAni = new Animation<TextureRegion>(1f / this.speed, frames);
 
-		Texture wBackSheet = RuntimeData.getInstance().getAsset("textures/enemies/tinker/Tinker-W-Back.png");
+		Texture wBackSheet = RuntimeData.getInstance().getTexture("textures/enemies/tinker/Tinker-W-Back.png");
 		temp = TextureRegion.split(wBackSheet, 64, 64);
 		frames = new TextureRegion[temp[0].length];
 
@@ -40,7 +40,7 @@ public class Tinker extends Enemy {
 		}
 		backWalkAni = new Animation<TextureRegion>(1f / this.speed, frames);
 
-		Texture wRightSheet = RuntimeData.getInstance().getAsset("textures/enemies/tinker/Tinker-W-Right.png");
+		Texture wRightSheet = RuntimeData.getInstance().getTexture("textures/enemies/tinker/Tinker-W-Right.png");
 		temp = TextureRegion.split(wRightSheet, 64, 64);
 		frames = new TextureRegion[temp[0].length];
 
@@ -49,7 +49,7 @@ public class Tinker extends Enemy {
 		}
 		rightWalkAni = new Animation<TextureRegion>(1f / this.speed, frames);
 
-		Texture wleftSheet = RuntimeData.getInstance().getAsset("textures/enemies/tinker/Tinker-W-Left.png");
+		Texture wleftSheet = RuntimeData.getInstance().getTexture("textures/enemies/tinker/Tinker-W-Left.png");
 		temp = TextureRegion.split(wleftSheet, 64, 64);
 		frames = new TextureRegion[temp[0].length];
 
@@ -58,7 +58,7 @@ public class Tinker extends Enemy {
 		}
 		leftWalkAni = new Animation<TextureRegion>(1f / this.speed, frames);
 
-		Texture idleSheet = RuntimeData.getInstance().getAsset("textures/enemies/tinker/Tinker-Idle.png");
+		Texture idleSheet = RuntimeData.getInstance().getTexture("textures/enemies/tinker/Tinker-Idle.png");
 		temp = TextureRegion.split(idleSheet, 64, 64);
 		frames = new TextureRegion[temp[0].length];
 
@@ -67,7 +67,7 @@ public class Tinker extends Enemy {
 		}
 		idleAni = new Animation<TextureRegion>(0.5f, frames);
 		
-		Texture attackFSheet = RuntimeData.getInstance().getAsset("textures/enemies/tinker/Tinker-A-Front.png");
+		Texture attackFSheet = RuntimeData.getInstance().getTexture("textures/enemies/tinker/Tinker-A-Front.png");
 		temp = TextureRegion.split(attackFSheet, 64, 64);
 		frames = new TextureRegion[temp[0].length];
 
@@ -76,7 +76,7 @@ public class Tinker extends Enemy {
 		}
 		frontAttackAni = new Animation<TextureRegion>(0.15f, frames);
 		
-		Texture attackBSheet = RuntimeData.getInstance().getAsset("textures/enemies/tinker/Tinker-A-Back.png");
+		Texture attackBSheet = RuntimeData.getInstance().getTexture("textures/enemies/tinker/Tinker-A-Back.png");
 		temp = TextureRegion.split(attackBSheet, 64, 64);
 		frames = new TextureRegion[temp[0].length];
 
@@ -85,7 +85,7 @@ public class Tinker extends Enemy {
 		}
 		backAttackAni = new Animation<TextureRegion>(0.15f, frames);
 		
-		Texture attackLSheet = RuntimeData.getInstance().getAsset("textures/enemies/tinker/Tinker-A-Left.png");
+		Texture attackLSheet = RuntimeData.getInstance().getTexture("textures/enemies/tinker/Tinker-A-Left.png");
 		temp = TextureRegion.split(attackLSheet, 64, 64);
 		frames = new TextureRegion[temp[0].length];
 
@@ -152,6 +152,7 @@ public class Tinker extends Enemy {
 		if(attackCooldown>1/(agility*0.2)){
 			attackCooldown = 0;
 			Slash temp = null;
+			RuntimeData.getInstance().getAudioManager().playSoundEffect("audio/sounds/Claw.mp3");
 			switch(state){
 			case Indentifiers.STATE_WALK_SOUTH:
 			case Indentifiers.STATE_IDLE:

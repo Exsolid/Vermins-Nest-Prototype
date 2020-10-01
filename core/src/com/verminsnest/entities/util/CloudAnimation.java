@@ -16,7 +16,7 @@ public class CloudAnimation extends UtilEntity{
 
 	@Override
 	public void init() {
-		Texture sheet = RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Dirt-Cloud.png");
+		Texture sheet = RuntimeData.getInstance().getTexture("textures/level-sheets/cave/Dirt-Cloud.png");
 		TextureRegion[][] temp = TextureRegion.split(sheet, 128, 128);
 		TextureRegion[] frames = new TextureRegion[temp[0].length];
 		

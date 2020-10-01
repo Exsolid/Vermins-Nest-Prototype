@@ -23,20 +23,20 @@ public class Bloodpuddle extends Puddle{
 		case 0:
 			switch(textureNum){
 			case 1:
-				texture = RuntimeData.getInstance().getAsset("textures/puddles/bloodpuddles/Bloodpuddle-Small-1.png");
+				texture = RuntimeData.getInstance().getTexture("textures/puddles/bloodpuddles/Bloodpuddle-Small-1.png");
 				break;
 			case 2:
-				texture = RuntimeData.getInstance().getAsset("textures/puddles/bloodpuddles/Bloodpuddle-Small-2.png");
+				texture = RuntimeData.getInstance().getTexture("textures/puddles/bloodpuddles/Bloodpuddle-Small-2.png");
 				break;
 			}
 			break;
 		case 1:
 			switch(textureNum){
 			case 1:
-				texture = RuntimeData.getInstance().getAsset("textures/puddles/bloodpuddles/Bloodpuddle-Big-1.png");
+				texture = RuntimeData.getInstance().getTexture("textures/puddles/bloodpuddles/Bloodpuddle-Big-1.png");
 				break;
 			case 2:
-				texture = RuntimeData.getInstance().getAsset("textures/puddles/bloodpuddles/Bloodpuddle-Big-2.png");
+				texture = RuntimeData.getInstance().getTexture("textures/puddles/bloodpuddles/Bloodpuddle-Big-2.png");
 				break;
 			}
 		}

@@ -12,7 +12,7 @@ public class TradeDialog extends ChoiceDialog {
 		super("Gameplay_Dialog_Accept","Gameplay_Dialog_Cancel","Gameplay_Dialog_Description_Item_Trade", iconPath, position, Indentifiers.ITEMDIALOG);
 		description.getPos()[1] += 25;
 		this.price = new FontText("x "+price,50, false);
-		foodIcon = RuntimeData.getInstance().getAsset("textures/items/Food.png");
+		foodIcon = RuntimeData.getInstance().getTexture("textures/items/Food.png");
 		this.price.setPos(new int[]{description.getPos()[0]+description.getBounds()[0]/2-this.price.getBounds()[0]/2,(int) (description.getPos()[1]-this.price.getBounds()[0]*1.25)});
 	}
 	

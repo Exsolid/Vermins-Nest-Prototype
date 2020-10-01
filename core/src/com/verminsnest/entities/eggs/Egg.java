@@ -40,9 +40,9 @@ public class Egg extends Entity {
 	public void init() {
 		hatched = false;
 		
-		shadow = RuntimeData.getInstance().getAsset("textures/shadows/Shadow-M.png");
+		shadow = RuntimeData.getInstance().getTexture("textures/shadows/Shadow-M.png");
 		
-		Texture idleSheet = RuntimeData.getInstance().getAsset("textures/enemies/eggs/Egg-Idle.png");
+		Texture idleSheet = RuntimeData.getInstance().getTexture("textures/enemies/eggs/Egg-Idle.png");
 		TextureRegion[][] temp = TextureRegion.split(idleSheet, 50, 80);
 		TextureRegion[] frames = new TextureRegion[temp[0].length];
 
@@ -51,7 +51,7 @@ public class Egg extends Entity {
 		}
 		idleAni = new Animation<TextureRegion>(0.8f, frames);
 		
-		Texture hatchedSheet = RuntimeData.getInstance().getAsset("textures/enemies/eggs/Egg-Hatch.png");
+		Texture hatchedSheet = RuntimeData.getInstance().getTexture("textures/enemies/eggs/Egg-Hatch.png");
 		temp = TextureRegion.split(hatchedSheet, 50, 80);
 		frames = new TextureRegion[temp[0].length];
 
@@ -60,7 +60,7 @@ public class Egg extends Entity {
 		}
 		hatchAni = new Animation<TextureRegion>(0.05f, frames);
 		
-		leftOver = RuntimeData.getInstance().getAsset("textures/enemies/eggs/Egg-Leftover.png");
+		leftOver = RuntimeData.getInstance().getTexture("textures/enemies/eggs/Egg-Leftover.png");
 	}
 	
 	@Override

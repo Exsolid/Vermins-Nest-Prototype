@@ -177,15 +177,15 @@ public class VerminsNest extends Game {
 	}
 	
 	private void initMenus(){
-		mainMenu.init();
-		settingsMenu.init();
-		creditsMenu.init();
+		if(mainMenu.isDisposed())mainMenu.init();
+		if(settingsMenu.isDisposed())settingsMenu.init();
+		if(creditsMenu.isDisposed())creditsMenu.init();
 	}
 	
 	private void disposeMenus(){
-		if(mainMenu.isDisposed())mainMenu.dispose();
-		if(settingsMenu.isDisposed())settingsMenu.dispose();
-		if(creditsMenu.isDisposed())creditsMenu.dispose();
+		if(!mainMenu.isDisposed())mainMenu.dispose();
+		if(!settingsMenu.isDisposed())settingsMenu.dispose();
+		if(!creditsMenu.isDisposed())creditsMenu.dispose();
 		r.gc();
 	}
 	

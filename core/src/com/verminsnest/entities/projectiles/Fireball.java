@@ -21,9 +21,9 @@ public class Fireball extends Projectile{
 			agility = 11;
 		}
 		//Textures
-		Texture flyingSheet = RuntimeData.getInstance().getAsset("textures/projectiles/fireball/FireBall-Flying.png");
-		Texture hitSheet = RuntimeData.getInstance().getAsset("textures/projectiles/fireball/FireBall-Hit.png");
-		Texture castSheet = RuntimeData.getInstance().getAsset("textures/projectiles/fireball/FireBall-Cast.png");
+		Texture flyingSheet = RuntimeData.getInstance().getTexture("textures/projectiles/fireball/FireBall-Flying.png");
+		Texture hitSheet = RuntimeData.getInstance().getTexture("textures/projectiles/fireball/FireBall-Hit.png");
+		Texture castSheet = RuntimeData.getInstance().getTexture("textures/projectiles/fireball/FireBall-Cast.png");
 		TextureRegion[][] temp = TextureRegion.split(flyingSheet, flyingSheet.getHeight(), flyingSheet.getHeight());
 		TextureRegion[] frames = new TextureRegion[temp[0].length];
 		
@@ -47,6 +47,7 @@ public class Fireball extends Projectile{
 			frames[i] = temp[0][i];
 		}
 		castAni = new Animation<TextureRegion>(0.75f/agility,frames);
+		RuntimeData.getInstance().getAudioManager().playSoundEffect("audio/sounds/fire/Fire-1.mp3");
 	}
 
 	

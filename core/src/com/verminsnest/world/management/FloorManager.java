@@ -29,7 +29,7 @@ public class FloorManager {
 		if(spawnHole){
 			timer -= delta;
 			if(timer < 0){
-				RuntimeData.getInstance().getMapData().getData()[levelHolePos[0]/128][levelHolePos[1]/128].addLayer(TextureRegion.split(RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Mountain-Hole.png"), RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Mountain-Hole.png").getWidth(),  RuntimeData.getInstance().getAsset("textures/level-sheets/cave/Mountain-Hole.png").getHeight())[0][0]);
+				RuntimeData.getInstance().getMapData().getData()[levelHolePos[0]/128][levelHolePos[1]/128].addLayer(TextureRegion.split(RuntimeData.getInstance().getTexture("textures/level-sheets/cave/Mountain-Hole.png"), RuntimeData.getInstance().getTexture("textures/level-sheets/cave/Mountain-Hole.png").getWidth(),  RuntimeData.getInstance().getTexture("textures/level-sheets/cave/Mountain-Hole.png").getHeight())[0][0]);
 				spawnHole = false;
 			}
 		}
@@ -58,7 +58,7 @@ public class FloorManager {
 				//TODO cancel on item e
 			allowEntityUpdate = false;
 			levelHolePos = null;
-			
+			RuntimeData.getInstance().getAudioManager().playSoundEffect("audio/sounds/walking/Walking-Next-Level.mp3");
 			RuntimeData.getInstance().getEntityManager().notifyNewLevel();
 		}
 	}

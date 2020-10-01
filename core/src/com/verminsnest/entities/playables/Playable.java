@@ -64,7 +64,7 @@ public abstract class Playable extends Entity {
 		prevKey = '-';
 		currentKey = '-';
 		
-		shadow = RuntimeData.getInstance().getAsset("textures/shadows/Shadow-M.png");
+		shadow = RuntimeData.getInstance().getTexture("textures/shadows/Shadow-M.png");
 		
 		init();
 		this.setCurrentAni(Indentifiers.STATE_IDLE);
@@ -136,7 +136,11 @@ public abstract class Playable extends Entity {
 						currentKey = '-';
 					}
 				}
-				RuntimeData.getInstance().getMovmentSystem().moveTop(this, this.getSpeed(), null);
+				if(RuntimeData.getInstance().getMovmentSystem().moveTop(this, this.getSpeed(), null)){
+					RuntimeData.getInstance().getAudioManager().loopSoundEffect("audio/sounds/walking/Walking-On-Stone.mp3");
+				}else{
+					RuntimeData.getInstance().getAudioManager().stopLoopSoundEffect("audio/sounds/walking/Walking-On-Stone.mp3");
+				}
 				this.setCurrentAni(Indentifiers.STATE_WALK_NORTH);
 				break;
 			case 'D':
@@ -148,7 +152,11 @@ public abstract class Playable extends Entity {
 						currentKey = '-';
 					}
 				}
-				RuntimeData.getInstance().getMovmentSystem().moveRight(this, this.getSpeed(), null);
+				if(RuntimeData.getInstance().getMovmentSystem().moveRight(this, this.getSpeed(), null)){
+					RuntimeData.getInstance().getAudioManager().loopSoundEffect("audio/sounds/walking/Walking-On-Stone.mp3");
+				}else{
+					RuntimeData.getInstance().getAudioManager().stopLoopSoundEffect("audio/sounds/walking/Walking-On-Stone.mp3");
+				}
 				this.setCurrentAni(Indentifiers.STATE_WALK_EAST);
 				break;
 			case 'S':
@@ -160,7 +168,11 @@ public abstract class Playable extends Entity {
 						currentKey = '-';
 					}
 				}
-				RuntimeData.getInstance().getMovmentSystem().moveDown(this, this.getSpeed(), null);
+				if(RuntimeData.getInstance().getMovmentSystem().moveDown(this, this.getSpeed(), null)){
+					RuntimeData.getInstance().getAudioManager().loopSoundEffect("audio/sounds/walking/Walking-On-Stone.mp3");
+				}else{
+					RuntimeData.getInstance().getAudioManager().stopLoopSoundEffect("audio/sounds/walking/Walking-On-Stone.mp3");
+				}
 				this.setCurrentAni(Indentifiers.STATE_WALK_SOUTH);
 				break;
 			case 'A':
@@ -172,10 +184,15 @@ public abstract class Playable extends Entity {
 						currentKey = '-';
 					}
 				}
-				RuntimeData.getInstance().getMovmentSystem().moveLeft(this, this.getSpeed(), null);
+				if(RuntimeData.getInstance().getMovmentSystem().moveLeft(this, this.getSpeed(), null)){
+					RuntimeData.getInstance().getAudioManager().loopSoundEffect("audio/sounds/walking/Walking-On-Stone.mp3");
+				}else{
+					RuntimeData.getInstance().getAudioManager().stopLoopSoundEffect("audio/sounds/walking/Walking-On-Stone.mp3");
+				}
 				this.setCurrentAni(Indentifiers.STATE_WALK_WEST);
 				break;
 			case '-':
+				RuntimeData.getInstance().getAudioManager().stopLoopSoundEffect("audio/sounds/walking/Walking-On-Stone.mp3");
 				this.setCurrentAni(Indentifiers.STATE_IDLE);
 				prevKey = '-';
 			}		
@@ -216,7 +233,7 @@ public abstract class Playable extends Entity {
 					ArrayList<int[]> allMapCorners = this.getMapPos();
 					for(int i = 0; i < allCorners.size(); i++){
 						if(RuntimeData.getInstance().getEntityManager().placeOnTile(allMapCorners.get(i), allCorners.get(i), inv.getItem())){
-							//dropped = true;
+							RuntimeData.getInstance().getAudioManager().playSoundEffect("audio/sounds/items/Item-Pick-Drop.mp3");
 							break;
 						};
 					}
@@ -231,6 +248,7 @@ public abstract class Playable extends Entity {
 					if(health > maxHealth) {
 						health = maxHealth;
 					}
+					RuntimeData.getInstance().getAudioManager().playSoundEffect("audio/sounds/items/Food-Eating.mp3");
 				}
 				//TODO is full life message
 			}
@@ -340,6 +358,7 @@ public abstract class Playable extends Entity {
 			killLimit += 5;
 			level++;
 			skillPoints += 2;
+			RuntimeData.getInstance().getAudioManager().playSoundEffect("audio/sounds/general/Level-Up.mp3");
 		}else{
 			killCount++;
 		}

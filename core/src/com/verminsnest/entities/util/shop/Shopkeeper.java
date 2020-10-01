@@ -15,11 +15,11 @@ public class Shopkeeper extends UtilEntity{
 
 	@Override
 	public void init() {
-		Texture idleSheet = RuntimeData.getInstance().getAsset("textures/characters/shopkeeper/Rabbit-Idle.png");
+		Texture idleSheet = RuntimeData.getInstance().getTexture("textures/characters/shopkeeper/Rabbit-Idle.png");
 		TextureRegion[][] temp = TextureRegion.split(idleSheet, idleSheet.getWidth()/2, idleSheet.getHeight());
 		TextureRegion[] frames = new TextureRegion[temp[0].length];
 
-		shadow = RuntimeData.getInstance().getAsset("textures/shadows/Shadow-Long-M.png");
+		shadow = RuntimeData.getInstance().getTexture("textures/shadows/Shadow-Long-M.png");
 		yShadowOffset = -5;
 		xShadowOffset = -2;
 		for (int i = 0; i < temp[0].length; i++) {

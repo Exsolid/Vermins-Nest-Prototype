@@ -15,9 +15,9 @@ public class GreenBullet extends Projectile{
 	//TODO add break animation, change projectile structure
 	@Override
 	public void init() {
-		Texture flyingSheet = RuntimeData.getInstance().getAsset("textures/projectiles/bullets/BulletGreen-Flying.png");
-		Texture hitSheet = RuntimeData.getInstance().getAsset("textures/projectiles/bullets/BulletGreen-Hit.png");
-		shadow = RuntimeData.getInstance().getAsset("textures/shadows/Shadow-XS.png");
+		Texture flyingSheet = RuntimeData.getInstance().getTexture("textures/projectiles/bullets/BulletGreen-Flying.png");
+		Texture hitSheet = RuntimeData.getInstance().getTexture("textures/projectiles/bullets/BulletGreen-Hit.png");
+		shadow = RuntimeData.getInstance().getTexture("textures/shadows/Shadow-XS.png");
 		yShadowOffset = -20;
 		setSize(flyingSheet.getWidth(),flyingSheet.getHeight());
 		
@@ -35,6 +35,7 @@ public class GreenBullet extends Projectile{
 			frames[i] = temp[0][i];
 		}
 		hitAni = new Animation<TextureRegion>(0.1f,frames);
+		RuntimeData.getInstance().getAudioManager().playSoundEffect("audio/sounds/projectiles/Bullet-Shooting.mp3");
 	}
 	
 	@Override

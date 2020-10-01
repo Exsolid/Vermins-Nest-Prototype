@@ -32,12 +32,12 @@ public class PauseMenu extends GameplayOverlay{
 	public void init(){
 		RuntimeData.getInstance().getGame().getCamera().update();
 		RuntimeData.getInstance().getGame().setPro();
-			bManager.setMidOfBounds(new int[]{RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth(), RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight()}, new int[]{(int)(RuntimeData.getInstance().getGame().getCamera().position.x - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth() / 2),
-					(int) (RuntimeData.getInstance().getGame().getCamera().position.y - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2)});
+			bManager.setMidOfBounds(new int[]{RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Small.png").getWidth(), RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Small.png").getHeight()}, new int[]{(int)(RuntimeData.getInstance().getGame().getCamera().position.x - RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Small.png").getWidth() / 2),
+					(int) (RuntimeData.getInstance().getGame().getCamera().position.y - RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2)});
 	}
 	public void render(float stateTime) {
-		RuntimeData.getInstance().getGame().getBatch().draw(RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png"), RuntimeData.getInstance().getGame().getCamera().position.x - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getWidth() / 2,
-				RuntimeData.getInstance().getGame().getCamera().position.y - RuntimeData.getInstance().getAsset("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2);
+		RuntimeData.getInstance().getGame().getBatch().draw(RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Small.png"), RuntimeData.getInstance().getGame().getCamera().position.x - RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Small.png").getWidth() / 2,
+				RuntimeData.getInstance().getGame().getCamera().position.y - RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2);
 		bManager.draw(RuntimeData.getInstance().getGame().getBatch());
 	}
 	@Override

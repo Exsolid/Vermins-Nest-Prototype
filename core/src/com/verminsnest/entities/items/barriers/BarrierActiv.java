@@ -19,13 +19,14 @@ public class BarrierActiv extends Barrier {
 	public void activate() {
 		runtime = 4f;
 		internalStateTime = 0;
+		RuntimeData.getInstance().getAudioManager().playSoundEffect("audio/sounds/items/Barrier-Build-Up.mp3");
 		if(keeper instanceof Playable)activationHP = ((Playable)keeper).getHealth();
 		this.pos = new int[]{keeper.getPos()[0]-this.size[0]/2+keeper.getSize()[0]/2,keeper.getPos()[1]-this.size[1]/2+keeper.getSize()[1]/2};
 	}
 
 	@Override
 	public void init() {
-		Texture castSheet = RuntimeData.getInstance().getAsset("textures/items/barriers/barrier-blue/Barrier-Blue-Cast.png");
+		Texture castSheet = RuntimeData.getInstance().getTexture("textures/items/barriers/barrier-blue/Barrier-Blue-Cast.png");
 		TextureRegion[][] temp = TextureRegion.split(castSheet, 70, 80);
 		TextureRegion[] frames = new TextureRegion[temp[0].length];
 
@@ -34,7 +35,7 @@ public class BarrierActiv extends Barrier {
 		}
 		castAni = new Animation<TextureRegion>(0.075f, frames);
 		
-		Texture breakSheet = RuntimeData.getInstance().getAsset("textures/items/barriers/barrier-blue/Barrier-Blue-Break.png");
+		Texture breakSheet = RuntimeData.getInstance().getTexture("textures/items/barriers/barrier-blue/Barrier-Blue-Break.png");
 		temp = TextureRegion.split(breakSheet, 70, 80);
 		frames = new TextureRegion[temp[0].length];
 
@@ -43,7 +44,7 @@ public class BarrierActiv extends Barrier {
 		}
 		breakAni = new Animation<TextureRegion>(0.15f, frames);
 		
-		Texture idleSheet = RuntimeData.getInstance().getAsset("textures/items/barriers/barrier-blue/Barrier-Blue-Idle.png");
+		Texture idleSheet = RuntimeData.getInstance().getTexture("textures/items/barriers/barrier-blue/Barrier-Blue-Idle.png");
 		temp = TextureRegion.split(idleSheet, 70, 80);
 		frames = new TextureRegion[temp[0].length];
 
