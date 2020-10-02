@@ -5,13 +5,9 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.verminsnest.core.VerminsNest;
-import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.misc.gui.ButtonManager;
 import com.verminsnest.screens.VNScreen;
-import com.verminsnest.world.generation.map.World;
-import com.verminsnest.world.generation.spawning.EnemySpawner;
-import com.verminsnest.world.generation.spawning.UtilSpawner;
 
 public class MainMenu extends VNScreen {
 
@@ -75,18 +71,6 @@ public class MainMenu extends VNScreen {
 	}
 
 	@Override
-	public void pause() {
-	}
-
-	@Override
-	public void resume() {
-	}
-
-	@Override
-	public void hide() {
-	}
-
-	@Override
 	public void dispose() {
 		bManager.dispose();
 		isDisposed = true;
@@ -117,14 +101,7 @@ public class MainMenu extends VNScreen {
 			if (!movementBlocked) {
 				switch (bManager.getIndex()) {
 				case START:
-					// World generation
-					RuntimeData.getInstance().loadTextures(Indentifiers.ASSETMANAGER_GAMEPLAY);
-					World gen = new World(RuntimeData.getInstance().getGame());
-					gen.setData(1, 20, 20, 10,
-							(RuntimeData.getInstance().getTexture("textures/level-sheets/cave/Mountain-Sheet.png")));
-					new EnemySpawner(1);
-					new UtilSpawner();
-					RuntimeData.getInstance().getGame().showScreen(VerminsNest.LOADGAME);
+					RuntimeData.getInstance().getGame().showScreen(VerminsNest.SAVESMENU);
 					break;
 				case SETTINGS:
 					RuntimeData.getInstance().getGame().showScreen(VerminsNest.SETTINGSMENU);

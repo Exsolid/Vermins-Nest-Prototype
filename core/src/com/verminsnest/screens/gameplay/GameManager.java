@@ -7,7 +7,6 @@ import com.verminsnest.core.VerminsNest;
 import com.verminsnest.core.engine.shaders.Shader;
 import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
-import com.verminsnest.entities.playables.Mage;
 import com.verminsnest.misc.gui.dialogs.ChoiceDialog;
 import com.verminsnest.screens.VNScreen;
 import com.verminsnest.screens.gameplay.menus.LevelMenu;
@@ -167,8 +166,7 @@ public class GameManager extends VNScreen {
 	@Override
 	public void init() {
 		if (RuntimeData.getInstance().getEntityManager().getCharacter() == null) {
-			//On game start
-			RuntimeData.getInstance().getEntityManager().setCharacter(new Mage(new int[] { 0, 0 }));
+			RuntimeData.getInstance().getEntityManager().createCharacter();
 			for (int x = 0; x < RuntimeData.getInstance().getMapData().getData().length; x++) {
 				for (int y = 0; y < RuntimeData.getInstance().getMapData().getData()[0].length; y++) {
 					if (RuntimeData.getInstance().getMapData().getData()[x][y].isWalkable()) {

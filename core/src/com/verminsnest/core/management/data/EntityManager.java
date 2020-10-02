@@ -18,6 +18,7 @@ import com.verminsnest.entities.items.Item;
 import com.verminsnest.entities.items.barriers.BarrierActiv;
 import com.verminsnest.entities.items.turrets.FourWayMechaTurret;
 import com.verminsnest.entities.particles.Gore;
+import com.verminsnest.entities.playables.Mage;
 import com.verminsnest.entities.playables.Playable;
 import com.verminsnest.entities.projectiles.Projectile;
 import com.verminsnest.entities.util.UtilEntity;
@@ -43,6 +44,7 @@ public class EntityManager {
 	
 	private ArrayList<int[]> toInitEntities;
 	private ArrayList<int[]> toInitUtil;
+	private int toInitCharacter;
 	
 	private Playable character;
 	
@@ -589,5 +591,20 @@ public class EntityManager {
 			toPlace.getPos()[1] = placedPos[1];
 		}
 		return true;
+	}
+
+	public void setToInitCharacter(int toInitCharacter) {
+		this.toInitCharacter = toInitCharacter;
+	}
+	
+	public void createCharacter(){
+		switch(toInitCharacter){
+		case Indentifiers.ASSETMANAGER_MAGE:
+			character = new Mage(new int[] { 0, 0 });
+			break;
+		default:
+			character = new Mage(new int[] { 0, 0 });
+			break;
+		}
 	}
 }

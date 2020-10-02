@@ -22,6 +22,7 @@ public class RuntimeData {
 	private EntityManager enMan;
 	private VerminsNest game;
 	
+	private String saveFile;
 	private boolean gameOver;
 	
 	private RuntimeData(){
@@ -112,5 +113,13 @@ public class RuntimeData {
 	
 	public AudioManager getAudioManager(){
 		return audioMan;
+	}
+
+	public String getSaveFile() {
+		return saveFile;
+	}
+
+	public void setSaveFile(String saveFile) {
+		this.saveFile = saveFile;
 	}
 }

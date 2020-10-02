@@ -29,7 +29,7 @@ public class ButtonManager {
 		for(ArrayList<String> button: buttonList){
 			this.buttonList.add(new Button(button.get(0),size));
 			for(int i = 1; i<button.size(); i++){
-				this.buttonList.get(counter).addOption(button.get(i),leftButton ,rightButton, optsWithQualifiers);
+				this.buttonList.get(counter).addOption(button.get(i),leftButton.equals("")? "<" :leftButton,rightButton.equals("")? ">" :rightButton, optsWithQualifiers);
 			}
 			counter++;
 		}

@@ -97,19 +97,7 @@ public class SettingsMenu extends VNScreen {
 		musicMenuManager.setMidOfBounds(new int[]{RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Big.png").getWidth(), RuntimeData.getInstance().getTexture("textures/menus/scrolls/VerticalScroll_Big.png").getHeight()},
 				settingsScrollPos);
 	}
-
-	@Override
-	public void pause() {
-	}
-
-	@Override
-	public void resume() {
-	}
-
-	@Override
-	public void hide() {
-	}
-
+	
 	@Override
 	public void dispose() {
 		settingsMenuManager.dispose();
@@ -187,6 +175,7 @@ public class SettingsMenu extends VNScreen {
 						}
 						break;
 					case SOUND:
+						if(!currentMenuManager.getCurrent().hasOptions())break;
 						if(!currentMenuManager.getCurrent().getOption().getText().equals("10"))
 							currentMenuManager.getCurrent().getOption().setText(Integer.parseInt(currentMenuManager.getCurrent().getOption().getText())+1+"");							
 						break;
@@ -217,6 +206,7 @@ public class SettingsMenu extends VNScreen {
 						}
 						break;
 					case SOUND:
+						if(!currentMenuManager.getCurrent().hasOptions())break;
 						if(!currentMenuManager.getCurrent().getOption().getText().equals("0"))
 						currentMenuManager.getCurrent().getOption().setText(Integer.parseInt(currentMenuManager.getCurrent().getOption().getText())-1+"");
 						break;
