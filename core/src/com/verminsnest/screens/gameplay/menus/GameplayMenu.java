@@ -3,8 +3,8 @@ package com.verminsnest.screens.gameplay.menus;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
+import com.verminsnest.core.management.ids.Indentifiers;
 import com.verminsnest.misc.gui.FontText;
 import com.verminsnest.screens.gameplay.GameManager;
 import com.verminsnest.screens.gameplay.GameplayOverlay;

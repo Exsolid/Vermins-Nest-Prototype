@@ -1,5 +1,7 @@
 package com.verminsnest.core.engine.shaders;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
@@ -33,6 +35,13 @@ public class FogOfWar extends Shader{
 				while(running){
 					if(FloorManager.getInstane().allowEntityUpdate())
 					positions = calculateData();
+					try {
+						Thread.sleep(10);
+					} catch (InterruptedException e) {
+						StringWriter err = new StringWriter();
+						e.printStackTrace(new PrintWriter(err));
+						VNLogger.logErr(err.toString(),this.getClass());
+					}
 				}
 			}
 		};

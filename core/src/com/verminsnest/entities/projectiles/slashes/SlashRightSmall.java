@@ -3,8 +3,8 @@ package com.verminsnest.entities.projectiles.slashes;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
+import com.verminsnest.core.management.ids.Indentifiers;
 
 public class SlashRightSmall extends Slash{
 

@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.verminsnest.core.VerminsNest;
-import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
+import com.verminsnest.core.management.ids.Indentifiers;
+import com.verminsnest.core.management.ids.Pools;
+import com.verminsnest.core.management.loaders.VNAssetLoader;
 import com.verminsnest.misc.gui.ButtonManager;
 import com.verminsnest.screens.VNScreen;
 import com.verminsnest.world.generation.map.World;
@@ -56,7 +58,7 @@ public class StartGameMenu extends VNScreen{
 			switch(optionsManager.getIndex()){
 			case 2:
 				// World generation
-				RuntimeData.getInstance().loadTextures(Indentifiers.ASSETMANAGER_GAMEPLAY);
+				RuntimeData.getInstance().getAssetManager().loadAssets(Indentifiers.ASSETMANAGER_GAMEPLAY);
 				World gen = new World(RuntimeData.getInstance().getGame());
 				String[] diffOpts = new String[]{RuntimeData.getInstance().getGame().getConfig().getMessage("StartGameMenu_Difficulty_Egg"),
 						RuntimeData.getInstance().getGame().getConfig().getMessage("StartGameMenu_Difficulty_Larva"),
@@ -78,6 +80,12 @@ public class StartGameMenu extends VNScreen{
 				}
 				//Stuff
 				new UtilSpawner();
+				VNAssetLoader loader = new VNAssetLoader();
+				loader.addIDsToLoad(Pools.getAllItemIDs());
+				loader.addIDsToLoad(Pools.getEnemyIDs());
+				loader.addIDsToLoad(Pools.getDungeonSongIDs());
+				loader.addIDsToLoad(Indentifiers.ASSETMANAGER_MAGE);
+				
 				RuntimeData.getInstance().getGame().showScreen(VerminsNest.LOADGAME);
 				break;
 			case 3:

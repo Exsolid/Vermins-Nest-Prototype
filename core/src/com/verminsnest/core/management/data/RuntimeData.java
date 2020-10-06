@@ -1,10 +1,12 @@
 package com.verminsnest.core.management.data;
 
+import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
+import com.verminsnest.core.VNLogger;
 import com.verminsnest.core.VerminsNest;
 import com.verminsnest.core.engine.EntityDamageSystem;
 import com.verminsnest.core.engine.EntityMovementSystem;
@@ -66,21 +68,10 @@ public class RuntimeData {
 	public Music getMusic(String path){
 		return (Music)assetManager.getAsset(path);
 	}
-	public void loadTextures(int id){
-		assetManager.loadAssets(id);
-	}
-	public void loadAudio(int id){
-		assetManager.loadAudio(id);
-	}
-	public void disposeTextures(int id){
-		assetManager.unloadAssets(id);
-	}
-	
 	public void dispose(){
+		Gdx.app.exit();
 		assetManager.dispose();
 		audioMan.dispose();
-		game.dispose();
-		instance = null;
 	}
 	
 	public boolean areAssetsLoaded(int id){
@@ -121,5 +112,27 @@ public class RuntimeData {
 
 	public void setSaveFile(String saveFile) {
 		this.saveFile = saveFile;
+	}
+	
+	public VNAssetManager getAssetManager(){
+		return assetManager;
+	}
+	public void disposeGameplay(){
+		this.getAudioManager().stopMusic();
+		ArrayList<Integer> temp = new ArrayList<>();
+		temp.addAll(assetManager.getLoadedIDs());
+		for(Integer id: temp){
+			assetManager.unloadAssets(id);
+		}
+		this.getEntityManager().clearData();
+
+		map = null;
+		map = null;
+		if(assetManager.getLoadedIDs() == null || assetManager.getLoadedIDs().isEmpty())VNLogger.log("All assets disposed", this.getClass());
+		else{
+			for(Integer i : assetManager.getLoadedIDs()){
+				VNLogger.logErr("Asset of ID " + i + " is still loaded", this.getClass());
+			}
+		}
 	}
 }

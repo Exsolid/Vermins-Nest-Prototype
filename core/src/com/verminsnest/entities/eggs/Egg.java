@@ -5,8 +5,8 @@ import java.util.Random;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
+import com.verminsnest.core.management.ids.Indentifiers;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.enemies.Flunk;
 import com.verminsnest.entities.enemies.Tinker;
@@ -95,10 +95,10 @@ public class Egg extends Entity {
 		case Indentifiers.STATE_SPAWNING:
 			if (!hatched) {
 				switch (enemyID) {
-				case Indentifiers.ENEMY_TINKER:
+				case Indentifiers.ASSETMANAGER_TINKER:
 					new Tinker(new int[] { this.pos[0] - 8, this.pos[1] + 13 });
 					break;
-				case Indentifiers.ENEMY_FLUNK:
+				case Indentifiers.ASSETMANAGER_FLUNK:
 					new Flunk(new int[] { this.pos[0] - 8, this.pos[1] + 5 });
 					new Flunk(new int[] { this.pos[0] + 20, this.pos[1] + 5 });
 					new Flunk(new int[] { this.pos[0] + 12, this.pos[1] + 25 });

@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.verminsnest.core.VerminsNest;
 import com.verminsnest.core.management.data.RuntimeData;
+import com.verminsnest.core.management.ids.Pools;
 import com.verminsnest.misc.gui.ButtonManager;
 import com.verminsnest.screens.VNScreen;
 
@@ -153,7 +154,7 @@ public class MainMenu extends VNScreen {
 						RuntimeData.getInstance().getGame().getConfig().getResolution()[1] / 2 - RuntimeData.getInstance()
 								.getTexture("textures/menus/scrolls/VerticalScroll_Small.png").getHeight() / 2 });
 		isDisposed = false;
-		RuntimeData.getInstance().getAudioManager().playMusic("audio/music/Adventure.mp3");
+		RuntimeData.getInstance().getAudioManager().playMusicQueue(RuntimeData.getInstance().getAssetManager().getPathsForAudioIDs(Pools.getMainMenuSongIDs()));
 	}
 
 	@Override

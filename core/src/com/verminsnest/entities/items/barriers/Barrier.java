@@ -2,7 +2,7 @@ package com.verminsnest.entities.items.barriers;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.verminsnest.core.management.Indentifiers;
+import com.verminsnest.core.management.ids.Indentifiers;
 import com.verminsnest.entities.items.Item;
 
 public abstract class Barrier extends Item {

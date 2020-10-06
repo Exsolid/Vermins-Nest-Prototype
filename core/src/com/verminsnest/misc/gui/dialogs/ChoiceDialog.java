@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
-import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
+import com.verminsnest.core.management.ids.Indentifiers;
 import com.verminsnest.misc.gui.ButtonManager;
 import com.verminsnest.misc.gui.FontText;
 

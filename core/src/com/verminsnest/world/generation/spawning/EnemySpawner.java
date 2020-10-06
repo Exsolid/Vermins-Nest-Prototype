@@ -3,9 +3,9 @@ package com.verminsnest.world.generation.spawning;
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.verminsnest.core.management.Indentifiers;
-import com.verminsnest.core.management.LoadingModule;
 import com.verminsnest.core.management.data.RuntimeData;
+import com.verminsnest.core.management.ids.Pools;
+import com.verminsnest.core.management.loaders.LoadingModule;
 import com.verminsnest.world.generation.map.MapData;
 import com.verminsnest.world.generation.map.rooms.Room;
 import com.verminsnest.world.generation.map.rooms.Shop;
@@ -41,7 +41,7 @@ public class EnemySpawner extends LoadingModule{
 							}
 						}
 					}
-					ArrayList<Integer> ids = Indentifiers.getAllEnemyIDs();
+					ArrayList<Integer> ids = (ArrayList<Integer>) Pools.getEnemyIDs();
 					RuntimeData.getInstance().getEntityManager().addEnemiesInit(pixlePos[0], pixlePos[1], ids.get(rand.nextInt(ids.size())));
 				}
 			}

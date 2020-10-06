@@ -5,8 +5,9 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.verminsnest.core.management.Indentifiers;
+import com.verminsnest.core.VNLogger;
 import com.verminsnest.core.management.data.RuntimeData;
+import com.verminsnest.core.management.ids.Indentifiers;
 
 public abstract class Entity {
 	protected int textureID = -1;
@@ -28,7 +29,7 @@ public abstract class Entity {
 	
 	public Entity(int[] pos, int textureID){
 		if(textureID != -1){
-			RuntimeData.getInstance().loadTextures(textureID);
+			if(!RuntimeData.getInstance().areAssetsLoaded(textureID))VNLogger.logErr("Texture for ID " + textureID+ " not loaded", this.getClass());
 		}
 		RuntimeData.getInstance().getEntityManager().addEntity(this);
 		this.textureID = textureID;
@@ -88,11 +89,6 @@ public abstract class Entity {
 		return currentAni.getKeyFrame(internalStateTime, true);
 	}
 	
-	public void dispose(){
-		if(textureID != -1){
-			RuntimeData.getInstance().disposeTextures(textureID);
-		}
-	}
 	public int getTextureID(){
 		return textureID;
 	}

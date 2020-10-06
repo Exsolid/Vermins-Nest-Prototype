@@ -6,9 +6,9 @@ import java.util.Random;
 import com.badlogic.gdx.graphics.Texture;
 import com.verminsnest.core.VNLogger;
 import com.verminsnest.core.VerminsNest;
-import com.verminsnest.core.management.Indentifiers;
-import com.verminsnest.core.management.LoadingModule;
 import com.verminsnest.core.management.data.RuntimeData;
+import com.verminsnest.core.management.ids.Indentifiers;
+import com.verminsnest.core.management.loaders.LoadingModule;
 import com.verminsnest.world.generation.map.rooms.Room;
 import com.verminsnest.world.generation.map.rooms.Shop;
 

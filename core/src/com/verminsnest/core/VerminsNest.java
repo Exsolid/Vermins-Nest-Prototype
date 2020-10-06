@@ -13,8 +13,8 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.verminsnest.config.Configurator;
-import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
+import com.verminsnest.core.management.ids.Indentifiers;
 import com.verminsnest.screens.LoadingScreen;
 import com.verminsnest.screens.gameplay.GameManager;
 import com.verminsnest.screens.mainmenus.CreditsMenu;
@@ -35,7 +35,6 @@ public class VerminsNest extends Game {
 	private StartGameMenu startMenu;
 	
 	private SpriteBatch batch;
-	private Runtime r;
 	private Configurator config;
 	private OrthographicCamera camera;
 	private FillViewport vport;
@@ -62,8 +61,6 @@ public class VerminsNest extends Game {
 		vport.apply();
 		batch.setProjectionMatrix(camera.combined);
 		
-		r = Runtime.getRuntime();
-		
 		mainMenu = new MainMenu();
 		settingsMenu = new SettingsMenu();
 		creditsMenu = new CreditsMenu();
@@ -72,8 +69,7 @@ public class VerminsNest extends Game {
 		savesMenu = new SavesMenu();
 		
 		RuntimeData.getInstance().init(this);
-		RuntimeData.getInstance().loadTextures(Indentifiers.ASSETMANAGER_INIT);
-
+		initMenus();
 		Pixmap pixmap = new Pixmap(Gdx.files.internal("textures/misc/Cursor.png"));
 		int xHotspot = pixmap.getWidth() / 2;
 		int yHotspot = pixmap.getHeight() / 2;
@@ -139,13 +135,14 @@ public class VerminsNest extends Game {
 		vport.apply();
 		batch.setProjectionMatrix(camera.combined);
 	}
+	
 	@Override
 	public void dispose () {
+		VNLogger.log("Exiting game", this.getClass());
 		onClose = true;
 		if(!gameMan.isDisposed())gameMan.dispose();
 		disposeMenus();
 		super.dispose();
-		Gdx.app.exit();
 	}
 	
 	public OrthographicCamera getCamera(){
@@ -165,9 +162,7 @@ public class VerminsNest extends Game {
 			if(!gameMan.isDisposed()){
 				gameMan.dispose();
 			}
-			if(mainMenu.isDisposed()){
-				initMenus();
-			}
+			initMenus();
 			this.setScreen(mainMenu);
 			break;
 		case SETTINGSMENU:
@@ -196,15 +191,18 @@ public class VerminsNest extends Game {
 		case GAMEPLAY:
 			gameMan.init();
 			this.setScreen(gameMan);
-			
+			disposeMenus();
+			loadingScreen.dispose();
 			loadingScreen = null;
-			r.gc();
 			break;
 		}
 	}
 	
 	private void initMenus(){
-		if(mainMenu.isDisposed())mainMenu.init();
+		if(mainMenu.isDisposed()){
+			RuntimeData.getInstance().getAssetManager().loadAssets(Indentifiers.ASSETMANAGER_INIT);
+			mainMenu.init();
+		}
 		if(settingsMenu.isDisposed())settingsMenu.init();
 		if(creditsMenu.isDisposed())creditsMenu.init();
 		if(startMenu.isDisposed())startMenu.init();
@@ -212,12 +210,14 @@ public class VerminsNest extends Game {
 	}
 	
 	private void disposeMenus(){
-		if(!mainMenu.isDisposed())mainMenu.dispose();
+		if(!mainMenu.isDisposed()){
+			RuntimeData.getInstance().getAssetManager().unloadAssets(Indentifiers.ASSETMANAGER_INIT);
+			mainMenu.dispose();
+		}
 		if(!settingsMenu.isDisposed())settingsMenu.dispose();
 		if(!creditsMenu.isDisposed())creditsMenu.dispose();
 		if(!startMenu.isDisposed())startMenu.dispose();
 		if(!savesMenu.isDisposed())savesMenu.dispose();
-		r.gc();
 	}
 	
 	public Configurator getConfig() {

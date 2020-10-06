@@ -3,8 +3,8 @@ package com.verminsnest.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.verminsnest.core.VerminsNest;
-import com.verminsnest.core.management.LoadingModules;
 import com.verminsnest.core.management.data.RuntimeData;
+import com.verminsnest.core.management.loaders.LoadingModules;
 import com.verminsnest.misc.gui.FontText;
 import com.verminsnest.world.management.FloorManager;
 
@@ -82,7 +82,6 @@ public class LoadingScreen implements Screen {
 				RuntimeData.getInstance().getEntityManager().initUtil();
 				FloorManager.getInstane().setEntityUpdate(true);
 				game.showScreen(VerminsNest.GAMEPLAY);
-				this.dispose();
 				break;
 			default:
 				game.showScreen(VerminsNest.MAINMENU);

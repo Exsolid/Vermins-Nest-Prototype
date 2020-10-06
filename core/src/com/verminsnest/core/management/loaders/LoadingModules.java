@@ -1,4 +1,4 @@
-package com.verminsnest.core.management;
+package com.verminsnest.core.management.loaders;
 
 import java.util.ArrayList;
 

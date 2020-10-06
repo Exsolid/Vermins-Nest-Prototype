@@ -1,12 +1,11 @@
 package com.verminsnest.screens.gameplay;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.Gdx;
 import com.verminsnest.core.VerminsNest;
 import com.verminsnest.core.engine.shaders.Shader;
-import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
+import com.verminsnest.core.management.ids.Indentifiers;
+import com.verminsnest.core.management.ids.Pools;
 import com.verminsnest.misc.gui.dialogs.ChoiceDialog;
 import com.verminsnest.screens.VNScreen;
 import com.verminsnest.screens.gameplay.menus.LevelMenu;
@@ -150,16 +149,11 @@ public class GameManager extends VNScreen {
 
 	@Override
 	public void dispose() {
-		Shader.getInstance().dispose();
-		
 		gameplay.dispose();
 		levelMenu.dispose();
 		pauseMenu.dispose();
-		
-		RuntimeData.getInstance().disposeTextures(Indentifiers.ASSETMANAGER_GAMEPLAY);
-		RuntimeData.getInstance().getAudioManager().stopMusic();
-		RuntimeData.getInstance().getEntityManager().clearData();
-		
+		Shader.getInstance().dispose();
+		RuntimeData.getInstance().disposeGameplay();
 		isDisposed = true;
 	}
 
@@ -183,9 +177,7 @@ public class GameManager extends VNScreen {
 			levelMenu = new LevelMenu(this);
 			pauseMenu.init();
 			levelMenu.init();
-			ArrayList<String> temp = new ArrayList<String>();
-			temp.add("audio/music/Into The Unknown.mp3");
-			RuntimeData.getInstance().getAudioManager().playMusicQueue(temp);
+			RuntimeData.getInstance().getAudioManager().playMusicQueue(RuntimeData.getInstance().getAssetManager().getPathsForAudioIDs(Pools.getDungeonSongIDs()));
 		} else {
 			//On layers
 			for (int x = 0; x < RuntimeData.getInstance().getMapData().getData().length; x++) {

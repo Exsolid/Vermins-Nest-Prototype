@@ -3,9 +3,10 @@ package com.verminsnest.world.generation.spawning;
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.verminsnest.core.management.Indentifiers;
-import com.verminsnest.core.management.LoadingModule;
 import com.verminsnest.core.management.data.RuntimeData;
+import com.verminsnest.core.management.ids.Indentifiers;
+import com.verminsnest.core.management.ids.Pools;
+import com.verminsnest.core.management.loaders.LoadingModule;
 import com.verminsnest.world.generation.map.rooms.Room;
 import com.verminsnest.world.generation.map.rooms.Shop;
 
@@ -28,9 +29,9 @@ public class UtilSpawner extends LoadingModule{
 		}
 		pos[0] = (int) ((pos[0]*RuntimeData.getInstance().getMapData().getRooms().get(0).getData().length-Math.ceil(RuntimeData.getInstance().getMapData().getRooms().get(0).getData().length/2.0)+10)*128+64-18);
 		pos[1] = (int) ((pos[1]*RuntimeData.getInstance().getMapData().getRooms().get(0).getData()[0].length-Math.floor(RuntimeData.getInstance().getMapData().getRooms().get(0).getData()[0].length/2.0)+10)*128-50);
-		RuntimeData.getInstance().getEntityManager().addUtilInit(pos[0], pos[1], Indentifiers.UTIL_SHOPKEEPER);
+		RuntimeData.getInstance().getEntityManager().addUtilInit(pos[0], pos[1], Indentifiers.ASSETMANAGER_SHOPKEEPER);
 		
-		ArrayList<Integer> itemIDs = Indentifiers.getItemPoolShop();
+		ArrayList<Integer> itemIDs = (ArrayList<Integer>) Pools.getShopItemIDs();
 		int[] dirs = new int[] {1,1,1,1};
 		for(int i = 0; i<3;i++) {
 			int randomID = itemIDs.get(rand.nextInt(itemIDs.size()));

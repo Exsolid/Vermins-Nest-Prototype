@@ -1,7 +1,7 @@
 package com.verminsnest.entities.particles;
 
-import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
+import com.verminsnest.core.management.ids.Indentifiers;
 
 public class Gore extends Particle {
 	

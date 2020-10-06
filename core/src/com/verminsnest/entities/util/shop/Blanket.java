@@ -2,8 +2,8 @@ package com.verminsnest.entities.util.shop;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
+import com.verminsnest.core.management.ids.Indentifiers;
 import com.verminsnest.entities.util.UtilEntity;
 
 public class Blanket extends UtilEntity {

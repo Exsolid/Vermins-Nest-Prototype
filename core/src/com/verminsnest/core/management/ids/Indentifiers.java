@@ -1,6 +1,4 @@
-package com.verminsnest.core.management;
-
-import java.util.ArrayList;
+package com.verminsnest.core.management.ids;
 
 public class Indentifiers {
 	
@@ -73,29 +71,4 @@ public class Indentifiers {
 	public final static int ASSETMANAGER_AUDIO_BARRIERBUILDUP = 10;
 	public final static int ASSETMANAGER_AUDIO_FOODEATING = 11;
 	public final static int ASSETMANAGER_AUDIO_ADVENTURE = 12;
-	
-	//Enemy IDs
-	public static final int ENEMY_TINKER = 0;
-	public static final int ENEMY_FLUNK = 1;
-	
-	//Util entity IDs
-	public static final int UTIL_SHOPKEEPER = 0;
-	public static final int UTIL_ITEM_BARRIER_BLUE = 1;
-	public static final int UTIL_ITEM_TURRET_MECHA = 2;
-	
-	//Item IDs
-	
-	public static ArrayList<Integer> getAllEnemyIDs(){
-		ArrayList<Integer> ids = new ArrayList<>();
-		ids.add(ENEMY_TINKER);
-		ids.add(ENEMY_FLUNK);
-		return ids;
-	}
-	
-	public static ArrayList<Integer> getItemPoolShop(){
-		ArrayList<Integer> ids = new ArrayList<>();
-		ids.add(UTIL_ITEM_BARRIER_BLUE);
-		ids.add(UTIL_ITEM_TURRET_MECHA);
-		return ids;
-	}
 }

@@ -6,7 +6,7 @@ import java.util.Random;
 import com.badlogic.gdx.math.Vector2;
 import com.verminsnest.core.VerminsNest;
 import com.verminsnest.core.engine.PositionSystem;
-import com.verminsnest.core.management.Indentifiers;
+import com.verminsnest.core.management.ids.Indentifiers;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.eggs.Egg;
 import com.verminsnest.entities.enemies.Enemy;
@@ -84,17 +84,7 @@ public class EntityManager {
 	public void updateEntities(float delta){
 		FloorManager.getInstane().update(delta);
 		if(FloorManager.getInstane().allowEntityUpdate()) {
-			
-			boolean found = false;
 			for(Entity ent: removedEntities){
-				for(Entity refEnt: entities){
-					if(refEnt.getClass().equals(ent.getClass())){
-						found = true;
-					}
-				}
-				if(!found){
-					ent.dispose();
-				}
 				if(ent instanceof Projectile || ent instanceof Explosion){
 					damage.remove(ent);
 				}else if(ent instanceof Gore){
@@ -186,34 +176,6 @@ public class EntityManager {
 	}
 	
 	public void clearData(){
-		for(Entity ent: entities){
-			ent.dispose();
-		}
-		for(Entity ent: leftovers){
-			ent.dispose();
-		}
-		for(Entity ent: particle){
-			ent.dispose();
-		}
-		for(Entity ent: damage){
-			ent.dispose();
-		}
-		for(Entity ent: items){
-			ent.dispose();
-		}
-		for(Entity ent: food){
-			ent.dispose();
-		}
-		for(Entity ent: util){
-			ent.dispose();
-		}
-		for(Entity ent: addedEntities){
-			ent.dispose();
-		}
-		for(Entity ent: removedEntities){
-			ent.dispose();
-		}
-		RuntimeData.getInstance().getMapData().getData()[0][0].getLayers().get(0).getTexture().dispose();
 		addedEntities.clear();
 		removedEntities.clear();
 		
@@ -306,10 +268,10 @@ public class EntityManager {
 				break;
 			case 2:
 				switch(data[2]){
-				case Indentifiers.ENEMY_TINKER:
+				case Indentifiers.ASSETMANAGER_TINKER:
 					new Tinker(new int[]{data[0], data[1]});
 					break;
-				case Indentifiers.ENEMY_FLUNK:
+				case Indentifiers.ASSETMANAGER_FLUNK:
 					new Flunk(new int[]{data[0], data[1]});
 					break;
 				}
@@ -322,15 +284,15 @@ public class EntityManager {
 	public void initUtil(){
 		for(int[] data: toInitUtil){
 			switch(data[2]){
-			case Indentifiers.UTIL_SHOPKEEPER:
+			case Indentifiers.ASSETMANAGER_SHOPKEEPER:
 				new Blanket(new int[]{data[0]-40, data[1]-40});
 				new Shopkeeper(new int[]{data[0], data[1]});
 				break;
-			case Indentifiers.UTIL_ITEM_BARRIER_BLUE:
+			case Indentifiers.ASSETMANAGER_BARRIER_BLUE:
 				BarrierActiv ba = new BarrierActiv();
 				ba.putItem(new int[]{data[0], data[1]});
 				break;
-			case Indentifiers.UTIL_ITEM_TURRET_MECHA:
+			case Indentifiers.ASSETMANAGER_TURRET_MECHA:
 				FourWayMechaTurret metu = new FourWayMechaTurret();
 				metu.putItem(new int[]{data[0], data[1]});
 				break;
@@ -378,32 +340,6 @@ public class EntityManager {
 		new EnemySpawner(3);
 		new UtilSpawner();
 		//Clear data
-		for(Entity ent: entities){
-			if(!(ent instanceof Playable)) {
-				ent.dispose();
-			}
-		}
-		for(Entity ent: items){
-			if(!(((Item)ent).getKeeper() instanceof Playable))ent.dispose();
-		}
-		for(Entity ent: food){
-			ent.dispose();
-		}
-		for(Entity ent: util){
-			ent.dispose();
-		}
-		for(Entity ent: leftovers){
-			ent.dispose();
-		}
-		for(Entity ent: damage){
-			ent.dispose();
-		}
-		for(Entity ent: addedEntities){
-			ent.dispose();
-		}
-		for(Entity ent: removedEntities){
-			ent.dispose();
-		}
 		lastDeath = null;
 		
 		addedEntities.clear();

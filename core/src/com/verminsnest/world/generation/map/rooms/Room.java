@@ -3,7 +3,7 @@ package com.verminsnest.world.generation.map.rooms;
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.verminsnest.core.management.Indentifiers;
+import com.verminsnest.core.management.ids.Indentifiers;
 
 
 public class Room {

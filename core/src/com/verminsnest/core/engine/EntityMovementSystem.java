@@ -3,8 +3,8 @@ package com.verminsnest.core.engine;
 
 import java.util.ArrayList;
 
-import com.verminsnest.core.management.Indentifiers;
 import com.verminsnest.core.management.data.RuntimeData;
+import com.verminsnest.core.management.ids.Indentifiers;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.enemies.Enemy;
 import com.verminsnest.entities.explosions.Explosion;
