@@ -38,26 +38,34 @@ public class Indentifiers {
 	public final static int ASSETMANAGER_GAMEPLAY = 1;
 	public final static int ASSETMANAGER_INIT = 8;
 	
+	//Characters
 	public final static int ASSETMANAGER_SHOPKEEPER = 12;
 	public final static int ASSETMANAGER_MAGE = 2;
 	
+	//Projectiles
 	public final static int ASSETMANAGER_FIREBALL = 3;
 	public final static int ASSETMANAGER_SLASH_SMALL = 4;
 	public final static int ASSETMANAGER_EXPLOSION_SMALL = 10;
 	public final static int ASSETMANAGER_BULLET_GREEN = 13;
 	
+	//Enemies
 	public final static int ASSETMANAGER_TINKER = 5;
 	public static final int ASSETMANAGER_FLUNK = 9;
 	public final static int ASSETMANAGER_EGG = 6;
 	
+	//Misc
 	public final static int ASSETMANAGER_GORE = 7;
 	public final static int ASSETMANAGER_SHELL = 15;
 	
 	public final static int ASSETMANAGER_PUDDLE_BLOOD = 16;
 	
+	//Items
 	public final static int ASSETMANAGER_BARRIER_BLUE = 11;
 	public final static int ASSETMANAGER_TURRET_MECHA= 14;
-
+	
+	//Level design
+	public final static int ASSETMANAGER_ROCKS = 17;
+	
 	//Assetmanager audio
 	public final static int ASSETMANAGER_AUDIO_INTOTHEUNKOWN = 1;
 	public final static int ASSETMANAGER_AUDIO_CLAW = 2;

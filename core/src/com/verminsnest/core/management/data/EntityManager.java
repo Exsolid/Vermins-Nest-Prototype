@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.badlogic.gdx.math.Vector2;
+import com.verminsnest.core.VNLogger;
 import com.verminsnest.core.VerminsNest;
 import com.verminsnest.core.engine.PositionSystem;
 import com.verminsnest.core.management.ids.Indentifiers;
@@ -22,6 +23,7 @@ import com.verminsnest.entities.playables.Mage;
 import com.verminsnest.entities.playables.Playable;
 import com.verminsnest.entities.projectiles.Projectile;
 import com.verminsnest.entities.util.UtilEntity;
+import com.verminsnest.entities.util.leveldesign.Rock;
 import com.verminsnest.entities.util.shop.Blanket;
 import com.verminsnest.entities.util.shop.Shopkeeper;
 import com.verminsnest.misc.entities.Death;
@@ -100,6 +102,7 @@ public class EntityManager {
 						leftovers.remove(ent);
 					}
 				}
+				ent.dispose();
 			}
 			removedEntities.clear();
 			
@@ -123,51 +126,53 @@ public class EntityManager {
 				}
 			}
 			addedEntities.clear();
-			int updateXRange = 1500;
-			int updateYRange = 1000;
-			for(Entity ent: entities){
-				if(ent.getPos()[0] > character.getPos()[0]-updateXRange && ent.getPos()[0] < character.getPos()[0]+updateXRange
-						&& ent.getPos()[1] > character.getPos()[1]-updateYRange && ent.getPos()[1] < character.getPos()[1]+updateYRange){
+			if(character != null){
+				int updateXRange = 1500;
+				int updateYRange = 1000;
+				for(Entity ent: entities){
+					if(ent.getPos()[0] > character.getPos()[0]-updateXRange && ent.getPos()[0] < character.getPos()[0]+updateXRange
+							&& ent.getPos()[1] > character.getPos()[1]-updateYRange && ent.getPos()[1] < character.getPos()[1]+updateYRange){
+						ent.update(delta);
+					}
+				}
+				
+				for(Entity ent: damage){
 					ent.update(delta);
 				}
-			}
-			
-			for(Entity ent: damage){
-				ent.update(delta);
-			}
-			for(Entity ent: leftovers){
-				if(ent.getPos()[0] > character.getPos()[0]-updateXRange && ent.getPos()[0] < character.getPos()[0]+updateXRange
-						&& ent.getPos()[1] > character.getPos()[1]-updateYRange && ent.getPos()[1] < character.getPos()[1]+updateYRange){
-					ent.update(delta);
+				for(Entity ent: leftovers){
+					if(ent.getPos()[0] > character.getPos()[0]-updateXRange && ent.getPos()[0] < character.getPos()[0]+updateXRange
+							&& ent.getPos()[1] > character.getPos()[1]-updateYRange && ent.getPos()[1] < character.getPos()[1]+updateYRange){
+						ent.update(delta);
+					}
 				}
-			}
-			for(Entity ent: particle){
-				if(ent.getPos()[0] > character.getPos()[0]-updateXRange && ent.getPos()[0] < character.getPos()[0]+updateXRange
-						&& ent.getPos()[1] > character.getPos()[1]-updateYRange && ent.getPos()[1] < character.getPos()[1]+updateYRange){
-					ent.update(delta);
+				for(Entity ent: particle){
+					if(ent.getPos()[0] > character.getPos()[0]-updateXRange && ent.getPos()[0] < character.getPos()[0]+updateXRange
+							&& ent.getPos()[1] > character.getPos()[1]-updateYRange && ent.getPos()[1] < character.getPos()[1]+updateYRange){
+						ent.update(delta);
+					}
 				}
-			}
-			for(Entity ent: util){
-				if(ent.getPos()[0] > character.getPos()[0]-updateXRange && ent.getPos()[0] < character.getPos()[0]+updateXRange
-						&& ent.getPos()[1] > character.getPos()[1]-updateYRange && ent.getPos()[1] < character.getPos()[1]+updateYRange){
-					ent.update(delta);
+				for(Entity ent: util){
+					if(ent.getPos()[0] > character.getPos()[0]-updateXRange && ent.getPos()[0] < character.getPos()[0]+updateXRange
+							&& ent.getPos()[1] > character.getPos()[1]-updateYRange && ent.getPos()[1] < character.getPos()[1]+updateYRange){
+						ent.update(delta);
+					}
 				}
-			}
-			if(lastDeath != null && lastDeath.getPos()[0] > character.getPos()[0]-updateXRange && lastDeath.getPos()[0] < character.getPos()[0]+updateXRange
-					&& lastDeath.getPos()[1] > character.getPos()[1]-updateYRange && lastDeath.getPos()[1] < character.getPos()[1]+updateYRange) {
-				lastDeath.update(delta);
-			}
-			for(Entity ent: items){
-				if(ent.getPos() != null && ent.getPos()[0] > character.getPos()[0]-updateXRange && ent.getPos()[0] < character.getPos()[0]+updateXRange
-						&& ent.getPos()[1] > character.getPos()[1]-updateYRange && ent.getPos()[1] < character.getPos()[1]+updateYRange){
-					ent.update(delta);
+				if(lastDeath != null && lastDeath.getPos()[0] > character.getPos()[0]-updateXRange && lastDeath.getPos()[0] < character.getPos()[0]+updateXRange
+						&& lastDeath.getPos()[1] > character.getPos()[1]-updateYRange && lastDeath.getPos()[1] < character.getPos()[1]+updateYRange) {
+					lastDeath.update(delta);
 				}
+				for(Entity ent: items){
+					if(ent.getPos() != null && ent.getPos()[0] > character.getPos()[0]-updateXRange && ent.getPos()[0] < character.getPos()[0]+updateXRange
+							&& ent.getPos()[1] > character.getPos()[1]-updateYRange && ent.getPos()[1] < character.getPos()[1]+updateYRange){
+						ent.update(delta);
+					}
+				}
+				
+				for(Death killed: deaths) {
+					killed.execute();
+				}
+				deaths.clear();
 			}
-			
-			for(Death killed: deaths) {
-				killed.execute();
-			}
-			deaths.clear();
 		}
 	}
 
@@ -182,6 +187,9 @@ public class EntityManager {
 		character = null;
 		lastDeath = null;
 		
+		for(Entity ent: getAllEntities()){
+			ent.dispose();
+		}
 		entities.clear();
 		util.clear();
 		food.clear();
@@ -267,16 +275,20 @@ public class EntityManager {
 				new Egg(new int[]{data[0], data[1]}, data[2]);
 				break;
 			case 2:
+				Entity enemy  = null;
 				switch(data[2]){
 				case Indentifiers.ASSETMANAGER_TINKER:
-					new Tinker(new int[]{data[0], data[1]});
+					enemy = new Tinker(new int[]{data[0], data[1]});
 					break;
 				case Indentifiers.ASSETMANAGER_FLUNK:
-					new Flunk(new int[]{data[0], data[1]});
+					enemy = new Flunk(new int[]{data[0], data[1]});
 					break;
 				}
+				if(placeOnTile(new int[]{data[0]/128, data[1]/128},new int[]{data[0], data[1]},enemy));
+				else removedEntities.add(enemy);
 				break;
 			}
+			updateEntities(0);
 		}
 		toInitEntities.clear();
 	}
@@ -296,7 +308,13 @@ public class EntityManager {
 				FourWayMechaTurret metu = new FourWayMechaTurret();
 				metu.putItem(new int[]{data[0], data[1]});
 				break;
+			case Indentifiers.ASSETMANAGER_ROCKS:
+				Rock rock = new Rock(new int[]{0, 0},0);
+				if(placeOnTile(new int[]{data[0]/128, data[1]/128},null,rock));
+				else removedEntities.add(rock);
+				break;
 			}
+			updateEntities(0);
 		}
 		toInitUtil.clear();
 	}
@@ -344,6 +362,10 @@ public class EntityManager {
 		
 		addedEntities.clear();
 		removedEntities.clear();
+		
+		for(Entity ent: getAllEntities()){
+			if(!ent.equals(character) && !ent.equals(character.getInventory().getItem()))ent.dispose();
+		}
 		
 		entities.clear();
 		damage.clear();
@@ -451,20 +473,28 @@ public class EntityManager {
 	 * @param toPlace ; The entity to place
 	 * @returns true or false depending on if the placement was successful
 	 */
-	//TODO add to enemy spawning
 	public boolean placeOnTile(int[] mapPos, int[] preferredPos, Entity toPlace){
 		//Get all entities within the same tile
-		if(!RuntimeData.getInstance().getMapData().getData()[mapPos[0]][mapPos[1]].isWalkable())return false;
+		if(!RuntimeData.getInstance().getMapData().getData()[mapPos[0]][mapPos[1]].isWalkable()){
+			VNLogger.log("Could not place entity: " + toPlace.getClass().getSimpleName(), this.getClass());
+			return false;
+		}
 		ArrayList<Entity> allEnts = RuntimeData.getInstance().getEntityManager().getAllObstacleEntities();
 		ArrayList<Entity> relevantEnts = new ArrayList<>();
 		for(Entity ent: allEnts){
 			for(int[] pos: ent.getMapPos()){
-				if(pos[0] == mapPos[0] && pos[0] == mapPos[0]){
-					if(!relevantEnts.contains(ent))relevantEnts.add(ent);
+				for(int x = -1; x<2;x++){
+					for(int y = -1; y<2;y++){
+						if(pos[0] == mapPos[0]+x && pos[1] == mapPos[1]+y){
+							if(!relevantEnts.contains(ent)){
+								relevantEnts.add(ent);
+							}
+						}
+					}
 				}
 			}
 		}
-		//If no one is there place
+		//If no one is there, place
 		if(relevantEnts.isEmpty() && preferredPos != null){
 			if(toPlace instanceof Item){
 				((Item)toPlace).putItem(new int[]{preferredPos[0],preferredPos[1]});
@@ -472,6 +502,7 @@ public class EntityManager {
 				toPlace.getPos()[0] = preferredPos[0];
 				toPlace.getPos()[1] = preferredPos[1];
 			}
+			if(toPlace instanceof Rock)((Rock)toPlace).persistPos();
 			return true;
 		}
 		//Get all available places
@@ -480,31 +511,53 @@ public class EntityManager {
 		if(toPlace instanceof Item){
 			size = ((Item)toPlace).getDroppedSize();
 		}else{
-			size = toPlace.getSize();
+			size = toPlace.getHitbox();
 		}
-		for(int y = 1; y <= Math.floor(128/size[1]) ; y++){
-			for(int x = 1; x <= Math.floor(128/size[0]) ; x++){
-				Integer[] temp = new Integer[2];
-				temp[0] = x*size[0]+mapPos[0]*128;
-				temp[1] = y*size[1]+mapPos[1]*128;
-				ArrayList<Integer[]> allCorners = new ArrayList<>();
-				
-				allCorners.add(temp);
-				allCorners.add(new Integer[]{x*size[0]+mapPos[0]*128+size[0],y*size[1]+mapPos[1]*128});
-				allCorners.add(new Integer[]{x*size[0]+mapPos[0]*128,y*size[1]+mapPos[1]*128+size[1]});
-				allCorners.add(new Integer[]{x*size[0]+mapPos[0]*128+size[0],y*size[1]+mapPos[1]*128+size[1]});
-				for(Entity ent: relevantEnts){
-					for(Integer[] pos: allCorners){
-						if(pos[0] <= ent.getPos()[0]+ent.getSize()[0] && pos[0]>= ent.getPos()[0]
-								&& pos[1] <= ent.getPos()[1]+ent.getSize()[1] && pos[1]>= ent.getPos()[1]){
-							temp = null;
+		Random random = new Random();
+		int dislocationX = random.nextInt(size[0])-size[0]/2;
+		int dislocationY = random.nextInt(size[1])-size[1]/2;
+			for(int y = 1; y <= 128-size[0]-dislocationX ; y++){
+				for(int x = 1; x <= 128-size[1]-dislocationY ; x++){
+					Integer[] temp = new Integer[2];
+					temp[0] = x+mapPos[0]*128+dislocationX;
+					temp[1] = y+mapPos[1]*128+dislocationY;
+					ArrayList<Integer[]> allCorners = new ArrayList<>();
+					
+					allCorners.add(temp);
+					allCorners.add(new Integer[]{temp[0]+size[0],temp[1]});
+					allCorners.add(new Integer[]{temp[0],temp[1]+size[1]});
+					allCorners.add(new Integer[]{temp[0]+size[0],temp[1]+size[1]});
+					for(Entity ent: relevantEnts){
+						for(Integer[] pos: allCorners){
+							if((pos[0] <= ent.getPos()[0]+ent.getSize()[0] && pos[0]>= ent.getPos()[0]
+									&& pos[1] <= ent.getPos()[1]+ent.getSize()[1] && pos[1]>= ent.getPos()[1])
+												|| !RuntimeData.getInstance().getMapData().getData()[pos[0]/128][pos[1]/128].isWalkable()){
+								temp = null;
+								break;
+							}
+						}
+						if(temp == null) break;
+						ArrayList<Integer[]> allCornersRef = new ArrayList<>();
+						allCornersRef.add(new Integer[]{ent.getPos()[0],ent.getPos()[1]});
+						allCornersRef.add(new Integer[]{ent.getPos()[0]+ent.getSize()[0],ent.getPos()[1]});
+						allCornersRef.add(new Integer[]{ent.getPos()[0],ent.getPos()[1]+ent.getSize()[1]});
+						allCornersRef.add(new Integer[]{ent.getPos()[0]+ent.getSize()[0],ent.getPos()[1]+ent.getSize()[1]});
+						
+						for(Integer[] pos: allCornersRef){
+							if(pos[0] <= temp[0]+size[0] && pos[0]>= temp[0]
+									&& pos[1] <= temp[1]+size[1] && pos[1]>= temp[1]){
+								temp = null;
+								break;
+							}
 						}
 					}
+					if(temp != null)availablePos.add(temp);
 				}
-				if(temp != null)availablePos.add(temp);
 			}
+		if(availablePos.isEmpty()){
+			VNLogger.log("Could not place entity: " + toPlace.getClass().getSimpleName(), this.getClass());
+			return false;
 		}
-		if(availablePos.isEmpty())return false;
 		//Chose random or closest to preferred position
 		Integer[] placedPos = new Integer[]{0,0};
 		if(preferredPos != null){
@@ -526,6 +579,7 @@ public class EntityManager {
 			toPlace.getPos()[0] = placedPos[0];
 			toPlace.getPos()[1] = placedPos[1];
 		}
+		if(toPlace instanceof Rock)((Rock)toPlace).persistPos();
 		return true;
 	}
 

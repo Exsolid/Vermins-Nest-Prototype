@@ -7,6 +7,8 @@ public class AStarMapNode{
 	private int distSource;
 	private int[] nodePos;
 	private int sourceDir;
+	private String entity;
+	private int[] debugGoalPos;
 	
 	public AStarMapNode(int[] mapPos, int[] goalMapPos, int[] nodePos) {
 		this.mapPos = mapPos;
@@ -15,6 +17,7 @@ public class AStarMapNode{
 		distSource = 0;
 		sourceDir = -1;
 		weight = distSource + distGoal;
+		debugGoalPos = goalMapPos;
 	}
 
 	public int getDistSource() {
@@ -48,5 +51,13 @@ public class AStarMapNode{
 
 	public int[] getNodePos() {
 		return nodePos;
+	}
+
+	public String getEntityID() {
+		return entity;
+	}
+
+	public void setEntityID(String entity) {
+		this.entity = entity;
 	}
 }

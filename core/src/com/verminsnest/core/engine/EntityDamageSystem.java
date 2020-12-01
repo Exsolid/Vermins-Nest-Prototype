@@ -78,7 +78,7 @@ public class EntityDamageSystem {
 			hitProjectiles.add(found);
 			if(hit instanceof Enemy && source.isFriendly()){
 				((Enemy)hit).setHealth(((Enemy)hit).getHealth()-source.getDamage());
-				((Enemy)hit).setAlerted(RuntimeData.getInstance().getEntityManager().getCharacter());
+				((Enemy)hit).setAlertedEntity(RuntimeData.getInstance().getEntityManager().getCharacter());
 				if(((Enemy)hit).getHealth()<0){					
 					new Death(hit);     
 				}
@@ -121,7 +121,7 @@ public class EntityDamageSystem {
 			hitProjectiles.add(found);
 			if(hit instanceof Enemy){
 				((Enemy)hit).setHealth(((Enemy)hit).getHealth()-source.getDamage());
-				((Enemy)hit).setAlerted(RuntimeData.getInstance().getEntityManager().getCharacter());
+				((Enemy)hit).setAlertedEntity(RuntimeData.getInstance().getEntityManager().getCharacter());
 				if(((Enemy)hit).getHealth()<0){
 					new Death(hit);
 				}

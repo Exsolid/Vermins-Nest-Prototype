@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.verminsnest.core.engine.shaders.Shader;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.core.management.ids.Indentifiers;
+import com.verminsnest.core.management.ids.Qualifier;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.misc.entities.Inventory;
 
@@ -47,7 +48,7 @@ public abstract class Playable extends Entity {
 	private int[] sizeModifier;
 	
 	public Playable(int textureID,int[] position, int speed, int dmg, int agi, int health){
-		super(position,textureID);
+		super(position,textureID, Qualifier.RENDER_LAYER_MID);
 		setSpeed(speed);
 		setHealth(health);
 		setMaxHealth(health);

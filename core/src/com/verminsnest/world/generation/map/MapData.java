@@ -5,6 +5,7 @@ import java.util.Random;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.verminsnest.entities.Entity;
 import com.verminsnest.world.generation.map.rooms.Room;
 
 public class MapData {
@@ -306,5 +307,65 @@ public class MapData {
 			}
 		}
 		return nodeMap;
+	}
+	
+	public AStarMapNode[][] getDetailedAStarMap(Entity ent, int[] goalPos) {
+		int divider = 8;
+		int divSize = 16;
+		int[] goal = null;
+		int[] sourcePos = ent.getPos();
+		int xDiff = (int) (Math.abs(Math.floor(sourcePos[0]/128f) - Math.floor(goalPos[0]/128f))+1);
+		int yDiff = (int) (Math.abs(Math.floor(sourcePos[1]/128f) - Math.floor(goalPos[1]/128f))+1);
+		AStarMapNode[][] nodeMap = new AStarMapNode[xDiff*divider+divider*2][yDiff*8+divider*2];
+		if(sourcePos[0] > goalPos[0]){
+			if(sourcePos[1] > goalPos[1]){
+				goal = new int[]{(int) (Math.floor(goalPos[0]%128/divSize)+divider),(int) (Math.floor(goalPos[1]%128/divSize)+divider)};
+				for(int y = -divider; y < nodeMap[0].length-divider; y++){
+					for(int x = -divider; x < nodeMap.length-divider; x++){
+						nodeMap[x+divider][y+divider] = new AStarMapNode(new int[]{x+divider,y+divider},goal,new int[]{x+divider,y+divider});
+						nodeMap[x+divider][y+divider].setEntityID(data[(goalPos[0]-goalPos[0]%divider+x*divider)/128][(sourcePos[0]-sourcePos[1]%divider+y*divider)/128].getWalkableGrid()[(x+divider)%divider][(y+divider)%divider]);
+					}
+				}
+			}else{
+				goal = new int[]{(int) (Math.floor(goalPos[0]%128/divSize)+divider),(int) (Math.floor(goalPos[1]%128/divSize))+divider*yDiff};
+				for(int y = -divider; y < nodeMap[0].length-divider; y++){
+					for(int x = -divider; x < nodeMap.length-divider; x++){
+						nodeMap[x+divider][y+divider] = new AStarMapNode(new int[]{x+divider,y+divider},goal,new int[]{x+divider,y+divider});
+						nodeMap[x+divider][y+divider].setEntityID(data[(sourcePos[0]-sourcePos[0]%divider+x*divider)/128][(sourcePos[1]-sourcePos[1]%divider+y*divider)/128].getWalkableGrid()[(x+divider)%divider][(y+divider)%divider]);
+					}
+				}
+			}
+		}else{
+			if(sourcePos[1] > goalPos[1]){
+				goal = new int[]{(int) (Math.floor(goalPos[0]%128/divSize)+divider*xDiff),(int) (Math.floor(goalPos[1]%128/divSize)+divider)};
+				for(int y = -divider; y < nodeMap[0].length-divider; y++){
+					for(int x = -divider; x < nodeMap.length-divider; x++){
+						nodeMap[x+divider][y+divider] = new AStarMapNode(new int[]{x+divider,y+divider},goal,new int[]{x+divider,y+divider});
+						nodeMap[x+divider][y+divider].setEntityID(data[(goalPos[0]-goalPos[1]%divider+x*divider)/128][(goalPos[1]-goalPos[1]%divider+y*divider)/128].getWalkableGrid()[(x+divider)%divider][(y+divider)%divider]);
+					}
+				}
+				
+			}else{
+				goal = new int[]{(int) (Math.floor(goalPos[0]%128/divSize)+divider*xDiff),(int) (Math.floor(goalPos[1]%128/divSize))+divider*yDiff};
+				for(int y = -divider; y < nodeMap[0].length-divider; y++){
+					for(int x = -divider; x < nodeMap.length-divider; x++){
+						nodeMap[x+divider][y+divider] = new AStarMapNode(new int[]{x+divider,y+divider},goal,new int[]{x+divider,y+divider});
+						nodeMap[x+divider][y+divider].setEntityID(data[(goalPos[0]-goalPos[0]%divider+x*divider)/128][(sourcePos[1]-sourcePos[1]%divider+y*divider)/128].getWalkableGrid()[(x+divider)%divider][(y+divider)%divider]);
+					}
+				}
+			}
+		}
+		return nodeMap;
+	}
+	
+	public ArrayList<int[]> getWalkableTilePosOfRoom(Room room, boolean considerObstacles){
+		ArrayList<int[]> temp = new ArrayList<>();
+			for (int x = 0; x <= room.getData().length-1; x++) {
+				for (int y = 0; y <= room.getData()[0].length-1; y++) {
+					int[] tilePos = new int[]{x+room.getData().length*(room.getLayoutPos()[0])+10,y+room.getData()[0].length*(room.getLayoutPos()[1])+10};
+					if(room.getData()[x][y] == 0 && (!considerObstacles || !data[tilePos[0]][tilePos[1]].containsObstacleUtilEntities()))temp.add(tilePos);
+				}
+		}
+		return temp;
 	}
 }

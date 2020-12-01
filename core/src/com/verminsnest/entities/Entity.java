@@ -26,18 +26,26 @@ public abstract class Entity {
 	protected boolean isForced;
 	protected float forceTimer;
 	protected int forceDirection;
+	protected int renderLayer;
 	
-	public Entity(int[] pos, int textureID){
+	protected boolean caresObstacles;
+
+	private boolean searchAlternativPaths;
+	
+	public Entity(int[] pos, int textureID, int renderLayer){
 		if(textureID != -1){
 			if(!RuntimeData.getInstance().areAssetsLoaded(textureID))VNLogger.logErr("Texture for ID " + textureID+ " not loaded", this.getClass());
 		}
+		this.renderLayer = renderLayer;
 		RuntimeData.getInstance().getEntityManager().addEntity(this);
 		this.textureID = textureID;
+		caresObstacles = true;
 		this.pos = pos;
 		isObstacle = true;
 		this.setId(this.toString());
 		rotation = 0;
 		internalStateTime = 0;
+		id = this.toString();
 	}
 	
 	public abstract void init();
@@ -115,14 +123,14 @@ public abstract class Entity {
 		tiles.add(new int[]{(this.getPos()[0]- this.getPos()[0] % 128) / 128,
 				(this.getPos()[1]- this.getPos()[1] % 128) / 128});
 		//Right pos
-		tiles.add(new int[]{((this.getPos()[0]+size[0])- (this.getPos()[0]+size[0]) % 128) / 128,
+		tiles.add(new int[]{((this.getPos()[0]+hitbox[0])- (this.getPos()[0]+hitbox[0]) % 128) / 128,
 				(this.getPos()[1]- this.getPos()[1] % 128) / 128});
 		//Left top pos
 		tiles.add(new int[]{(this.getPos()[0]- this.getPos()[0] % 128) / 128,
-				((this.getPos()[1]+size[1])- (this.getPos()[1]+size[1]) % 128) / 128});
+				((this.getPos()[1]+hitbox[1])- (this.getPos()[1]+hitbox[1]) % 128) / 128});
 		//Right top pos
-		tiles.add(new int[]{((this.getPos()[0]+size[0])- (this.getPos()[0]+size[0]) % 128) / 128,
-				((this.getPos()[1]+size[1])- (this.getPos()[1]+size[1]) % 128) / 128});
+		tiles.add(new int[]{((this.getPos()[0]+hitbox[0])- (this.getPos()[0]+hitbox[0]) % 128) / 128,
+				((this.getPos()[1]+hitbox[1])- (this.getPos()[1]+hitbox[1]) % 128) / 128});
 		return tiles;
 	}
 
@@ -139,5 +147,27 @@ public abstract class Entity {
 	
 	public int getForceDirection(){
 		return forceDirection;
+	}
+
+	public int getRenderLayer() {
+		return renderLayer;
+	}
+
+	public void setRenderLayer(int renderLayer) {
+		this.renderLayer = renderLayer;
+	}
+	
+	public boolean caresObstacles(){
+		return caresObstacles;
+	}
+	
+	public void dispose(){}
+
+	public boolean isSearchAlternativPaths() {
+		return searchAlternativPaths;
+	}
+
+	public void setSearchAlternativPaths(boolean searchAlternativPaths) {
+		this.searchAlternativPaths = searchAlternativPaths;
 	}
 }

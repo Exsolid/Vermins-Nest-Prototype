@@ -2,6 +2,7 @@ package com.verminsnest.entities.explosions;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.verminsnest.core.management.data.RuntimeData;
+import com.verminsnest.core.management.ids.Qualifier;
 import com.verminsnest.entities.Entity;
 
 public abstract class Explosion extends Entity {
@@ -9,7 +10,7 @@ public abstract class Explosion extends Entity {
 	private int damage;
 
 	public Explosion(int[] pos, int textureID, int damage) {
-		super(pos, textureID);
+		super(pos, textureID,Qualifier.RENDER_LAYER_TOP);
 		init();
 		setDamage(damage);
 		setSize(currentAni.getKeyFrame(0).getRegionWidth(),currentAni.getKeyFrame(0).getRegionHeight());

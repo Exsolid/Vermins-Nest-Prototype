@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.core.management.ids.Indentifiers;
+import com.verminsnest.core.management.ids.Qualifier;
 import com.verminsnest.entities.Entity;
 import com.verminsnest.entities.enemies.Flunk;
 import com.verminsnest.entities.enemies.Tinker;
@@ -23,7 +24,7 @@ public class Egg extends Entity {
 	protected float hatchTime;
 	
 	public Egg(int[] pos, int enemyID) {
-		super(pos, Indentifiers.ASSETMANAGER_EGG);
+		super(pos, Indentifiers.ASSETMANAGER_EGG,Qualifier.RENDER_LAYER_MID);
 		state = Indentifiers.STATE_IDLE;
 		this.enemyID = enemyID;
 		

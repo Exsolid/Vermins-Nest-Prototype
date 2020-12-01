@@ -26,7 +26,7 @@ public abstract class Enemy extends Entity {
 	protected int agility;
 	protected int strength;
 	protected int health;
-
+	
 	private Vector2 leftVision;
 	private Vector2 rightVision;
 	protected Entity alerted;
@@ -41,11 +41,12 @@ public abstract class Enemy extends Entity {
 
 	protected boolean isLastDeath;
 	protected boolean isReadyToDig;
-	
+
+	protected int[] patrolPos;
 	protected Random rand;
 
-	public Enemy(int[] pos, int textureID, int agility, int speed, int strength, int health) {
-		super(pos, textureID);
+	public Enemy(int[] pos, int textureID, int agility, int speed, int strength, int health, int renderLayer) {
+		super(pos, textureID, renderLayer);
 		setSpeed(speed);
 		setHealth(health);
 		setAgility(agility);
@@ -209,11 +210,7 @@ public abstract class Enemy extends Entity {
 									timer = 0;
 								}
 							} else {
-								alerted = ent;
-								if (ent instanceof Playable) {
-									playerAlerted = ent;
-								}
-								timer = 0;
+								setAlertedEntity(ent);
 							}
 						}
 					}
@@ -240,11 +237,7 @@ public abstract class Enemy extends Entity {
 									timer = 0;
 								}
 							} else {
-								alerted = ent;
-								if (ent instanceof Playable) {
-									playerAlerted = ent;
-								}
-								timer = 0;
+								setAlertedEntity(ent);
 							}
 						}
 					}
@@ -271,11 +264,7 @@ public abstract class Enemy extends Entity {
 									timer = 0;
 								}
 							} else {
-								alerted = ent;
-								if (ent instanceof Playable) {
-									playerAlerted = ent;
-								}
-								timer = 0;
+								setAlertedEntity(ent);
 							}
 						}
 					}
@@ -302,11 +291,7 @@ public abstract class Enemy extends Entity {
 									timer = 0;
 								}
 							} else {
-								alerted = ent;
-								if (ent instanceof Playable) {
-									playerAlerted = ent;
-								}
-								timer = 0;
+								setAlertedEntity(ent);
 							}
 						}
 					}
@@ -445,44 +430,79 @@ public abstract class Enemy extends Entity {
 			int randY = rand.nextInt(y) - 1;
 			if (randX >= randY) {
 				if (goalPos[0] > this.pos[0]) {
-					RuntimeData.getInstance().getMovmentSystem().moveRight(this, speed,
-							new int[] { goalPos[0], goalPos[1] });
-					setCurrentAni(Indentifiers.STATE_WALK_EAST);
+					if(!RuntimeData.getInstance().getMovmentSystem().goToPos(this,
+							new int[] { goalPos[0], goalPos[1] },speed)){
+						playerAlerted = null;
+						alerted = null;
+						patrolPos = null;
+						setCurrentAni(Indentifiers.STATE_WALK_EAST);
+					}
 				} else {
-					RuntimeData.getInstance().getMovmentSystem().moveLeft(this, speed,
-							new int[] { goalPos[0], goalPos[1] });
-					setCurrentAni(Indentifiers.STATE_WALK_WEST);
+					if(!RuntimeData.getInstance().getMovmentSystem().goToPos(this,
+							new int[] { goalPos[0], goalPos[1] },speed)){
+						playerAlerted = null;
+						alerted = null;
+						patrolPos = null;
+						setCurrentAni(Indentifiers.STATE_WALK_WEST);
+					}
 				}
 			} else {
 				if (goalPos[1] > this.pos[1]) {
-					RuntimeData.getInstance().getMovmentSystem().moveTop(this, speed,
-							new int[] { goalPos[0], goalPos[1] });
-					setCurrentAni(Indentifiers.STATE_WALK_NORTH);
+					if(!RuntimeData.getInstance().getMovmentSystem().goToPos(this,
+							new int[] { goalPos[0], goalPos[1] },speed)){
+						playerAlerted = null;
+						alerted = null;
+						patrolPos = null;
+						setCurrentAni(Indentifiers.STATE_WALK_NORTH);
+					}
 				} else {
-					RuntimeData.getInstance().getMovmentSystem().moveDown(this, speed,
-							new int[] { goalPos[0], goalPos[1] });
-					setCurrentAni(Indentifiers.STATE_WALK_SOUTH);
+					if(!RuntimeData.getInstance().getMovmentSystem().goToPos(this,
+							new int[] { goalPos[0], goalPos[1] },speed)){
+						playerAlerted = null;
+						alerted = null;
+						patrolPos = null;
+						setCurrentAni(Indentifiers.STATE_WALK_SOUTH);
+					}
 				}
 			}
-			lastDirCount = 0.25f;
+			lastDirCount = 0.5f;
 		} else {
 			switch (state) {
 			case Indentifiers.STATE_IDLE:
 			case Indentifiers.STATE_WALK_SOUTH:
-				RuntimeData.getInstance().getMovmentSystem().moveDown(this, speed,
-						new int[] { goalPos[0], goalPos[1] });
+				if(!RuntimeData.getInstance().getMovmentSystem().goToPos(this,
+						new int[] { goalPos[0], goalPos[1] },speed)){
+					playerAlerted = null;
+					alerted = null;
+					patrolPos = null;
+				}
+				
 				break;
 			case Indentifiers.STATE_WALK_NORTH:
-				RuntimeData.getInstance().getMovmentSystem().moveTop(this, speed,
-						new int[] { goalPos[0], goalPos[1] });
+				if(!RuntimeData.getInstance().getMovmentSystem().goToPos(this,
+						new int[] { goalPos[0], goalPos[1] },speed)){
+					playerAlerted = null;
+					alerted = null;
+					patrolPos = null;
+				}
+				
 				break;
 			case Indentifiers.STATE_WALK_WEST:
-				RuntimeData.getInstance().getMovmentSystem().moveLeft(this, speed,
-						new int[] { goalPos[0], goalPos[1] });
+				if(!RuntimeData.getInstance().getMovmentSystem().goToPos(this,
+						new int[] { goalPos[0], goalPos[1] },speed)){
+					playerAlerted = null;
+					alerted = null;
+					patrolPos = null;
+				}
+				
 				break;
 			case Indentifiers.STATE_WALK_EAST:
-				RuntimeData.getInstance().getMovmentSystem().moveRight(this, speed,
-						new int[] { goalPos[0], goalPos[1] });
+				if(!RuntimeData.getInstance().getMovmentSystem().goToPos(this,
+						new int[] { goalPos[0], goalPos[1] },speed)){
+					playerAlerted = null;
+					alerted = null;
+					patrolPos = null;
+				}
 				break;
 			}
 			
@@ -497,46 +517,44 @@ public abstract class Enemy extends Entity {
 			int randY = rand.nextInt(y) - 1;
 			if (randX > randY) {
 				if (alerted.getPos()[0] > this.pos[0]) {
-					RuntimeData.getInstance().getMovmentSystem().moveLeft(this, speed,
-							new int[] { alerted.getPos()[0], alerted.getPos()[1] });
-					setCurrentAni(Indentifiers.STATE_WALK_WEST);
+					if(RuntimeData.getInstance().getMovmentSystem().goToPos(this,
+							new int[] { alerted.getPos()[0], alerted.getPos()[1]}, speed)){
+						setCurrentAni(Indentifiers.STATE_WALK_WEST);
+						lastDirCount = 1.5f;
+					}else{
+						patrolPos = null;
+					}
 				} else {
-					RuntimeData.getInstance().getMovmentSystem().moveRight(this, speed,
-							new int[] { alerted.getPos()[0], alerted.getPos()[1] });
-					setCurrentAni(Indentifiers.STATE_WALK_EAST);
+					if(RuntimeData.getInstance().getMovmentSystem().goToPos(this,
+							new int[] { alerted.getPos()[0], alerted.getPos()[1]}, speed)){
+						setCurrentAni(Indentifiers.STATE_WALK_EAST);
+						lastDirCount = 1.5f;
+					}else{
+						patrolPos = null;
+					}
 				}
 			} else {
 				if (alerted.getPos()[1] > this.pos[1]) {
-					RuntimeData.getInstance().getMovmentSystem().moveDown(this, speed,
-							new int[] { alerted.getPos()[0], alerted.getPos()[1] });
-					setCurrentAni(Indentifiers.STATE_WALK_SOUTH);
+					if(RuntimeData.getInstance().getMovmentSystem().goToPos(this,
+							new int[] { alerted.getPos()[0], alerted.getPos()[1]}, speed)){
+						setCurrentAni(Indentifiers.STATE_WALK_SOUTH);
+						lastDirCount = 1.5f;
+					}else{
+						patrolPos = null;
+					}
 				} else {
-					RuntimeData.getInstance().getMovmentSystem().moveTop(this, speed,
-							new int[] { alerted.getPos()[0], alerted.getPos()[1] });
-					setCurrentAni(Indentifiers.STATE_WALK_NORTH);
+					if(RuntimeData.getInstance().getMovmentSystem().goToPos(this,
+							new int[] { alerted.getPos()[0], alerted.getPos()[1]}, speed)){
+						setCurrentAni(Indentifiers.STATE_WALK_NORTH);
+						lastDirCount = 1.5f;
+					}else{
+						patrolPos = null;
+					}
 				}
 			}
-			lastDirCount = 1.5f;
 		} else {
-			switch (state) {
-			case Indentifiers.STATE_IDLE:
-			case Indentifiers.STATE_WALK_SOUTH:
-				RuntimeData.getInstance().getMovmentSystem().moveDown(this, speed,
-						new int[] { alerted.getPos()[0], alerted.getPos()[1] });
-				break;
-			case Indentifiers.STATE_WALK_NORTH:
-				RuntimeData.getInstance().getMovmentSystem().moveTop(this, speed,
-						new int[] { alerted.getPos()[0], alerted.getPos()[1] });
-				break;
-			case Indentifiers.STATE_WALK_WEST:
-				RuntimeData.getInstance().getMovmentSystem().moveLeft(this, speed,
-						new int[] { alerted.getPos()[0], alerted.getPos()[1] });
-				break;
-			case Indentifiers.STATE_WALK_EAST:
-				RuntimeData.getInstance().getMovmentSystem().moveRight(this, speed,
-						new int[] { alerted.getPos()[0], alerted.getPos()[1] });
-				break;
-			}
+			if(!RuntimeData.getInstance().getMovmentSystem().goToPos(this,
+					new int[] { alerted.getPos()[0], alerted.getPos()[1]}, speed)) patrolPos = null;
 		}
 	}
 	
@@ -547,50 +565,48 @@ public abstract class Enemy extends Entity {
 			if(walkedRandom){
 				walkTowards(goalPos);
 				walkedRandom = false;
-				lastDirCount = 0.6f;
-			}else if (y < x){
+				lastDirCount = 1f;
+			}else if (y > x){
 				boolean randDir = rand.nextBoolean();
 				if(randDir){
-					RuntimeData.getInstance().getMovmentSystem().moveDown(this, speed, goalPos);
-					setCurrentAni(Indentifiers.STATE_WALK_SOUTH);
+					if(RuntimeData.getInstance().getMovmentSystem().goToPos(this, goalPos,speed)){
+						setCurrentAni(Indentifiers.STATE_WALK_SOUTH);
+						walkedRandom = true;
+						lastDirCount = 0.6f;
+					}else{
+						patrolPos = null;
+					}
 				}else{
-					RuntimeData.getInstance().getMovmentSystem().moveTop(this, speed, goalPos);
-					setCurrentAni(Indentifiers.STATE_WALK_NORTH);
+					if(RuntimeData.getInstance().getMovmentSystem().goToPos(this, goalPos,speed)){
+						setCurrentAni(Indentifiers.STATE_WALK_NORTH);
+						walkedRandom = true;
+						lastDirCount = 0.6f;
+					}else{
+						patrolPos = null;
+					}
 				}
-				walkedRandom = true;
 			}else{
 				boolean randDir = rand.nextBoolean();
 				if(randDir){
-					RuntimeData.getInstance().getMovmentSystem().moveRight(this, speed, goalPos);
-					setCurrentAni(Indentifiers.STATE_WALK_EAST);
+					if(RuntimeData.getInstance().getMovmentSystem().goToPos(this, goalPos,speed)){
+						setCurrentAni(Indentifiers.STATE_WALK_EAST);
+						walkedRandom = true;
+						lastDirCount = 0.6f;
+					}else{
+						patrolPos = null;
+					}
 				}else{
-					RuntimeData.getInstance().getMovmentSystem().moveLeft(this, speed, goalPos);
-					setCurrentAni(Indentifiers.STATE_WALK_WEST);
+					if(RuntimeData.getInstance().getMovmentSystem().goToPos(this, goalPos,speed)){
+						setCurrentAni(Indentifiers.STATE_WALK_WEST);
+						walkedRandom = true;
+						lastDirCount = 0.6f;
+					}else{
+						patrolPos = null;
+					}
 				}
-				walkedRandom = true;
-
-				lastDirCount = 0.2f;
 			}
-		}else {
-			switch (state) {
-			case Indentifiers.STATE_IDLE:
-			case Indentifiers.STATE_WALK_SOUTH:
-				RuntimeData.getInstance().getMovmentSystem().moveDown(this, speed,
-						goalPos);
-				break;
-			case Indentifiers.STATE_WALK_NORTH:
-				RuntimeData.getInstance().getMovmentSystem().moveTop(this, speed,
-						goalPos);
-				break;
-			case Indentifiers.STATE_WALK_WEST:
-				RuntimeData.getInstance().getMovmentSystem().moveLeft(this, speed,
-						goalPos);
-				break;
-			case Indentifiers.STATE_WALK_EAST:
-				RuntimeData.getInstance().getMovmentSystem().moveRight(this, speed,
-						goalPos);
-				break;
-			}
+		}else{
+			if(!RuntimeData.getInstance().getMovmentSystem().goToPos(this, goalPos,speed)) patrolPos = null;
 		}
 	}
 
@@ -688,8 +704,26 @@ public abstract class Enemy extends Entity {
 		alerted = null;
 		playerAlerted = null;
 	}
-
+	
+	public Entity getAlerted(){
+		return alerted;
+	}
 	public boolean isReadyToDig() {
 		return isReadyToDig;
+	}
+	/**
+	 * Sets the entity in the alerted state, if it is possible for it to reach "ent"
+	 * @param ent
+	 */
+	public void setAlertedEntity(Entity ent){
+		boolean isPossible = true;
+		if(caresObstacles){
+			for(int[] pos: ent.getMapPos()){
+				if(RuntimeData.getInstance().getMapData().getData()[pos[0]][pos[1]].containsObstacleUtilEntities())isPossible = false;
+			}
+		}
+		if(isPossible)alerted = ent;
+		if (ent instanceof Playable && isPossible)playerAlerted = ent;
+		timer = 0;
 	}
 }

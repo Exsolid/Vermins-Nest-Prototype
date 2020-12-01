@@ -4,13 +4,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.core.management.ids.Indentifiers;
+import com.verminsnest.core.management.ids.Qualifier;
 import com.verminsnest.entities.util.UtilEntity;
 
 public class Blanket extends UtilEntity {
 	private Texture texture;
 	public Blanket(int[] pos) {
-		super(pos, Indentifiers.ASSETMANAGER_SHOPKEEPER);
-		isGrounded = true;
+		super(pos, Indentifiers.ASSETMANAGER_SHOPKEEPER,Qualifier.RENDER_LAYER_BOT);
 	}
 
 	@Override

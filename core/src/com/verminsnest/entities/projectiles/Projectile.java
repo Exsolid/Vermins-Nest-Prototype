@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.core.management.ids.Indentifiers;
+import com.verminsnest.core.management.ids.Qualifier;
 import com.verminsnest.entities.Entity;
 
 public abstract class Projectile extends Entity{
@@ -23,7 +24,7 @@ public abstract class Projectile extends Entity{
 	private boolean isFriendly;
 	
 	public Projectile(int textureID, int direction, int agility,int damage, int[] position){
-		super(position, textureID);
+		super(position, textureID, Qualifier.RENDER_LAYER_MID);
 		
 		//Data
 		isFriendly = false;

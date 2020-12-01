@@ -66,6 +66,7 @@ public class VNAssetManager {
 			this.loadAssets(Indentifiers.ASSETMANAGER_PUDDLE_BLOOD);
 			this.loadAssets(Indentifiers.ASSETMANAGER_EGG);
 			this.loadAssets(Indentifiers.ASSETMANAGER_SHOPKEEPER);
+			this.loadAssets(Indentifiers.ASSETMANAGER_ROCKS);
 			this.loadAudio(Indentifiers.ASSETMANAGER_AUDIO_INTOTHEUNKOWN);
 			this.loadAudio(Indentifiers.ASSETMANAGER_AUDIO_WALKINGONSTONE);
 			this.loadAudio(Indentifiers.ASSETMANAGER_AUDIO_ITEMPICKDROP);
@@ -157,6 +158,13 @@ public class VNAssetManager {
 			assetManager.load("textures/puddles/bloodpuddles/Bloodpuddle-Big-1.png", Texture.class);
 			assetManager.load("textures/puddles/bloodpuddles/Bloodpuddle-Big-2.png", Texture.class);
 			break;
+		case Indentifiers.ASSETMANAGER_ROCKS:
+			assetManager.load("textures/level-design/rocks/Rock-Small-1.png", Texture.class);
+			assetManager.load("textures/level-design/rocks/Rock-Small-2.png", Texture.class);
+			assetManager.load("textures/level-design/rocks/Rock-Small-3.png", Texture.class);
+			assetManager.load("textures/level-design/rocks/Rock-Small-4.png", Texture.class);
+			assetManager.load("textures/level-design/rocks/Rock-Small-5.png", Texture.class);
+			break;
 		default:
 			VNLogger.logErr("ID was not found: "+id, this.getClass());
 			break;
@@ -221,6 +229,7 @@ public class VNAssetManager {
 			this.unloadAssets(Indentifiers.ASSETMANAGER_PUDDLE_BLOOD);
 			this.unloadAssets(Indentifiers.ASSETMANAGER_EGG);
 			this.unloadAssets(Indentifiers.ASSETMANAGER_SHOPKEEPER);
+			this.unloadAssets(Indentifiers.ASSETMANAGER_ROCKS);
 			this.unloadAudio(Indentifiers.ASSETMANAGER_AUDIO_INTOTHEUNKOWN);
 			this.unloadAudio(Indentifiers.ASSETMANAGER_AUDIO_WALKINGONSTONE);
 			this.unloadAudio(Indentifiers.ASSETMANAGER_AUDIO_ITEMPICKDROP);
@@ -312,6 +321,13 @@ public class VNAssetManager {
 		case Indentifiers.ASSETMANAGER_SHELL:
 			this.unload("textures/particles/shells/Shell.png");
 			break;
+		case Indentifiers.ASSETMANAGER_ROCKS:
+			this.unload("textures/level-design/rocks/Rock-Small-1.png");
+			this.unload("textures/level-design/rocks/Rock-Small-2.png");
+			this.unload("textures/level-design/rocks/Rock-Small-3.png");
+			this.unload("textures/level-design/rocks/Rock-Small-4.png");
+			this.unload("textures/level-design/rocks/Rock-Small-5.png");
+			break;
 		default:
 			VNLogger.logErr("ID was not found: "+id, this.getClass());
 			break;
@@ -360,6 +376,8 @@ public class VNAssetManager {
 			return assetManager.isLoaded("textures/particles/shells/Shell.png");
 		case Indentifiers.ASSETMANAGER_PUDDLE_BLOOD:
 			return assetManager.isLoaded("textures/puddles/bloodpuddles/Bloodpuddle-Small-1.png");
+		case Indentifiers.ASSETMANAGER_ROCKS:
+			return assetManager.isLoaded("textures/particles/shells/Shell.png");
 		default:
 			VNLogger.logErr("ID was not found: "+id, this.getClass());
 			return false;

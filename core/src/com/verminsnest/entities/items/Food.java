@@ -3,6 +3,7 @@ package com.verminsnest.entities.items;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.verminsnest.core.management.data.RuntimeData;
+import com.verminsnest.core.management.ids.Qualifier;
 import com.verminsnest.entities.Entity;
 
 public class Food extends Entity {
@@ -10,7 +11,7 @@ public class Food extends Entity {
 	private boolean isPicked;
 	
 	public Food(int[] pos) {
-		super(pos,-1);
+		super(pos,-1, Qualifier.RENDER_LAYER_MID);
 		init();
 	}
 

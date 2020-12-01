@@ -5,11 +5,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.verminsnest.core.management.data.RuntimeData;
+import com.verminsnest.core.management.ids.Qualifier;
 
 public class CloudAnimation extends UtilEntity{
 	public CloudAnimation(int[] pos) {
 		//Textures are loaded initially
-		super(pos, -1);
+		super(pos, -1,Qualifier.RENDER_LAYER_TOP);
 		this.setSize(128, 128);
 		isObstacle = false;
 	}

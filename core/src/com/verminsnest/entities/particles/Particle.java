@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.verminsnest.core.management.data.RuntimeData;
+import com.verminsnest.core.management.ids.Qualifier;
 import com.verminsnest.entities.Entity;
 
 public abstract class Particle extends Entity{
@@ -15,7 +16,7 @@ public abstract class Particle extends Entity{
 	protected Random rand;
 	
 	public Particle(int[] pos, int textureID) {
-		super(pos, textureID);
+		super(pos, textureID,Qualifier.RENDER_LAYER_BOT);
 		isObstacle = false;
 		rand = new Random();
 		

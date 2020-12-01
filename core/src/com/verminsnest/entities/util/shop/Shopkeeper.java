@@ -5,12 +5,13 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.core.management.ids.Indentifiers;
+import com.verminsnest.core.management.ids.Qualifier;
 import com.verminsnest.entities.util.UtilEntity;
 
 public class Shopkeeper extends UtilEntity{
 
 	public Shopkeeper(int[] pos) {
-		super(pos, Indentifiers.ASSETMANAGER_SHOPKEEPER);
+		super(pos, Indentifiers.ASSETMANAGER_SHOPKEEPER,Qualifier.RENDER_LAYER_MID);
 	}
 
 	@Override

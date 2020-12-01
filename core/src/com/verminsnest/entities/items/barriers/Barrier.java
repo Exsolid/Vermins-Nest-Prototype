@@ -3,6 +3,7 @@ package com.verminsnest.entities.items.barriers;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.verminsnest.core.management.ids.Indentifiers;
+import com.verminsnest.core.management.ids.Qualifier;
 import com.verminsnest.entities.items.Item;
 
 public abstract class Barrier extends Item {
@@ -12,7 +13,7 @@ public abstract class Barrier extends Item {
 	protected Animation<TextureRegion> breakAni;
 	
 	public Barrier(int textureID, boolean isPassiv) {
-		super(null, textureID, isPassiv);
+		super(null, textureID, isPassiv,Qualifier.RENDER_LAYER_MID);
 	}
 
 	public void setCurrentAni(int animationKey) {

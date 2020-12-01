@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.core.management.ids.Indentifiers;
+import com.verminsnest.core.management.ids.Qualifier;
 import com.verminsnest.entities.items.Item;
 
 public abstract class Turret extends Item {
@@ -16,7 +17,7 @@ public abstract class Turret extends Item {
 	
 	protected float attackCooldown;
 	public Turret(int textureID, boolean isPassiv) {
-		super(null, textureID, isPassiv);
+		super(null, textureID, isPassiv,Qualifier.RENDER_LAYER_MID);
 		attackCooldown= 0;
 	}
 

@@ -1,5 +1,6 @@
 package com.verminsnest.entities.enemies;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -7,16 +8,16 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.verminsnest.core.management.data.RuntimeData;
 import com.verminsnest.core.management.ids.Indentifiers;
+import com.verminsnest.core.management.ids.Qualifier;
 import com.verminsnest.entities.projectiles.slashes.Slash;
 import com.verminsnest.entities.projectiles.slashes.SlashLeftSmall;
 import com.verminsnest.entities.projectiles.slashes.SlashRightSmall;
 
 public class Tinker extends Enemy {
-
-	private int[] patrolPos;
 	
 	public Tinker(int[] pos) {
-		super(pos, Indentifiers.ASSETMANAGER_TINKER,7,6,5,25);
+		super(pos, Indentifiers.ASSETMANAGER_TINKER,7,6,5,25,Qualifier.RENDER_LAYER_MID);
+		caresObstacles = true;
 	}
 
 	@Override
@@ -143,7 +144,7 @@ public class Tinker extends Enemy {
 				break;
 			}
 		}else{
-			walkTowards(new int[]{alerted.getPos()[0],alerted.getPos()[1]});
+			walkTowards(new int[]{alerted.getPos()[0]+alerted.getHitbox()[0]/2,alerted.getPos()[1]+alerted.getHitbox()[1]/2});
 		}
 	}
 
@@ -203,11 +204,13 @@ public class Tinker extends Enemy {
 				((pos[1]-10*128)/ 128) / roomSize[1]};
 		Random rand = new Random();
 		
-		//Get random position in room
-		while(patrolPos == null || !RuntimeData.getInstance().getMapData().getData()[patrolPos[0]][patrolPos[1]].isWalkable()){
-			patrolPos = new int[]{(roomNum[0]+1)*rand.nextInt(roomSize[0])+10,(roomNum[1]+1)*rand.nextInt(roomSize[1])+10};
-		}
-		//Walk to position
-		if(!RuntimeData.getInstance().getMovmentSystem().goToPos(this, new int[]{patrolPos[0]*128, patrolPos[1]*128}, (int) (speed*0.6)))patrolPos = null;
+		// Get random position in room
+		ArrayList<int[]> tiles = RuntimeData.getInstance().getMapData().getWalkableTilePosOfRoom(RuntimeData.getInstance().getMapData().getRoomLayout()[roomNum[0]][roomNum[1]], true);
+		if(patrolPos == null)patrolPos = tiles.get(rand.nextInt(tiles.size()));
+		// Walk to position
+		int[] goalPos = new int[] { patrolPos[0] * 128, patrolPos[1] * 128 };
+		walkRandomTo(goalPos);
+		int[] dif = new int[]{Math.abs(goalPos[0]-pos[0]),Math.abs(goalPos[1]-pos[1])};
+		if((dif[0] | dif[1]) < 128)patrolPos = null;
 	}
 }

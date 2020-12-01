@@ -36,7 +36,7 @@ public class FogOfWar extends Shader{
 					if(FloorManager.getInstane().allowEntityUpdate())
 					positions = calculateData();
 					try {
-						Thread.sleep(10);
+						Thread.sleep(5);
 					} catch (InterruptedException e) {
 						StringWriter err = new StringWriter();
 						e.printStackTrace(new PrintWriter(err));

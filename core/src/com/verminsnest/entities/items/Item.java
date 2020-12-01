@@ -18,8 +18,8 @@ public abstract class Item extends Entity {
 	protected boolean isGrounded;
 	protected int price;
 	
-	public Item(int[] pos, int textureID, boolean isPassiv) {
-		super(pos, textureID);
+	public Item(int[] pos, int textureID, boolean isPassiv, int renderLayer) {
+		super(pos, textureID, renderLayer);
 		isObstacle = false;
 		
 		price = 3;
