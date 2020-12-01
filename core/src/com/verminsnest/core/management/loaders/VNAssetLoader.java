@@ -10,7 +10,7 @@ public class VNAssetLoader extends LoadingModule{
 	private ArrayList<Integer> IDsToLoad;
 	
 	public VNAssetLoader() {
-		super("LoadingScreen_AssetLoad");
+		super(RuntimeData.getInstance().getGame().getConfig().getMessage("LoadingScreen_AssetLoad"));
 		IDsToLoad = new ArrayList<>();
 		inThread = false;
 	}

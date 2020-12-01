@@ -16,7 +16,7 @@ import com.verminsnest.misc.entities.Death;
 public class Flunk extends Enemy {
 	
 	public Flunk(int[] pos) {
-		super(pos, Indentifiers.ASSETMANAGER_FLUNK, 5, 7, 15, 10, Qualifier.RENDER_LAYER_TOP);
+		super(pos, Indentifiers.ASSETMANAGER_FLUNK, 5, 6, 15, 10, Qualifier.RENDER_LAYER_TOP);
 		yShadowOffset = -25;
 	}
 
