@@ -1,8 +1,11 @@
 # Vermins-Nest
-This is the main game "Vermins-Nest", a 2D rougelike.
+This is a prototype for a game called "Vermins-Nest", a 2D, topdown rougelike.
+It is written in java with the help of the LibGDX framework.
 
-As no liscense is present yet "the default copyright laws apply, meaning that [I] retain all rights to [my] source code and no one may reproduce,
-distribute, or create derivative works from [my] work",
-as https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/licensing-a-repository states.
+#Skills learned:
+- Pathfinding algorithms
+- Procedual generation using cellular automata and more
+- Basics of pixel art
+- Basics of music theory
 
 
